@@ -20,9 +20,7 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({
-      news,
-    });
+    return NextResponse.json(news);
   } catch (error) {
     console.error('Get news API error:', error);
     return NextResponse.json(

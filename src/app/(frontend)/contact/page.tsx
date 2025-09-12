@@ -57,19 +57,34 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+    setSubmitStatus('idle');
+
     try {
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setSubmitStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-    } catch {
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        console.error('Contact form error:', data);
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Contact form submission error:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -235,6 +250,7 @@ export default function ContactPage() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Input
+                      id="contact-name"
                       label="Full Name"
                       name="name"
                       value={formData.name}
@@ -243,6 +259,7 @@ export default function ContactPage() {
                       placeholder="Your full name"
                     />
                     <Input
+                      id="contact-email"
                       label="Email Address"
                       name="email"
                       type="email"
@@ -255,6 +272,7 @@ export default function ContactPage() {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Input
+                      id="contact-phone"
                       label="Phone Number"
                       name="phone"
                       type="tel"
@@ -263,10 +281,11 @@ export default function ContactPage() {
                       placeholder="+1 (555) 123-4567"
                     />
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="contact-subject" className="block text-sm font-medium text-gray-700 mb-2">
                         Subject
                       </label>
                       <select
+                        id="contact-subject"
                         name="subject"
                         value={formData.subject}
                         onChange={handleInputChange}
@@ -284,6 +303,7 @@ export default function ContactPage() {
                   </div>
                   
                   <Textarea
+                    id="contact-message"
                     label="Message"
                     name="message"
                     value={formData.message}

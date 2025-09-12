@@ -1,42 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { DatabaseService, supabaseAdmin } from '@/lib/db';
 import { AuthService } from '@/lib/auth';
-import { createGalleryImageSchema, validateData } from '@/lib/validators';
+import { createDownloadSchema, updateDownloadSchema, validateData } from '@/lib/validators';
+import { Download } from '@/types/gallery';
 
-// GET /api/gallery - List all gallery items with pagination and filtering
+// GET /api/downloads - List all downloads with pagination and filtering
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '12');
+    const limit = parseInt(searchParams.get('limit') || '10');
     const search = searchParams.get('search') || '';
-    const album = searchParams.get('album') || '';
-
+    const category = searchParams.get('category') || '';
+    
     const offset = (page - 1) * limit;
 
     // Build query
     let query = supabaseAdmin
-      .from('gallery_images')
+      .from('downloads')
       .select('*', { count: 'exact' })
-      .order('created_at', { ascending: false })
+      .order('uploaded_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
     // Add search filter if provided
     if (search) {
-      query = query.or(`title.ilike.%${search}%,caption.ilike.%${search}%`);
+      query = query.or(`title.ilike.%${search}%`);
     }
 
-    // Add album filter if provided
-    if (album) {
-      query = query.eq('album', album);
+    // Add category filter if provided
+    if (category) {
+      query = query.eq('category', category);
     }
 
-    const { data: items, error, count } = await query;
+    const { data, error, count } = await query;
 
     if (error) {
-      console.error('Error fetching gallery items:', error);
+      console.error('Error fetching downloads:', error);
       return NextResponse.json(
-        { error: 'Failed to fetch gallery items' },
+        { error: 'Failed to fetch downloads' },
         { status: 500 }
       );
     }
@@ -44,7 +45,7 @@ export async function GET(request: NextRequest) {
     const totalPages = Math.ceil((count || 0) / limit);
 
     return NextResponse.json({
-      images: items || [],
+      downloads: data || [],
       pagination: {
         page,
         limit,
@@ -53,7 +54,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Gallery API error:', error);
+    console.error('Downloads API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -61,7 +62,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/gallery - Create new gallery item
+// POST /api/downloads - Create new download
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
@@ -76,18 +77,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check permissions (admin or editor can create gallery items)
-    if (!AuthService.hasPermission(user.role, 'editor')) {
-      return NextResponse.json(
-        { error: 'Insufficient permissions' },
-        { status: 403 }
-      );
-    }
-
     const body = await request.json();
-
+    
     // Validate request data
-    const validation = validateData(createGalleryImageSchema, body);
+    const validation = validateData(createDownloadSchema, body);
     if (!validation.success) {
       return NextResponse.json(
         { error: 'Invalid input', details: validation.errors },
@@ -95,34 +88,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const galleryData = {
+    const downloadData = {
       ...validation.data,
-      created_at: new Date().toISOString(),
+      uploaded_at: new Date().toISOString(),
     };
 
-    // Create gallery item
-    const item = await DatabaseService.create('gallery_images', galleryData);
+    // Create download
+    const download = await DatabaseService.create<Download>('downloads', downloadData);
 
     return NextResponse.json({
       success: true,
-      image: item,
+      download,
     }, { status: 201 });
   } catch (error) {
-    console.error('Create gallery item API error:', error);
+    console.error('Create download API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
     );
   }
-}
-
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    },
-  });
 }

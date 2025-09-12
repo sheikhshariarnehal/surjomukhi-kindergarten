@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { News, Event } from '@/types';
 
@@ -15,6 +15,9 @@ export default function NewsEventsPreview({ initialNews = [], initialEvents = []
   const [events, setEvents] = useState<Event[]>(initialEvents);
   const [loading, setLoading] = useState(!initialNews.length && !initialEvents.length);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'news' | 'events'>('news');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showSearch, setShowSearch] = useState(false);
 
 
 
@@ -91,8 +94,19 @@ export default function NewsEventsPreview({ initialNews = [], initialEvents = []
     fetchData();
   }, [initialNews.length, initialEvents.length]);
 
-  const newsItems = news.slice(0, 3);
-  const eventItems = events.slice(0, 4);
+  // Filter and search functionality
+  const filteredNews = (news || []).filter(item =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (item.excerpt || item.content || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredEvents = (events || []).filter(item =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (item.description || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const newsItems = searchTerm ? filteredNews.slice(0, 6) : (news || []).slice(0, 6);
+  const eventItems = searchTerm ? filteredEvents.slice(0, 6) : (events || []).slice(0, 6);
 
   if (error) {
     return (
@@ -122,178 +136,331 @@ export default function NewsEventsPreview({ initialNews = [], initialEvents = []
   }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-20 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+        {/* Modern Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl mb-6 shadow-lg">
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+            </svg>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-800 bg-clip-text text-transparent mb-4">
+            Latest Updates
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Stay connected with our community through the latest news and upcoming events
+          </p>
+        </motion.div>
+
+        {/* Modern Tab Navigation & Search */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="flex flex-col items-center space-y-6 mb-12"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">
-            News & Events
-          </h2>
-          <p className="text-gray-600 max-w-xl mx-auto">
-            Stay informed about our latest updates and upcoming activities.
-          </p>
+          {/* Tab Navigation */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-white/20">
+            <div className="flex space-x-2">
+              <button
+                onClick={() => setActiveTab('news')}
+                className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                  activeTab === 'news'
+                    ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg transform scale-105'
+                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50/50'
+                }`}
+              >
+                <span className="flex items-center space-x-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                  </svg>
+                  <span>Latest News</span>
+                  {newsItems.length > 0 && (
+                    <span className="bg-white/20 text-xs px-2 py-0.5 rounded-full">
+                      {newsItems.length}
+                    </span>
+                  )}
+                </span>
+              </button>
+              <button
+                onClick={() => setActiveTab('events')}
+                className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                  activeTab === 'events'
+                    ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg transform scale-105'
+                    : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50/50'
+                }`}
+              >
+                <span className="flex items-center space-x-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>Upcoming Events</span>
+                  {eventItems.length > 0 && (
+                    <span className="bg-white/20 text-xs px-2 py-0.5 rounded-full">
+                      {eventItems.length}
+                    </span>
+                  )}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Search Bar */}
+          <div className="flex items-center space-x-4">
+            <div className="relative">
+              <motion.div
+                initial={{ width: showSearch ? 320 : 48 }}
+                animate={{ width: showSearch ? 320 : 48 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden"
+              >
+                {showSearch ? (
+                  <div className="flex items-center px-4 py-3">
+                    <svg className="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input
+                      type="text"
+                      placeholder={`Search ${activeTab}...`}
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-400"
+                      autoFocus
+                    />
+                    <button
+                      onClick={() => {
+                        setShowSearch(false);
+                        setSearchTerm('');
+                      }}
+                      className="ml-2 p-1 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setShowSearch(true)}
+                    className="w-12 h-12 flex items-center justify-center hover:bg-blue-50 transition-colors"
+                  >
+                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </button>
+                )}
+              </motion.div>
+            </div>
+
+            {searchTerm && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-sm text-gray-600 bg-white/60 px-3 py-1 rounded-full"
+              >
+                {activeTab === 'news' ? filteredNews.length : filteredEvents.length} results
+              </motion.div>
+            )}
+          </div>
         </motion.div>
 
         {loading ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Loading skeleton */}
-            {[1, 2].map((section) => (
-              <div key={section} className="space-y-4">
-                <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mb-6"></div>
-                {[1, 2, 3].map((item) => (
-                  <div key={item} className="bg-white rounded-lg p-6 space-y-3">
-                    <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-                    <div className="h-3 bg-gray-200 rounded w-1/2 animate-pulse"></div>
-                    <div className="h-3 bg-gray-200 rounded w-1/4 animate-pulse"></div>
-                  </div>
-                ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((item) => (
+              <div key={item} className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 space-y-4 animate-pulse">
+                <div className="flex items-center justify-between">
+                  <div className="h-6 w-16 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full"></div>
+                  <div className="h-4 w-20 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full"></div>
+                </div>
+                <div className="h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg w-4/5"></div>
+                <div className="space-y-2">
+                  <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-full"></div>
+                  <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-3/4"></div>
+                </div>
+                <div className="h-4 w-24 bg-gradient-to-r from-blue-200 to-blue-300 rounded-full"></div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Latest News Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-gray-900">Latest News</h3>
-                <Link
-                  href="/news"
-                  className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
-                >
-                  View All →
-                </Link>
-              </div>
-
-              {/* News Items */}
-              <div className="space-y-4">
-                {newsItems.length > 0 ? (
-                  newsItems.map((item, index) => (
-                    <motion.article
-                      key={item.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="bg-white rounded-lg p-6 hover:shadow-md transition-shadow duration-200"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded">
-                          News
-                        </span>
-                        <time className="text-xs text-gray-500">
-                          {getRelativeTime(item.publish_date || item.created_at || '')}
-                        </time>
-                      </div>
-
-                      <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-blue-600 transition-colors">
-                        {item.title}
-                      </h4>
-
-                      <p className="text-gray-600 text-sm line-clamp-2 mb-4">
-                        {item.excerpt || item.content?.substring(0, 120) + '...'}
-                      </p>
-
-                      <Link
-                        href={`/news/${item.id}`}
-                        className="text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors"
-                      >
-                        Read More →
-                      </Link>
-                    </motion.article>
-                  ))
-                ) : (
-                  <div className="bg-white rounded-lg p-8 text-center">
-                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <AnimatePresence mode="wait">
+            {activeTab === 'news' ? (
+              <motion.div
+                key="news"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.4 }}
+              >
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                       </svg>
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">No News Available</h3>
-                    <p className="text-gray-600 text-sm">Check back later for updates.</p>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-
-            {/* Upcoming Events Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-gray-900">Upcoming Events</h3>
-                <Link
-                  href="/events"
-                  className="text-green-600 hover:text-green-700 text-sm font-medium transition-colors"
-                >
-                  View All →
-                </Link>
-              </div>
-
-              {/* Events List */}
-              <div className="space-y-4">
-                {eventItems.length > 0 ? (
-                  eventItems.map((item, index) => (
-                    <motion.article
-                      key={item.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="bg-white rounded-lg p-6 hover:shadow-md transition-shadow duration-200"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded">
-                          Event
-                        </span>
-                        <time className="text-xs text-gray-500">
-                          {formatEventDate(item.start_date, item.end_date)}
-                        </time>
-                      </div>
-
-                      <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-green-600 transition-colors">
-                        {item.title}
-                      </h4>
-
-                      <p className="text-gray-600 text-sm line-clamp-2 mb-4">
-                        {item.description?.substring(0, 120) + '...'}
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900">Latest News</h3>
+                      <p className="text-sm text-gray-500">
+                        {searchTerm ? `${filteredNews.length} results found` : `${newsItems.length} recent articles`}
                       </p>
+                    </div>
+                  </div>
+                  <Link
+                    href="/news"
+                    className="group inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-2xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  >
+                    View All News
+                    <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </div>
 
-                      <Link
-                        href={`/events/${item.id}`}
-                        className="text-green-600 hover:text-green-700 font-medium text-sm transition-colors"
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {newsItems.length > 0 ? (
+                    newsItems.map((item, index) => (
+                      <motion.article
+                        key={item.id}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        className="group bg-white/80 backdrop-blur-sm rounded-2xl p-6 hover:bg-white hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-white/20 hover:border-blue-200"
                       >
-                        Learn More →
-                      </Link>
-                    </motion.article>
-                  ))
-                ) : (
-                  <div className="bg-white rounded-lg p-8 text-center">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="flex items-start justify-between mb-4">
+                          <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full">
+                            News
+                          </span>
+                          <time className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                            {getRelativeTime(item.publish_date || item.created_at || '')}
+                          </time>
+                        </div>
+
+                        <h4 className="font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors text-lg leading-tight">
+                          {item.title}
+                        </h4>
+
+                        <p className="text-gray-600 text-sm line-clamp-3 mb-6 leading-relaxed">
+                          {item.excerpt || item.content?.substring(0, 140) + '...'}
+                        </p>
+
+                        <Link
+                          href={`/news/${item.id}`}
+                          className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold text-sm transition-all duration-200 group-hover:translate-x-1"
+                        >
+                          Read Full Story
+                          <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </Link>
+                      </motion.article>
+                    ))
+                  ) : (
+                    <div className="col-span-full bg-white/60 backdrop-blur-sm rounded-2xl p-12 text-center border border-white/20">
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-3">No News Available</h3>
+                      <p className="text-gray-600">Check back later for the latest updates and announcements.</p>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="events"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.4 }}
+              >
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">No Events Scheduled</h3>
-                    <p className="text-gray-600 text-sm">Stay tuned for upcoming events.</p>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900">Upcoming Events</h3>
+                      <p className="text-sm text-gray-500">
+                        {searchTerm ? `${filteredEvents.length} results found` : `${eventItems.length} upcoming activities`}
+                      </p>
+                    </div>
                   </div>
-                )}
-              </div>
-            </motion.div>
-          </div>
+                  <Link
+                    href="/events"
+                    className="group inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-2xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  >
+                    View All Events
+                    <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {eventItems.length > 0 ? (
+                    eventItems.map((item, index) => (
+                      <motion.article
+                        key={item.id}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        className="group bg-white/80 backdrop-blur-sm rounded-2xl p-6 hover:bg-white hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 border border-white/20 hover:border-emerald-200"
+                      >
+                        <div className="flex items-start justify-between mb-4">
+                          <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full">
+                            Event
+                          </span>
+                          <time className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                            {formatEventDate(item.start_date, item.end_date)}
+                          </time>
+                        </div>
+
+                        <h4 className="font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-emerald-600 transition-colors text-lg leading-tight">
+                          {item.title}
+                        </h4>
+
+                        <p className="text-gray-600 text-sm line-clamp-3 mb-6 leading-relaxed">
+                          {item.description?.substring(0, 140) + '...'}
+                        </p>
+
+                        <Link
+                          href={`/events/${item.id}`}
+                          className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-semibold text-sm transition-all duration-200 group-hover:translate-x-1"
+                        >
+                          Learn More
+                          <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </Link>
+                      </motion.article>
+                    ))
+                  ) : (
+                    <div className="col-span-full bg-white/60 backdrop-blur-sm rounded-2xl p-12 text-center border border-white/20">
+                      <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-3">No Events Scheduled</h3>
+                      <p className="text-gray-600">Stay tuned for exciting upcoming events and activities.</p>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         )}
 
 
