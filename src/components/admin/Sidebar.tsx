@@ -17,6 +17,7 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  ClipboardList,
 } from 'lucide-react';
 
 export interface SidebarProps {
@@ -62,6 +63,11 @@ const menuItems: MenuItem[] = [
     label: 'Students',
     href: '/dashboard/students',
     icon: <Users className="h-5 w-5" />,
+  },
+  {
+    label: 'Admissions',
+    href: '/dashboard/admissions',
+    icon: <ClipboardList className="h-5 w-5" />,
   },
   {
     label: 'Gallery',

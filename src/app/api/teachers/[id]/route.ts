@@ -1,18 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { DatabaseService } from '@/lib/db';
+import { DatabaseService, supabaseAdmin } from '@/lib/db';
 import { AuthService } from '@/lib/auth';
 import { updateTeacherSchema, validateData } from '@/lib/validators';
 import { Teacher } from '@/types/teacher';
 
-// GET /api/teachers/[id] - Get single teacher
+// GET /api/teachers/[id] - Get single teacher by ID or slug
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
-    const teacher = await DatabaseService.getById<Teacher>('teachers', id);
-    
+
+    // Check if the id looks like a UUID (contains hyphens and is 36 chars)
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+    let teacher: Teacher | null = null;
+
+    if (isUUID) {
+      // Try to get by ID first if it looks like a UUID
+      teacher = await DatabaseService.getById<Teacher>('teachers', id);
+    }
+
+    // If not found by ID or not a UUID, try by slug
+    if (!teacher) {
+      const { data, error } = await supabaseAdmin
+        .from('teachers')
+        .select('*')
+        .eq('slug', id)
+        .single();
+
+      if (!error && data) {
+        teacher = data as Teacher;
+      }
+    }
+
     if (!teacher) {
       return NextResponse.json(
         { error: 'Teacher not found' },

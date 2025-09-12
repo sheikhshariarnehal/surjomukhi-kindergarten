@@ -62,6 +62,16 @@ export const createTeacherSchema = z.object({
   photo_url: z.string().optional(),
   subjects: z.array(z.string()).default([]),
   join_date: z.string().optional(),
+  slug: z.string().optional(),
+  department: z.string().optional(),
+  qualifications: z.array(z.string()).default([]),
+  experience_years: z.number().min(0).optional(),
+  contact_email: z.string().email().optional().or(z.literal('')),
+  contact_phone: z.string().optional(),
+  teaching_philosophy: z.string().optional(),
+  achievements: z.array(z.string()).default([]),
+  certifications: z.array(z.string()).default([]),
+  education_background: z.string().optional(),
 });
 
 export const updateTeacherSchema = createTeacherSchema.partial();

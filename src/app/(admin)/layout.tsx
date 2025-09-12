@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { Toaster } from 'react-hot-toast';
 import Sidebar from '@/components/admin/Sidebar';
 import Topbar from '@/components/admin/Topbar';
 import { useAuth } from '@/lib/auth-middleware';
@@ -106,6 +107,30 @@ export default function AdminLayout({
           onClick={() => setSidebarCollapsed(true)}
         />
       )}
+
+      {/* Toast notifications */}
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+          success: {
+            duration: 3000,
+            style: {
+              background: '#10b981',
+            },
+          },
+          error: {
+            duration: 5000,
+            style: {
+              background: '#ef4444',
+            },
+          },
+        }}
+      />
     </div>
   );
 }

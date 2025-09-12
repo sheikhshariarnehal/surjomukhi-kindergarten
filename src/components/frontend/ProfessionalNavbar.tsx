@@ -13,62 +13,65 @@ interface NavItem {
 }
 
 const navigationItems: NavItem[] = [
-  { 
-    label: 'About', 
+  {
+    label: 'About',
     href: '/about',
     children: [
-      { label: 'Our History', href: '/about#history' },
-      { label: 'Mission & Vision', href: '/about#mission' },
-      { label: 'Leadership', href: '/about#leadership' },
-      { label: 'Infrastructure', href: '/about#infrastructure' },
+      { label: 'About Us', href: '/about/about-us' },
+      { label: 'Founders', href: '/about/founders' },
+      { label: 'History', href: '/about/history' },
+      { label: 'Campus Tour', href: '/about/campus-tour' },
+      { label: 'Our Principals', href: '/about/principals' },
+      { label: 'Administrator', href: '/about/administrator' },
     ]
   },
-  { 
-    label: 'Academic', 
+  {
+    label: 'Academic',
     href: '/academic',
     children: [
-      { label: 'Curriculum', href: '/academic/curriculum' },
-      { label: 'Classes & Sections', href: '/academic/classes' },
+      { label: 'Class Schedule', href: '/academic/class-schedule' },
+      {
+        label: 'Classes',
+        href: '/academic/classes',
+        children: [
+          { label: 'Play Group', href: '/academic/classes/play-group' },
+          { label: 'Nursery', href: '/academic/classes/nursery' },
+          { label: 'One', href: '/academic/classes/one' },
+          { label: 'Two', href: '/academic/classes/two' },
+          { label: 'Three', href: '/academic/classes/three' },
+          { label: 'Four', href: '/academic/classes/four' },
+          { label: 'Five', href: '/academic/classes/five' },
+        ]
+      },
+      { label: 'Our Teachers', href: '/academic/teachers' },
       { label: 'Subjects', href: '/academic/subjects' },
       { label: 'Academic Calendar', href: '/academic/calendar' },
-      { label: 'Syllabus', href: '/academic/syllabus' },
+      { label: 'Academic Rules', href: '/academic/rules' },
     ]
   },
-  { 
-    label: 'Admission', 
+  {
+    label: 'Admission',
     href: '/admission',
     children: [
-      { label: 'Admission Process', href: '/admission#process' },
-      { label: 'Requirements', href: '/admission#requirements' },
-      { label: 'Fee Structure', href: '/admission#fees' },
-      { label: 'Apply Online', href: '/admission/apply' },
+      { label: 'How to Apply?', href: '/admission/how-to-apply' },
+      { label: 'Admission Policy', href: '/admission/policy' },
+      { label: 'Apply Online', href: '/admission/apply-online' },
     ]
   },
-  { 
-    label: 'Student', 
+  {
+    label: 'Student',
     href: '/student',
     children: [
-      { label: 'Student Life', href: '/student/life' },
-      { label: 'Activities', href: '/student/activities' },
-      { label: 'Achievements', href: '/student/achievements' },
-      { label: 'Student Council', href: '/student/council' },
+      { label: 'Students List', href: '/student/list' },
+      { label: 'Syllabus', href: '/student/syllabus' },
+      { label: 'Tuition Fees', href: '/student/fees' },
+      { label: 'Exam Schedule', href: '/student/exam-schedule' },
+      { label: 'Rules & Regulations', href: '/student/rules' },
+      { label: 'Verify Certificate', href: '/student/verify-certificate' },
     ]
   },
   {
-    label: 'Teachers',
-    href: '/teachers'
-  },
-  {
-    label: 'Result',
-    href: '/result',
-    children: [
-      { label: 'Exam Results', href: '/result/exam' },
-      { label: 'Academic Performance', href: '/result/performance' },
-      { label: 'Certificate Verification', href: '/verify-certificate' },
-    ]
-  },
-  { 
-    label: 'Others', 
+    label: 'Others',
     href: '/others',
     children: [
       { label: 'Notices', href: '/notices' },
@@ -170,22 +173,23 @@ export default function ProfessionalNavbar() {
       {/* Top Utility Bar */}
       <div className="bg-gradient-to-r from-blue-700 via-blue-800 to-blue-900 text-white py-2.5 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center text-sm">
+          <div className="flex justify-between items-center text-xs sm:text-sm">
             {/* Contact Information */}
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-3 sm:space-x-6 overflow-x-auto">
               <a
                 href="tel:+8801234567890"
                 className="flex items-center hover:text-blue-200 transition-colors"
                 aria-label="Call us"
               >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                <span>+880 1234-567890</span>
+                <span className="hidden sm:inline">+880 1234-567890</span>
+                <span className="sm:hidden">Call</span>
               </a>
               <a
                 href="mailto:info@school.edu.bd"
-                className="flex items-center hover:text-blue-200 transition-colors"
+                className="hidden sm:flex items-center hover:text-blue-200 transition-colors"
                 aria-label="Email us"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -193,7 +197,7 @@ export default function ProfessionalNavbar() {
                 </svg>
                 <span>info@school.edu.bd</span>
               </a>
-              <div className="flex items-center text-blue-200">
+              <div className="hidden md:flex items-center text-blue-200">
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -298,19 +302,47 @@ export default function ProfessionalNavbar() {
                   
                   {/* Mega Menu Dropdown */}
                   {item.children && activeDropdown === item.label && (
-                    <div 
+                    <div
                       className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50"
                       onMouseEnter={() => setActiveDropdown(item.label)}
                       onMouseLeave={() => setActiveDropdown(null)}
                     >
                       {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
-                        >
-                          {child.label}
-                        </Link>
+                        <div key={child.href} className="relative group/submenu">
+                          {child.children ? (
+                            // Item with nested children
+                            <>
+                              <div className="flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors cursor-pointer">
+                                <Link href={child.href} className="flex-1">
+                                  {child.label}
+                                </Link>
+                                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                              </div>
+                              {/* Nested submenu */}
+                              <div className="absolute left-full top-0 ml-1 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 opacity-0 invisible group-hover/submenu:opacity-100 group-hover/submenu:visible transition-all duration-200 z-50">
+                                {child.children.map((grandchild) => (
+                                  <Link
+                                    key={grandchild.href}
+                                    href={grandchild.href}
+                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                                  >
+                                    {grandchild.label}
+                                  </Link>
+                                ))}
+                              </div>
+                            </>
+                          ) : (
+                            // Regular menu item
+                            <Link
+                              href={child.href}
+                              className="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                            >
+                              {child.label}
+                            </Link>
+                          )}
+                        </div>
                       ))}
                     </div>
                   )}
@@ -368,7 +400,7 @@ export default function ProfessionalNavbar() {
               {/* Mobile Search Button */}
               <button
                 onClick={toggleSearch}
-                className="p-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="p-3 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[48px] min-w-[48px]"
                 aria-label="Search"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -379,7 +411,7 @@ export default function ProfessionalNavbar() {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 mobile-menu"
+                className="inline-flex items-center justify-center p-3 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 mobile-menu min-h-[48px] min-w-[48px]"
                 aria-expanded={isMobileMenuOpen}
                 aria-label="Toggle navigation menu"
               >
@@ -475,17 +507,78 @@ export default function ProfessionalNavbar() {
                         )}>
                           <div className="ml-6 space-y-1 border-l-2 border-blue-100 pl-4">
                             {item.children.map((child) => (
-                              <Link
-                                key={child.href}
-                                href={child.href}
-                                className="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-200"
-                                onClick={() => {
-                                  setIsMobileMenuOpen(false);
-                                  setExpandedMobileItem(null);
-                                }}
-                              >
-                                • {child.label}
-                              </Link>
+                              <div key={child.href}>
+                                {child.children ? (
+                                  // Nested submenu item
+                                  <div className="space-y-1">
+                                    <div className="flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-200">
+                                      <Link
+                                        href={child.href}
+                                        className="flex-1"
+                                        onClick={() => {
+                                          setIsMobileMenuOpen(false);
+                                          setExpandedMobileItem(null);
+                                        }}
+                                      >
+                                        • {child.label}
+                                      </Link>
+                                      <button
+                                        onClick={() => setExpandedMobileItem(
+                                          expandedMobileItem === `${item.label}-${child.label}` ? null : `${item.label}-${child.label}`
+                                        )}
+                                        className="p-1 hover:bg-blue-100 rounded"
+                                      >
+                                        <svg
+                                          className={cn(
+                                            "w-4 h-4 transition-transform duration-200",
+                                            expandedMobileItem === `${item.label}-${child.label}` ? "rotate-180" : ""
+                                          )}
+                                          fill="none"
+                                          stroke="currentColor"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                    {/* Nested children */}
+                                    <div className={cn(
+                                      "overflow-hidden transition-all duration-300 ease-in-out",
+                                      expandedMobileItem === `${item.label}-${child.label}`
+                                        ? "max-h-96 opacity-100"
+                                        : "max-h-0 opacity-0"
+                                    )}>
+                                      <div className="ml-4 space-y-1 border-l border-blue-100 pl-3">
+                                        {child.children.map((grandchild) => (
+                                          <Link
+                                            key={grandchild.href}
+                                            href={grandchild.href}
+                                            className="block px-2 py-1 text-xs text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors duration-200"
+                                            onClick={() => {
+                                              setIsMobileMenuOpen(false);
+                                              setExpandedMobileItem(null);
+                                            }}
+                                          >
+                                            ◦ {grandchild.label}
+                                          </Link>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  // Regular submenu item
+                                  <Link
+                                    href={child.href}
+                                    className="block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-200"
+                                    onClick={() => {
+                                      setIsMobileMenuOpen(false);
+                                      setExpandedMobileItem(null);
+                                    }}
+                                  >
+                                    • {child.label}
+                                  </Link>
+                                )}
+                              </div>
                             ))}
                           </div>
                         </div>

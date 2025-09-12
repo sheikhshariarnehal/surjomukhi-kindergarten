@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   authors: [{ name: "School Website" }],
   creator: "School Website",
   publisher: "School Website",
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+  },
   formatDetection: {
     email: false,
     address: false,

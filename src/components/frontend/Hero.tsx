@@ -85,7 +85,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative h-screen overflow-hidden" role="banner">
+    <section className="relative h-screen min-h-[600px] overflow-hidden" role="banner">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
@@ -117,13 +117,13 @@ const Hero: React.FC = () => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <h2 className="text-lg md:text-xl font-medium mb-4 text-primary-200">
+                <h2 className="text-base sm:text-lg md:text-xl font-medium mb-3 sm:mb-4 text-primary-200">
                   {heroSlides[currentSlide].subtitle}
                 </h2>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 leading-tight px-4 sm:px-0">
                   {heroSlides[currentSlide].title}
                 </h1>
-                <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
+                <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
                   {heroSlides[currentSlide].description}
                 </p>
                 
@@ -133,16 +133,16 @@ const Hero: React.FC = () => {
                   transition={{ duration: 0.8, delay: 0.4 }}
                   className="flex flex-col sm:flex-row gap-4 justify-center"
                 >
-                  <a href={heroSlides[currentSlide].cta.primary.href}>
-                    <Button size="lg" className="bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold">
+                  <a href={heroSlides[currentSlide].cta.primary.href} className="w-full sm:w-auto">
+                    <Button size="lg" className="w-full sm:w-auto bg-white text-primary-600 hover:bg-gray-100 px-6 sm:px-8 py-4 text-base sm:text-lg font-semibold min-h-[48px]">
                       {heroSlides[currentSlide].cta.primary.text}
                     </Button>
                   </a>
-                  <a href={heroSlides[currentSlide].cta.secondary.href}>
-                    <Button 
-                      variant="outline" 
-                      size="lg" 
-                      className="border-2 border-white text-white hover:bg-white hover:text-primary-600 px-8 py-4 text-lg font-semibold"
+                  <a href={heroSlides[currentSlide].cta.secondary.href} className="w-full sm:w-auto">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-primary-600 px-6 sm:px-8 py-4 text-base sm:text-lg font-semibold min-h-[48px]"
                     >
                       {heroSlides[currentSlide].cta.secondary.text}
                     </Button>
@@ -157,31 +157,31 @@ const Hero: React.FC = () => {
       {/* Navigation Arrows */}
       <button
         onClick={goToPrevious}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-3 rounded-full transition-all duration-200"
+        className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-3 sm:p-4 rounded-full transition-all duration-200 min-h-[48px] min-w-[48px]"
         aria-label="Previous slide"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
       </button>
-      
+
       <button
         onClick={goToNext}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-3 rounded-full transition-all duration-200"
+        className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-3 sm:p-4 rounded-full transition-all duration-200 min-h-[48px] min-w-[48px]"
         aria-label="Next slide"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </button>
 
       {/* Slide Indicators */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-3">
+      <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-3 sm:space-x-4">
         {heroSlides.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-200 ${
+            className={`w-4 h-4 sm:w-3 sm:h-3 rounded-full transition-all duration-200 min-h-[16px] min-w-[16px] ${
               index === currentSlide
                 ? 'bg-white scale-125'
                 : 'bg-white bg-opacity-50 hover:bg-opacity-75'

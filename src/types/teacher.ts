@@ -6,6 +6,16 @@ export interface Teacher {
   photo_url?: string;
   subjects: string[];
   join_date?: string;
+  slug?: string;
+  qualifications?: string[];
+  experience_years?: number;
+  contact_email?: string;
+  contact_phone?: string;
+  department?: string;
+  teaching_philosophy?: string;
+  achievements?: string[];
+  education_background?: string;
+  certifications?: string[];
   created_at: string;
   updated_at: string;
 }
@@ -17,6 +27,16 @@ export interface CreateTeacherData {
   photo_url?: string;
   subjects: string[];
   join_date?: string;
+  slug?: string;
+  qualifications?: string[];
+  experience_years?: number;
+  contact_email?: string;
+  contact_phone?: string;
+  department?: string;
+  teaching_philosophy?: string;
+  achievements?: string[];
+  education_background?: string;
+  certifications?: string[];
 }
 
 export interface UpdateTeacherData {
@@ -26,6 +46,16 @@ export interface UpdateTeacherData {
   photo_url?: string;
   subjects?: string[];
   join_date?: string;
+  slug?: string;
+  qualifications?: string[];
+  experience_years?: number;
+  contact_email?: string;
+  contact_phone?: string;
+  department?: string;
+  teaching_philosophy?: string;
+  achievements?: string[];
+  education_background?: string;
+  certifications?: string[];
 }
 
 export interface TeacherListItem {

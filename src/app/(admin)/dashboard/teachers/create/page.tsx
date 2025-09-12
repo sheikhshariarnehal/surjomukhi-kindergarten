@@ -20,6 +20,12 @@ export default function CreateTeacherPage() {
   const [photoUrl, setPhotoUrl] = useState<string>('');
   const [subjectInput, setSubjectInput] = useState('');
   const [subjects, setSubjects] = useState<string[]>([]);
+  const [qualificationInput, setQualificationInput] = useState('');
+  const [qualifications, setQualifications] = useState<string[]>([]);
+  const [achievementInput, setAchievementInput] = useState('');
+  const [achievements, setAchievements] = useState<string[]>([]);
+  const [certificationInput, setCertificationInput] = useState('');
+  const [certifications, setCertifications] = useState<string[]>([]);
   const router = useRouter();
 
   const form = useForm<CreateTeacherForm>({
@@ -31,6 +37,15 @@ export default function CreateTeacherPage() {
       subjects: [],
       join_date: '',
       photo_url: '',
+      department: '',
+      qualifications: [],
+      experience_years: undefined,
+      contact_email: '',
+      contact_phone: '',
+      teaching_philosophy: '',
+      achievements: [],
+      certifications: [],
+      education_background: '',
     },
   });
 
@@ -42,6 +57,11 @@ export default function CreateTeacherPage() {
         ...data,
         photo_url: photoUrl || undefined,
         subjects: subjects.filter(Boolean),
+        qualifications: qualifications.filter(Boolean),
+        achievements: achievements.filter(Boolean),
+        certifications: certifications.filter(Boolean),
+        // Generate slug from name
+        slug: data.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
       };
 
       const response = await fetch('/api/teachers', {
@@ -106,6 +126,51 @@ export default function CreateTeacherPage() {
     form.setValue('subjects', newSubjects);
   };
 
+  const addQualification = () => {
+    if (qualificationInput.trim() && !qualifications.includes(qualificationInput.trim())) {
+      const newQualifications = [...qualifications, qualificationInput.trim()];
+      setQualifications(newQualifications);
+      form.setValue('qualifications', newQualifications);
+      setQualificationInput('');
+    }
+  };
+
+  const removeQualification = (index: number) => {
+    const newQualifications = qualifications.filter((_, i) => i !== index);
+    setQualifications(newQualifications);
+    form.setValue('qualifications', newQualifications);
+  };
+
+  const addAchievement = () => {
+    if (achievementInput.trim() && !achievements.includes(achievementInput.trim())) {
+      const newAchievements = [...achievements, achievementInput.trim()];
+      setAchievements(newAchievements);
+      form.setValue('achievements', newAchievements);
+      setAchievementInput('');
+    }
+  };
+
+  const removeAchievement = (index: number) => {
+    const newAchievements = achievements.filter((_, i) => i !== index);
+    setAchievements(newAchievements);
+    form.setValue('achievements', newAchievements);
+  };
+
+  const addCertification = () => {
+    if (certificationInput.trim() && !certifications.includes(certificationInput.trim())) {
+      const newCertifications = [...certifications, certificationInput.trim()];
+      setCertifications(newCertifications);
+      form.setValue('certifications', newCertifications);
+      setCertificationInput('');
+    }
+  };
+
+  const removeCertification = (index: number) => {
+    const newCertifications = certifications.filter((_, i) => i !== index);
+    setCertifications(newCertifications);
+    form.setValue('certifications', newCertifications);
+  };
+
   const handlePhotoUpload = (url: string) => {
     setPhotoUrl(url);
     form.setValue('photo_url', url);
@@ -160,6 +225,54 @@ export default function CreateTeacherPage() {
                     {...form.register('designation')}
                     placeholder="e.g., Senior Teacher, Head Teacher"
                     error={form.formState.errors.designation?.message}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Department
+                  </label>
+                  <Input
+                    {...form.register('department')}
+                    placeholder="e.g., Mathematics, English, Science"
+                    error={form.formState.errors.department?.message}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Experience (Years)
+                  </label>
+                  <Input
+                    {...form.register('experience_years', { valueAsNumber: true })}
+                    type="number"
+                    min="0"
+                    placeholder="Years of teaching experience"
+                    error={form.formState.errors.experience_years?.message}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Contact Email
+                  </label>
+                  <Input
+                    {...form.register('contact_email')}
+                    type="email"
+                    placeholder="teacher@school.com"
+                    error={form.formState.errors.contact_email?.message}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Contact Phone
+                  </label>
+                  <Input
+                    {...form.register('contact_phone')}
+                    type="tel"
+                    placeholder="+880 1234 567890"
+                    error={form.formState.errors.contact_phone?.message}
                   />
                 </div>
 
@@ -224,24 +337,182 @@ export default function CreateTeacherPage() {
             <Card className="p-6">
               <div className="flex items-center space-x-2 mb-6">
                 <FileText className="h-5 w-5 text-purple-600" />
-                <h2 className="text-lg font-semibold text-gray-900">Biography</h2>
+                <h2 className="text-lg font-semibold text-gray-900">Biography & Philosophy</h2>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Bio
-                </label>
-                <textarea
-                  {...form.register('bio')}
-                  rows={6}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Write a brief biography about the teacher..."
-                />
-                {form.formState.errors.bio && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {form.formState.errors.bio.message}
-                  </p>
-                )}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Bio
+                  </label>
+                  <textarea
+                    {...form.register('bio')}
+                    rows={4}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Write a brief biography about the teacher..."
+                  />
+                  {form.formState.errors.bio && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {form.formState.errors.bio.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Teaching Philosophy
+                  </label>
+                  <textarea
+                    {...form.register('teaching_philosophy')}
+                    rows={3}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Describe the teacher's teaching philosophy and approach..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Education Background
+                  </label>
+                  <textarea
+                    {...form.register('education_background')}
+                    rows={3}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Describe the teacher's educational background..."
+                  />
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <div className="flex items-center space-x-2 mb-6">
+                <GraduationCap className="h-5 w-5 text-indigo-600" />
+                <h2 className="text-lg font-semibold text-gray-900">Qualifications</h2>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex space-x-2">
+                  <Input
+                    value={qualificationInput}
+                    onChange={(e) => setQualificationInput(e.target.value)}
+                    placeholder="Enter qualification (e.g., M.Ed in Mathematics)"
+                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addQualification())}
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={addQualification}
+                    className="border-gray-300 bg-white text-gray-700 hover:bg-gray-50 font-medium py-2 px-4 rounded-lg shadow-sm transition-colors"
+                  >
+                    Add
+                  </Button>
+                </div>
+                <div className="space-y-2">
+                  {qualifications.map((qualification, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-indigo-50 rounded-lg border border-indigo-200"
+                    >
+                      <span className="text-sm text-indigo-800">{qualification}</span>
+                      <button
+                        type="button"
+                        onClick={() => removeQualification(index)}
+                        className="text-indigo-600 hover:text-indigo-800 font-medium"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <div className="flex items-center space-x-2 mb-6">
+                <Calendar className="h-5 w-5 text-yellow-600" />
+                <h2 className="text-lg font-semibold text-gray-900">Achievements</h2>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex space-x-2">
+                  <Input
+                    value={achievementInput}
+                    onChange={(e) => setAchievementInput(e.target.value)}
+                    placeholder="Enter achievement or award"
+                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addAchievement())}
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={addAchievement}
+                    className="border-gray-300 bg-white text-gray-700 hover:bg-gray-50 font-medium py-2 px-4 rounded-lg shadow-sm transition-colors"
+                  >
+                    Add
+                  </Button>
+                </div>
+                <div className="space-y-2">
+                  {achievements.map((achievement, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border border-yellow-200"
+                    >
+                      <span className="text-sm text-yellow-800">{achievement}</span>
+                      <button
+                        type="button"
+                        onClick={() => removeAchievement(index)}
+                        className="text-yellow-600 hover:text-yellow-800 font-medium"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <div className="flex items-center space-x-2 mb-6">
+                <FileText className="h-5 w-5 text-green-600" />
+                <h2 className="text-lg font-semibold text-gray-900">Certifications</h2>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex space-x-2">
+                  <Input
+                    value={certificationInput}
+                    onChange={(e) => setCertificationInput(e.target.value)}
+                    placeholder="Enter certification"
+                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addCertification())}
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={addCertification}
+                    className="border-gray-300 bg-white text-gray-700 hover:bg-gray-50 font-medium py-2 px-4 rounded-lg shadow-sm transition-colors"
+                  >
+                    Add
+                  </Button>
+                </div>
+                <div className="space-y-2">
+                  {certifications.map((certification, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200"
+                    >
+                      <span className="text-sm text-green-800">{certification}</span>
+                      <button
+                        type="button"
+                        onClick={() => removeCertification(index)}
+                        className="text-green-600 hover:text-green-800 font-medium"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </Card>
           </div>

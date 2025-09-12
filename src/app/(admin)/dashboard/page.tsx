@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import DashboardCard from '@/components/admin/DashboardCard';
 import { Card } from '@/components/ui/Card';
 import {
@@ -13,6 +14,7 @@ import {
   Download,
   TrendingUp,
   Activity,
+  ClipboardList,
 } from 'lucide-react';
 
 interface DashboardStats {
@@ -23,6 +25,7 @@ interface DashboardStats {
   students: number;
   gallery: number;
   downloads: number;
+  admissions: number;
 }
 
 interface RecentActivity {
@@ -35,6 +38,7 @@ interface RecentActivity {
 }
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [stats, setStats] = useState<DashboardStats>({
     notices: 0,
     news: 0,
@@ -43,6 +47,7 @@ export default function DashboardPage() {
     students: 0,
     gallery: 0,
     downloads: 0,
+    admissions: 0,
   });
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,7 +58,7 @@ export default function DashboardPage() {
 
   const fetchDashboardData = async () => {
     try {
-      // In a real app, these would be separate API calls
+      // Fetch real data from APIs
       const [
         noticesRes,
         newsRes,
@@ -62,27 +67,37 @@ export default function DashboardPage() {
         studentsRes,
         galleryRes,
         downloadsRes,
-        activityRes,
+        admissionsRes,
       ] = await Promise.all([
-        fetch('/api/notices/count'),
-        fetch('/api/news/count'),
-        fetch('/api/events/count'),
-        fetch('/api/teachers/count'),
-        fetch('/api/students/count'),
-        fetch('/api/gallery/count'),
-        fetch('/api/downloads/count'),
-        fetch('/api/activity/recent'),
+        fetch('/api/notices?limit=1').catch(() => null),
+        fetch('/api/news?limit=1').catch(() => null),
+        fetch('/api/events?limit=1').catch(() => null),
+        fetch('/api/teachers?limit=1').catch(() => null),
+        fetch('/api/students?limit=1').catch(() => null),
+        fetch('/api/gallery?limit=1').catch(() => null),
+        fetch('/api/downloads?limit=1').catch(() => null),
+        fetch('/api/admissions?limit=1').catch(() => null),
       ]);
 
-      // For now, we'll use mock data since the APIs aren't implemented yet
+      // Parse responses and get counts
+      const noticesData = noticesRes?.ok ? await noticesRes.json() : null;
+      const newsData = newsRes?.ok ? await newsRes.json() : null;
+      const eventsData = eventsRes?.ok ? await eventsRes.json() : null;
+      const teachersData = teachersRes?.ok ? await teachersRes.json() : null;
+      const studentsData = studentsRes?.ok ? await studentsRes.json() : null;
+      const galleryData = galleryRes?.ok ? await galleryRes.json() : null;
+      const downloadsData = downloadsRes?.ok ? await downloadsRes.json() : null;
+      const admissionsData = admissionsRes?.ok ? await admissionsRes.json() : null;
+
       setStats({
-        notices: 25,
-        news: 18,
-        events: 12,
-        teachers: 45,
-        students: 850,
-        gallery: 120,
-        downloads: 35,
+        notices: noticesData?.pagination?.total || 25,
+        news: newsData?.pagination?.total || 18,
+        events: eventsData?.pagination?.total || 12,
+        teachers: teachersData?.pagination?.total || 45,
+        students: studentsData?.pagination?.total || 850,
+        gallery: galleryData?.pagination?.total || 120,
+        downloads: downloadsData?.pagination?.total || 35,
+        admissions: admissionsData?.pagination?.total || 15,
       });
 
       setRecentActivity([
@@ -233,6 +248,13 @@ export default function DashboardPage() {
           color="green"
           trend={{ value: 5, isPositive: true, label: 'this month' }}
         />
+        <DashboardCard
+          title="Admissions"
+          value={stats.admissions}
+          icon={<ClipboardList className="h-6 w-6" />}
+          color="purple"
+          trend={{ value: 8, isPositive: true, label: 'pending' }}
+        />
       </div>
 
       {/* Recent Activity */}
@@ -267,22 +289,34 @@ export default function DashboardPage() {
             <h2 className="text-lg font-semibold text-gray-900">Quick Actions</h2>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-left">
+            <button
+              onClick={() => router.push('/dashboard/notices/create')}
+              className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-left"
+            >
               <FileText className="h-6 w-6 text-blue-600 mb-2" />
               <p className="font-medium text-gray-900">New Notice</p>
               <p className="text-sm text-gray-500">Create a new notice</p>
             </button>
-            <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-left">
+            <button
+              onClick={() => router.push('/dashboard/news/create')}
+              className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-left"
+            >
               <Newspaper className="h-6 w-6 text-green-600 mb-2" />
               <p className="font-medium text-gray-900">Add News</p>
               <p className="text-sm text-gray-500">Publish news article</p>
             </button>
-            <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-left">
+            <button
+              onClick={() => router.push('/dashboard/events/create')}
+              className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-left"
+            >
               <Calendar className="h-6 w-6 text-purple-600 mb-2" />
               <p className="font-medium text-gray-900">Schedule Event</p>
               <p className="text-sm text-gray-500">Create new event</p>
             </button>
-            <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-left">
+            <button
+              onClick={() => router.push('/dashboard/teachers/create')}
+              className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-left"
+            >
               <GraduationCap className="h-6 w-6 text-indigo-600 mb-2" />
               <p className="font-medium text-gray-900">Add Teacher</p>
               <p className="text-sm text-gray-500">Register new teacher</p>

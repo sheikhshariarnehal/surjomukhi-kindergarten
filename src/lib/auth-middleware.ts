@@ -87,7 +87,7 @@ export function useAuth() {
   };
 
   const login = async (email: string, password: string) => {
-    const response = await fetch('/api/auth/login', {
+    const response = await fetch('/api/admin/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -98,14 +98,23 @@ export function useAuth() {
     }
 
     const { user, token } = await response.json();
-    
+
     localStorage.setItem('auth-token', token);
     localStorage.setItem('auth-user', JSON.stringify(user));
-    
+
     return user;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await fetch('/api/admin/auth/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (error) {
+      console.error('Logout API error:', error);
+    }
+
     localStorage.removeItem('auth-token');
     localStorage.removeItem('auth-user');
     window.location.href = '/dashboard/login';
