@@ -269,10 +269,10 @@ export default function ProfessionalNavbar() {
                 </div>
                 <div className="ml-3 lg:ml-4 hidden sm:block">
                   <div className="text-lg lg:text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                    {currentLanguage === 'en' ? 'School Name' : 'স্কুলের নাম'}
+                    {currentLanguage === 'en' ? 'Surjomukhi Kindergarten' : 'সূর্যমুখী কিন্ডারগার্টেন'}
                   </div>
                   <div className="text-xs lg:text-sm text-gray-600 font-medium">
-                    {currentLanguage === 'en' ? 'Excellence in Education' : 'শিক্ষায় উৎকর্ষতা'}
+                    {currentLanguage === 'en' ? 'Excellence in Early Education' : 'প্রাথমিক শিক্ষায় উৎকর্ষতা'}
                   </div>
                 </div>
               </Link>

@@ -7,26 +7,26 @@ import NoticeBoard from '@/components/frontend/NoticeBoard';
 import { noticesApi, newsApi, teachersApi, eventsApi, type Notice, type News, type Event, type Teacher } from '@/lib/supabase';
 
 export const metadata: Metadata = {
-  title: 'Home - Excellence in Education',
-  description: 'Welcome to our prestigious educational institution. We provide quality education, nurture young minds, and prepare students for a bright future with our experienced faculty and modern facilities.',
-  keywords: ['school', 'education', 'students', 'teachers', 'learning', 'academic excellence', 'quality education', 'admission'],
+  title: 'Home - Surjomukhi Kindergarten',
+  description: 'Welcome to Surjomukhi Kindergarten. We provide quality early childhood education, nurture young minds, and prepare children for their educational journey with our experienced teachers and safe learning environment.',
+  keywords: ['kindergarten', 'early education', 'children', 'teachers', 'learning', 'preschool', 'quality education', 'admission', 'Surjomukhi'],
   openGraph: {
-    title: 'School Website - Excellence in Education',
-    description: 'Welcome to our prestigious educational institution providing quality education and nurturing young minds.',
+    title: 'Surjomukhi Kindergarten - Excellence in Early Education',
+    description: 'Welcome to Surjomukhi Kindergarten providing quality early childhood education and nurturing young minds.',
     type: 'website',
     images: [
       {
         url: '/og-home.jpg',
         width: 1200,
         height: 630,
-        alt: 'School Campus - Excellence in Education',
+        alt: 'Surjomukhi Kindergarten Campus - Excellence in Early Education',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'School Website - Excellence in Education',
-    description: 'Welcome to our prestigious educational institution providing quality education and nurturing young minds.',
+    title: 'Surjomukhi Kindergarten - Excellence in Early Education',
+    description: 'Welcome to Surjomukhi Kindergarten providing quality early childhood education and nurturing young minds.',
     images: ['/og-home.jpg'],
   },
 };
@@ -68,8 +68,23 @@ export default async function HomePage() {
       {/* Stats Counter */}
       <StatsCounter />
 
-      {/* Notice Board */}
-      <NoticeBoard notices={notices} />
+      {/* Notice Board Section */}
+      <section className="py-16 bg-gradient-to-br from-blue-50 to-green-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Important Notices
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Stay informed with the latest announcements and important updates from Surjomukhi Kindergarten.
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <NoticeBoard notices={notices} />
+          </div>
+        </div>
+      </section>
 
       {/* Latest News & Upcoming Events */}
       <section className="py-16 bg-white">
@@ -79,120 +94,134 @@ export default async function HomePage() {
               Latest News & Upcoming Events
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Stay updated with the latest happenings and upcoming events at our school.
+              Stay updated with the latest happenings and upcoming events at Surjomukhi Kindergarten.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-12">
             {/* News Section */}
-            <div>
+            <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
               <div className="flex items-center justify-between mb-8">
-                <h3 className="text-2xl font-bold text-gray-900 flex items-center">
-                  <svg className="w-6 h-6 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                  </svg>
+                <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 flex items-center">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                    </svg>
+                  </div>
                   Latest News
                 </h3>
-                <Link href="/news" className="text-blue-600 hover:text-blue-700 font-medium flex items-center transition-colors">
+                <Link href="/news" className="text-blue-600 hover:text-blue-700 font-medium flex items-center transition-colors group">
                   View All
-                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </Link>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {news.length > 0 ? (
-                  news.map((article) => (
-                    <article key={article.id} className="flex bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                      <div className="w-24 h-24 bg-gradient-to-r from-blue-400 to-blue-600 flex-shrink-0 flex items-center justify-center">
+                  news.map((article, index) => (
+                    <article key={article.id} className="group flex bg-gray-50 rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 hover:bg-blue-50 border border-transparent hover:border-blue-200">
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-400 to-blue-600 flex-shrink-0 flex items-center justify-center">
                         {article.image_url ? (
                           <img src={article.image_url} alt={article.title} className="w-full h-full object-cover" />
                         ) : (
-                          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                           </svg>
                         )}
                       </div>
-                      <div className="flex-1 p-4">
-                        <div className="flex items-center mb-2">
-                          <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                      <div className="flex-1 p-4 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
+                          <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full w-fit">
                             News
                           </span>
-                          <span className="text-sm text-gray-500 ml-3">
+                          <span className="text-xs sm:text-sm text-gray-500">
                             {article.publish_date ? new Date(article.publish_date).toLocaleDateString() : 'Recent'}
                           </span>
                         </div>
-                        <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2">{article.title}</h4>
-                        <p className="text-gray-600 text-sm line-clamp-2">
-                          {article.excerpt || 'Latest updates from our school community...'}
+                        <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-800 transition-colors text-sm sm:text-base">
+                          {article.title}
+                        </h4>
+                        <p className="text-gray-600 text-xs sm:text-sm line-clamp-2 leading-relaxed">
+                          {article.excerpt || 'Latest updates from our kindergarten community...'}
                         </p>
                       </div>
                     </article>
                   ))
                 ) : (
-                  <div className="text-center py-8">
-                    <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                    </svg>
-                    <p className="text-gray-500">No news available at the moment.</p>
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                      </svg>
+                    </div>
+                    <p className="text-gray-500 font-medium">No news available at the moment.</p>
+                    <p className="text-gray-400 text-sm mt-1">Check back soon for updates!</p>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Events Section */}
-            <div>
+            <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
               <div className="flex items-center justify-between mb-8">
-                <h3 className="text-2xl font-bold text-gray-900 flex items-center">
-                  <svg className="w-6 h-6 mr-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z" />
-                  </svg>
+                <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 flex items-center">
+                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z" />
+                    </svg>
+                  </div>
                   Upcoming Events
                 </h3>
-                <Link href="/events" className="text-green-600 hover:text-green-700 font-medium flex items-center transition-colors">
+                <Link href="/events" className="text-green-600 hover:text-green-700 font-medium flex items-center transition-colors group">
                   View All
-                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </Link>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {events.length > 0 ? (
-                  events.map((event) => (
-                    <article key={event.id} className="flex bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                      <div className="w-24 h-24 bg-gradient-to-r from-green-400 to-green-600 flex-shrink-0 flex items-center justify-center">
+                  events.map((event, index) => (
+                    <article key={event.id} className="group flex bg-gray-50 rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 hover:bg-green-50 border border-transparent hover:border-green-200">
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-400 to-green-600 flex-shrink-0 flex items-center justify-center">
                         {event.image_url ? (
                           <img src={event.image_url} alt={event.title} className="w-full h-full object-cover" />
                         ) : (
-                          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z" />
                           </svg>
                         )}
                       </div>
-                      <div className="flex-1 p-4">
-                        <div className="flex items-center mb-2">
-                          <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                      <div className="flex-1 p-4 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
+                          <span className="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full w-fit">
                             Event
                           </span>
-                          <span className="text-sm text-gray-500 ml-3">
+                          <span className="text-xs sm:text-sm text-gray-500">
                             {new Date(event.start_date).toLocaleDateString()}
                           </span>
                         </div>
-                        <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2">{event.title}</h4>
-                        <p className="text-gray-600 text-sm line-clamp-2">
+                        <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-green-800 transition-colors text-sm sm:text-base">
+                          {event.title}
+                        </h4>
+                        <p className="text-gray-600 text-xs sm:text-sm line-clamp-2 leading-relaxed">
                           {event.description || 'Join us for this exciting upcoming event...'}
                         </p>
                       </div>
                     </article>
                   ))
                 ) : (
-                  <div className="text-center py-8">
-                    <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z" />
-                    </svg>
-                    <p className="text-gray-500">No upcoming events at the moment.</p>
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z" />
+                      </svg>
+                    </div>
+                    <p className="text-gray-500 font-medium">No upcoming events at the moment.</p>
+                    <p className="text-gray-400 text-sm mt-1">Stay tuned for exciting activities!</p>
                   </div>
                 )}
               </div>
@@ -202,18 +231,23 @@ export default async function HomePage() {
       </section>
 
       {/* Meet Our Dedicated Teachers */}
-      <section className="py-16 bg-gradient-to-br from-gray-50 to-white">
+      <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Meet Our Dedicated Teachers
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our experienced and qualified faculty members are committed to providing excellent education and nurturing young minds.
+              Our experienced and qualified faculty members are committed to providing excellent early childhood education and nurturing young minds.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 mb-12">
             {teachers.length > 0 ? (
               teachers.map((teacher) => {
                 // Calculate experience years from join_date
@@ -222,9 +256,9 @@ export default async function HomePage() {
                 const subjects = teacher.subjects || [];
 
                 return (
-                  <div key={teacher.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                  <div key={teacher.id} className="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100">
                     <div className="relative">
-                      <div className="h-64 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                      <div className="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
                         {teacher.photo_url ? (
                           <img
                             src={teacher.photo_url}
@@ -232,42 +266,49 @@ export default async function HomePage() {
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <svg className="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                          </svg>
+                          <div className="w-16 h-16 bg-blue-200 rounded-full flex items-center justify-center">
+                            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                          </div>
                         )}
                       </div>
                       {experienceYears > 0 && (
-                        <div className="absolute top-4 right-4">
-                          <span className="bg-white/90 backdrop-blur-sm text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                            {experienceYears} Years
+                        <div className="absolute top-3 right-3">
+                          <span className="bg-white/95 backdrop-blur-sm text-blue-700 px-2 py-1 rounded-full text-xs font-medium shadow-sm">
+                            {experienceYears}+ Years
                           </span>
                         </div>
                       )}
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{teacher.name}</h3>
-                      <p className="text-blue-600 font-medium mb-3">{teacher.designation}</p>
+                    <div className="p-4">
+                      <div className="text-center mb-4">
+                        <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-blue-700 transition-colors">
+                          {teacher.name}
+                        </h3>
+                        <p className="text-blue-600 font-medium text-sm">{teacher.designation}</p>
+                      </div>
+
                       {subjects.length > 0 && (
-                        <div className="mb-6">
-                          <p className="text-sm text-gray-600 mb-2">Subjects:</p>
-                          <div className="flex flex-wrap gap-2">
-                            {subjects.slice(0, 3).map((subject, idx) => (
-                              <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                        <div className="mb-4">
+                          <div className="flex flex-wrap gap-1 justify-center">
+                            {subjects.slice(0, 2).map((subject, idx) => (
+                              <span key={idx} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-md">
                                 {subject}
                               </span>
                             ))}
-                            {subjects.length > 3 && (
-                              <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
-                                +{subjects.length - 3} more
+                            {subjects.length > 2 && (
+                              <span className="px-2 py-1 bg-gray-50 text-gray-600 text-xs font-medium rounded-md">
+                                +{subjects.length - 2}
                               </span>
                             )}
                           </div>
                         </div>
                       )}
+
                       <Link
                         href="/teachers"
-                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors text-center block"
+                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors text-center block text-sm group-hover:bg-blue-700"
                       >
                         View Profile
                       </Link>
@@ -276,11 +317,14 @@ export default async function HomePage() {
                 );
               })
             ) : (
-              <div className="col-span-full text-center py-12">
-                <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                <p className="text-gray-500 text-lg">No teacher profiles available at the moment.</p>
+              <div className="col-span-full text-center py-16">
+                <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <p className="text-gray-500 text-lg font-medium">No teacher profiles available</p>
+                <p className="text-gray-400 text-sm mt-1">Check back soon to meet our amazing faculty!</p>
               </div>
             )}
           </div>
@@ -290,10 +334,10 @@ export default async function HomePage() {
             <div className="text-center">
               <Link
                 href="/teachers"
-                className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl"
+                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 group"
               >
                 View All Teachers
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </Link>
@@ -303,14 +347,19 @@ export default async function HomePage() {
       </section>
 
       {/* Quick Links */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-gradient-to-br from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
+            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+            </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Quick Links & Resources
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Access important government portals, educational resources, and school services.
+              Access important government portals, educational resources, and kindergarten services.
             </p>
           </div>
 
@@ -328,20 +377,20 @@ export default async function HomePage() {
                   { title: 'Ministry of Education', desc: 'Official website of the Ministry of Education, Bangladesh', url: 'https://moedu.gov.bd' },
                   { title: 'Education Board', desc: 'Secondary and Higher Secondary Education Board', url: 'https://dshe.gov.bd' }
                 ].map((link, index) => (
-                  <a key={index} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-start p-4 bg-gray-50 rounded-xl hover:bg-blue-50 hover:border-blue-200 border border-transparent transition-all duration-300 group hover:shadow-md">
-                    <div className="text-blue-600 group-hover:text-blue-700 mr-4 mt-1">
-                      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <a key={index} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-start p-6 bg-white rounded-xl hover:bg-blue-50 hover:border-blue-200 border border-gray-200 transition-all duration-300 group hover:shadow-lg">
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-blue-200 transition-colors">
+                      <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                       </svg>
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900 group-hover:text-blue-800 mb-1">
+                      <h4 className="font-semibold text-gray-900 group-hover:text-blue-800 mb-2 flex items-center">
                         {link.title}
-                        <svg className="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                       </h4>
-                      <p className="text-sm text-gray-600">{link.desc}</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">{link.desc}</p>
                     </div>
                   </a>
                 ))}
@@ -362,20 +411,20 @@ export default async function HomePage() {
                   { title: 'National Curriculum Board', desc: 'National Curriculum and Textbook Board (NCTB)', url: 'https://nctb.gov.bd' },
                   { title: 'Education Board Results', desc: 'Check SSC, HSC and other board examination results', url: 'https://eboardresults.com' }
                 ].map((link, index) => (
-                  <a key={index} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-start p-4 bg-gray-50 rounded-xl hover:bg-green-50 hover:border-green-200 border border-transparent transition-all duration-300 group hover:shadow-md">
-                    <div className="text-green-600 group-hover:text-green-700 mr-4 mt-1">
-                      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <a key={index} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-start p-6 bg-white rounded-xl hover:bg-green-50 hover:border-green-200 border border-gray-200 transition-all duration-300 group hover:shadow-lg">
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-green-200 transition-colors">
+                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
                       </svg>
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900 group-hover:text-green-800 mb-1">
+                      <h4 className="font-semibold text-gray-900 group-hover:text-green-800 mb-2 flex items-center">
                         {link.title}
-                        <svg className="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                       </h4>
-                      <p className="text-sm text-gray-600">{link.desc}</p>
+                      <p className="text-sm text-gray-600 leading-relaxed">{link.desc}</p>
                     </div>
                   </a>
                 ))}
@@ -396,34 +445,34 @@ export default async function HomePage() {
                   { title: 'Contact Us', desc: 'Get in touch with our school administration', url: '/contact', internal: true }
                 ].map((link, index) => (
                   link.internal ? (
-                    <Link key={index} href={link.url} className="flex items-start p-4 bg-gray-50 rounded-xl hover:bg-purple-50 hover:border-purple-200 border border-transparent transition-all duration-300 group hover:shadow-md">
-                      <div className="text-purple-600 group-hover:text-purple-700 mr-4 mt-1">
-                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <Link key={index} href={link.url} className="flex items-start p-6 bg-white rounded-xl hover:bg-purple-50 hover:border-purple-200 border border-gray-200 transition-all duration-300 group hover:shadow-lg">
+                      <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-purple-200 transition-colors">
+                        <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
                         </svg>
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 group-hover:text-purple-800 mb-1">
+                        <h4 className="font-semibold text-gray-900 group-hover:text-purple-800 mb-2">
                           {link.title}
                         </h4>
-                        <p className="text-sm text-gray-600">{link.desc}</p>
+                        <p className="text-sm text-gray-600 leading-relaxed">{link.desc}</p>
                       </div>
                     </Link>
                   ) : (
-                    <a key={index} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-start p-4 bg-gray-50 rounded-xl hover:bg-purple-50 hover:border-purple-200 border border-transparent transition-all duration-300 group hover:shadow-md">
-                      <div className="text-purple-600 group-hover:text-purple-700 mr-4 mt-1">
-                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a key={index} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-start p-6 bg-white rounded-xl hover:bg-purple-50 hover:border-purple-200 border border-gray-200 transition-all duration-300 group hover:shadow-lg">
+                      <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4 group-hover:bg-purple-200 transition-colors">
+                        <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
                         </svg>
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 group-hover:text-purple-800 mb-1">
+                        <h4 className="font-semibold text-gray-900 group-hover:text-purple-800 mb-2 flex items-center">
                           {link.title}
-                          <svg className="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
                         </h4>
-                        <p className="text-sm text-gray-600">{link.desc}</p>
+                        <p className="text-sm text-gray-600 leading-relaxed">{link.desc}</p>
                       </div>
                     </a>
                   )

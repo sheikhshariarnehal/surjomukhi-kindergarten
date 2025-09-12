@@ -19,10 +19,10 @@ interface HeroSlide {
 const heroSlides: HeroSlide[] = [
   {
     id: 1,
-    title: "Welcome to Our School",
-    subtitle: "Excellence in Education",
-    description: "Nurturing young minds for a brighter future through quality education and holistic development.",
-    image: "/hero/campus.jpg",
+    title: "Welcome to Surjomukhi Kindergarten",
+    subtitle: "Excellence in Early Education",
+    description: "Nurturing young minds for a brighter future through quality education and holistic development in a caring environment.",
+    image: "/hero/kindergarten-classroom.jpg",
     cta: {
       primary: { text: "Apply for Admission", href: "/admission" },
       secondary: { text: "Learn More", href: "/about" }
@@ -30,12 +30,12 @@ const heroSlides: HeroSlide[] = [
   },
   {
     id: 2,
-    title: "State-of-the-Art Facilities",
-    subtitle: "Modern Learning Environment",
-    description: "Equipped with the latest technology and resources to provide the best learning experience for our students.",
-    image: "/hero/lab.jpg",
+    title: "Safe Learning Environment",
+    subtitle: "Modern Kindergarten Facilities",
+    description: "Our campus provides a safe, nurturing environment with age-appropriate facilities designed for early childhood development.",
+    image: "/hero/school-playground.jpg",
     cta: {
-      primary: { text: "Explore Facilities", href: "/facilities" },
+      primary: { text: "Explore Facilities", href: "/about/campus-tour" },
       secondary: { text: "Virtual Tour", href: "/gallery" }
     }
   },
@@ -43,11 +43,11 @@ const heroSlides: HeroSlide[] = [
     id: 3,
     title: "Holistic Development",
     subtitle: "Beyond Academics",
-    description: "We focus on the overall development of students through sports, arts, and extracurricular activities.",
-    image: "/hero/playground.jpg",
+    description: "We focus on the overall development of children through play-based learning, arts, and creative activities.",
+    image: "/hero/children-learning.jpg",
     cta: {
-      primary: { text: "View Activities", href: "/events" },
-      secondary: { text: "Join Us", href: "/contact" }
+      primary: { text: "View Activities", href: "/academic/classes" },
+      secondary: { text: "Contact Us", href: "/contact" }
     }
   }
 ];
@@ -55,6 +55,10 @@ const heroSlides: HeroSlide[] = [
 const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+
+
+
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -85,7 +89,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative h-screen min-h-[600px] overflow-hidden" role="banner">
+    <section className="relative h-screen min-h-[600px] max-h-[900px] overflow-hidden" role="banner">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
@@ -95,46 +99,52 @@ const Hero: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="absolute inset-0"
         >
-          {/* Background Image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{
-              backgroundImage: `url(${heroSlides[currentSlide].image})`,
-            }}
-          >
-            {/* Fallback for missing images */}
-            <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-800" />
+          {/* Background Image - Professional Implementation */}
+          <div className="absolute inset-0">
+            {/* Gradient fallback */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-green-600 z-0" />
+
+            {/* Background image using CSS background-image */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 ease-in-out z-10"
+              style={{
+                backgroundImage: `url(${heroSlides[currentSlide].image})`,
+              }}
+            />
+
+            {/* Professional overlay for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/40 z-20" />
           </div>
-          
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-black bg-opacity-50" />
-          
+
           {/* Content */}
-          <div className="relative z-10 flex items-center justify-center h-full">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+          <div className="relative z-30 flex items-center justify-center h-full px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto text-center text-white">
               <motion.div
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
+                className="space-y-6 sm:space-y-8"
               >
-                <h2 className="text-base sm:text-lg md:text-xl font-medium mb-3 sm:mb-4 text-primary-200">
-                  {heroSlides[currentSlide].subtitle}
-                </h2>
-                <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 leading-tight px-4 sm:px-0">
-                  {heroSlides[currentSlide].title}
-                </h1>
-                <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
-                  {heroSlides[currentSlide].description}
-                </p>
-                
+                <div className="space-y-4">
+                  <h2 className="text-sm sm:text-base md:text-lg font-medium text-blue-200 uppercase tracking-wider">
+                    {heroSlides[currentSlide].subtitle}
+                  </h2>
+                  <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                    {heroSlides[currentSlide].title}
+                  </h1>
+                  <p className="text-base sm:text-lg md:text-xl max-w-4xl mx-auto leading-relaxed text-gray-100">
+                    {heroSlides[currentSlide].description}
+                  </p>
+                </div>
+
                 <motion.div
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
-                  className="flex flex-col sm:flex-row gap-4 justify-center"
+                  className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4"
                 >
                   <a href={heroSlides[currentSlide].cta.primary.href} className="w-full sm:w-auto">
-                    <Button size="lg" className="w-full sm:w-auto bg-white text-primary-600 hover:bg-gray-100 px-6 sm:px-8 py-4 text-base sm:text-lg font-semibold min-h-[48px]">
+                    <Button size="lg" className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700 px-8 py-4 text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 min-h-[48px]">
                       {heroSlides[currentSlide].cta.primary.text}
                     </Button>
                   </a>
@@ -142,7 +152,7 @@ const Hero: React.FC = () => {
                     <Button
                       variant="outline"
                       size="lg"
-                      className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-primary-600 px-6 sm:px-8 py-4 text-base sm:text-lg font-semibold min-h-[48px]"
+                      className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-base font-semibold rounded-lg backdrop-blur-sm bg-white/10 hover:bg-white transition-all duration-300 min-h-[48px]"
                     >
                       {heroSlides[currentSlide].cta.secondary.text}
                     </Button>
@@ -157,7 +167,7 @@ const Hero: React.FC = () => {
       {/* Navigation Arrows */}
       <button
         onClick={goToPrevious}
-        className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-3 sm:p-4 rounded-full transition-all duration-200 min-h-[48px] min-w-[48px]"
+        className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-3 sm:p-4 rounded-full transition-all duration-300 hover:scale-110 min-h-[48px] min-w-[48px] focus:outline-none focus:ring-2 focus:ring-white/50"
         aria-label="Previous slide"
       >
         <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -167,7 +177,7 @@ const Hero: React.FC = () => {
 
       <button
         onClick={goToNext}
-        className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-3 sm:p-4 rounded-full transition-all duration-200 min-h-[48px] min-w-[48px]"
+        className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-3 sm:p-4 rounded-full transition-all duration-300 hover:scale-110 min-h-[48px] min-w-[48px] focus:outline-none focus:ring-2 focus:ring-white/50"
         aria-label="Next slide"
       >
         <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -176,19 +186,21 @@ const Hero: React.FC = () => {
       </button>
 
       {/* Slide Indicators */}
-      <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-3 sm:space-x-4">
-        {heroSlides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-4 h-4 sm:w-3 sm:h-3 rounded-full transition-all duration-200 min-h-[16px] min-w-[16px] ${
-              index === currentSlide
-                ? 'bg-white scale-125'
-                : 'bg-white bg-opacity-50 hover:bg-opacity-75'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
+      <div className="absolute bottom-8 sm:bottom-12 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="flex space-x-3 bg-black/20 backdrop-blur-sm rounded-full px-4 py-2">
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 ${
+                index === currentSlide
+                  ? 'bg-white scale-125 shadow-lg'
+                  : 'bg-white/50 hover:bg-white/75 hover:scale-110'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Scroll Down Indicator */}
@@ -196,15 +208,16 @@ const Hero: React.FC = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 1 }}
-        className="absolute bottom-8 right-8 z-20"
+        className="absolute bottom-8 sm:bottom-12 right-6 sm:right-8 z-20 hidden lg:block"
       >
-        <div className="flex flex-col items-center text-white">
-          <span className="text-sm mb-2 hidden md:block">Scroll Down</span>
+        <div className="flex flex-col items-center text-white/80 hover:text-white transition-colors cursor-pointer">
+          <span className="text-xs font-medium mb-2 uppercase tracking-wider">Scroll</span>
           <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="bg-white/20 backdrop-blur-sm rounded-full p-2"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </motion.div>
