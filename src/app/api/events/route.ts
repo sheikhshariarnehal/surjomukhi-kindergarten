@@ -11,19 +11,30 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
     const search = searchParams.get('search') || '';
-    
+    const upcoming = searchParams.get('upcoming') === 'true';
+
     const offset = (page - 1) * limit;
 
     // Build query
     let query = supabaseAdmin
       .from('events')
-      .select('*', { count: 'exact' })
-      .order('start_date', { ascending: false })
-      .range(offset, offset + limit - 1);
+      .select('*', { count: 'exact' });
+
+    // Filter for upcoming events if requested
+    if (upcoming) {
+      const now = new Date().toISOString();
+      query = query
+        .gte('start_date', now)
+        .order('start_date', { ascending: true });
+    } else {
+      query = query.order('start_date', { ascending: false });
+    }
+
+    query = query.range(offset, offset + limit - 1);
 
     // Add search filter if provided
     if (search) {
-      query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%,location.ilike.%${search}%`);
+      query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
     }
 
     const { data: events, error, count } = await query;

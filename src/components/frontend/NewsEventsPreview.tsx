@@ -1,237 +1,302 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
+import { News, Event } from '@/types';
 
-interface NewsItem {
-  id: string;
-  title: string;
-  excerpt: string;
-  date: string;
-  thumbnail: string;
-  category: 'news' | 'event';
-  type?: string;
+interface NewsEventsPreviewProps {
+  initialNews?: News[];
+  initialEvents?: Event[];
 }
 
-const newsEventsData: NewsItem[] = [
-  {
-    id: '1',
-    title: 'Annual Science Fair 2024',
-    excerpt: 'Students showcase innovative projects and scientific discoveries in our biggest science fair yet.',
-    date: '2024-02-15',
-    thumbnail: '/news/science-fair.jpg',
-    category: 'event',
-    type: 'Academic Event'
-  },
-  {
-    id: '2',
-    title: 'Students Excel in National Mathematics Olympiad',
-    excerpt: 'Our students secured top positions in the National Mathematics Olympiad, bringing pride to our institution.',
-    date: '2024-01-20',
-    thumbnail: '/news/math-olympiad.jpg',
-    category: 'news',
-    type: 'Achievement'
-  },
-  {
-    id: '3',
-    title: 'Cultural Week Celebration',
-    excerpt: 'A week-long celebration of arts, culture, and traditions featuring performances by our talented students.',
-    date: '2024-02-28',
-    thumbnail: '/news/cultural-week.jpg',
-    category: 'event',
-    type: 'Cultural Event'
-  },
-  {
-    id: '4',
-    title: 'New Computer Lab Inauguration',
-    excerpt: 'State-of-the-art computer laboratory equipped with latest technology to enhance digital learning.',
-    date: '2024-01-15',
-    thumbnail: '/news/computer-lab.jpg',
-    category: 'news',
-    type: 'Infrastructure'
-  },
-  {
-    id: '5',
-    title: 'Inter-School Sports Championship',
-    excerpt: 'Annual sports championship bringing together schools from across the region for friendly competition.',
-    date: '2024-03-10',
-    thumbnail: '/news/sports-championship.jpg',
-    category: 'event',
-    type: 'Sports Event'
-  },
-  {
-    id: '6',
-    title: 'Teacher Training Workshop Success',
-    excerpt: 'Professional development workshop enhances teaching methodologies and educational practices.',
-    date: '2024-01-25',
-    thumbnail: '/news/teacher-training.jpg',
-    category: 'news',
-    type: 'Professional Development'
-  }
-];
+export default function NewsEventsPreview({ initialNews = [], initialEvents = [] }: NewsEventsPreviewProps) {
+  const [news, setNews] = useState<News[]>(initialNews);
+  const [events, setEvents] = useState<Event[]>(initialEvents);
+  const [loading, setLoading] = useState(!initialNews.length && !initialEvents.length);
+  const [error, setError] = useState<string | null>(null);
 
-export default function NewsEventsPreview() {
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+
+
+  const formatEventDate = (startDate: string, endDate?: string) => {
+    if (!startDate) return 'Date not available';
+
+    try {
+      const start = new Date(startDate);
+      const end = endDate ? new Date(endDate) : null;
+
+      if (end && start.toDateString() !== end.toDateString()) {
+        return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+      }
+
+      return start.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch {
+      return 'Invalid date';
+    }
   };
 
-  const newsItems = newsEventsData.filter(item => item.category === 'news').slice(0, 3);
-  const eventItems = newsEventsData.filter(item => item.category === 'event').slice(0, 3);
+  const getRelativeTime = (dateString: string) => {
+    if (!dateString) return '';
+
+    try {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+
+      if (diffInHours < 24) {
+        return diffInHours < 1 ? 'Just now' : `${diffInHours}h ago`;
+      } else {
+        const diffInDays = Math.floor(diffInHours / 24);
+        return diffInDays === 1 ? '1 day ago' : `${diffInDays} days ago`;
+      }
+    } catch {
+      return '';
+    }
+  };
+
+  useEffect(() => {
+    if (initialNews.length || initialEvents.length) return;
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const [newsResponse, eventsResponse] = await Promise.all([
+          fetch('/api/news?limit=3'),
+          fetch('/api/events?limit=4&upcoming=true')
+        ]);
+
+        if (!newsResponse.ok || !eventsResponse.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
+        const newsData = await newsResponse.json();
+        const eventsData = await eventsResponse.json();
+
+        setNews(newsData.news || []);
+        setEvents(eventsData.events || []);
+      } catch (err) {
+        console.error('Error fetching news and events:', err);
+        setError('Failed to load latest news and upcoming events');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [initialNews.length, initialEvents.length]);
+
+  const newsItems = news.slice(0, 3);
+  const eventItems = events.slice(0, 4);
+
+  if (error) {
+    return (
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-6">
+              <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">Unable to Load Content</h3>
+            <p className="text-gray-600 mb-6">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Try Again
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Latest News & Upcoming Events
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">
+            News & Events
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Stay updated with the latest happenings and upcoming events at our school.
+          <p className="text-gray-600 max-w-xl mx-auto">
+            Stay informed about our latest updates and upcoming activities.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* News Section */}
-          <div>
-            <div className="flex items-center justify-between mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 flex items-center">
-                <svg className="w-6 h-6 mr-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                </svg>
-                Latest News
-              </h3>
-              <Link
-                href="/news"
-                className="text-primary-600 hover:text-primary-700 font-medium flex items-center"
-              >
-                View All
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
-
-            <div className="space-y-6">
-              {newsItems.map((item, index) => (
-                <motion.article
-                  key={item.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex bg-gray-50 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300"
-                >
-                  <div className="w-24 h-24 bg-gradient-to-r from-primary-400 to-primary-600 flex-shrink-0"></div>
-                  <div className="flex-1 p-4">
-                    <div className="flex items-center mb-2">
-                      <span className="px-2 py-1 bg-primary-100 text-primary-800 text-xs font-medium rounded">
-                        {item.type}
-                      </span>
-                      <span className="text-sm text-gray-500 ml-3">{formatDate(item.date)}</span>
-                    </div>
-                    <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2">{item.title}</h4>
-                    <p className="text-gray-600 text-sm line-clamp-2">{item.excerpt}</p>
+        {loading ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Loading skeleton */}
+            {[1, 2].map((section) => (
+              <div key={section} className="space-y-4">
+                <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mb-6"></div>
+                {[1, 2, 3].map((item) => (
+                  <div key={item} className="bg-white rounded-lg p-6 space-y-3">
+                    <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/4 animate-pulse"></div>
                   </div>
-                </motion.article>
-              ))}
-            </div>
-          </div>
-
-          {/* Events Section */}
-          <div>
-            <div className="flex items-center justify-between mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 flex items-center">
-                <svg className="w-6 h-6 mr-3 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z" />
-                </svg>
-                Upcoming Events
-              </h3>
-              <Link
-                href="/events"
-                className="text-secondary-600 hover:text-secondary-700 font-medium flex items-center"
-              >
-                View All
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
-
-            <div className="space-y-6">
-              {eventItems.map((item, index) => (
-                <motion.article
-                  key={item.id}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex bg-gray-50 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300"
-                >
-                  <div className="w-24 h-24 bg-gradient-to-r from-secondary-400 to-secondary-600 flex-shrink-0"></div>
-                  <div className="flex-1 p-4">
-                    <div className="flex items-center mb-2">
-                      <span className="px-2 py-1 bg-secondary-100 text-secondary-800 text-xs font-medium rounded">
-                        {item.type}
-                      </span>
-                      <span className="text-sm text-gray-500 ml-3">{formatDate(item.date)}</span>
-                    </div>
-                    <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2">{item.title}</h4>
-                    <p className="text-gray-600 text-sm line-clamp-2">{item.excerpt}</p>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Featured Event Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-16"
-        >
-          <div className="bg-gradient-to-r from-primary-600 to-primary-800 rounded-2xl p-8 text-white">
-            <div className="flex flex-col md:flex-row items-center justify-between">
-              <div className="mb-6 md:mb-0">
-                <h3 className="text-2xl font-bold mb-2">Don&apos;t Miss Our Next Big Event!</h3>
-                <p className="text-primary-100 text-lg">
-                  Annual Science Fair 2024 - February 15th, 2024
-                </p>
-                <p className="text-primary-200 mt-2">
-                  Join us for an exciting showcase of student innovation and scientific discovery.
-                </p>
+                ))}
               </div>
-              <div className="flex flex-col sm:flex-row gap-4">
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Latest News Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-gray-900">Latest News</h3>
                 <Link
-                  href="/events/science-fair-2024"
-                  className="bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-center"
+                  href="/news"
+                  className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
                 >
-                  Learn More
+                  View All →
                 </Link>
+              </div>
+
+              {/* News Items */}
+              <div className="space-y-4">
+                {newsItems.length > 0 ? (
+                  newsItems.map((item, index) => (
+                    <motion.article
+                      key={item.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="bg-white rounded-lg p-6 hover:shadow-md transition-shadow duration-200"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded">
+                          News
+                        </span>
+                        <time className="text-xs text-gray-500">
+                          {getRelativeTime(item.publish_date || item.created_at || '')}
+                        </time>
+                      </div>
+
+                      <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-blue-600 transition-colors">
+                        {item.title}
+                      </h4>
+
+                      <p className="text-gray-600 text-sm line-clamp-2 mb-4">
+                        {item.excerpt || item.content?.substring(0, 120) + '...'}
+                      </p>
+
+                      <Link
+                        href={`/news/${item.id}`}
+                        className="text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors"
+                      >
+                        Read More →
+                      </Link>
+                    </motion.article>
+                  ))
+                ) : (
+                  <div className="bg-white rounded-lg p-8 text-center">
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                      </svg>
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">No News Available</h3>
+                    <p className="text-gray-600 text-sm">Check back later for updates.</p>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Upcoming Events Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-gray-900">Upcoming Events</h3>
                 <Link
                   href="/events"
-                  className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-600 transition-colors text-center"
+                  className="text-green-600 hover:text-green-700 text-sm font-medium transition-colors"
                 >
-                  All Events
+                  View All →
                 </Link>
               </div>
-            </div>
+
+              {/* Events List */}
+              <div className="space-y-4">
+                {eventItems.length > 0 ? (
+                  eventItems.map((item, index) => (
+                    <motion.article
+                      key={item.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="bg-white rounded-lg p-6 hover:shadow-md transition-shadow duration-200"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded">
+                          Event
+                        </span>
+                        <time className="text-xs text-gray-500">
+                          {formatEventDate(item.start_date, item.end_date)}
+                        </time>
+                      </div>
+
+                      <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-green-600 transition-colors">
+                        {item.title}
+                      </h4>
+
+                      <p className="text-gray-600 text-sm line-clamp-2 mb-4">
+                        {item.description?.substring(0, 120) + '...'}
+                      </p>
+
+                      <Link
+                        href={`/events/${item.id}`}
+                        className="text-green-600 hover:text-green-700 font-medium text-sm transition-colors"
+                      >
+                        Learn More →
+                      </Link>
+                    </motion.article>
+                  ))
+                ) : (
+                  <div className="bg-white rounded-lg p-8 text-center">
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">No Events Scheduled</h3>
+                    <p className="text-gray-600 text-sm">Stay tuned for upcoming events.</p>
+                  </div>
+                )}
+              </div>
+            </motion.div>
           </div>
-        </motion.div>
+        )}
+
+
       </div>
     </section>
   );

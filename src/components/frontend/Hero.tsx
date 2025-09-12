@@ -22,7 +22,7 @@ const heroSlides: HeroSlide[] = [
     title: "Welcome to Surjomukhi Kindergarten",
     subtitle: "Excellence in Early Education",
     description: "Nurturing young minds for a brighter future through quality education and holistic development in a caring environment.",
-    image: "/hero/kindergarten-classroom.jpg",
+    image: "/hero/campus.jpg",
     cta: {
       primary: { text: "Apply for Admission", href: "/admission" },
       secondary: { text: "Learn More", href: "/about" }
@@ -33,7 +33,7 @@ const heroSlides: HeroSlide[] = [
     title: "Safe Learning Environment",
     subtitle: "Modern Kindergarten Facilities",
     description: "Our campus provides a safe, nurturing environment with age-appropriate facilities designed for early childhood development.",
-    image: "/hero/school-playground.jpg",
+    image: "/hero/campus2.jpg",
     cta: {
       primary: { text: "Explore Facilities", href: "/about/campus-tour" },
       secondary: { text: "Virtual Tour", href: "/gallery" }
@@ -74,18 +74,6 @@ const Hero: React.FC = () => {
     setCurrentSlide(index);
     setIsAutoPlaying(false);
     setTimeout(() => setIsAutoPlaying(true), 10000); // Resume auto-play after 10 seconds
-  };
-
-  const goToPrevious = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000);
-  };
-
-  const goToNext = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
   return (
@@ -164,26 +152,7 @@ const Hero: React.FC = () => {
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Arrows */}
-      <button
-        onClick={goToPrevious}
-        className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-3 sm:p-4 rounded-full transition-all duration-300 hover:scale-110 min-h-[48px] min-w-[48px] focus:outline-none focus:ring-2 focus:ring-white/50"
-        aria-label="Previous slide"
-      >
-        <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
 
-      <button
-        onClick={goToNext}
-        className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-3 sm:p-4 rounded-full transition-all duration-300 hover:scale-110 min-h-[48px] min-w-[48px] focus:outline-none focus:ring-2 focus:ring-white/50"
-        aria-label="Next slide"
-      >
-        <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
 
       {/* Slide Indicators */}
       <div className="absolute bottom-8 sm:bottom-12 left-1/2 transform -translate-x-1/2 z-20">

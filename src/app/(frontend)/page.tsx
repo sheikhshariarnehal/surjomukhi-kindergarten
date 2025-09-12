@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Hero from '@/components/frontend/Hero';
 import StatsCounter from '@/components/frontend/StatsCounter';
 import NoticeBoard from '@/components/frontend/NoticeBoard';
+import NewsEventsPreview from '@/components/frontend/NewsEventsPreview';
 import { noticesApi, newsApi, teachersApi, eventsApi, type Notice, type News, type Event, type Teacher } from '@/lib/supabase';
 
 export const metadata: Metadata = {
@@ -87,148 +88,7 @@ export default async function HomePage() {
       </section>
 
       {/* Latest News & Upcoming Events */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Latest News & Upcoming Events
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Stay updated with the latest happenings and upcoming events at Surjomukhi Kindergarten.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-12">
-            {/* News Section */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
-              <div className="flex items-center justify-between mb-8">
-                <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 flex items-center">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                    </svg>
-                  </div>
-                  Latest News
-                </h3>
-                <Link href="/news" className="text-blue-600 hover:text-blue-700 font-medium flex items-center transition-colors group">
-                  View All
-                  <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
-
-              <div className="space-y-4">
-                {news.length > 0 ? (
-                  news.map((article, index) => (
-                    <article key={article.id} className="group flex bg-gray-50 rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 hover:bg-blue-50 border border-transparent hover:border-blue-200">
-                      <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-400 to-blue-600 flex-shrink-0 flex items-center justify-center">
-                        {article.image_url ? (
-                          <img src={article.image_url} alt={article.title} className="w-full h-full object-cover" />
-                        ) : (
-                          <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                          </svg>
-                        )}
-                      </div>
-                      <div className="flex-1 p-4 min-w-0">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
-                          <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full w-fit">
-                            News
-                          </span>
-                          <span className="text-xs sm:text-sm text-gray-500">
-                            {article.publish_date ? new Date(article.publish_date).toLocaleDateString() : 'Recent'}
-                          </span>
-                        </div>
-                        <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-800 transition-colors text-sm sm:text-base">
-                          {article.title}
-                        </h4>
-                        <p className="text-gray-600 text-xs sm:text-sm line-clamp-2 leading-relaxed">
-                          {article.excerpt || 'Latest updates from our kindergarten community...'}
-                        </p>
-                      </div>
-                    </article>
-                  ))
-                ) : (
-                  <div className="text-center py-12">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                      </svg>
-                    </div>
-                    <p className="text-gray-500 font-medium">No news available at the moment.</p>
-                    <p className="text-gray-400 text-sm mt-1">Check back soon for updates!</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Events Section */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
-              <div className="flex items-center justify-between mb-8">
-                <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 flex items-center">
-                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z" />
-                    </svg>
-                  </div>
-                  Upcoming Events
-                </h3>
-                <Link href="/events" className="text-green-600 hover:text-green-700 font-medium flex items-center transition-colors group">
-                  View All
-                  <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
-
-              <div className="space-y-4">
-                {events.length > 0 ? (
-                  events.map((event, index) => (
-                    <article key={event.id} className="group flex bg-gray-50 rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 hover:bg-green-50 border border-transparent hover:border-green-200">
-                      <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-400 to-green-600 flex-shrink-0 flex items-center justify-center">
-                        {event.image_url ? (
-                          <img src={event.image_url} alt={event.title} className="w-full h-full object-cover" />
-                        ) : (
-                          <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z" />
-                          </svg>
-                        )}
-                      </div>
-                      <div className="flex-1 p-4 min-w-0">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
-                          <span className="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full w-fit">
-                            Event
-                          </span>
-                          <span className="text-xs sm:text-sm text-gray-500">
-                            {new Date(event.start_date).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-green-800 transition-colors text-sm sm:text-base">
-                          {event.title}
-                        </h4>
-                        <p className="text-gray-600 text-xs sm:text-sm line-clamp-2 leading-relaxed">
-                          {event.description || 'Join us for this exciting upcoming event...'}
-                        </p>
-                      </div>
-                    </article>
-                  ))
-                ) : (
-                  <div className="text-center py-12">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z" />
-                      </svg>
-                    </div>
-                    <p className="text-gray-500 font-medium">No upcoming events at the moment.</p>
-                    <p className="text-gray-400 text-sm mt-1">Stay tuned for exciting activities!</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <NewsEventsPreview initialNews={news} initialEvents={events} />
 
       {/* Meet Our Dedicated Teachers */}
       <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
