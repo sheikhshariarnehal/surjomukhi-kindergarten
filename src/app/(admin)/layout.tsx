@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import Sidebar from '@/components/admin/Sidebar';
 import Topbar from '@/components/admin/Topbar';
 import { useAuth } from '@/lib/auth-middleware';
+import { cn } from '@/lib/utils';
 
 export default function AdminLayout({
   children,
@@ -54,9 +55,12 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
-      <div className="fixed inset-y-0 left-0 z-50 lg:relative lg:z-auto">
+    <div className="min-h-screen bg-slate-50 flex">
+      {/* Sidebar - Desktop */}
+      <div className={cn(
+        "hidden lg:flex lg:flex-shrink-0 transition-all duration-300",
+        sidebarCollapsed ? "lg:w-16" : "lg:w-64"
+      )}>
         <Sidebar
           collapsed={sidebarCollapsed}
           onToggle={handleSidebarToggle}
@@ -64,8 +68,22 @@ export default function AdminLayout({
         />
       </div>
 
+      {/* Sidebar - Mobile */}
+      <div className={cn(
+        "fixed inset-y-0 left-0 z-50 lg:hidden transition-transform duration-300 ease-in-out",
+        sidebarCollapsed ? "-translate-x-full" : "translate-x-0"
+      )}>
+        <div className="w-64">
+          <Sidebar
+            collapsed={false}
+            onToggle={handleSidebarToggle}
+            userRole={user?.role}
+          />
+        </div>
+      </div>
+
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 lg:ml-0">
         {/* Topbar */}
         <Topbar
           user={user}
@@ -74,7 +92,7 @@ export default function AdminLayout({
         />
 
         {/* Page content */}
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-4 lg:p-6 overflow-auto bg-slate-50">
           <div className="max-w-7xl mx-auto">
             {children}
           </div>

@@ -173,8 +173,8 @@ export default function NoticesPage() {
 
       {/* Search and Filters */}
       <Card className="p-6">
-        <div className="flex items-center space-x-4">
-          <div className="flex-1">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <div className="flex-1 w-full">
             <Input
               placeholder="Search notices..."
               value={searchTerm}
@@ -182,9 +182,17 @@ export default function NoticesPage() {
               leftIcon={<Search className="h-4 w-4" />}
             />
           </div>
-          <Button variant="outline" onClick={fetchNotices}>
-            Refresh
-          </Button>
+          <div className="flex space-x-2">
+            <Link href="/dashboard/notices/create">
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                New Notice
+              </Button>
+            </Link>
+            <Button variant="outline" onClick={fetchNotices}>
+              Refresh
+            </Button>
+          </div>
         </div>
       </Card>
 

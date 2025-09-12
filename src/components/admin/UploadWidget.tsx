@@ -43,27 +43,31 @@ export function UploadWidget({
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const uploadFile = async (file: File): Promise<string> => {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-    const filePath = folder ? `${folder}/${fileName}` : fileName;
+    try {
+      // Use the upload API endpoint
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('bucket', bucket);
+      if (folder) {
+        formData.append('folder', folder);
+      }
 
-    const { data, error } = await supabase.storage
-      .from(bucket)
-      .upload(filePath, file, {
-        cacheControl: '3600',
-        upsert: false,
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
       });
 
-    if (error) {
-      throw new Error(error.message);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Upload failed');
+      }
+
+      const result = await response.json();
+      return result.url;
+    } catch (error) {
+      console.error('Upload error:', error);
+      throw error;
     }
-
-    // Get public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from(bucket)
-      .getPublicUrl(data.path);
-
-    return publicUrl;
   };
 
   const onDrop = useCallback(
