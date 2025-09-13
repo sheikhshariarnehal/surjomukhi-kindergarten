@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,345 +15,528 @@ import {
   Phone,
   Award,
   Clock,
-  MapPin,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  Star,
+  CheckCircle,
+  MapPin,
+  ExternalLink
 } from 'lucide-react';
 import { Teacher } from '@/types/teacher';
 
-export default function TeacherDetailPage() {
-  const params = useParams();
-  const router = useRouter();
+// Constants for optimization
+const ANIMATION_CONFIG = {
+  container: {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1, 
+      transition: { 
+        staggerChildren: 0.04,
+        duration: 0.2 
+      } 
+    }
+  },
+  item: {
+    hidden: { opacity: 0, y: 12 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        duration: 0.25,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      } 
+    }
+  }
+};
+
+const DISPLAY_LIMITS = {
+  qualifications: 4,
+  achievements: 4,
+  certifications: 6
+};
+
+// Custom hooks for better code organization
+const useTeacherData = (slug: string) => {
   const [teacher, setTeacher] = useState<Teacher | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const slug = params.slug as string;
+  const fetchTeacher = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-  useEffect(() => {
-    const fetchTeacher = async () => {
-      try {
-        setLoading(true);
-
-        // Use the direct API endpoint which handles both UUID and slug lookups
-        const response = await fetch(`/api/teachers/${slug}`);
-
-        if (!response.ok) {
-          if (response.status === 404) {
-            setError('Teacher not found');
-          } else {
-            throw new Error('Failed to fetch teacher');
-          }
-          return;
+      const response = await fetch(`/api/teachers/${slug}`, {
+        headers: {
+          'Cache-Control': 'max-age=300' // 5 minutes cache
         }
+      });
 
-        const data = await response.json();
-        console.log('Fetched teacher data:', data.teacher);
-        console.log('photo_url value:', data.teacher?.photo_url);
-        setTeacher(data.teacher);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        console.error('Error fetching teacher:', err);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(
+          response.status === 404 
+            ? 'Teacher not found' 
+            : `Failed to fetch teacher data (${response.status})`
+        );
       }
-    };
 
-    if (slug) {
-      fetchTeacher();
+      const data = await response.json();
+      setTeacher(data.teacher);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load teacher profile');
+      console.error('Teacher fetch error:', err);
+    } finally {
+      setLoading(false);
     }
   }, [slug]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading teacher profile...</p>
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (slug) {
+      fetchTeacher();
+    }
+  }, [slug, fetchTeacher]);
 
-  if (error || !teacher) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <AlertCircle className="h-8 w-8 text-red-600" />
+  return { teacher, loading, error, refetch: fetchTeacher };
+};
+
+// Utility functions
+const getOptimizedImageUrl = (url: string | undefined): string | null => {
+  if (!url?.trim()) return null;
+  
+  // Handle various URL formats
+  if (url.startsWith('http')) return url;
+  if (url.startsWith('/')) return url;
+  if (url.startsWith('-')) return url.substring(1);
+  
+  return `/${url}`;
+};
+
+const formatJoinDate = (dateString: string): string => {
+  try {
+    return new Date(dateString).toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'short',
+      day: 'numeric'
+    });
+  } catch {
+    return 'Unknown';
+  }
+};
+
+const truncateText = (text: string, maxLength: number): string => {
+  return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+};
+
+// Component for error and loading states
+const StatusDisplay: React.FC<{
+  type: 'loading' | 'error';
+  message?: string;
+  onRetry?: () => void;
+  onBack?: () => void;
+}> = ({ type, message, onRetry, onBack }) => (
+  <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="text-center max-w-md">
+      {type === 'loading' ? (
+        <>
+          <div className="relative mb-6">
+            <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto" />
+            <div className="absolute inset-0 h-12 w-12 border-2 border-blue-100 rounded-full mx-auto animate-pulse" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Teacher Not Found</h2>
-          <p className="text-gray-600 mb-6">{error || 'The requested teacher profile could not be found.'}</p>
-          <div className="space-x-4">
+          <p className="text-gray-600 font-medium">Loading teacher profile...</p>
+        </>
+      ) : (
+        <>
+          <div className="w-16 h-16 bg-red-50 rounded-xl flex items-center justify-center mx-auto mb-6 border border-red-100">
+            <AlertCircle className="h-8 w-8 text-red-500" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-3">Profile Not Available</h2>
+          <p className="text-gray-600 mb-6 leading-relaxed">
+            {message || 'The requested teacher profile could not be loaded.'}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button 
-              onClick={() => router.back()}
-              className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+              onClick={onBack}
+              className="px-5 py-2.5 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-all duration-200 text-sm font-medium shadow-sm"
             >
               Go Back
             </button>
+            {onRetry && (
+              <button 
+                onClick={onRetry}
+                className="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 text-sm font-medium shadow-sm"
+              >
+                Try Again
+              </button>
+            )}
             <Link 
               href="/teachers"
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors inline-block"
+              className="px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all duration-200 text-sm font-medium text-center shadow-sm"
             >
               View All Teachers
             </Link>
           </div>
+        </>
+      )}
+    </div>
+  </div>
+);
+
+// Profile stats component
+const ProfileStats: React.FC<{ teacher: Teacher }> = ({ teacher }) => {
+  const stats = useMemo(() => [
+    teacher.experience_years && {
+      value: `${teacher.experience_years}+`,
+      label: 'Years Exp.',
+      color: 'text-blue-600'
+    },
+    teacher.subjects?.length && {
+      value: teacher.subjects.length,
+      label: 'Subjects',
+      color: 'text-green-600'
+    },
+    teacher.qualifications?.length && {
+      value: teacher.qualifications.length,
+      label: 'Qualifications',
+      color: 'text-purple-600'
+    }
+  ].filter(Boolean), [teacher]);
+
+  if (stats.length === 0) return null;
+
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 py-3 border-t border-b border-gray-100">
+      {stats.map((stat, index) => (
+        <div key={index} className="text-center">
+          <div className={`text-lg font-bold ${stat!.color}`}>{stat!.value}</div>
+          <div className="text-xs text-gray-500">{stat!.label}</div>
         </div>
-      </div>
+      ))}
+    </div>
+  );
+};
+
+// Contact information component
+const ContactInfo: React.FC<{ teacher: Teacher }> = ({ teacher }) => {
+  if (!teacher.contact_email && !teacher.contact_phone) return null;
+
+  return (
+    <div className="space-y-2">
+      <h3 className="text-sm font-semibold text-gray-900 flex items-center">
+        <Mail className="h-3 w-3 mr-2 text-blue-500" />
+        Contact
+      </h3>
+      {teacher.contact_email && (
+        <a 
+          href={`mailto:${teacher.contact_email}`}
+          className="flex items-center text-gray-600 hover:text-blue-600 transition-colors text-sm p-2 rounded-lg hover:bg-blue-50 group"
+          aria-label={`Email ${teacher.name}`}
+        >
+          <Mail className="h-3 w-3 mr-2 flex-shrink-0 text-gray-400 group-hover:text-blue-500" />
+          <span className="truncate">{teacher.contact_email}</span>
+          <ExternalLink className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+        </a>
+      )}
+      {teacher.contact_phone && (
+        <a 
+          href={`tel:${teacher.contact_phone}`}
+          className="flex items-center text-gray-600 hover:text-blue-600 transition-colors text-sm p-2 rounded-lg hover:bg-blue-50 group"
+          aria-label={`Call ${teacher.name}`}
+        >
+          <Phone className="h-3 w-3 mr-2 flex-shrink-0 text-gray-400 group-hover:text-blue-500" />
+          <span>{teacher.contact_phone}</span>
+          <ExternalLink className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+        </a>
+      )}
+    </div>
+  );
+};
+
+// Content section component
+const ContentSection: React.FC<{
+  title: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+}> = ({ title, icon, children, className = '' }) => (
+  <div className={`bg-white rounded-lg shadow-sm border border-gray-200 p-4 ${className}`}>
+    <div className="flex items-center mb-3">
+      {icon}
+      <h2 className="text-base font-bold text-gray-900">{title}</h2>
+    </div>
+    {children}
+  </div>
+);
+
+// Main component
+export default function TeacherDetailPage() {
+  const params = useParams();
+  const router = useRouter();
+  const [imageError, setImageError] = useState(false);
+  
+  const slug = params.slug as string;
+  const { teacher, loading, error, refetch } = useTeacherData(slug);
+
+  const handleBack = useCallback(() => {
+    router.back();
+  }, [router]);
+
+  const validImageUrl = useMemo(() => 
+    getOptimizedImageUrl(teacher?.photo_url), 
+    [teacher?.photo_url]
+  );
+  
+  const shouldShowImage = validImageUrl && !imageError;
+
+  // Loading state
+  if (loading) {
+    return <StatusDisplay type="loading" />;
+  }
+
+  // Error state
+  if (error || !teacher) {
+    return (
+      <StatusDisplay 
+        type="error" 
+        message={error} 
+        onBack={handleBack}
+        onRetry={error ? refetch : undefined}
+      />
     );
   }
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.5 }
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Breadcrumb Navigation */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center space-x-2 text-sm">
-            <Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link>
-            <span className="text-gray-400">/</span>
-            <Link href="/teachers" className="text-gray-500 hover:text-gray-700">Teachers</Link>
-            <span className="text-gray-400">/</span>
-            <span className="text-gray-900 font-medium">{teacher.name}</span>
+      {/* Header Navigation */}
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-20 backdrop-blur-sm bg-white/95">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between py-3">
+            <button
+              onClick={handleBack}
+              className="flex items-center text-gray-600 hover:text-gray-900 transition-colors group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg p-1"
+              aria-label="Go back to previous page"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-0.5 transition-transform" />
+              <span className="text-sm font-medium">Back</span>
+            </button>
+            
+            <nav className="hidden sm:flex items-center space-x-1 text-xs" aria-label="Breadcrumb">
+              <Link href="/" className="text-gray-500 hover:text-blue-600 transition-colors focus:outline-none focus:underline">
+                Home
+              </Link>
+              <span className="text-gray-300" aria-hidden="true">/</span>
+              <Link href="/teachers" className="text-gray-500 hover:text-blue-600 transition-colors focus:outline-none focus:underline">
+                Teachers
+              </Link>
+              <span className="text-gray-300" aria-hidden="true">/</span>
+              <span className="text-gray-900 font-medium truncate max-w-32" title={teacher.name}>
+                {teacher.name}
+              </span>
+            </nav>
           </div>
         </div>
-      </nav>
+      </header>
 
-      <motion.div
-        variants={containerVariants}
+      <motion.main
+        variants={ANIMATION_CONFIG.container}
         initial="hidden"
         animate="visible"
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+        className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6"
       >
-        {/* Back Button */}
-        <motion.div variants={itemVariants} className="mb-6">
-          <button
-            onClick={() => router.back()}
-            className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            <ArrowLeft className="h-5 w-5 mr-2" />
-            Back to Teachers
-          </button>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Profile Info */}
-          <motion.div variants={itemVariants} className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden sticky top-8">
-              {/* Profile Photo */}
-              <div className="relative h-80 bg-gradient-to-br from-blue-100 to-green-100">
-                {teacher.photo_url ? (
-                  (() => {
-                    console.log('Rendering Image with src:', teacher.photo_url);
-                    try {
-                      new URL(teacher.photo_url.startsWith('http') ? teacher.photo_url : `http://localhost${teacher.photo_url}`);
-                    } catch (e) {
-                      console.error('Invalid URL for photo_url:', teacher.photo_url, e);
-                    }
-                    return (
-                      <Image
-                        src={teacher.photo_url}
-                        alt={`${teacher.name} - ${teacher.designation}`}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 400px"
-                      />
-                    );
-                  })()
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+          {/* Profile Card */}
+          <motion.aside variants={ANIMATION_CONFIG.item} className="lg:col-span-1">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden sticky top-24">
+              {/* Profile Image */}
+              <div className="relative h-48 sm:h-56 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700">
+                {shouldShowImage ? (
+                  <Image
+                    src={validImageUrl}
+                    alt={`${teacher.name} - ${teacher.designation}`}
+                    fill
+                    className="object-cover transition-opacity duration-300"
+                    sizes="(max-width: 768px) 100vw, 300px"
+                    priority
+                    onError={() => setImageError(true)}
+                    onLoad={() => console.log('Image loaded successfully')}
+                  />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg">
-                      <User className="h-16 w-16 text-gray-400" />
+                  <div className="w-full h-full flex items-center justify-center" role="img" aria-label="Default profile image">
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/30">
+                      <User className="h-8 w-8 text-white" aria-hidden="true" />
                     </div>
                   </div>
                 )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
               </div>
 
-              {/* Basic Info */}
-              <div className="p-6">
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">{teacher.name}</h1>
-                <p className="text-blue-600 font-medium text-lg mb-4">{teacher.designation}</p>
-                
-                {teacher.department && (
-                  <div className="flex items-center text-gray-600 mb-3">
-                    <MapPin className="h-4 w-4 mr-2" />
-                    <span>{teacher.department}</span>
-                  </div>
-                )}
+              {/* Profile Information */}
+              <div className="p-4 space-y-3">
+                <div className="text-center">
+                  <h1 className="text-lg sm:text-xl font-bold text-gray-900 leading-tight">
+                    {teacher.name}
+                  </h1>
+                  <p className="text-blue-600 font-medium text-sm sm:text-base">
+                    {teacher.designation}
+                  </p>
+                  {teacher.department && (
+                    <div className="flex items-center justify-center text-gray-500 text-xs mt-1">
+                      <MapPin className="h-3 w-3 mr-1" aria-hidden="true" />
+                      <span>{teacher.department}</span>
+                    </div>
+                  )}
+                </div>
 
-                {teacher.experience_years && (
-                  <div className="flex items-center text-gray-600 mb-3">
-                    <Clock className="h-4 w-4 mr-2" />
-                    <span>{teacher.experience_years} Years Experience</span>
-                  </div>
-                )}
+                <ProfileStats teacher={teacher} />
+                <ContactInfo teacher={teacher} />
 
+                {/* Join Date */}
                 {teacher.join_date && (
-                  <div className="flex items-center text-gray-600 mb-4">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    <span>Joined {new Date(teacher.join_date).toLocaleDateString('en-US', { 
-                      year: 'numeric', 
-                      month: 'long' 
-                    })}</span>
-                  </div>
-                )}
-
-                {/* Contact Info */}
-                {(teacher.contact_email || teacher.contact_phone) && (
-                  <div className="border-t pt-4 mt-4">
-                    <h3 className="font-semibold text-gray-900 mb-3">Contact Information</h3>
-                    {teacher.contact_email && (
-                      <div className="flex items-center text-gray-600 mb-2">
-                        <Mail className="h-4 w-4 mr-2" />
-                        <a 
-                          href={`mailto:${teacher.contact_email}`}
-                          className="hover:text-blue-600 transition-colors"
-                        >
-                          {teacher.contact_email}
-                        </a>
-                      </div>
-                    )}
-                    {teacher.contact_phone && (
-                      <div className="flex items-center text-gray-600">
-                        <Phone className="h-4 w-4 mr-2" />
-                        <a 
-                          href={`tel:${teacher.contact_phone}`}
-                          className="hover:text-blue-600 transition-colors"
-                        >
-                          {teacher.contact_phone}
-                        </a>
-                      </div>
-                    )}
+                  <div className="flex items-center text-gray-500 text-xs bg-gray-50 p-2 rounded-lg">
+                    <Calendar className="h-3 w-3 mr-2 flex-shrink-0" aria-hidden="true" />
+                    <span>Joined {formatJoinDate(teacher.join_date)}</span>
                   </div>
                 )}
               </div>
             </div>
-          </motion.div>
+          </motion.aside>
 
-          {/* Right Column - Detailed Info */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Subjects Taught */}
+          {/* Content Area */}
+          <section className="lg:col-span-2 space-y-4">
+            {/* Subjects */}
             {teacher.subjects && teacher.subjects.length > 0 && (
-              <motion.div variants={itemVariants} className="bg-white rounded-2xl shadow-lg p-6">
-                <div className="flex items-center mb-4">
-                  <BookOpen className="h-6 w-6 text-blue-600 mr-3" />
-                  <h2 className="text-xl font-bold text-gray-900">Subjects Taught</h2>
-                </div>
-                <div className="flex flex-wrap gap-3">
-                  {teacher.subjects.map((subject, index) => (
-                    <span
-                      key={index}
-                      className="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg font-medium"
-                    >
-                      {subject}
-                    </span>
-                  ))}
-                </div>
+              <motion.div variants={ANIMATION_CONFIG.item}>
+                <ContentSection
+                  title="Subjects Taught"
+                  icon={<BookOpen className="h-4 w-4 text-blue-600 mr-2" aria-hidden="true" />}
+                >
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+                    {teacher.subjects.map((subject, index) => (
+                      <div
+                        key={index}
+                        className="bg-blue-50 border border-blue-200 text-blue-700 px-2 py-1.5 rounded-md text-xs font-medium text-center hover:bg-blue-100 transition-colors"
+                        title={subject}
+                      >
+                        {truncateText(subject, 14)}
+                      </div>
+                    ))}
+                  </div>
+                </ContentSection>
               </motion.div>
             )}
 
-            {/* Bio/Description */}
+            {/* About */}
             {teacher.bio && (
-              <motion.div variants={itemVariants} className="bg-white rounded-2xl shadow-lg p-6">
-                <div className="flex items-center mb-4">
-                  <User className="h-6 w-6 text-green-600 mr-3" />
-                  <h2 className="text-xl font-bold text-gray-900">About</h2>
-                </div>
-                <div className="prose prose-gray max-w-none">
-                  <p className="text-gray-700 leading-relaxed">{teacher.bio}</p>
-                </div>
+              <motion.div variants={ANIMATION_CONFIG.item}>
+                <ContentSection
+                  title="About"
+                  icon={<User className="h-4 w-4 text-green-600 mr-2" aria-hidden="true" />}
+                >
+                  <p className="text-gray-700 text-sm leading-relaxed">
+                    {teacher.bio}
+                  </p>
+                </ContentSection>
               </motion.div>
             )}
 
-            {/* Education & Qualifications */}
-            {teacher.qualifications && teacher.qualifications.length > 0 && (
-              <motion.div variants={itemVariants} className="bg-white rounded-2xl shadow-lg p-6">
-                <div className="flex items-center mb-4">
-                  <GraduationCap className="h-6 w-6 text-purple-600 mr-3" />
-                  <h2 className="text-xl font-bold text-gray-900">Education & Qualifications</h2>
-                </div>
-                <ul className="space-y-3">
-                  {teacher.qualifications.map((qualification, index) => (
-                    <li key={index} className="flex items-start">
-                      <div className="w-2 h-2 bg-purple-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                      <span className="text-gray-700">{qualification}</span>
-                    </li>
-                  ))}
-                </ul>
+            {/* Two Column Layout for Additional Info */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Qualifications */}
+              {teacher.qualifications && teacher.qualifications.length > 0 && (
+                <motion.div variants={ANIMATION_CONFIG.item}>
+                  <ContentSection
+                    title="Education"
+                    icon={<GraduationCap className="h-4 w-4 text-purple-600 mr-2" aria-hidden="true" />}
+                  >
+                    <ul className="space-y-2" role="list">
+                      {teacher.qualifications.slice(0, DISPLAY_LIMITS.qualifications).map((qualification, index) => (
+                        <li key={index} className="flex items-start">
+                          <CheckCircle className="h-3 w-3 text-purple-500 mt-0.5 mr-2 flex-shrink-0" aria-hidden="true" />
+                          <span className="text-gray-700 text-xs leading-relaxed">
+                            {qualification}
+                          </span>
+                        </li>
+                      ))}
+                      {teacher.qualifications.length > DISPLAY_LIMITS.qualifications && (
+                        <li className="text-xs text-gray-500 ml-5 italic">
+                          +{teacher.qualifications.length - DISPLAY_LIMITS.qualifications} more qualifications
+                        </li>
+                      )}
+                    </ul>
+                  </ContentSection>
+                </motion.div>
+              )}
+
+              {/* Achievements */}
+              {teacher.achievements && teacher.achievements.length > 0 && (
+                <motion.div variants={ANIMATION_CONFIG.item}>
+                  <ContentSection
+                    title="Achievements"
+                    icon={<Award className="h-4 w-4 text-yellow-600 mr-2" aria-hidden="true" />}
+                  >
+                    <ul className="space-y-2" role="list">
+                      {teacher.achievements.slice(0, DISPLAY_LIMITS.achievements).map((achievement, index) => (
+                        <li key={index} className="flex items-start">
+                          <Star className="h-3 w-3 text-yellow-500 mt-0.5 mr-2 flex-shrink-0" aria-hidden="true" />
+                          <span className="text-gray-700 text-xs leading-relaxed">
+                            {achievement}
+                          </span>
+                        </li>
+                      ))}
+                      {teacher.achievements.length > DISPLAY_LIMITS.achievements && (
+                        <li className="text-xs text-gray-500 ml-5 italic">
+                          +{teacher.achievements.length - DISPLAY_LIMITS.achievements} more achievements
+                        </li>
+                      )}
+                    </ul>
+                  </ContentSection>
+                </motion.div>
+              )}
+            </div>
+
+            {/* Certifications */}
+            {teacher.certifications && teacher.certifications.length > 0 && (
+              <motion.div variants={ANIMATION_CONFIG.item}>
+                <ContentSection
+                  title="Certifications"
+                  icon={<Award className="h-4 w-4 text-emerald-600 mr-2" aria-hidden="true" />}
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {teacher.certifications.slice(0, DISPLAY_LIMITS.certifications).map((certification, index) => (
+                      <div
+                        key={index}
+                        className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-2 rounded-md text-xs font-medium hover:bg-emerald-100 transition-colors"
+                        title={certification}
+                      >
+                        {truncateText(certification, 30)}
+                      </div>
+                    ))}
+                  </div>
+                  {teacher.certifications.length > DISPLAY_LIMITS.certifications && (
+                    <p className="text-xs text-gray-500 mt-2 italic">
+                      +{teacher.certifications.length - DISPLAY_LIMITS.certifications} more certifications
+                    </p>
+                  )}
+                </ContentSection>
               </motion.div>
             )}
 
             {/* Teaching Philosophy */}
             {teacher.teaching_philosophy && (
-              <motion.div variants={itemVariants} className="bg-white rounded-2xl shadow-lg p-6">
-                <div className="flex items-center mb-4">
-                  <Award className="h-6 w-6 text-yellow-600 mr-3" />
-                  <h2 className="text-xl font-bold text-gray-900">Teaching Philosophy</h2>
-                </div>
-                <div className="prose prose-gray max-w-none">
-                  <p className="text-gray-700 leading-relaxed italic">"{teacher.teaching_philosophy}"</p>
-                </div>
+              <motion.div variants={ANIMATION_CONFIG.item}>
+                <ContentSection
+                  title="Teaching Philosophy"
+                  icon={<Clock className="h-4 w-4 text-blue-600 mr-2" aria-hidden="true" />}
+                  className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200"
+                >
+                  <blockquote className="text-gray-700 text-sm leading-relaxed italic border-l-3 border-blue-400 pl-3">
+                    "{teacher.teaching_philosophy}"
+                  </blockquote>
+                </ContentSection>
               </motion.div>
             )}
-
-            {/* Achievements */}
-            {teacher.achievements && teacher.achievements.length > 0 && (
-              <motion.div variants={itemVariants} className="bg-white rounded-2xl shadow-lg p-6">
-                <div className="flex items-center mb-4">
-                  <Award className="h-6 w-6 text-yellow-600 mr-3" />
-                  <h2 className="text-xl font-bold text-gray-900">Achievements & Recognition</h2>
-                </div>
-                <ul className="space-y-3">
-                  {teacher.achievements.map((achievement, index) => (
-                    <li key={index} className="flex items-start">
-                      <div className="w-2 h-2 bg-yellow-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                      <span className="text-gray-700">{achievement}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            )}
-
-            {/* Certifications */}
-            {teacher.certifications && teacher.certifications.length > 0 && (
-              <motion.div variants={itemVariants} className="bg-white rounded-2xl shadow-lg p-6">
-                <div className="flex items-center mb-4">
-                  <Award className="h-6 w-6 text-green-600 mr-3" />
-                  <h2 className="text-xl font-bold text-gray-900">Certifications</h2>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {teacher.certifications.map((certification, index) => (
-                    <div
-                      key={index}
-                      className="bg-green-50 text-green-700 px-4 py-3 rounded-lg border border-green-200"
-                    >
-                      {certification}
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </div>
+          </section>
         </div>
-      </motion.div>
+      </motion.main>
     </div>
   );
 }
