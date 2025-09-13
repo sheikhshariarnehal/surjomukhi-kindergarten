@@ -52,6 +52,67 @@ const heroSlides: HeroSlide[] = [
   }
 ];
 
+// Optimized components
+const SlideIndicators: React.FC<{
+  currentSlide: number;
+  totalSlides: number;
+  onSlideChange: (index: number) => void;
+}> = ({ currentSlide, totalSlides, onSlideChange }) => (
+  <div className="absolute bottom-20 sm:bottom-24 left-1/2 transform -translate-x-1/2 z-30">
+    <div className="flex space-x-3 bg-black/20 backdrop-blur-sm rounded-full px-4 py-2">
+      {Array.from({ length: totalSlides }, (_, index) => (
+        <button
+          key={index}
+          onClick={() => onSlideChange(index)}
+          className={`w-3 h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 ${
+            index === currentSlide
+              ? 'bg-white scale-125 shadow-lg'
+              : 'bg-white/50 hover:bg-white/75 hover:scale-110'
+          }`}
+          aria-label={`Go to slide ${index + 1}`}
+        />
+      ))}
+    </div>
+  </div>
+);
+
+const InstitutionalFooter: React.FC = () => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.8, delay: 0.6 }}
+    className="absolute bottom-0 left-0 right-0 z-40"
+  >
+    <div className="bg-gradient-to-r from-orange-500 via-blue-800 to-orange-500">
+      <div className="flex">
+        {/* EIIN */}
+        <div className="flex-1 bg-orange-500 text-white text-center py-3 px-2 sm:px-4">
+          <div className="text-xs font-semibold uppercase tracking-wider">EIIN</div>
+          <div className="text-sm font-bold">06310160508</div>
+        </div>
+
+        {/* Institution Code */}
+        <div className="flex-1 bg-blue-800 text-white text-center py-3 px-2 sm:px-4">
+          <div className="text-xs font-semibold uppercase tracking-wider">Institution Code</div>
+          <div className="text-sm font-bold">424528</div>
+        </div>
+
+        {/* Center Code */}
+        <div className="flex-1 bg-orange-500 text-white text-center py-3 px-2 sm:px-4">
+          <div className="text-xs font-semibold uppercase tracking-wider">Center Code</div>
+          <div className="text-sm font-bold">N/A</div>
+        </div>
+
+        {/* Estd Year */}
+        <div className="flex-1 bg-blue-800 text-white text-center py-3 px-2 sm:px-4">
+          <div className="text-xs font-semibold uppercase tracking-wider">Estd Year</div>
+          <div className="text-sm font-bold">1836</div>
+        </div>
+      </div>
+    </div>
+  </motion.div>
+);
+
 const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -155,43 +216,14 @@ const Hero: React.FC = () => {
 
 
       {/* Slide Indicators */}
-      <div className="absolute bottom-8 sm:bottom-12 left-1/2 transform -translate-x-1/2 z-20">
-        <div className="flex space-x-3 bg-black/20 backdrop-blur-sm rounded-full px-4 py-2">
-          {heroSlides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 ${
-                index === currentSlide
-                  ? 'bg-white scale-125 shadow-lg'
-                  : 'bg-white/50 hover:bg-white/75 hover:scale-110'
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      </div>
+      <SlideIndicators
+        currentSlide={currentSlide}
+        totalSlides={heroSlides.length}
+        onSlideChange={goToSlide}
+      />
 
-      {/* Scroll Down Indicator */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1 }}
-        className="absolute bottom-8 sm:bottom-12 right-6 sm:right-8 z-20 hidden lg:block"
-      >
-        <div className="flex flex-col items-center text-white/80 hover:text-white transition-colors cursor-pointer">
-          <span className="text-xs font-medium mb-2 uppercase tracking-wider">Scroll</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="bg-white/20 backdrop-blur-sm rounded-full p-2"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-          </motion.div>
-        </div>
-      </motion.div>
+      {/* Professional Institutional Information Footer */}
+      <InstitutionalFooter />
     </section>
   );
 };
