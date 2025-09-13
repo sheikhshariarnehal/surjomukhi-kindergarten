@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Hero from '@/components/frontend/Hero';
-import NoticeBoard from '@/components/frontend/NoticeBoard';
 import StatsCounter from '@/components/frontend/StatsCounter';
 import MessagesSection from '@/components/frontend/MessagesSection';
 import NewsEventsPreview from '@/components/frontend/NewsEventsPreview';
@@ -20,9 +19,6 @@ export default function HomePage() {
 
       {/* Messages Section */}
       <MessagesSection />
-
-      {/* Notice Board */}
-      <NoticeBoard />
 
       {/* News & Events Preview */}
       <NewsEventsPreview />

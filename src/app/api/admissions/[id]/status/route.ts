@@ -2,15 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { DatabaseService, supabaseAdmin } from '@/lib/db';
 import { AuthService } from '@/lib/auth';
 
-interface RouteParams {
-  params: {
-    id: string;
-  };
-}
-
 // PATCH /api/admissions/[id]/status - Update admission application status
-export async function PATCH(request: NextRequest, { params }: RouteParams) {
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
+    // Await params
+    const { id } = await params;
+
     // Check authentication and authorization
     const authResult = await AuthService.verifyAuth(request);
     if (!authResult.success || !authResult.user) {
@@ -27,8 +27,6 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         { status: 403 }
       );
     }
-
-    const { id } = params;
     const body = await request.json();
     
     // Validate status

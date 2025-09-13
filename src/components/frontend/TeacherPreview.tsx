@@ -68,7 +68,8 @@ export default function TeacherPreview() {
             Meet Our Dedicated Teachers
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Our experienced and qualified faculty members are committed to providing excellent education and guidance to our students.
+            Our experienced and qualified faculty members are committed to providing excellent
+            early childhood education and nurturing young minds.
           </p>
         </motion.div>
 

@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy:cpanel": "chmod +x deploy-cpanel.sh && ./deploy-cpanel.sh",
+    "postbuild": "echo 'Build completed successfully!'"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

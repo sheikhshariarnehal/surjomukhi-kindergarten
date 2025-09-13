@@ -16,8 +16,6 @@ export default function NewsEventsPreview({ initialNews = [], initialEvents = []
   const [loading, setLoading] = useState(!initialNews.length && !initialEvents.length);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'news' | 'events'>('news');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showSearch, setShowSearch] = useState(false);
 
 
 
@@ -94,19 +92,8 @@ export default function NewsEventsPreview({ initialNews = [], initialEvents = []
     fetchData();
   }, [initialNews.length, initialEvents.length]);
 
-  // Filter and search functionality
-  const filteredNews = (news || []).filter(item =>
-    item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.excerpt || item.content || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const filteredEvents = (events || []).filter(item =>
-    item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.description || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const newsItems = searchTerm ? filteredNews.slice(0, 6) : (news || []).slice(0, 6);
-  const eventItems = searchTerm ? filteredEvents.slice(0, 6) : (events || []).slice(0, 6);
+  const newsItems = (news || []).slice(0, 6);
+  const eventItems = (events || []).slice(0, 6);
 
   if (error) {
     return (
@@ -152,10 +139,10 @@ export default function NewsEventsPreview({ initialNews = [], initialEvents = []
             </svg>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-800 bg-clip-text text-transparent mb-4">
-            Latest Updates
+            Latest News & Upcoming Events
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Stay connected with our community through the latest news and upcoming events
+            Stay informed with our latest announcements and upcoming school activities
           </p>
         </motion.div>
 
@@ -213,63 +200,7 @@ export default function NewsEventsPreview({ initialNews = [], initialEvents = []
             </div>
           </div>
 
-          {/* Search Bar */}
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <motion.div
-                initial={{ width: showSearch ? 320 : 48 }}
-                animate={{ width: showSearch ? 320 : 48 }}
-                transition={{ duration: 0.3 }}
-                className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden"
-              >
-                {showSearch ? (
-                  <div className="flex items-center px-4 py-3">
-                    <svg className="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    <input
-                      type="text"
-                      placeholder={`Search ${activeTab}...`}
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-400"
-                      autoFocus
-                    />
-                    <button
-                      onClick={() => {
-                        setShowSearch(false);
-                        setSearchTerm('');
-                      }}
-                      className="ml-2 p-1 hover:bg-gray-100 rounded-lg transition-colors"
-                    >
-                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setShowSearch(true)}
-                    className="w-12 h-12 flex items-center justify-center hover:bg-blue-50 transition-colors"
-                  >
-                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </button>
-                )}
-              </motion.div>
-            </div>
 
-            {searchTerm && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-sm text-gray-600 bg-white/60 px-3 py-1 rounded-full"
-              >
-                {activeTab === 'news' ? filteredNews.length : filteredEvents.length} results
-              </motion.div>
-            )}
-          </div>
         </motion.div>
 
         {loading ? (
@@ -309,7 +240,7 @@ export default function NewsEventsPreview({ initialNews = [], initialEvents = []
                     <div>
                       <h3 className="text-2xl font-bold text-gray-900">Latest News</h3>
                       <p className="text-sm text-gray-500">
-                        {searchTerm ? `${filteredNews.length} results found` : `${newsItems.length} recent articles`}
+                        {newsItems.length} recent articles
                       </p>
                     </div>
                   </div>
@@ -393,7 +324,7 @@ export default function NewsEventsPreview({ initialNews = [], initialEvents = []
                     <div>
                       <h3 className="text-2xl font-bold text-gray-900">Upcoming Events</h3>
                       <p className="text-sm text-gray-500">
-                        {searchTerm ? `${filteredEvents.length} results found` : `${eventItems.length} upcoming activities`}
+                        {eventItems.length} upcoming activities
                       </p>
                     </div>
                   </div>
