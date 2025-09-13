@@ -54,6 +54,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'photos.google.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
     // Optimize image loading
     formats: ['image/webp', 'image/avif'],

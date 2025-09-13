@@ -1,43 +1,19 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { GraduationCap, ArrowRight, Loader2 } from 'lucide-react';
-import TeacherCard from './TeacherCard';
-import { Teacher } from '@/types/teacher';
-
-interface TeachersResponse {
-  teachers: Teacher[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-}
+import { GraduationCap, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
+import ModernTeacherCard from './ModernTeacherCard';
+import { useTeachers } from '@/hooks/useTeachers';
 
 export default function TeacherPreview() {
-  const [teachers, setTeachers] = useState<Teacher[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { teachers, loading, error } = useTeachers({
+    limit: 4,
+    autoFetch: true
+  });
 
-  useEffect(() => {
-    const fetchTeachers = async () => {
-      try {
-        const response = await fetch('/api/teachers?limit=4');
-        if (response.ok) {
-          const data: TeachersResponse = await response.json();
-          setTeachers(data.teachers || []);
-        }
-      } catch (error) {
-        console.error('Error fetching teachers:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTeachers();
-  }, []);
+  // Loading state
   if (loading) {
     return (
       <section className="py-16 bg-gradient-to-br from-gray-50 to-white">
@@ -45,6 +21,21 @@ export default function TeacherPreview() {
           <div className="text-center">
             <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
             <p className="text-gray-600">Loading our amazing teachers...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <section className="py-16 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+            <p className="text-red-600 mb-2">Failed to load teachers</p>
+            <p className="text-gray-500 text-sm">{error}</p>
           </div>
         </div>
       </section>
@@ -75,15 +66,18 @@ export default function TeacherPreview() {
 
         {teachers.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-600">No teachers available at the moment.</p>
+            <GraduationCap className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-600 text-lg font-medium">No teachers available at the moment</p>
+            <p className="text-gray-500 text-sm mt-1">Check back soon to meet our amazing faculty!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
             {teachers.map((teacher, index) => (
-              <TeacherCard
+              <ModernTeacherCard
                 key={teacher.id}
                 teacher={teacher}
                 index={index}
+                variant="default"
               />
             ))}
           </div>
@@ -99,7 +93,7 @@ export default function TeacherPreview() {
         >
           <Link
             href="/teachers"
-            className="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 font-medium"
+            className="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             View All Teachers
             <ArrowRight className="ml-2 h-5 w-5" />

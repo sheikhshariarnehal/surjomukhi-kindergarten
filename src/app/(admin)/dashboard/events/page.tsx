@@ -150,54 +150,114 @@ export default function EventsPage() {
     {
       key: 'image',
       label: 'Image',
-      render: (event: Event) => (
-        <div className="flex items-center justify-center">
-          {event.image_url ? (
-            <img
-              src={event.image_url}
-              alt={event.title}
-              className="w-12 h-12 rounded-lg object-cover border-2 border-gray-200"
-            />
-          ) : (
-            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
-              <Calendar className="h-6 w-6 text-white" />
+      render: (event: Event) => {
+        if (!event) {
+          return (
+            <div className="flex items-center justify-center">
+              <div className="w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center">
+                <Calendar className="h-6 w-6 text-gray-400" />
+              </div>
             </div>
-          )}
-        </div>
-      ),
+          );
+        }
+
+        // Get primary image or first image from multiple images, fallback to single image_url
+        const primaryImage = event.images?.find(img => img.is_primary)?.url ||
+                            event.images?.[0]?.url ||
+                            event.image_url;
+
+        return (
+          <div className="flex items-center justify-center">
+            {primaryImage ? (
+              <div className="relative">
+                <img
+                  src={primaryImage}
+                  alt={event.title || 'Event image'}
+                  className="w-12 h-12 rounded-lg object-cover border-2 border-gray-200"
+                />
+                {/* Show count if multiple images */}
+                {event.images && event.images.length > 1 && (
+                  <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {event.images.length}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                <Calendar className="h-6 w-6 text-white" />
+              </div>
+            )}
+          </div>
+        );
+      },
     },
     {
       key: 'title',
       label: 'Event',
-      render: (event: Event) => (
-        <div>
-          <div className="font-semibold text-gray-900 line-clamp-2">{event.title}</div>
-          <div className="text-sm text-gray-500 mt-1 line-clamp-2">
-            {event.description}
+      render: (event: Event) => {
+        if (!event) {
+          return (
+            <div>
+              <div className="font-semibold text-gray-400">Loading...</div>
+              <div className="text-sm text-gray-400 mt-1">Please wait...</div>
+            </div>
+          );
+        }
+
+        return (
+          <div>
+            <div className="font-semibold text-gray-900 line-clamp-2">{event.title || 'Untitled Event'}</div>
+            <div className="text-sm text-gray-500 mt-1 line-clamp-2">
+              {event.description || 'No description available'}
+            </div>
           </div>
-        </div>
-      ),
+        );
+      },
     },
     {
       key: 'dates',
       label: 'Date & Time',
-      render: (event: Event) => (
-        <div className="text-sm">
-          <div className="flex items-center text-gray-900 mb-1">
-            <Calendar className="h-3 w-3 mr-1" />
-            {new Date(event.start_date).toLocaleDateString()}
-          </div>
-          <div className="flex items-center text-gray-500">
-            <Clock className="h-3 w-3 mr-1" />
-            {new Date(event.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-          </div>
-          {event.end_date && event.end_date !== event.start_date && (
-            <div className="text-gray-500 text-xs mt-1">
-              to {new Date(event.end_date).toLocaleDateString()}
+      render: (event: Event) => {
+        if (!event || !event.start_date) {
+          return (
+            <div className="text-sm text-gray-400">
+              <div className="flex items-center mb-1">
+                <Calendar className="h-3 w-3 mr-1" />
+                No date available
+              </div>
             </div>
-          )}
-        </div>
-      ),
+          );
+        }
+
+        try {
+          return (
+            <div className="text-sm">
+              <div className="flex items-center text-gray-900 mb-1">
+                <Calendar className="h-3 w-3 mr-1" />
+                {new Date(event.start_date).toLocaleDateString()}
+              </div>
+              <div className="flex items-center text-gray-500">
+                <Clock className="h-3 w-3 mr-1" />
+                {new Date(event.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </div>
+              {event.end_date && event.end_date !== event.start_date && (
+                <div className="text-gray-500 text-xs mt-1">
+                  to {new Date(event.end_date).toLocaleDateString()}
+                </div>
+              )}
+            </div>
+          );
+        } catch (error) {
+          return (
+            <div className="text-sm text-red-500">
+              <div className="flex items-center mb-1">
+                <Calendar className="h-3 w-3 mr-1" />
+                Invalid date
+              </div>
+            </div>
+          );
+        }
+      },
     },
     {
       key: 'status',

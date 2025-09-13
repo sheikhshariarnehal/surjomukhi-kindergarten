@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 import UploadWidget from '@/components/admin/UploadWidget';
+import { MultipleImageUpload, UploadedImage } from '@/components/admin/MultipleImageUpload';
 import { ArrowLeft, Save, Calendar } from 'lucide-react';
 import { z } from 'zod';
 
@@ -17,6 +18,7 @@ type CreateEventFormData = z.infer<typeof createEventSchema>;
 export default function CreateEventPage() {
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
+  const [eventImages, setEventImages] = useState<UploadedImage[]>([]);
   const router = useRouter();
 
   const {
@@ -48,6 +50,7 @@ export default function CreateEventPage() {
 
   const onSubmit = async (data: CreateEventFormData) => {
     try {
+      // Create the event first
       const response = await fetch('/api/events', {
         method: 'POST',
         headers: {
@@ -55,7 +58,7 @@ export default function CreateEventPage() {
         },
         body: JSON.stringify({
           ...data,
-          image_url: imageUrl || undefined,
+          image_url: imageUrl || (eventImages.length > 0 ? eventImages.find(img => img.is_primary)?.url || eventImages[0]?.url : undefined),
         }),
       });
 
@@ -65,6 +68,29 @@ export default function CreateEventPage() {
       }
 
       const result = await response.json();
+      const eventId = result.event?.id;
+
+      // If we have multiple images, upload them
+      if (eventId && eventImages.length > 0) {
+        const imageData = eventImages.map(img => ({
+          url: img.url,
+          caption: img.caption,
+          is_primary: img.is_primary,
+        }));
+
+        const imagesResponse = await fetch(`/api/events/${eventId}/images`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ images: imageData }),
+        });
+
+        if (!imagesResponse.ok) {
+          console.warn('Failed to upload additional images, but event was created');
+        }
+      }
+
       router.push('/dashboard/events');
     } catch (error) {
       console.error('Error creating event:', error);
@@ -122,20 +148,40 @@ export default function CreateEventPage() {
             {/* Image Upload */}
             <Card className="p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Event Image (Optional)
+                Event Images (Optional)
               </h2>
-              <UploadWidget
-                onUpload={handleImageUpload}
-                accept={{
-                  'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
-                }}
+
+              {/* Multiple Image Upload */}
+              <MultipleImageUpload
+                onImagesChange={setEventImages}
+                onError={(error) => alert(error)}
+                maxImages={10}
                 maxSize={5 * 1024 * 1024} // 5MB
                 bucket="uploads"
                 folder="events"
-                currentFile={imageUrl}
-                label="Upload Event Image"
-                helperText="Upload an image for the event (max 5MB)"
+                currentImages={eventImages}
+                label="Upload Event Images"
+                helperText="Upload up to 10 images for the event. The first image or marked primary image will be the main event image."
               />
+
+              {/* Fallback Single Image Upload */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h3 className="text-md font-medium text-gray-700 mb-3">
+                  Or upload a single image (legacy)
+                </h3>
+                <UploadWidget
+                  onUpload={handleImageUpload}
+                  accept={{
+                    'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
+                  }}
+                  maxSize={5 * 1024 * 1024} // 5MB
+                  bucket="uploads"
+                  folder="events"
+                  currentFile={imageUrl}
+                  label="Upload Single Event Image"
+                  helperText="This will be used if no images are uploaded above"
+                />
+              </div>
             </Card>
           </div>
 

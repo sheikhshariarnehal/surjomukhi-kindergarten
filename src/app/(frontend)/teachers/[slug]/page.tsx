@@ -48,6 +48,8 @@ export default function TeacherDetailPage() {
         }
 
         const data = await response.json();
+        console.log('Fetched teacher data:', data.teacher);
+        console.log('photo_url value:', data.teacher?.photo_url);
         setTeacher(data.teacher);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
@@ -159,13 +161,23 @@ export default function TeacherDetailPage() {
               {/* Profile Photo */}
               <div className="relative h-80 bg-gradient-to-br from-blue-100 to-green-100">
                 {teacher.photo_url ? (
-                  <Image
-                    src={teacher.photo_url}
-                    alt={`${teacher.name} - ${teacher.designation}`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 400px"
-                  />
+                  (() => {
+                    console.log('Rendering Image with src:', teacher.photo_url);
+                    try {
+                      new URL(teacher.photo_url.startsWith('http') ? teacher.photo_url : `http://localhost${teacher.photo_url}`);
+                    } catch (e) {
+                      console.error('Invalid URL for photo_url:', teacher.photo_url, e);
+                    }
+                    return (
+                      <Image
+                        src={teacher.photo_url}
+                        alt={`${teacher.name} - ${teacher.designation}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 400px"
+                      />
+                    );
+                  })()
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
                     <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg">

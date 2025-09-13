@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Filter, Users, GraduationCap, BookOpen, Loader2 } from 'lucide-react';
-import TeacherCard from '@/components/frontend/TeacherCard';
+import ModernTeacherCard from '@/components/frontend/ModernTeacherCard';
 import { Teacher } from '@/types/teacher';
 
 interface TeachersResponse {
@@ -236,13 +236,15 @@ export default function TeachersPage() {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
             >
               {filteredTeachers.map((teacher, index) => (
-                <TeacherCard
+                <ModernTeacherCard
                   key={teacher.id}
                   teacher={teacher}
                   index={index}
+                  variant="detailed"
+                  showContactInfo={false}
                 />
               ))}
             </motion.div>

@@ -15,10 +15,19 @@ export async function GET(request: NextRequest) {
 
     const offset = (page - 1) * limit;
 
-    // Build query
+    // Build query with images
     let query = supabaseAdmin
       .from('events')
-      .select('*', { count: 'exact' });
+      .select(`
+        *,
+        images:event_images(
+          id,
+          url,
+          caption,
+          is_primary,
+          display_order
+        )
+      `, { count: 'exact' });
 
     // Filter for upcoming events if requested
     if (upcoming) {

@@ -250,24 +250,38 @@ export default function EventsPage() {
                       className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group"
                     >
                       <div className="h-48 bg-gradient-to-br from-indigo-400 to-purple-600 relative overflow-hidden">
-                        {event.image_url ? (
-                          <Image 
-                            src={event.image_url} 
-                            alt={event.title} 
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300" 
-                          />
-                        ) : (
-                          <div className="flex items-center justify-center h-full">
-                            <svg className="w-16 h-16 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                          </div>
-                        )}
-                        <div className="absolute top-4 left-4">
+                        {(() => {
+                          // Get primary image or first image from multiple images, fallback to single image_url
+                          const primaryImage = event.images?.find(img => img.is_primary)?.url ||
+                                              event.images?.[0]?.url ||
+                                              event.image_url;
+
+                          return primaryImage ? (
+                            <Image
+                              src={primaryImage}
+                              alt={event.title}
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          ) : (
+                            <div className="flex items-center justify-center h-full">
+                              <svg className="w-16 h-16 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                            </div>
+                          );
+                        })()}
+
+                        <div className="absolute top-4 left-4 flex space-x-2">
                           <span className={`px-3 py-1 rounded-full text-xs font-semibold ${status.color}`}>
                             {status.text}
                           </span>
+                          {/* Show image count if multiple images */}
+                          {event.images && event.images.length > 1 && (
+                            <span className="px-2 py-1 rounded-full text-xs font-semibold bg-black/50 text-white">
+                              {event.images.length} photos
+                            </span>
+                          )}
                         </div>
                       </div>
                       <div className="p-6">

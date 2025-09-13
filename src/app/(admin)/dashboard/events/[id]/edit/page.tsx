@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 import UploadWidget from '@/components/admin/UploadWidget';
+import { MultipleImageUpload, UploadedImage } from '@/components/admin/MultipleImageUpload';
 import { ArrowLeft, Save, Calendar } from 'lucide-react';
 import { z } from 'zod';
 import { Event } from '@/types/event';
@@ -19,6 +20,7 @@ export default function EditEventPage() {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
+  const [eventImages, setEventImages] = useState<UploadedImage[]>([]);
   const [event, setEvent] = useState<Event | null>(null);
   const router = useRouter();
   const params = useParams();
@@ -54,15 +56,26 @@ export default function EditEventPage() {
       setEvent(eventData);
       setImageUrl(eventData.image_url || '');
 
+      // Convert existing images to UploadedImage format
+      if (eventData.images && eventData.images.length > 0) {
+        const existingImages: UploadedImage[] = eventData.images.map((img: any) => ({
+          id: img.id,
+          url: img.url,
+          caption: img.caption || '',
+          is_primary: img.is_primary || false,
+        }));
+        setEventImages(existingImages);
+      }
+
       // Reset form with event data
       reset({
         title: eventData.title,
         description: eventData.description,
-        start_date: eventData.start_date ? 
-          new Date(eventData.start_date).toISOString().slice(0, 16) : 
+        start_date: eventData.start_date ?
+          new Date(eventData.start_date).toISOString().slice(0, 16) :
           undefined,
-        end_date: eventData.end_date ? 
-          new Date(eventData.end_date).toISOString().slice(0, 16) : 
+        end_date: eventData.end_date ?
+          new Date(eventData.end_date).toISOString().slice(0, 16) :
           undefined,
         image_url: eventData.image_url || '',
       });
@@ -82,6 +95,7 @@ export default function EditEventPage() {
 
   const onSubmit = async (data: UpdateEventFormData) => {
     try {
+      // Update the event first
       const response = await fetch(`/api/events/${eventId}`, {
         method: 'PUT',
         headers: {
@@ -89,7 +103,7 @@ export default function EditEventPage() {
         },
         body: JSON.stringify({
           ...data,
-          image_url: imageUrl || undefined,
+          image_url: imageUrl || (eventImages.length > 0 ? eventImages.find(img => img.is_primary)?.url || eventImages[0]?.url : undefined),
         }),
       });
 
@@ -98,7 +112,33 @@ export default function EditEventPage() {
         throw new Error(error.error || 'Failed to update event');
       }
 
-      const result = await response.json();
+      // Update images if there are changes
+      if (eventImages.length > 0) {
+        // First, delete all existing images
+        await fetch(`/api/events/${eventId}/images`, {
+          method: 'DELETE',
+        });
+
+        // Then add the new images
+        const imageData = eventImages.map(img => ({
+          url: img.url,
+          caption: img.caption,
+          is_primary: img.is_primary,
+        }));
+
+        const imagesResponse = await fetch(`/api/events/${eventId}/images`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ images: imageData }),
+        });
+
+        if (!imagesResponse.ok) {
+          console.warn('Failed to update images, but event was updated');
+        }
+      }
+
       router.push('/dashboard/events');
     } catch (error) {
       console.error('Error updating event:', error);
@@ -174,20 +214,40 @@ export default function EditEventPage() {
             {/* Image Upload */}
             <Card className="p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Event Image (Optional)
+                Event Images (Optional)
               </h2>
-              <UploadWidget
-                onUpload={handleImageUpload}
-                accept={{
-                  'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
-                }}
+
+              {/* Multiple Image Upload */}
+              <MultipleImageUpload
+                onImagesChange={setEventImages}
+                onError={(error) => alert(error)}
+                maxImages={10}
                 maxSize={5 * 1024 * 1024} // 5MB
                 bucket="uploads"
                 folder="events"
-                currentFile={imageUrl}
-                label="Upload Event Image"
-                helperText="Upload an image for the event (max 5MB)"
+                currentImages={eventImages}
+                label="Upload Event Images"
+                helperText="Upload up to 10 images for the event. The first image or marked primary image will be the main event image."
               />
+
+              {/* Fallback Single Image Upload */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h3 className="text-md font-medium text-gray-700 mb-3">
+                  Or upload a single image (legacy)
+                </h3>
+                <UploadWidget
+                  onUpload={handleImageUpload}
+                  accept={{
+                    'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
+                  }}
+                  maxSize={5 * 1024 * 1024} // 5MB
+                  bucket="uploads"
+                  folder="events"
+                  currentFile={imageUrl}
+                  label="Upload Single Event Image"
+                  helperText="This will be used if no images are uploaded above"
+                />
+              </div>
             </Card>
           </div>
 

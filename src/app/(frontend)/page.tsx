@@ -7,7 +7,7 @@ import NewsEventsPreview from '@/components/frontend/NewsEventsPreview';
 import EventsNoticesSection from '@/components/frontend/EventsNoticesSection';
 import StructuredData from '@/components/frontend/StructuredData';
 import ErrorBoundary from '@/components/frontend/ErrorBoundary';
-import TeacherCard from '@/components/frontend/TeacherCard';
+import ModernTeacherCard from '@/components/frontend/ModernTeacherCard';
 import { getHomePageData } from '@/lib/homepage-data';
 import type { HomePageData } from '@/types/homepage';
 import type { Teacher } from '@/types/teacher';
@@ -140,10 +140,11 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 mb-12" role="list">
               {teachers.length > 0 ? (
                 teachers.map((teacher, index) => (
-                  <TeacherCard
+                  <ModernTeacherCard
                     key={teacher.id}
                     teacher={teacher as Teacher}
                     index={index}
+                    variant="default"
                   />
                 ))
             ) : (

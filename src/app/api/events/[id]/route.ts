@@ -11,9 +11,24 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const event = await DatabaseService.getById<Event>('events', id);
 
-    if (!event) {
+    // Get event with images
+    const { data: event, error } = await supabaseAdmin
+      .from('events')
+      .select(`
+        *,
+        images:event_images(
+          id,
+          url,
+          caption,
+          is_primary,
+          display_order
+        )
+      `)
+      .eq('id', id)
+      .single();
+
+    if (error || !event) {
       return NextResponse.json(
         { error: 'Event not found' },
         { status: 404 }
