@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    
+
     // Validate request data
     const validation = validateData(createNoticeSchema, body);
     if (!validation.success) {

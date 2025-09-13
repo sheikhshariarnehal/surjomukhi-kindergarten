@@ -26,7 +26,24 @@ export const createNoticeSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   slug: z.string().min(1, 'Slug is required').regex(/^[a-z0-9-]+$/, 'Slug must contain only lowercase letters, numbers, and hyphens'),
   content: z.string().min(1, 'Content is required'),
-  publish_date: z.string().datetime().optional(),
+  publish_date: z.string()
+    .optional()
+    .refine((val) => {
+      if (!val) return true; // Optional field
+      // Accept both datetime-local format (YYYY-MM-DDTHH:MM) and ISO format
+      const datetimeLocalRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+      const isoDatetimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/;
+      return datetimeLocalRegex.test(val) || isoDatetimeRegex.test(val) || !isNaN(Date.parse(val));
+    }, 'Invalid datetime format')
+    .transform((val) => {
+      if (!val) return undefined;
+      // If it's datetime-local format, convert to ISO string
+      if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(val)) {
+        return new Date(val).toISOString();
+      }
+      // If it's already a valid date string, ensure it's ISO format
+      return new Date(val).toISOString();
+    }),
   file_url: z.string().url().optional().or(z.literal('')),
 });
 
@@ -37,7 +54,24 @@ export const createNewsSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   excerpt: z.string().optional(),
   content: z.string().min(1, 'Content is required'),
-  publish_date: z.string().datetime().optional(),
+  publish_date: z.string()
+    .optional()
+    .refine((val) => {
+      if (!val) return true; // Optional field
+      // Accept both datetime-local format (YYYY-MM-DDTHH:MM) and ISO format
+      const datetimeLocalRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+      const isoDatetimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/;
+      return datetimeLocalRegex.test(val) || isoDatetimeRegex.test(val) || !isNaN(Date.parse(val));
+    }, 'Invalid datetime format')
+    .transform((val) => {
+      if (!val) return undefined;
+      // If it's datetime-local format, convert to ISO string
+      if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(val)) {
+        return new Date(val).toISOString();
+      }
+      // If it's already a valid date string, ensure it's ISO format
+      return new Date(val).toISOString();
+    }),
   image_url: z.string().url().optional().or(z.literal('')),
 });
 
@@ -47,8 +81,39 @@ export const updateNewsSchema = createNewsSchema.partial();
 export const createEventSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().min(1, 'Description is required'),
-  start_date: z.string().datetime('Invalid start date'),
-  end_date: z.string().datetime('Invalid end date').optional(),
+  start_date: z.string()
+    .refine((val) => {
+      // Accept both datetime-local format (YYYY-MM-DDTHH:MM) and ISO format
+      const datetimeLocalRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+      const isoDatetimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/;
+      return datetimeLocalRegex.test(val) || isoDatetimeRegex.test(val) || !isNaN(Date.parse(val));
+    }, 'Invalid start date format')
+    .transform((val) => {
+      // If it's datetime-local format, convert to ISO string
+      if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(val)) {
+        return new Date(val).toISOString();
+      }
+      // If it's already a valid date string, ensure it's ISO format
+      return new Date(val).toISOString();
+    }),
+  end_date: z.string()
+    .optional()
+    .refine((val) => {
+      if (!val) return true; // Optional field
+      // Accept both datetime-local format (YYYY-MM-DDTHH:MM) and ISO format
+      const datetimeLocalRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+      const isoDatetimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/;
+      return datetimeLocalRegex.test(val) || isoDatetimeRegex.test(val) || !isNaN(Date.parse(val));
+    }, 'Invalid end date format')
+    .transform((val) => {
+      if (!val) return undefined;
+      // If it's datetime-local format, convert to ISO string
+      if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(val)) {
+        return new Date(val).toISOString();
+      }
+      // If it's already a valid date string, ensure it's ISO format
+      return new Date(val).toISOString();
+    }),
   image_url: z.string().url().optional().or(z.literal('')),
 });
 

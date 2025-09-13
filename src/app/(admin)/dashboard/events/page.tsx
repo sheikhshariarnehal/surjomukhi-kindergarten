@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Table } from '@/components/admin/Table';
-import { Search, Plus, Edit, Trash2, Eye, Calendar, Clock, MapPin } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, Eye, Calendar, Clock, MapPin, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { Event } from '@/types/event';
 
 interface EventsResponse {
@@ -27,11 +27,14 @@ export default function EventsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [sortBy, setSortBy] = useState<'start_date' | 'title'>('start_date');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'upcoming' | 'ongoing' | 'completed'>('all');
   const router = useRouter();
 
   useEffect(() => {
     fetchEvents();
-  }, [currentPage, searchTerm]);
+  }, [currentPage, searchTerm, sortBy, sortOrder, statusFilter]);
 
   const fetchEvents = async () => {
     try {
@@ -48,7 +51,39 @@ export default function EventsPage() {
       }
 
       const data: EventsResponse = await response.json();
-      setEvents(data.events);
+
+      // Filter and sort events on client side
+      let filteredEvents = [...data.events];
+
+      // Apply status filter
+      if (statusFilter !== 'all') {
+        filteredEvents = filteredEvents.filter(event => {
+          const status = getEventStatus(event).status;
+          return status === statusFilter;
+        });
+      }
+
+      // Sort events
+      const sortedEvents = filteredEvents.sort((a, b) => {
+        let aValue: string | Date;
+        let bValue: string | Date;
+
+        if (sortBy === 'start_date') {
+          aValue = new Date(a.start_date);
+          bValue = new Date(b.start_date);
+        } else {
+          aValue = a.title.toLowerCase();
+          bValue = b.title.toLowerCase();
+        }
+
+        if (sortOrder === 'asc') {
+          return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+        } else {
+          return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+        }
+      });
+
+      setEvents(sortedEvents);
       setTotalPages(data.pagination.totalPages);
       setTotalCount(data.pagination.total);
     } catch (error) {
@@ -70,7 +105,8 @@ export default function EventsPage() {
       return;
     }
 
-    if (!confirm(`Are you sure you want to delete "${event.title}"?`)) {
+    const confirmMessage = `Are you sure you want to delete "${event.title}"?\n\nThis action cannot be undone.`;
+    if (!confirm(confirmMessage)) {
       return;
     }
 
@@ -80,14 +116,15 @@ export default function EventsPage() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete event');
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete event');
       }
 
       await fetchEvents();
       alert('Event deleted successfully');
     } catch (error) {
       console.error('Error deleting event:', error);
-      alert('Failed to delete event. Please try again.');
+      alert(`Failed to delete event: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -135,12 +172,9 @@ export default function EventsPage() {
       render: (event: Event) => (
         <div>
           <div className="font-semibold text-gray-900 line-clamp-2">{event.title}</div>
-          {event.location && (
-            <div className="flex items-center text-sm text-gray-500 mt-1">
-              <MapPin className="h-3 w-3 mr-1" />
-              {event.location}
-            </div>
-          )}
+          <div className="text-sm text-gray-500 mt-1 line-clamp-2">
+            {event.description}
+          </div>
         </div>
       ),
     },
@@ -153,12 +187,10 @@ export default function EventsPage() {
             <Calendar className="h-3 w-3 mr-1" />
             {new Date(event.start_date).toLocaleDateString()}
           </div>
-          {event.start_time && (
-            <div className="flex items-center text-gray-500">
-              <Clock className="h-3 w-3 mr-1" />
-              {event.start_time}
-            </div>
-          )}
+          <div className="flex items-center text-gray-500">
+            <Clock className="h-3 w-3 mr-1" />
+            {new Date(event.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </div>
           {event.end_date && event.end_date !== event.start_date && (
             <div className="text-gray-500 text-xs mt-1">
               to {new Date(event.end_date).toLocaleDateString()}
@@ -298,25 +330,99 @@ export default function EventsPage() {
 
       {/* Search and Filters */}
       <Card className="p-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
-          <div className="flex-1 w-full">
-            <Input
-              placeholder="Search events by title or description..."
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              leftIcon={<Search className="h-4 w-4" />}
-            />
-          </div>
-          <div className="flex space-x-2">
-            <Link href="/dashboard/events/create">
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                New Event
+        <div className="flex flex-col space-y-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <div className="flex-1 w-full">
+              <Input
+                placeholder="Search events by title or description..."
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                leftIcon={<Search className="h-4 w-4" />}
+              />
+            </div>
+            <div className="flex space-x-2">
+              <Link href="/dashboard/events/create">
+                <Button>
+                  <Plus className="h-4 w-4 mr-2" />
+                  New Event
+                </Button>
+              </Link>
+              <Button variant="outline" onClick={fetchEvents}>
+                Refresh
               </Button>
-            </Link>
-            <Button variant="outline" onClick={fetchEvents}>
-              Refresh
-            </Button>
+            </div>
+          </div>
+
+          {/* Filters and Sorting Controls */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6 pt-4 border-t border-gray-200">
+            {/* Status Filter */}
+            <div className="flex items-center space-x-2">
+              <span className="text-sm font-medium text-gray-700">Status:</span>
+              <div className="flex space-x-2">
+                <Button
+                  variant={statusFilter === 'all' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setStatusFilter('all')}
+                >
+                  All
+                </Button>
+                <Button
+                  variant={statusFilter === 'upcoming' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setStatusFilter('upcoming')}
+                >
+                  Upcoming
+                </Button>
+                <Button
+                  variant={statusFilter === 'ongoing' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setStatusFilter('ongoing')}
+                >
+                  Ongoing
+                </Button>
+                <Button
+                  variant={statusFilter === 'completed' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setStatusFilter('completed')}
+                >
+                  Completed
+                </Button>
+              </div>
+            </div>
+
+            {/* Sorting Controls */}
+            <div className="flex items-center space-x-4">
+              <span className="text-sm font-medium text-gray-700">Sort by:</span>
+              <div className="flex space-x-2">
+                <Button
+                  variant={sortBy === 'start_date' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setSortBy('start_date')}
+                >
+                  Date
+                </Button>
+                <Button
+                  variant={sortBy === 'title' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setSortBy('title')}
+                >
+                  Title
+                </Button>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                className="flex items-center"
+              >
+                {sortOrder === 'asc' ? (
+                  <ArrowUp className="h-4 w-4 mr-1" />
+                ) : (
+                  <ArrowDown className="h-4 w-4 mr-1" />
+                )}
+                {sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+              </Button>
+            </div>
           </div>
         </div>
       </Card>

@@ -4,19 +4,19 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createNoticeSchema } from '@/lib/validators';
+import { createEventSchema } from '@/lib/validators';
 import { Button } from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 import UploadWidget from '@/components/admin/UploadWidget';
-import { ArrowLeft, Save, FileText } from 'lucide-react';
+import { ArrowLeft, Save, Calendar } from 'lucide-react';
 import { z } from 'zod';
 
-type CreateNoticeFormData = z.infer<typeof createNoticeSchema>;
+type CreateEventFormData = z.infer<typeof createEventSchema>;
 
-export default function CreateNoticePage() {
+export default function CreateEventPage() {
   const [uploading, setUploading] = useState(false);
-  const [fileUrl, setFileUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const router = useRouter();
 
   const {
@@ -25,10 +25,10 @@ export default function CreateNoticePage() {
     formState: { errors, isSubmitting },
     setValue,
     watch,
-  } = useForm<CreateNoticeFormData>({
-    resolver: zodResolver(createNoticeSchema),
+  } = useForm<CreateEventFormData>({
+    resolver: zodResolver(createEventSchema),
     defaultValues: {
-      publish_date: new Date().toISOString().slice(0, 16), // Format for datetime-local input
+      start_date: new Date().toISOString().slice(0, 16), // Format for datetime-local input
     },
   });
 
@@ -41,40 +41,34 @@ export default function CreateNoticePage() {
       .trim();
   };
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const title = e.target.value;
-    const slug = generateSlug(title);
-    setValue('slug', slug);
+  const handleImageUpload = (url: string) => {
+    setImageUrl(url);
+    setValue('image_url', url);
   };
 
-  const handleFileUpload = (url: string) => {
-    setFileUrl(url);
-    setValue('file_url', url);
-  };
-
-  const onSubmit = async (data: CreateNoticeFormData) => {
+  const onSubmit = async (data: CreateEventFormData) => {
     try {
-      const response = await fetch('/api/notices', {
+      const response = await fetch('/api/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...data,
-          file_url: fileUrl || undefined,
+          image_url: imageUrl || undefined,
         }),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || 'Failed to create notice');
+        throw new Error(error.error || 'Failed to create event');
       }
 
       const result = await response.json();
-      router.push('/dashboard/notices');
+      router.push('/dashboard/events');
     } catch (error) {
-      console.error('Error creating notice:', error);
-      alert(`Failed to create notice: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error('Error creating event:', error);
+      alert(`Failed to create event: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -85,15 +79,14 @@ export default function CreateNoticePage() {
         <Button
           variant="ghost"
           onClick={() => router.back()}
+          className="flex items-center"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back
         </Button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Create New Notice</h1>
-          <p className="text-gray-600 mt-1">
-            Add a new notice or announcement for the school
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900">Create New Event</h1>
+          <p className="text-gray-600 mt-1">Add a new event or activity for the school</p>
         </div>
       </div>
 
@@ -102,61 +95,46 @@ export default function CreateNoticePage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             <Card className="p-6">
-              <div className="flex items-center space-x-2 mb-6">
-                <FileText className="h-5 w-5 text-blue-600" />
-                <h2 className="text-lg font-semibold text-gray-900">Notice Details</h2>
-              </div>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Event Details
+              </h2>
 
               <div className="space-y-6">
                 <Input
                   {...register('title')}
                   label="Title"
-                  placeholder="Enter notice title"
+                  placeholder="Enter event title"
                   error={errors.title?.message}
-                  onChange={(e) => {
-                    register('title').onChange(e);
-                    handleTitleChange(e);
-                  }}
-                  required
-                />
-
-                <Input
-                  {...register('slug')}
-                  label="Slug"
-                  placeholder="notice-slug"
-                  helperText="URL-friendly version of the title"
-                  error={errors.slug?.message}
                   required
                 />
 
                 <Textarea
-                  {...register('content')}
-                  label="Content"
-                  placeholder="Enter the notice content..."
+                  {...register('description')}
+                  label="Description"
+                  placeholder="Enter the event description..."
                   rows={8}
-                  error={errors.content?.message}
+                  error={errors.description?.message}
                   required
                 />
               </div>
             </Card>
 
-            {/* File Upload */}
+            {/* Image Upload */}
             <Card className="p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Attachment (Optional)
+                Event Image (Optional)
               </h2>
               <UploadWidget
-                onUpload={handleFileUpload}
+                onUpload={handleImageUpload}
                 accept={{
-                  'application/pdf': ['.pdf'],
-                  'application/msword': ['.doc'],
-                  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+                  'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
                 }}
+                maxSize={5 * 1024 * 1024} // 5MB
                 bucket="uploads"
-                folder="notices"
-                currentFile={fileUrl}
-                label="Upload PDF or Document"
-                helperText="Supported formats: PDF, DOC, DOCX (Max 5MB)"
+                folder="events"
+                currentFile={imageUrl}
+                label="Upload Event Image"
+                helperText="Upload an image for the event (max 5MB)"
               />
             </Card>
           </div>
@@ -165,14 +143,22 @@ export default function CreateNoticePage() {
           <div className="space-y-6">
             <Card className="p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Publishing
+                Event Schedule
               </h2>
               <div className="space-y-4">
                 <Input
-                  {...register('publish_date')}
+                  {...register('start_date')}
                   type="datetime-local"
-                  label="Publish Date"
-                  error={errors.publish_date?.message}
+                  label="Start Date & Time"
+                  error={errors.start_date?.message}
+                  required
+                />
+
+                <Input
+                  {...register('end_date')}
+                  type="datetime-local"
+                  label="End Date & Time (Optional)"
+                  error={errors.end_date?.message}
                 />
 
                 <div className="flex space-x-3">
@@ -183,7 +169,7 @@ export default function CreateNoticePage() {
                     className="flex-1"
                   >
                     <Save className="h-4 w-4 mr-2" />
-                    Publish Notice
+                    Create Event
                   </Button>
                 </div>
               </div>
@@ -201,33 +187,42 @@ export default function CreateNoticePage() {
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Slug:</label>
+                  <label className="text-sm font-medium text-gray-700">Start Date:</label>
                   <p className="text-sm text-gray-500 mt-1">
-                    {watch('slug') || 'auto-generated-slug'}
-                  </p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-700">Publish Date:</label>
-                  <p className="text-sm text-gray-500 mt-1">
-                    {watch('publish_date') ?
+                    {watch('start_date') ? 
                       (() => {
                         try {
-                          const date = new Date(watch('publish_date'));
+                          const date = new Date(watch('start_date'));
                           return date.toLocaleString();
                         } catch {
                           return 'Invalid date';
                         }
-                      })() :
-                      'Now'
+                      })() : 
+                      'Select start date'
                     }
                   </p>
                 </div>
-                {fileUrl && (
+                {watch('end_date') && (
                   <div>
-                    <label className="text-sm font-medium text-gray-700">Attachment:</label>
-                    <p className="text-sm text-green-600 mt-1">✓ File uploaded</p>
+                    <label className="text-sm font-medium text-gray-700">End Date:</label>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {(() => {
+                        try {
+                          const date = new Date(watch('end_date'));
+                          return date.toLocaleString();
+                        } catch {
+                          return 'Invalid date';
+                        }
+                      })()}
+                    </p>
                   </div>
                 )}
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Description:</label>
+                  <p className="text-sm text-gray-500 mt-1 line-clamp-3">
+                    {watch('description') || 'Enter description...'}
+                  </p>
+                </div>
               </div>
             </Card>
           </div>
