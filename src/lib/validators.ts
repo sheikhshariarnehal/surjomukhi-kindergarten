@@ -223,16 +223,22 @@ export const createClassSchema = z.object({
 export const updateClassSchema = createClassSchema.partial();
 
 // Settings validation schemas
-export const updateSettingsSchema = z.object({
-  school_name: z.string().min(1, 'School name is required').optional(),
-  established_year: z.number().int().min(1800).max(new Date().getFullYear()).optional(),
+export const settingsSchema = z.object({
+  school_name: z.string().min(1, 'School name is required'),
+  established_year: z.number().int().min(1800).max(new Date().getFullYear()),
   eiin: z.string().optional(),
   address: z.string().optional(),
   phone: z.string().optional(),
-  email: z.string().email().optional(),
+  email: z.string().email().optional().or(z.literal('')),
+  website: z.string().url().optional().or(z.literal('')),
   logo_url: z.string().url().optional().or(z.literal('')),
   favicon_url: z.string().url().optional().or(z.literal('')),
+  description: z.string().optional(),
+  principal_name: z.string().optional(),
+  principal_message: z.string().optional(),
 });
+
+export const updateSettingsSchema = settingsSchema.partial();
 
 // Generic validation helper
 export function validateData<T>(schema: z.ZodSchema<T>, data: unknown): { success: true; data: T } | { success: false; errors: string[] } {
