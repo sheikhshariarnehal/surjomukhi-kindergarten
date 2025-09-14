@@ -1,18 +1,10 @@
-import React from 'react';
-import { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'About Us - Surjomukhi Kindergarten',
-  description: 'Learn about Surjomukhi Kindergarten\'s mission, vision, and commitment to providing quality early childhood education.',
-  keywords: ['about us', 'kindergarten', 'early childhood education', 'mission', 'vision'],
-  openGraph: {
-    title: 'About Us - Surjomukhi Kindergarten',
-    description: 'Learn about our commitment to providing quality early childhood education.',
-    type: 'website',
-  },
-};
+import React from 'react';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 export default function AboutUsPage() {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
@@ -21,19 +13,19 @@ export default function AboutUsPage() {
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
-                <a href="/" className="text-gray-500 hover:text-gray-700">Home</a>
+                <a href="/" className="text-gray-500 hover:text-gray-700">{t('common.home')}</a>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
               </li>
               <li>
-                <a href="/about" className="text-gray-500 hover:text-gray-700">About</a>
+                <a href="/about" className="text-gray-500 hover:text-gray-700">{t('common.about')}</a>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
               </li>
               <li>
-                <span className="text-gray-900 font-medium">About Us</span>
+                <span className="text-gray-900 font-medium">{t('about.pages.aboutUs.title')}</span>
               </li>
             </ol>
           </nav>
@@ -45,10 +37,10 @@ export default function AboutUsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              About Surjomukhi Kindergarten
+              {t('about.pages.aboutUs.title')}
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-              Nurturing young minds with love, care, and quality education since our establishment.
+              {t('about.pages.aboutUs.subtitle')}
             </p>
           </div>
         </div>

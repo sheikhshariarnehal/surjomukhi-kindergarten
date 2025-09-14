@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 interface StatItem {
   id: string;
@@ -182,12 +183,76 @@ const StatCard: React.FC<{ stat: StatItem; delay: number }> = ({ stat, delay }) 
   );
 };
 
-const StatsCounter: React.FC<StatsCounterProps> = ({ 
-  stats = defaultStats, 
-  title = "Our Impact in Numbers",
-  subtitle = "Discover the thriving community at Surjomukhi Kindergarten",
+const StatsCounter: React.FC<StatsCounterProps> = ({
+  stats,
+  title,
+  subtitle,
   className = ""
 }) => {
+  const { t } = useTranslation();
+
+  const displayTitle = title || t('stats.title');
+  const displaySubtitle = subtitle || t('stats.subtitle');
+
+  const defaultStatsWithTranslations: StatItem[] = [
+    {
+      id: 'students',
+      label: t('stats.students'),
+      value: 450,
+      suffix: '+',
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-100',
+      description: 'Active students enrolled in our kindergarten',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+      ),
+    },
+    {
+      id: 'teachers',
+      label: t('stats.teachers'),
+      value: 25,
+      suffix: '+',
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-100',
+      description: 'Qualified and experienced educators',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      ),
+    },
+    {
+      id: 'experience',
+      label: t('stats.experience'),
+      value: 15,
+      suffix: '+',
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-100',
+      description: 'Years of educational excellence',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+    },
+    {
+      id: 'classes',
+      label: t('stats.classes'),
+      value: 12,
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-100',
+      description: 'Well-structured classroom environments',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+      ),
+    }
+  ];
+
+  const displayStats = stats || defaultStatsWithTranslations;
   return (
     <section 
       className={`py-12 sm:py-16 ${className}`}
@@ -211,19 +276,19 @@ const StatsCounter: React.FC<StatsCounterProps> = ({
             </svg>
           </div>
           
-          <h2 
+          <h2
             id="stats-heading"
             className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight"
             itemProp="name"
           >
-            {title}
+            {displayTitle}
           </h2>
-          
-          <p 
+
+          <p
             className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed"
             itemProp="description"
           >
-            {subtitle}
+            {displaySubtitle}
           </p>
         </motion.header>
 
@@ -233,7 +298,7 @@ const StatsCounter: React.FC<StatsCounterProps> = ({
           role="list"
           aria-label="Kindergarten statistics"
         >
-          {stats.map((stat, index) => (
+          {displayStats.map((stat, index) => (
             <div key={stat.id} role="listitem">
               <StatCard
                 stat={stat}
@@ -252,8 +317,8 @@ const StatsCounter: React.FC<StatsCounterProps> = ({
               "@type": "EducationalOrganization",
               "name": "Surjomukhi Kindergarten",
               "description": "A thriving kindergarten community providing quality early childhood education",
-              "numberOfStudents": stats.find(s => s.id === 'students')?.value || 0,
-              "faculty": stats.find(s => s.id === 'teachers')?.value || 0,
+              "numberOfStudents": displayStats.find(s => s.id === 'students')?.value || 0,
+              "faculty": displayStats.find(s => s.id === 'teachers')?.value || 0,
               "address": {
                 "@type": "PostalAddress",
                 "addressCountry": "BD"

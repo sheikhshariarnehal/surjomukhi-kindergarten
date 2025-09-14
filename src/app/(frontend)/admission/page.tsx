@@ -1,17 +1,10 @@
-import React from 'react';
-import { Metadata } from 'next';
-import Link from 'next/link';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Admissions - Join Our School Community',
-  description: 'Learn about our admission process, requirements, fees, and how to apply. Join our educational community and start your journey with us.',
-  keywords: ['school admission', 'enrollment', 'application process', 'admission requirements', 'school fees', 'apply now'],
-  openGraph: {
-    title: 'Admissions - Join Our School Community',
-    description: 'Learn about our admission process, requirements, fees, and how to apply. Join our educational community and start your journey with us.',
-    type: 'website',
-  },
-};
+import React from 'react';
+import Link from 'next/link';
+import { useTranslation } from '@/contexts/LanguageContext';
+
+// Note: Metadata moved to layout or parent component for client components
 
 const admissionStructuredData = {
   "@context": "https://schema.org",
@@ -31,6 +24,8 @@ const admissionStructuredData = {
 };
 
 export default function AdmissionPage() {
+  const { t } = useTranslation();
+
   return (
     <>
       {/* Structured Data */}
@@ -47,10 +42,10 @@ export default function AdmissionPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Admissions
+                {t('admission.title')}
               </h1>
               <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-                Join our educational community and embark on a journey of learning, growth, and discovery.
+                {t('admission.subtitle')}
               </p>
               <a
                 href="#application-process"
@@ -125,27 +120,18 @@ export default function AdmissionPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Admission Requirements
+                {t('admission.requirements.title')}
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Here&apos;s what you need to know about our admission process.
+                {t('admission.requirements.subtitle')}
               </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Required Documents</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">{t('admission.requirements.documents')}</h3>
                 <div className="space-y-4">
-                  {[
-                    "Completed application form",
-                    "Birth certificate (original and copy)",
-                    "Previous school transcripts/report cards",
-                    "Transfer certificate (if applicable)",
-                    "Medical certificate and vaccination records",
-                    "Passport-size photographs (4 copies)",
-                    "Parent/Guardian identification documents",
-                    "Proof of residence"
-                  ].map((requirement, index) => (
+                  {t('admission.requirements.documentsList', []).map((requirement: string, index: number) => (
                     <div key={index} className="flex items-center">
                       <div className="w-2 h-2 bg-primary-600 rounded-full mr-3"></div>
                       <span className="text-gray-700">{requirement}</span>
@@ -155,7 +141,7 @@ export default function AdmissionPage() {
               </div>
 
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Age Requirements</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">{t('admission.requirements.ageRequirements')}</h3>
                 <div className="bg-white p-6 rounded-lg shadow-lg">
                   <div className="space-y-4">
                     {[
@@ -186,10 +172,10 @@ export default function AdmissionPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Application Process
+                {t('admission.process.title')}
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Follow these simple steps to complete your application.
+                {t('admission.process.subtitle')}
               </p>
             </div>
 
@@ -197,31 +183,31 @@ export default function AdmissionPage() {
               {[
                 {
                   step: "1",
-                  title: "Submit Application",
-                  description: "Complete and submit the online application form with required documents."
+                  titleKey: "admission.process.step1.title",
+                  descriptionKey: "admission.process.step1.description"
                 },
                 {
                   step: "2",
-                  title: "Document Review",
-                  description: "Our admissions team will review your application and documents."
+                  titleKey: "admission.process.step2.title",
+                  descriptionKey: "admission.process.step2.description"
                 },
                 {
                   step: "3",
-                  title: "Interview/Assessment",
-                  description: "Attend an interview or assessment session (if required)."
+                  titleKey: "admission.process.step3.title",
+                  descriptionKey: "admission.process.step3.description"
                 },
                 {
                   step: "4",
-                  title: "Admission Decision",
-                  description: "Receive admission decision and complete enrollment process."
+                  titleKey: "admission.process.step4.title",
+                  descriptionKey: "admission.process.step4.description"
                 }
               ].map((step, index) => (
                 <div key={index} className="text-center">
                   <div className="w-16 h-16 bg-primary-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                     {step.step}
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
-                  <p className="text-gray-600">{step.description}</p>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{t(step.titleKey)}</h3>
+                  <p className="text-gray-600">{t(step.descriptionKey)}</p>
                 </div>
               ))}
             </div>
@@ -337,23 +323,23 @@ export default function AdmissionPage() {
         <section className="py-16 bg-primary-600 text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ready to Apply?
+              {t('admission.cta.title')}
             </h2>
             <p className="text-xl mb-8 max-w-3xl mx-auto">
-              Take the first step towards your child&apos;s bright future. Start your application today!
+              {t('admission.cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/contact"
                 className="bg-white text-primary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
               >
-                Apply Now
+                {t('admission.cta.applyNow')}
               </a>
               <a
                 href="/contact"
                 className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-600 transition-colors"
               >
-                Schedule a Visit
+                {t('common.contactUs')}
               </a>
             </div>
           </div>

@@ -5,89 +5,91 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/contexts/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface NavItem {
-  label: string;
+  labelKey: string;
   href: string;
   children?: NavItem[];
 }
 
 const navigationItems: NavItem[] = [
   {
-    label: 'About',
+    labelKey: 'navigation.about',
     href: '/about',
     children: [
-      { label: 'About Us', href: '/about/about-us' },
-      { label: 'Founders', href: '/about/founders' },
-      { label: 'History', href: '/about/history' },
-      { label: 'Campus Tour', href: '/about/campus-tour' },
-      { label: 'Our Principals', href: '/about/principals' },
-      { label: 'Administrator', href: '/about/administrator' },
+      { labelKey: 'navigation.aboutUs', href: '/about/about-us' },
+      { labelKey: 'navigation.founders', href: '/about/founders' },
+      { labelKey: 'navigation.history', href: '/about/history' },
+      { labelKey: 'navigation.campusTour', href: '/about/campus-tour' },
+      { labelKey: 'navigation.principals', href: '/about/principals' },
+      { labelKey: 'navigation.administrator', href: '/about/administrator' },
     ]
   },
   {
-    label: 'Academic',
+    labelKey: 'navigation.academic',
     href: '/academic',
     children: [
-      { label: 'Class Schedule', href: '/academic/class-schedule' },
+      { labelKey: 'navigation.classSchedule', href: '/academic/class-schedule' },
       {
-        label: 'Classes',
+        labelKey: 'navigation.classes',
         href: '/academic/classes',
         children: [
-          { label: 'Play Group', href: '/academic/classes/play-group' },
-          { label: 'Nursery', href: '/academic/classes/nursery' },
-          { label: 'One', href: '/academic/classes/one' },
-          { label: 'Two', href: '/academic/classes/two' },
-          { label: 'Three', href: '/academic/classes/three' },
-          { label: 'Four', href: '/academic/classes/four' },
-          { label: 'Five', href: '/academic/classes/five' },
+          { labelKey: 'Play Group', href: '/academic/classes/play-group' },
+          { labelKey: 'Nursery', href: '/academic/classes/nursery' },
+          { labelKey: 'One', href: '/academic/classes/one' },
+          { labelKey: 'Two', href: '/academic/classes/two' },
+          { labelKey: 'Three', href: '/academic/classes/three' },
+          { labelKey: 'Four', href: '/academic/classes/four' },
+          { labelKey: 'Five', href: '/academic/classes/five' },
         ]
       },
-      { label: 'Our Teachers', href: '/academic/teachers' },
-      { label: 'Subjects', href: '/academic/subjects' },
-      { label: 'Academic Calendar', href: '/academic/calendar' },
-      { label: 'Academic Rules', href: '/academic/rules' },
+      { labelKey: 'navigation.teachers', href: '/academic/teachers' },
+      { labelKey: 'navigation.subjects', href: '/academic/subjects' },
+      { labelKey: 'navigation.academicCalendar', href: '/academic/calendar' },
+      { labelKey: 'navigation.academicRules', href: '/academic/rules' },
     ]
   },
   {
-    label: 'Admission',
+    labelKey: 'navigation.admission',
     href: '/admission',
     children: [
-      { label: 'How to Apply?', href: '/admission/how-to-apply' },
-      { label: 'Admission Policy', href: '/admission/policy' },
-      { label: 'Apply Online', href: '/admission/apply-online' },
+      { labelKey: 'How to Apply?', href: '/admission/how-to-apply' },
+      { labelKey: 'Admission Policy', href: '/admission/policy' },
+      { labelKey: 'Apply Online', href: '/admission/apply-online' },
     ]
   },
   {
-    label: 'Student',
+    labelKey: 'navigation.student',
     href: '/student',
     children: [
-      { label: 'Students List', href: '/student/list' },
-      { label: 'Syllabus', href: '/student/syllabus' },
-      { label: 'Tuition Fees', href: '/student/fees' },
-      { label: 'Exam Schedule', href: '/student/exam-schedule' },
-      { label: 'Rules & Regulations', href: '/student/rules' },
-      { label: 'Verify Certificate', href: '/student/verify-certificate' },
+      { labelKey: 'navigation.studentsList', href: '/student/list' },
+      { labelKey: 'navigation.syllabus', href: '/student/syllabus' },
+      { labelKey: 'navigation.fees', href: '/student/fees' },
+      { labelKey: 'navigation.examSchedule', href: '/student/exam-schedule' },
+      { labelKey: 'navigation.rules', href: '/student/rules' },
+      { labelKey: 'navigation.verifyCertificate', href: '/student/verify-certificate' },
     ]
   },
   {
-    label: 'Others',
+    labelKey: 'navigation.others',
     href: '/others',
     children: [
-      { label: 'Notices', href: '/notices' },
-      { label: 'News & Events', href: '/news' },
-      { label: 'Gallery', href: '/gallery' },
-      { label: 'Downloads', href: '/downloads' },
-      { label: 'Teachers', href: '/teachers' },
+      { labelKey: 'navigation.notices', href: '/notices' },
+      { labelKey: 'navigation.newsEvents', href: '/news' },
+      { labelKey: 'navigation.gallery', href: '/gallery' },
+      { labelKey: 'navigation.downloads', href: '/downloads' },
+      { labelKey: 'navigation.teachers', href: '/teachers' },
     ]
   },
-  { label: 'Contact', href: '/contact' },
+  { labelKey: 'navigation.contact', href: '/contact' },
 ];
 
 export default function ProfessionalNavbar() {
   const pathname = usePathname();
+  const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'bn'>('en');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
@@ -132,25 +134,11 @@ export default function ProfessionalNavbar() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Language persistence
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('preferred-language') as 'en' | 'bn';
-    if (savedLanguage) {
-      setCurrentLanguage(savedLanguage);
-    }
-  }, []);
-
   const isActive = (href: string) => {
     if (href === '/') {
       return pathname === '/';
     }
     return pathname.startsWith(href);
-  };
-
-  const toggleLanguage = () => {
-    const newLanguage = currentLanguage === 'en' ? 'bn' : 'en';
-    setCurrentLanguage(newLanguage);
-    localStorage.setItem('preferred-language', newLanguage);
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -207,18 +195,7 @@ export default function ProfessionalNavbar() {
 
             {/* Language Switcher & Social Links */}
             <div className="flex items-center space-x-4">
-              <button
-                onClick={toggleLanguage}
-                className="flex items-center px-3 py-1 rounded-md hover:bg-blue-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                aria-label={`Switch to ${currentLanguage === 'en' ? 'Bengali' : 'English'}`}
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-                </svg>
-                <span className="font-medium">
-                  {currentLanguage === 'en' ? 'বাংলা' : 'English'}
-                </span>
-              </button>
+              <LanguageSwitcher variant="toggle" size="sm" className="text-white" />
 
               <div className="flex items-center space-x-3 border-l border-blue-700 pl-4">
                 <a
@@ -269,10 +246,10 @@ export default function ProfessionalNavbar() {
                 </div>
                 <div className="ml-3 lg:ml-4 hidden sm:block">
                   <div className="text-lg lg:text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                    {currentLanguage === 'en' ? 'Surjomukhi Kindergarten' : 'সূর্যমুখী কিন্ডারগার্টেন'}
+                    {t('common.schoolName')}
                   </div>
                   <div className="text-xs lg:text-sm text-gray-600 font-medium">
-                    {currentLanguage === 'en' ? 'Excellence in Early Education' : 'প্রাথমিক শিক্ষায় উৎকর্ষতা'}
+                    {t('common.tagline')}
                   </div>
                 </div>
               </Link>
@@ -281,18 +258,18 @@ export default function ProfessionalNavbar() {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1">
               {navigationItems.map((item) => (
-                <div key={item.label} className="relative group">
+                <div key={item.labelKey} className="relative group">
                   <button
                     className={cn(
                       "px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center",
-                      isActive(item.href) 
-                        ? "bg-primary-100 text-primary-800" 
+                      isActive(item.href)
+                        ? "bg-primary-100 text-primary-800"
                         : "text-gray-700 hover:text-primary-600 hover:bg-gray-50"
                     )}
-                    onMouseEnter={() => setActiveDropdown(item.label)}
+                    onMouseEnter={() => setActiveDropdown(item.labelKey)}
                     onMouseLeave={() => setActiveDropdown(null)}
                   >
-                    {currentLanguage === 'en' ? item.label : item.label}
+                    {t(item.labelKey)}
                     {item.children && (
                       <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -301,10 +278,10 @@ export default function ProfessionalNavbar() {
                   </button>
                   
                   {/* Mega Menu Dropdown */}
-                  {item.children && activeDropdown === item.label && (
+                  {item.children && activeDropdown === item.labelKey && (
                     <div
                       className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50"
-                      onMouseEnter={() => setActiveDropdown(item.label)}
+                      onMouseEnter={() => setActiveDropdown(item.labelKey)}
                       onMouseLeave={() => setActiveDropdown(null)}
                     >
                       {item.children.map((child) => (
@@ -314,7 +291,7 @@ export default function ProfessionalNavbar() {
                             <>
                               <div className="flex items-center justify-between px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors cursor-pointer">
                                 <Link href={child.href} className="flex-1">
-                                  {child.label}
+                                  {t(child.labelKey, child.labelKey)}
                                 </Link>
                                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -328,7 +305,7 @@ export default function ProfessionalNavbar() {
                                     href={grandchild.href}
                                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
                                   >
-                                    {grandchild.label}
+                                    {t(grandchild.labelKey, grandchild.labelKey)}
                                   </Link>
                                 ))}
                               </div>
@@ -339,7 +316,7 @@ export default function ProfessionalNavbar() {
                               href={child.href}
                               className="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
                             >
-                              {child.label}
+                              {t(child.labelKey, child.labelKey)}
                             </Link>
                           )}
                         </div>
@@ -390,7 +367,7 @@ export default function ProfessionalNavbar() {
                   href="/admission"
                   className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2.5 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
-                  {currentLanguage === 'en' ? 'Admission' : 'ভর্তি'}
+                  {t('navigation.admission')}
                 </Link>
               </div>
             </div>
@@ -434,7 +411,7 @@ export default function ProfessionalNavbar() {
                   <input
                     ref={searchRef}
                     type="text"
-                    placeholder={currentLanguage === 'en' ? 'Search our website...' : 'আমাদের ওয়েবসাইট খুঁজুন...'}
+                    placeholder={t('common.searchPlaceholder')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-12 pr-12 py-3 border-2 border-blue-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white shadow-sm text-gray-700 placeholder-gray-500"
@@ -464,13 +441,13 @@ export default function ProfessionalNavbar() {
               <div className="px-4 py-6 space-y-2 max-h-screen overflow-y-auto">
 
                 {navigationItems.map((item) => (
-                  <div key={item.label} className="border-b border-gray-100 pb-2 last:border-b-0">
+                  <div key={item.labelKey} className="border-b border-gray-100 pb-2 last:border-b-0">
                     {item.children ? (
                       // Expandable menu item
                       <div>
                         <button
                           onClick={() => setExpandedMobileItem(
-                            expandedMobileItem === item.label ? null : item.label
+                            expandedMobileItem === item.labelKey ? null : item.labelKey
                           )}
                           className={cn(
                             "flex items-center justify-between w-full px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200",
@@ -483,12 +460,12 @@ export default function ProfessionalNavbar() {
                             <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                             </svg>
-                            <span>{currentLanguage === 'en' ? item.label : item.label}</span>
+                            <span>{t(item.labelKey)}</span>
                           </div>
                           <svg
                             className={cn(
                               "w-5 h-5 transition-transform duration-200",
-                              expandedMobileItem === item.label ? "rotate-180" : ""
+                              expandedMobileItem === item.labelKey ? "rotate-180" : ""
                             )}
                             fill="none"
                             stroke="currentColor"
@@ -501,7 +478,7 @@ export default function ProfessionalNavbar() {
                         {/* Expandable submenu */}
                         <div className={cn(
                           "overflow-hidden transition-all duration-300 ease-in-out",
-                          expandedMobileItem === item.label
+                          expandedMobileItem === item.labelKey
                             ? "max-h-96 opacity-100 mt-2"
                             : "max-h-0 opacity-0"
                         )}>
@@ -520,18 +497,18 @@ export default function ProfessionalNavbar() {
                                           setExpandedMobileItem(null);
                                         }}
                                       >
-                                        • {child.label}
+                                        • {t(child.labelKey, child.labelKey)}
                                       </Link>
                                       <button
                                         onClick={() => setExpandedMobileItem(
-                                          expandedMobileItem === `${item.label}-${child.label}` ? null : `${item.label}-${child.label}`
+                                          expandedMobileItem === `${item.labelKey}-${child.labelKey}` ? null : `${item.labelKey}-${child.labelKey}`
                                         )}
                                         className="p-1 hover:bg-blue-100 rounded"
                                       >
                                         <svg
                                           className={cn(
                                             "w-4 h-4 transition-transform duration-200",
-                                            expandedMobileItem === `${item.label}-${child.label}` ? "rotate-180" : ""
+                                            expandedMobileItem === `${item.labelKey}-${child.labelKey}` ? "rotate-180" : ""
                                           )}
                                           fill="none"
                                           stroke="currentColor"
@@ -544,7 +521,7 @@ export default function ProfessionalNavbar() {
                                     {/* Nested children */}
                                     <div className={cn(
                                       "overflow-hidden transition-all duration-300 ease-in-out",
-                                      expandedMobileItem === `${item.label}-${child.label}`
+                                      expandedMobileItem === `${item.labelKey}-${child.labelKey}`
                                         ? "max-h-96 opacity-100"
                                         : "max-h-0 opacity-0"
                                     )}>
@@ -559,7 +536,7 @@ export default function ProfessionalNavbar() {
                                               setExpandedMobileItem(null);
                                             }}
                                           >
-                                            ◦ {grandchild.label}
+                                            ◦ {t(grandchild.labelKey, grandchild.labelKey)}
                                           </Link>
                                         ))}
                                       </div>
@@ -575,7 +552,7 @@ export default function ProfessionalNavbar() {
                                       setExpandedMobileItem(null);
                                     }}
                                   >
-                                    • {child.label}
+                                    • {t(child.labelKey, child.labelKey)}
                                   </Link>
                                 )}
                               </div>
@@ -598,7 +575,7 @@ export default function ProfessionalNavbar() {
                         <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        <span>{currentLanguage === 'en' ? item.label : item.label}</span>
+                        <span>{t(item.labelKey, item.labelKey)}</span>
                       </Link>
                     )}
                   </div>
@@ -615,7 +592,7 @@ export default function ProfessionalNavbar() {
                       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                       </svg>
-                      {currentLanguage === 'en' ? 'Admission' : 'ভর্তি'}
+                      {t('navigation.admission')}
                     </Link>
 
 

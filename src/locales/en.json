@@ -1,0 +1,354 @@
+{
+  "common": {
+    "schoolName": "Surjomukhi Kindergarten",
+    "tagline": "Excellence in Early Education",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "welcome": "Welcome to our website!",
+    "loading": "Loading...",
+    "error": "Error",
+    "search": "Search",
+    "searchPlaceholder": "Search our website...",
+    "menu": "Menu",
+    "close": "Close",
+    "readMore": "Read More",
+    "viewAll": "View All",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "joinOurCommunity": "Join Our Community",
+    "applyForAdmission": "Apply for Admission",
+    "contactUs": "Contact Us"
+  },
+  "stats": {
+    "students": "Students",
+    "teachers": "Teachers",
+    "experience": "Years Experience",
+    "classes": "Classes",
+    "successRate": "Success Rate",
+    "title": "Our Achievements",
+    "subtitle": "Numbers that speak for our excellence"
+  },
+  "eventsNotices": {
+    "title": "Events & Notices",
+    "subtitle": "Stay updated with our latest events and announcements",
+    "events": "Events",
+    "notices": "Notices",
+    "noEvents": "No events available",
+    "noNotices": "No notices available",
+    "viewAllEvents": "View All Events",
+    "viewAllNotices": "View All Notices"
+  },
+  "newsEvents": {
+    "title": "Latest News & Events",
+    "subtitle": "Stay informed about our school activities and achievements",
+    "news": "News",
+    "events": "Events",
+    "noNews": "No news available",
+    "noEvents": "No events available",
+    "readMore": "Read More",
+    "viewAll": "View All"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "aboutUs": "About Us",
+    "founders": "Founders",
+    "history": "History",
+    "campusTour": "Campus Tour",
+    "principals": "Our Principals",
+    "administrator": "Administrator",
+    "academic": "Academic",
+    "classes": "Classes",
+    "subjects": "Subjects",
+    "teachers": "Teachers",
+    "classSchedule": "Class Schedule",
+    "academicCalendar": "Academic Calendar",
+    "academicRules": "Academic Rules",
+    "admission": "Admission",
+    "admissionInfo": "Admission Information",
+    "admissionForm": "Admission Form",
+    "admissionRequirements": "Admission Requirements",
+    "tuitionFees": "Tuition Fees",
+    "scholarships": "Scholarships",
+    "student": "Student",
+    "studentsList": "Students List",
+    "syllabus": "Syllabus",
+    "fees": "Tuition Fees",
+    "examSchedule": "Exam Schedule",
+    "rules": "Rules & Regulations",
+    "verifyCertificate": "Verify Certificate",
+    "others": "Others",
+    "notices": "Notices",
+    "newsEvents": "News & Events",
+    "gallery": "Gallery",
+    "downloads": "Downloads",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Welcome to Surjomukhi Kindergarten",
+    "subtitle": "Excellence in Early Childhood Education",
+    "description": "Nurturing young minds with quality education, experienced teachers, and a safe learning environment for your child's bright future.",
+    "enrollNow": "Enroll Now",
+    "learnMore": "Learn More",
+    "watchVideo": "Watch Video"
+  },
+  "teachers": {
+    "title": "Meet Our Dedicated Teachers",
+    "subtitle": "Our experienced and qualified faculty members are committed to providing excellent early childhood education and nurturing young minds.",
+    "viewAllTeachers": "View All Teachers",
+    "experience": "Years Experience",
+    "subjects": "Subjects",
+    "qualification": "Qualification",
+    "noTeachers": "No teacher profiles available",
+    "checkBackSoon": "Check back soon to meet our amazing faculty!",
+    "loading": "Loading our amazing teachers..."
+  },
+  "quickLinks": {
+    "title": "Quick Links & Resources",
+    "subtitle": "Access important government portals, educational resources, and school services with just one click.",
+    "governmentPortals": "Government Portals",
+    "educationalResources": "Educational Resources",
+    "schoolServices": "School Services",
+    "ministryOfEducation": "Ministry of Education",
+    "ministryDesc": "Official website of the Ministry of Education, Bangladesh",
+    "educationBoard": "Directorate of Secondary Education",
+    "educationBoardDesc": "Secondary and Higher Secondary Education Board",
+    "curriculumBoard": "National Curriculum Board",
+    "curriculumBoardDesc": "National Curriculum and Textbook Board (NCTB)",
+    "boardResults": "Education Board Results",
+    "boardResultsDesc": "Check SSC, HSC and other board examination results",
+    "admissionInfo": "Admission Information",
+    "admissionInfoDesc": "Learn about our admission process and requirements",
+    "contactUs": "Contact Us",
+    "contactUsDesc": "Get in touch with our school administration"
+  },
+  "footer": {
+    "aboutSchool": "About School",
+    "quickLinks": "Quick Links",
+    "studentResources": "Student Resources",
+    "contact": "Contact Information",
+    "followUs": "Follow Us",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "description": "Providing quality education and nurturing young minds for a brighter future. Our commitment to excellence in education has been our hallmark for decades.",
+    "allRightsReserved": "All rights reserved",
+    "copyright": "© 2024 Surjomukhi Kindergarten. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  },
+  "contact": {
+    "getInTouch": "Get in Touch",
+    "contactInfo": "Contact Information",
+    "sendMessage": "Send us a Message",
+    "name": "Full Name",
+    "email": "Email Address",
+    "subject": "Subject",
+    "message": "Message",
+    "sendMessage": "Send Message",
+    "address": "Address",
+    "phone": "Phone",
+    "emailAddress": "Email",
+    "officeHours": "Office Hours",
+    "mondayFriday": "Monday - Friday: 8:00 AM - 4:00 PM",
+    "saturday": "Saturday: 9:00 AM - 1:00 PM",
+    "sunday": "Sunday: Closed"
+  },
+  "admission": {
+    "title": "Admission Information",
+    "subtitle": "Join our kindergarten family and give your child the best start in education",
+    "applyNow": "Apply Now",
+    "requirements": "Admission Requirements",
+    "process": "Admission Process",
+    "fees": "Fee Structure",
+    "documents": "Required Documents"
+  },
+  "news": {
+    "title": "Latest News & Events",
+    "subtitle": "Stay updated with our latest news, events, and announcements",
+    "readMore": "Read More",
+    "viewAllNews": "View All News",
+    "noNews": "No news available at the moment",
+    "upcomingEvents": "Upcoming Events",
+    "recentNews": "Recent News"
+  },
+  "notices": {
+    "title": "Important Notices",
+    "subtitle": "Stay informed with our latest announcements and important notices",
+    "viewAllNotices": "View All Notices",
+    "noNotices": "No notices available at the moment",
+    "important": "Important",
+    "urgent": "Urgent",
+    "general": "General"
+  },
+  "admission": {
+    "title": "Admissions",
+    "subtitle": "Join our educational community and start your journey with us.",
+    "process": {
+      "title": "Admission Process",
+      "subtitle": "Simple steps to join our school community",
+      "step1": {
+        "title": "Application Form",
+        "description": "Complete and submit the online application form with all required information."
+      },
+      "step2": {
+        "title": "Document Submission",
+        "description": "Submit all required documents including academic records and certificates."
+      },
+      "step3": {
+        "title": "Assessment",
+        "description": "Participate in our assessment process designed to understand your child's needs."
+      },
+      "step4": {
+        "title": "Interview",
+        "description": "Attend a personal interview with our admission committee."
+      },
+      "step5": {
+        "title": "Admission Decision",
+        "description": "Receive admission decision and complete enrollment procedures."
+      }
+    },
+    "requirements": {
+      "title": "Admission Requirements",
+      "subtitle": "What you need to apply",
+      "documents": "Required Documents",
+      "documentsList": [
+        "Completed application form",
+        "Birth certificate",
+        "Previous academic records",
+        "Medical certificate",
+        "Passport-size photographs",
+        "Transfer certificate (if applicable)"
+      ],
+      "ageRequirements": "Age Requirements",
+      "ageInfo": "Students must meet the minimum age requirements for their respective grade levels as per educational board guidelines."
+    },
+    "fees": {
+      "title": "Fee Structure",
+      "subtitle": "Transparent and affordable education",
+      "admissionFee": "Admission Fee",
+      "tuitionFee": "Monthly Tuition Fee",
+      "developmentFee": "Development Fee",
+      "examFee": "Examination Fee",
+      "note": "Fee structure may vary by grade level. Contact us for detailed information."
+    },
+    "cta": {
+      "title": "Ready to Apply?",
+      "subtitle": "Start your journey with us today. Apply now and become part of our educational family.",
+      "applyNow": "Apply Now",
+      "downloadForm": "Download Application Form"
+    }
+  },
+  "about": {
+    "title": "About Our School",
+    "subtitle": "Discover our journey, mission, and commitment to educational excellence since 1995.",
+    "mission": {
+      "title": "Our Mission",
+      "description1": "To provide quality education that nurtures young minds, develops critical thinking skills, and prepares students for success in an ever-changing world. We are committed to fostering a learning environment that promotes academic excellence, character development, and social responsibility.",
+      "description2": "Our dedicated faculty and staff work tirelessly to ensure that every student receives personalized attention and support to reach their full potential."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "description": "To be a leading educational institution that inspires lifelong learning, cultivates global citizens, and empowers students to make positive contributions to society through innovation, creativity, and ethical leadership."
+    },
+    "history": {
+      "title": "Our History",
+      "subtitle": "A journey of educational excellence spanning nearly three decades.",
+      "founded": {
+        "title": "Founded in 1995",
+        "description": "Our school was established with a vision to provide quality education to the local community. Starting with just 50 students and 5 teachers, we have grown into a thriving educational institution."
+      },
+      "growth": {
+        "title": "Continuous Growth",
+        "description": "Over the years, we have expanded our facilities, enhanced our curriculum, and embraced modern teaching methodologies. Today, we serve over 450 students with a dedicated team of 25+ qualified teachers."
+      }
+    },
+    "values": {
+      "title": "Our Core Values",
+      "subtitle": "The principles that guide everything we do.",
+      "excellence": {
+        "title": "Excellence",
+        "description": "We strive for the highest standards in education and personal development."
+      },
+      "integrity": {
+        "title": "Integrity",
+        "description": "We uphold honesty, transparency, and ethical behavior in all our actions."
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "We embrace new ideas and technologies to enhance the learning experience."
+      },
+      "inclusivity": {
+        "title": "Inclusivity",
+        "description": "We welcome and celebrate diversity, ensuring every student feels valued."
+      },
+      "collaboration": {
+        "title": "Collaboration",
+        "description": "We work together as a community to achieve common goals."
+      },
+      "responsibility": {
+        "title": "Responsibility",
+        "description": "We take ownership of our actions and their impact on others."
+      }
+    },
+    "leadership": {
+      "title": "Leadership Team",
+      "subtitle": "Meet the dedicated leaders who guide our educational mission.",
+      "principal": {
+        "name": "Dr. Sarah Johnson",
+        "position": "Principal",
+        "description": "With over 20 years in education, Dr. Johnson leads our school with passion and vision."
+      },
+      "vicePrincipal": {
+        "name": "Mr. David Wilson",
+        "position": "Vice Principal",
+        "description": "An experienced educator focused on curriculum development and student success."
+      },
+      "academicDirector": {
+        "name": "Ms. Emily Chen",
+        "position": "Academic Director",
+        "description": "Dedicated to maintaining high academic standards and innovative teaching methods."
+      }
+    },
+    "cta": {
+      "title": "Join Our Community",
+      "subtitle": "Become part of our educational family and experience the difference quality education makes."
+    },
+    "pages": {
+      "aboutUs": {
+        "title": "About Us",
+        "subtitle": "Learn about our commitment to providing quality early childhood education",
+        "content": "Welcome to Surjomukhi Kindergarten, where we believe every child deserves the best start in their educational journey."
+      },
+      "founders": {
+        "title": "Our Founders",
+        "subtitle": "Meet the visionaries who established our kindergarten"
+      },
+      "history": {
+        "title": "Our History",
+        "subtitle": "Discover our journey of educational excellence"
+      },
+      "campusTour": {
+        "title": "Campus Tour",
+        "subtitle": "Explore our modern facilities and learning environments"
+      },
+      "principals": {
+        "title": "Our Principals",
+        "subtitle": "Meet our educational leaders"
+      },
+      "administrator": {
+        "title": "Administrator",
+        "subtitle": "Our administrative team"
+      }
+    }
+  }
+}

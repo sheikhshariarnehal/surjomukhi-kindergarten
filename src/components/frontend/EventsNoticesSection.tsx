@@ -7,6 +7,7 @@ import NoticesComponent from './NoticesComponent';
 import ErrorBoundary from './ErrorBoundary';
 import { Event } from '@/types/event';
 import { Notice } from '@/types/notice';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 interface EventsNoticesSectionProps {
   initialEvents?: Event[];
@@ -14,11 +15,12 @@ interface EventsNoticesSectionProps {
   className?: string;
 }
 
-export default function EventsNoticesSection({ 
-  initialEvents = [], 
+export default function EventsNoticesSection({
+  initialEvents = [],
   initialNotices = [],
-  className = '' 
+  className = ''
 }: EventsNoticesSectionProps) {
+  const { t } = useTranslation();
   return (
     <section 
       className={`py-8 md:py-12 lg:py-16 bg-gradient-to-br from-gray-50/70 to-blue-50/30 ${className}`}
@@ -34,10 +36,10 @@ export default function EventsNoticesSection({
           className="text-center mb-6 md:mb-8 lg:mb-10"
         >
           <h2 id="events-notices-heading" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 md:mb-3">
-            Events & Notices
+            {t('eventsNotices.title')}
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-xl mx-auto">
-            Stay updated with our latest events and announcements
+            {t('eventsNotices.subtitle')}
           </p>
         </motion.div>
 

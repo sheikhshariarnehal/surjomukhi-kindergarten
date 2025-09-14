@@ -1,23 +1,27 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 const Footer: React.FC = () => {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
-    { label: 'About Us', href: '/about' },
-    { label: 'Admission', href: '/admission' },
-    { label: 'Teachers', href: '/teachers' },
-    { label: 'Gallery', href: '/gallery' },
-    { label: 'Contact', href: '/contact' },
+    { labelKey: 'navigation.aboutUs', href: '/about' },
+    { labelKey: 'navigation.admission', href: '/admission' },
+    { labelKey: 'navigation.teachers', href: '/teachers' },
+    { labelKey: 'navigation.gallery', href: '/gallery' },
+    { labelKey: 'navigation.contact', href: '/contact' },
   ];
 
   const studentLinks = [
-    { label: 'Notices', href: '/notices' },
-    { label: 'Events', href: '/events' },
-    { label: 'Downloads', href: '/downloads' },
-    { label: 'Verify Certificate', href: '/verify-certificate' },
+    { labelKey: 'navigation.notices', href: '/notices' },
+    { labelKey: 'navigation.newsEvents', href: '/events' },
+    { labelKey: 'navigation.downloads', href: '/downloads' },
+    { labelKey: 'navigation.verifyCertificate', href: '/student/verify-certificate' },
   ];
 
   const socialLinks = [
@@ -67,8 +71,7 @@ const Footer: React.FC = () => {
               <span className="ml-2 text-xl font-bold">School Name</span>
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
-              Providing quality education and nurturing young minds for a brighter future. 
-              Our commitment to excellence in education has been our hallmark for decades.
+              {t('footer.description', 'Providing quality education and nurturing young minds for a brighter future. Our commitment to excellence in education has been our hallmark for decades.')}
             </p>
             <div className="space-y-2 text-sm text-gray-300">
               <div className="flex items-center">
@@ -95,7 +98,7 @@ const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.href}>
@@ -103,7 +106,7 @@ const Footer: React.FC = () => {
                     href={link.href}
                     className="text-gray-300 hover:text-white transition-colors duration-200"
                   >
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 </li>
               ))}
@@ -112,7 +115,7 @@ const Footer: React.FC = () => {
 
           {/* Student Resources */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Student Resources</h3>
+            <h3 className="text-lg font-semibold mb-4">{t('footer.studentResources', 'Student Resources')}</h3>
             <ul className="space-y-2">
               {studentLinks.map((link) => (
                 <li key={link.href}>
@@ -120,7 +123,7 @@ const Footer: React.FC = () => {
                     href={link.href}
                     className="text-gray-300 hover:text-white transition-colors duration-200"
                   >
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 </li>
               ))}
@@ -132,7 +135,7 @@ const Footer: React.FC = () => {
         <div className="mt-8 pt-8 border-t border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-400 mb-4 md:mb-0">
-              © {currentYear} School Name. All rights reserved.
+              © {currentYear} {t('common.schoolName')}. {t('footer.allRightsReserved', 'All rights reserved')}.
             </div>
             
             {/* Social Links */}

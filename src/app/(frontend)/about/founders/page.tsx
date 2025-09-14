@@ -1,18 +1,10 @@
-import React from 'react';
-import { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Our Founders - Surjomukhi Kindergarten',
-  description: 'Meet the visionary founders who established Surjomukhi Kindergarten with a mission to provide quality early childhood education.',
-  keywords: ['founders', 'establishment', 'vision', 'kindergarten history'],
-  openGraph: {
-    title: 'Our Founders - Surjomukhi Kindergarten',
-    description: 'Meet the visionary founders of our kindergarten.',
-    type: 'website',
-  },
-};
+import React from 'react';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 export default function FoundersPage() {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
@@ -21,19 +13,19 @@ export default function FoundersPage() {
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
-                <a href="/" className="text-gray-500 hover:text-gray-700">Home</a>
+                <a href="/" className="text-gray-500 hover:text-gray-700">{t('common.home')}</a>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
               </li>
               <li>
-                <a href="/about" className="text-gray-500 hover:text-gray-700">About</a>
+                <a href="/about" className="text-gray-500 hover:text-gray-700">{t('common.about')}</a>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
               </li>
               <li>
-                <span className="text-gray-900 font-medium">Founders</span>
+                <span className="text-gray-900 font-medium">{t('about.pages.founders.title')}</span>
               </li>
             </ol>
           </nav>

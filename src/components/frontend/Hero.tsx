@@ -3,51 +3,52 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/lib';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 interface HeroSlide {
   id: number;
-  title: string;
-  subtitle: string;
-  description: string;
+  titleKey: string;
+  subtitleKey: string;
+  descriptionKey: string;
   image: string;
   cta: {
-    primary: { text: string; href: string };
-    secondary: { text: string; href: string };
+    primary: { textKey: string; href: string };
+    secondary: { textKey: string; href: string };
   };
 }
 
 const heroSlides: HeroSlide[] = [
   {
     id: 1,
-    title: "Welcome to Surjomukhi Kindergarten",
-    subtitle: "Excellence in Early Education",
-    description: "Nurturing young minds for a brighter future through quality education and holistic development in a caring environment.",
+    titleKey: "hero.title",
+    subtitleKey: "hero.subtitle",
+    descriptionKey: "hero.description",
     image: "/hero/campus.jpg",
     cta: {
-      primary: { text: "Apply for Admission", href: "/admission" },
-      secondary: { text: "Learn More", href: "/about" }
+      primary: { textKey: "hero.enrollNow", href: "/admission" },
+      secondary: { textKey: "hero.learnMore", href: "/about" }
     }
   },
   {
     id: 2,
-    title: "Safe Learning Environment",
-    subtitle: "Modern Kindergarten Facilities",
-    description: "Our campus provides a safe, nurturing environment with age-appropriate facilities designed for early childhood development.",
+    titleKey: "Safe Learning Environment",
+    subtitleKey: "Modern Kindergarten Facilities",
+    descriptionKey: "Our campus provides a safe, nurturing environment with age-appropriate facilities designed for early childhood development.",
     image: "/hero/campus2.jpg",
     cta: {
-      primary: { text: "Explore Facilities", href: "/about/campus-tour" },
-      secondary: { text: "Virtual Tour", href: "/gallery" }
+      primary: { textKey: "Explore Facilities", href: "/about/campus-tour" },
+      secondary: { textKey: "Virtual Tour", href: "/gallery" }
     }
   },
   {
     id: 3,
-    title: "Holistic Development",
-    subtitle: "Beyond Academics",
-    description: "We focus on the overall development of children through play-based learning, arts, and creative activities.",
+    titleKey: "Holistic Development",
+    subtitleKey: "Beyond Academics",
+    descriptionKey: "We focus on the overall development of children through play-based learning, arts, and creative activities.",
     image: "/hero/children-learning.jpg",
     cta: {
-      primary: { text: "View Activities", href: "/academic/classes" },
-      secondary: { text: "Contact Us", href: "/contact" }
+      primary: { textKey: "View Activities", href: "/academic/classes" },
+      secondary: { textKey: "common.contact", href: "/contact" }
     }
   }
 ];
@@ -114,6 +115,7 @@ const InstitutionalFooter: React.FC = () => (
 );
 
 const Hero: React.FC = () => {
+  const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
@@ -176,13 +178,13 @@ const Hero: React.FC = () => {
               >
                 <div className="space-y-4">
                   <h2 className="text-sm sm:text-base md:text-lg font-medium text-blue-200 uppercase tracking-wider">
-                    {heroSlides[currentSlide].subtitle}
+                    {t(heroSlides[currentSlide].subtitleKey, heroSlides[currentSlide].subtitleKey)}
                   </h2>
                   <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                    {heroSlides[currentSlide].title}
+                    {t(heroSlides[currentSlide].titleKey, heroSlides[currentSlide].titleKey)}
                   </h1>
                   <p className="text-base sm:text-lg md:text-xl max-w-4xl mx-auto leading-relaxed text-gray-100">
-                    {heroSlides[currentSlide].description}
+                    {t(heroSlides[currentSlide].descriptionKey, heroSlides[currentSlide].descriptionKey)}
                   </p>
                 </div>
 
@@ -194,7 +196,7 @@ const Hero: React.FC = () => {
                 >
                   <a href={heroSlides[currentSlide].cta.primary.href} className="w-full sm:w-auto">
                     <Button size="lg" className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700 px-8 py-4 text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 min-h-[48px]">
-                      {heroSlides[currentSlide].cta.primary.text}
+                      {t(heroSlides[currentSlide].cta.primary.textKey, heroSlides[currentSlide].cta.primary.textKey)}
                     </Button>
                   </a>
                   <a href={heroSlides[currentSlide].cta.secondary.href} className="w-full sm:w-auto">
@@ -203,7 +205,7 @@ const Hero: React.FC = () => {
                       size="lg"
                       className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-base font-semibold rounded-lg backdrop-blur-sm bg-white/10 hover:bg-white transition-all duration-300 min-h-[48px]"
                     >
-                      {heroSlides[currentSlide].cta.secondary.text}
+                      {t(heroSlides[currentSlide].cta.secondary.textKey, heroSlides[currentSlide].cta.secondary.textKey)}
                     </Button>
                   </a>
                 </motion.div>
