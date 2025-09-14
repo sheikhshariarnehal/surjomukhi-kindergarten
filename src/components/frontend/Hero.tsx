@@ -25,7 +25,7 @@ const heroSlides: HeroSlide[] = [
     titleKey: "hero.title",
     subtitleKey: "hero.subtitle",
     descriptionKey: "hero.description",
-    image: "/hero/campus.jpg",
+    image: "/hero/campus3.jpg",
     imageAlt: "Surjomukhi Kindergarten campus - Modern educational facility for early childhood development",
     cta: {
       primary: { 
@@ -45,7 +45,7 @@ const heroSlides: HeroSlide[] = [
     titleKey: "Safe Learning Environment",
     subtitleKey: "Modern Kindergarten Facilities",
     descriptionKey: "Our campus provides a safe, nurturing environment with age-appropriate facilities designed for early childhood development.",
-    image: "/hero/campus2.jpg",
+    image: "/hero/campus4.jpg",
     imageAlt: "Safe learning environment at Surjomukhi Kindergarten with modern facilities",
     cta: {
       primary: { 
@@ -65,7 +65,7 @@ const heroSlides: HeroSlide[] = [
     titleKey: "Holistic Development",
     subtitleKey: "Beyond Academics",
     descriptionKey: "We focus on the overall development of children through play-based learning, arts, and creative activities.",
-    image: "/hero/children-learning.jpg",
+    image: "/hero/school-playground.jpg",
     imageAlt: "Children engaged in holistic learning activities at Surjomukhi Kindergarten",
     cta: {
       primary: { 

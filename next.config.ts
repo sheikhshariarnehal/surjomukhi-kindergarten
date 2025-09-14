@@ -6,13 +6,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   generateEtags: true,
 
-  // Output configuration for cPanel
-  output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
-
   // ESLint configuration for production builds
   eslint: {
     // Only run ESLint on these directories during production builds
-    dirs: ['src/app/(frontend)', 'src/components/frontend', 'src/lib', 'src/types'],
+    dirs: ['src/app', 'src/components', 'src/lib', 'src/types'],
     // Allow production builds to complete even if there are ESLint errors
     ignoreDuringBuilds: process.env.NODE_ENV === 'production',
   },
@@ -72,7 +69,9 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
-      allowedOrigins: ['localhost:3000'],
+      allowedOrigins: process.env.NODE_ENV === 'production'
+        ? [process.env.NEXT_PUBLIC_APP_URL || 'https://your-app.vercel.app']
+        : ['localhost:3000'],
     },
   },
 };

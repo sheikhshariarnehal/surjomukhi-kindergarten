@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "deploy:cpanel": "chmod +x deploy-cpanel.sh && ./deploy-cpanel.sh",
     "postbuild": "echo 'Build completed successfully!'"
   },
   "dependencies": {
