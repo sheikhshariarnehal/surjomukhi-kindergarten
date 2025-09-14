@@ -252,18 +252,21 @@ export default function ProfessionalNavbar() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      {/* Compact Top Utility Bar */}
+      {/* Blue Top Utility Bar */}
       <div 
-        className="bg-slate-900 text-white py-1 relative overflow-hidden border-b border-slate-800" 
+        className="bg-gradient-to-r from-blue-800 via-blue-900 to-blue-800 text-white py-1 relative overflow-hidden border-b border-blue-700" 
         role="banner"
       >
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-700/20 via-transparent to-blue-700/20 animate-pulse opacity-50"></div>
+        
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
           <div className="flex justify-between items-center text-xs min-h-[28px]">
             {/* Contact Information */}
             <div className="flex items-center space-x-3 lg:space-x-4 flex-1 min-w-0">
               <a
                 href={`tel:${CONTACT_INFO.phone}`}
-                className="group flex items-center text-slate-300 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-blue-400/50 rounded px-1.5 py-0.5"
+                className="group flex items-center text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-blue-300/50 rounded px-1.5 py-0.5"
                 aria-label={`Call us at ${CONTACT_INFO.phone}`}
               >
                 <svg className="w-3 h-3 mr-1.5 transition-transform duration-200 group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -274,7 +277,7 @@ export default function ProfessionalNavbar() {
               
               <a
                 href={`mailto:${CONTACT_INFO.email}`}
-                className="group hidden md:flex items-center text-slate-300 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-blue-400/50 rounded px-1.5 py-0.5"
+                className="group hidden md:flex items-center text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-blue-300/50 rounded px-1.5 py-0.5"
                 aria-label={`Email us at ${CONTACT_INFO.email}`}
               >
                 <svg className="w-3 h-3 mr-1.5 transition-transform duration-200 group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -283,7 +286,7 @@ export default function ProfessionalNavbar() {
                 <span className="font-medium truncate">{CONTACT_INFO.email}</span>
               </a>
               
-              <div className="hidden lg:flex items-center text-slate-400">
+              <div className="hidden lg:flex items-center text-blue-200">
                 <svg className="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -295,14 +298,14 @@ export default function ProfessionalNavbar() {
             <div className="flex items-center space-x-2">
               <LanguageSwitcher variant="toggle" size="sm" className="text-white scale-90" />
 
-              <div className="flex items-center space-x-1 border-l border-slate-700 pl-2">
+              <div className="flex items-center space-x-1 border-l border-blue-600 pl-2">
                 {Object.entries(CONTACT_INFO.socialLinks).map(([platform, url]) => (
                   <a
                     key={platform}
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-blue-400/50"
+                    className="group p-1 rounded text-blue-200 hover:text-white hover:bg-blue-700/50 transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-blue-300/50"
                     aria-label={`Follow us on ${platform}`}
                   >
                     <SocialIcon platform={platform} />
