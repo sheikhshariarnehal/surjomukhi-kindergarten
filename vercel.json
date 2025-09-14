@@ -8,17 +8,7 @@
     }
   },
   "regions": ["iad1"],
-"env": {
-  "NEXT_PUBLIC_SUPABASE_URL": "https://pqrcyfcfzvoqtulssxdi.supabase.co",
-  "NEXT_PUBLIC_SUPABASE_ANON_KEY": "your-anon-key",
-  "SUPABASE_SERVICE_ROLE_KEY": "your-service-role-key",
-  "NEXT_PUBLIC_APP_URL": "https://your-vercel-app.vercel.app",
-  "NEXT_PUBLIC_SITE_NAME": "Surjomukhi Kindergarten",
-  "NEXT_PUBLIC_SITE_DESCRIPTION": "A modern kindergarten management site",
-  "ADMIN_EMAIL": "admin@example.com",
-  "ADMIN_PASSWORD": "some-secure-password",
-  "JWT_SECRET": "a-very-random-secret"
-}
+
   "headers": [
     {
       "source": "/api/(.*)",
