@@ -252,63 +252,57 @@ export default function ProfessionalNavbar() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      {/* Professional Top Utility Bar */}
+      {/* Compact Top Utility Bar */}
       <div 
-        className="bg-gradient-to-r from-blue-700 via-blue-800 to-blue-900 text-white py-1.5 relative overflow-hidden" 
+        className="bg-slate-900 text-white py-1 relative overflow-hidden border-b border-slate-800" 
         role="banner"
       >
-        {/* Subtle animated background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-transparent to-blue-600/20 animate-pulse"></div>
-        
-        <div className="w-full px-2 sm:px-3 lg:px-4 relative z-10">
-          <div className="flex justify-between items-center text-xs sm:text-sm min-h-[32px]">
-            {/* Contact Information with Professional Hover */}
-            <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4 flex-1 min-w-0">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
+          <div className="flex justify-between items-center text-xs min-h-[28px]">
+            {/* Contact Information */}
+            <div className="flex items-center space-x-3 lg:space-x-4 flex-1 min-w-0">
               <a
                 href={`tel:${CONTACT_INFO.phone}`}
-                className="group flex items-center transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-white/30 rounded px-2 py-1 whitespace-nowrap hover:bg-white/10 backdrop-blur-sm"
+                className="group flex items-center text-slate-300 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-blue-400/50 rounded px-1.5 py-0.5"
                 aria-label={`Call us at ${CONTACT_INFO.phone}`}
               >
-                <svg className="w-3 h-3 mr-1.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-3 h-3 mr-1.5 transition-transform duration-200 group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                <span className="hidden sm:inline text-xs lg:text-sm font-medium transition-colors duration-200 group-hover:text-blue-100">{CONTACT_INFO.phone}</span>
-                <span className="sm:hidden text-xs font-medium transition-colors duration-200 group-hover:text-blue-100">Call</span>
+                <span className="font-medium">{CONTACT_INFO.phone}</span>
               </a>
               
               <a
                 href={`mailto:${CONTACT_INFO.email}`}
-                className="group hidden md:flex items-center transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-white/30 rounded px-2 py-1 whitespace-nowrap hover:bg-white/10 backdrop-blur-sm"
+                className="group hidden md:flex items-center text-slate-300 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-blue-400/50 rounded px-1.5 py-0.5"
                 aria-label={`Email us at ${CONTACT_INFO.email}`}
               >
-                <svg className="w-3 h-3 mr-1.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-3 h-3 mr-1.5 transition-transform duration-200 group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span className="text-xs lg:text-sm truncate font-medium transition-colors duration-200 group-hover:text-blue-100">{CONTACT_INFO.email}</span>
+                <span className="font-medium truncate">{CONTACT_INFO.email}</span>
               </a>
               
-              <div className="hidden xl:flex items-center text-blue-200 whitespace-nowrap">
-                <svg className="w-3 h-3 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <div className="hidden lg:flex items-center text-slate-400">
+                <svg className="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span className="text-xs font-medium">{CONTACT_INFO.officeHours}</span>
+                <span className="text-xs">{CONTACT_INFO.officeHours}</span>
               </div>
             </div>
 
-            {/* Language Switcher & Social Links with Enhanced Hover */}
-            <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
-              <div className="hover:scale-105 transition-transform duration-200">
-                <LanguageSwitcher variant="toggle" size="sm" className="text-white" />
-              </div>
+            {/* Language Switcher & Social Links */}
+            <div className="flex items-center space-x-2">
+              <LanguageSwitcher variant="toggle" size="sm" className="text-white scale-90" />
 
-              <div className="flex items-center space-x-1 border-l border-blue-700/50 pl-1 sm:pl-2">
+              <div className="flex items-center space-x-1 border-l border-slate-700 pl-2">
                 {Object.entries(CONTACT_INFO.socialLinks).map(([platform, url]) => (
                   <a
                     key={platform}
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group p-1 rounded transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-white/30 hover:bg-white/10 hover:scale-110"
+                    className="group p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-blue-400/50"
                     aria-label={`Follow us on ${platform}`}
                   >
                     <SocialIcon platform={platform} />
@@ -320,49 +314,47 @@ export default function ProfessionalNavbar() {
         </div>
       </div>
 
-      {/* Enhanced Main Navigation */}
+      {/* Compact Main Navigation */}
       <nav 
         className={cn(
-          "bg-white shadow-lg sticky top-0 z-50 transition-all duration-300 ease-in-out border-b border-gray-100/50",
-          isScrolled ? "shadow-xl bg-white/95 backdrop-blur-md" : "shadow-lg"
+          "bg-white shadow-sm sticky top-0 z-50 transition-all duration-300 border-b border-gray-100",
+          isScrolled ? "shadow-md bg-white/96 backdrop-blur-sm" : "shadow-sm"
         )}
         role="navigation"
         aria-label="Main navigation"
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
-          <div className="flex justify-between items-center h-16 lg:h-18">
-            {/* Enhanced Logo with Professional Hover */}
+          <div className="flex justify-between items-center h-14 lg:h-16">
+            {/* Compact Logo */}
             <div className="flex-shrink-0">
               <Link 
                 href="/" 
-                className="group flex items-center h-full focus:outline-none focus:ring-2 focus:ring-blue-500/30 rounded-lg p-1 transition-all duration-200" 
+                className="group flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500/30 rounded-lg p-1 transition-all duration-200" 
                 aria-label="Homepage"
               >
                 <div className="relative">
-                  <div className="w-10 h-10 lg:w-11 lg:h-11 bg-gradient-to-r from-blue-600 to-green-600 rounded-lg flex items-center justify-center shadow-lg transition-all duration-300 ease-out group-hover:shadow-xl group-hover:from-blue-700 group-hover:to-green-700">
-                    <svg className="w-6 h-6 lg:w-7 lg:h-7 text-white transition-transform duration-300 group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <div className="w-9 h-9 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 rounded-lg flex items-center justify-center shadow-md transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
+                    <svg className="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
                     </svg>
                   </div>
-                  {/* Hover ring effect */}
-                  <div className="absolute inset-0 rounded-lg ring-2 ring-blue-400/0 transition-all duration-300 group-hover:ring-blue-400/20 group-hover:scale-110"></div>
                 </div>
-                <div className="ml-2.5 lg:ml-3 hidden sm:block">
-                  <div className="text-base lg:text-lg xl:text-xl font-bold text-gray-900 transition-all duration-300 group-hover:text-blue-600">
+                <div className="ml-2.5 hidden sm:block">
+                  <div className="text-lg lg:text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-blue-600 leading-tight">
                     {t('common.schoolName')}
                   </div>
-                  <div className="text-xs lg:text-sm text-gray-600 font-medium transition-all duration-300 group-hover:text-gray-800">
+                  <div className="text-xs text-gray-600 font-medium leading-tight">
                     {t('common.tagline')}
                   </div>
                 </div>
               </Link>
             </div>
 
-            {/* Enhanced Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-0.5 xl:space-x-1" ref={dropdownRef}>
+            {/* Compact Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-0.5" ref={dropdownRef}>
               {NAVIGATION_ITEMS.map((item) => (
-                <DesktopNavItem
+                <CompactDesktopNavItem
                   key={item.labelKey}
                   item={item}
                   isActive={isActive}
@@ -373,82 +365,82 @@ export default function ProfessionalNavbar() {
               ))}
             </div>
 
-            {/* Enhanced Search & Quick Actions */}
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              {/* Professional Search */}
+            {/* Compact Actions */}
+            <div className="flex items-center space-x-2">
+              {/* Compact Search */}
               <div className="relative">
-                <form onSubmit={handleSearch} className="flex items-center" role="search">
-                  <div className="relative">
-                    {isSearchOpen ? (
-                      <div className="fixed inset-0 bg-black/40 z-40 lg:relative lg:inset-auto lg:bg-transparent lg:z-auto backdrop-blur-sm">
-                        <div className="flex items-center justify-center min-h-screen lg:min-h-0 p-4 lg:p-0">
-                          <div className="bg-white rounded-xl shadow-2xl p-6 m-4 w-full max-w-md lg:bg-white lg:shadow-lg lg:border lg:border-gray-200 lg:p-0 lg:m-0 lg:max-w-none lg:w-64 animate-in zoom-in-95 duration-200">
-                            <div className="relative">
-                              <input
-                                ref={searchRef}
-                                type="search"
-                                placeholder={t('common.searchPlaceholder', 'Search...')}
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200 bg-white text-gray-700 placeholder-gray-500"
-                                aria-label="Search the website"
-                                autoFocus
-                              />
-                              <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                                <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                              </div>
-                              <button
-                                type="button"
-                                onClick={() => setIsSearchOpen(false)}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 rounded p-0.5 hover:scale-110"
-                                aria-label="Close search"
-                              >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                              </button>
+                <form onSubmit={handleSearch} role="search">
+                  {isSearchOpen ? (
+                    <div className="fixed inset-0 bg-black/40 z-40 lg:relative lg:inset-auto lg:bg-transparent lg:z-auto backdrop-blur-sm">
+                      <div className="flex items-center justify-center min-h-screen lg:min-h-0 p-4 lg:p-0">
+                        <div className="bg-white rounded-xl shadow-xl p-4 w-full max-w-md lg:bg-white lg:shadow-lg lg:border lg:border-gray-200 lg:p-0 lg:max-w-none lg:w-64 lg:rounded-lg animate-in zoom-in-95 duration-200">
+                          <div className="relative">
+                            <input
+                              ref={searchRef}
+                              type="search"
+                              placeholder={t('common.searchPlaceholder', 'Search...')}
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              className="w-full pl-9 pr-9 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white text-gray-700 placeholder-gray-500 text-sm"
+                              aria-label="Search the website"
+                              autoFocus
+                            />
+                            <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                              <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                              </svg>
                             </div>
+                            <button
+                              type="button"
+                              onClick={() => setIsSearchOpen(false)}
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-blue-500/30 rounded p-0.5"
+                              aria-label="Close search"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
                           </div>
                         </div>
                       </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => setIsSearchOpen(true)}
-                        className="group p-2.5 rounded-lg text-gray-500 transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-blue-500/30 hover:bg-gray-50 hover:text-blue-600"
-                        aria-label="Open search"
-                      >
-                        <svg className="w-5 h-5 transition-transform duration-200 group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                      </button>
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setIsSearchOpen(true)}
+                      className="group p-2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                      aria-label="Open search"
+                    >
+                      <svg className="w-4 h-4 transition-transform duration-200 group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </button>
+                  )}
                 </form>
               </div>
 
-              {/* Enhanced Quick Action Button */}
-              <div className="hidden lg:flex items-center">
+              {/* Compact CTA */}
+              <div className="hidden lg:block">
                 <Link
                   href="/admission"
-                  className="group relative bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 xl:px-6 py-2.5 rounded-lg font-semibold transition-all duration-300 ease-out shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:ring-offset-2 text-sm overflow-hidden hover:shadow-xl"
+                  className="group relative inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:ring-offset-1 shadow-md hover:shadow-lg text-sm overflow-hidden"
                 >
-                  <span className="relative z-10 transition-transform duration-200 group-hover:scale-105">{t('navigation.admission')}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-blue-800 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                  <span className="relative z-10 transition-transform duration-200 group-hover:scale-105">
+                    {t('navigation.admission')}
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-indigo-700 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                 </Link>
               </div>
 
-              {/* Enhanced Mobile Menu Button */}
+              {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden group inline-flex items-center justify-center p-2.5 rounded-lg text-gray-700 transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-blue-500/30 hover:bg-gray-50 hover:text-blue-600"
+                className="lg:hidden group p-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                 aria-expanded={isMobileMenuOpen}
                 aria-label="Toggle navigation menu"
                 aria-controls="mobile-menu"
               >
-                <svg className="w-6 h-6 transition-transform duration-300 group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   {isMobileMenuOpen ? (
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   ) : (
@@ -460,7 +452,7 @@ export default function ProfessionalNavbar() {
           </div>
 
           {/* Mobile Navigation */}
-          <MobileNavigation
+          <CompactMobileNavigation
             isMobileMenuOpen={isMobileMenuOpen}
             expandedMobileItem={expandedMobileItem}
             setExpandedMobileItem={setExpandedMobileItem}
@@ -476,7 +468,7 @@ export default function ProfessionalNavbar() {
   );
 }
 
-// Enhanced Component Subcomponents with Professional Hover Effects
+// Compact Component Subcomponents
 const SocialIcon: React.FC<{ platform: string }> = React.memo(({ platform }) => {
   const iconPaths = {
     facebook: "M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z",
@@ -486,13 +478,13 @@ const SocialIcon: React.FC<{ platform: string }> = React.memo(({ platform }) => 
   };
 
   return (
-    <svg className="w-3 h-3 transition-transform duration-200 group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <svg className="w-3 h-3 transition-transform duration-200 group-hover:scale-105" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path d={iconPaths[platform as keyof typeof iconPaths]} />
     </svg>
   );
 });
 
-const DesktopNavItem: React.FC<{
+const CompactDesktopNavItem: React.FC<{
   item: NavItem;
   isActive: (href: string) => boolean;
   activeDropdown: string | null;
@@ -521,37 +513,42 @@ const DesktopNavItem: React.FC<{
     };
   }, [hoverTimeout]);
 
+  const linkClasses = cn(
+    "group relative px-3 py-2 text-sm font-medium transition-all duration-200 rounded-md flex items-center",
+    "before:absolute before:bottom-0 before:left-1/2 before:w-0 before:h-0.5 before:bg-gradient-to-r before:from-blue-600 before:to-indigo-600 before:transition-all before:duration-300 before:transform before:-translate-x-1/2",
+    "hover:before:w-full focus:outline-none focus:ring-2 focus:ring-blue-500/30",
+    isActive(item.href)
+      ? "text-blue-600 bg-blue-50/70 before:w-full"
+      : "text-gray-700 hover:text-blue-600 hover:bg-gray-50/70"
+  );
+
   return (
-    <div className="relative group">
+    <div className="relative">
       <Link
         href={item.href}
-        className={cn(
-          "relative px-3 xl:px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ease-out flex items-center overflow-hidden",
-          isActive(item.href)
-            ? "bg-blue-50 text-blue-700 shadow-sm"
-            : "text-gray-700 hover:text-blue-600 hover:bg-gray-50/80"
-        )}
+        className={linkClasses}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         aria-expanded={item.children ? activeDropdown === item.labelKey : undefined}
         aria-haspopup={item.children ? "menu" : undefined}
       >
-        <span className="relative z-10 transition-transform duration-200 group-hover:translate-y-[-1px]">
+        <span className="transition-transform duration-200 group-hover:-translate-y-px">
           {t(item.labelKey)}
         </span>
         {item.children && (
-          <svg className={cn(
-            "w-4 h-4 ml-1 transition-all duration-200",
-            activeDropdown === item.labelKey ? "rotate-180 text-blue-600" : "group-hover:text-blue-600"
-          )} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg 
+            className={cn(
+              "w-3 h-3 ml-1 transition-all duration-200",
+              activeDropdown === item.labelKey ? "rotate-180 text-blue-600" : "group-hover:text-blue-600"
+            )} 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24" 
+            aria-hidden="true"
+          >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         )}
-        {/* Subtle hover underline */}
-        <div className={cn(
-          "absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 transform scale-x-0 transition-transform duration-200 origin-left",
-          !isActive(item.href) && "group-hover:scale-x-100"
-        )}></div>
       </Link>
       
       {item.children && activeDropdown === item.labelKey && (
@@ -563,7 +560,7 @@ const DesktopNavItem: React.FC<{
           aria-label={`${t(item.labelKey)} submenu`}
         >
           {item.children.map((child, index) => (
-            <DropdownItem key={child.href} item={child} t={t} index={index} />
+            <CompactDropdownItem key={child.href} item={child} t={t} index={index} />
           ))}
         </div>
       )}
@@ -571,7 +568,7 @@ const DesktopNavItem: React.FC<{
   );
 });
 
-const DropdownItem: React.FC<{
+const CompactDropdownItem: React.FC<{
   item: NavItem;
   t: (key: string, fallback?: string) => string;
   index: number;
@@ -579,20 +576,20 @@ const DropdownItem: React.FC<{
   <div className="relative group/submenu">
     {item.children ? (
       <>
-        <div className="flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50/80 hover:text-blue-600 transition-all duration-200 cursor-pointer">
-          <Link href={item.href} className="flex-1 font-medium" role="menuitem">
+        <div className="flex items-center justify-between px-3 py-2 text-sm hover:bg-blue-50/70 transition-all duration-200 cursor-pointer">
+          <Link href={item.href} className="flex-1 font-medium text-gray-700 hover:text-blue-600" role="menuitem">
             {t(item.labelKey, item.labelKey)}
           </Link>
-          <svg className="w-4 h-4 ml-2 transition-transform duration-200 group-hover/submenu:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg className="w-3 h-3 ml-2 text-gray-400 transition-all duration-200 group-hover/submenu:text-blue-600 group-hover/submenu:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </div>
-        <div className="absolute left-full top-0 ml-1 w-48 bg-white rounded-lg shadow-xl border border-gray-100 py-2 opacity-0 invisible group-hover/submenu:opacity-100 group-hover/submenu:visible transition-all duration-200 z-50">
+        <div className="absolute left-full top-0 ml-1 w-48 bg-white rounded-lg shadow-xl border border-gray-100 py-1 opacity-0 invisible group-hover/submenu:opacity-100 group-hover/submenu:visible transition-all duration-200 z-50">
           {item.children.map((grandchild) => (
             <Link
               key={grandchild.href}
               href={grandchild.href}
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50/80 hover:text-blue-600 transition-all duration-200 hover:translate-x-1"
+              className="block px-3 py-2 text-sm text-gray-700 hover:bg-blue-50/70 hover:text-blue-600 transition-all duration-200 hover:translate-x-0.5"
               role="menuitem"
             >
               {t(grandchild.labelKey, grandchild.labelKey)}
@@ -603,11 +600,11 @@ const DropdownItem: React.FC<{
     ) : (
       <Link
         href={item.href}
-        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50/80 hover:text-blue-600 transition-all duration-200 hover:translate-x-1"
+        className="block px-3 py-2 text-sm transition-all duration-200 hover:bg-blue-50/70 hover:translate-x-0.5"
         role="menuitem"
-        style={{ animationDelay: `${index * 30}ms` }}
+        style={{ animationDelay: `${index * 20}ms` }}
       >
-        <div className="font-medium">{t(item.labelKey, item.labelKey)}</div>
+        <div className="font-medium text-gray-700 hover:text-blue-600">{t(item.labelKey, item.labelKey)}</div>
         {item.description && (
           <div className="text-xs text-gray-500 mt-0.5">{item.description}</div>
         )}
@@ -616,7 +613,7 @@ const DropdownItem: React.FC<{
   </div>
 ));
 
-const MobileNavigation: React.FC<{
+const CompactMobileNavigation: React.FC<{
   isMobileMenuOpen: boolean;
   expandedMobileItem: string | null;
   setExpandedMobileItem: (value: string | null) => void;
@@ -639,15 +636,15 @@ const MobileNavigation: React.FC<{
 
   return (
     <div 
-      className="lg:hidden border-t border-gray-200 bg-white shadow-xl animate-in slide-in-from-top-2 duration-300"
+      className="lg:hidden border-t border-gray-100 bg-white shadow-lg animate-in slide-in-from-top-2 duration-200"
       ref={mobileMenuRef}
       id="mobile-menu"
       role="menu"
       aria-label="Mobile navigation menu"
     >
-      <div className="px-4 py-6 space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto">
+      <div className="px-3 py-4 space-y-1 max-h-[calc(100vh-180px)] overflow-y-auto">
         {navigationItems.map((item, index) => (
-          <MobileNavItem
+          <CompactMobileNavItem
             key={item.labelKey}
             item={item}
             expandedMobileItem={expandedMobileItem}
@@ -659,15 +656,15 @@ const MobileNavigation: React.FC<{
           />
         ))}
 
-        <div className="pt-6 mt-6 border-t border-gray-200">
+        <div className="pt-4 mt-4 border-t border-gray-200">
           <Link
             href="/admission"
-            className="group flex items-center justify-center w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:ring-offset-2 overflow-hidden relative"
+            className="group flex items-center justify-center w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-lg font-medium transition-all duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:ring-offset-1 overflow-hidden relative text-sm"
             onClick={closeMobileMenu}
             role="menuitem"
           >
             <span className="relative z-10">{t('navigation.admission')}</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-blue-800 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-indigo-700 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
           </Link>
         </div>
       </div>
@@ -675,7 +672,7 @@ const MobileNavigation: React.FC<{
   );
 });
 
-const MobileNavItem: React.FC<{
+const CompactMobileNavItem: React.FC<{
   item: NavItem;
   expandedMobileItem: string | null;
   setExpandedMobileItem: (value: string | null) => void;
@@ -693,8 +690,8 @@ const MobileNavItem: React.FC<{
   index
 }) => (
   <div 
-    className="border-b border-gray-100 pb-2 last:border-b-0"
-    style={{ animationDelay: `${index * 50}ms` }}
+    className="border-b border-gray-50 pb-1 last:border-b-0"
+    style={{ animationDelay: `${index * 30}ms` }}
   >
     {item.children ? (
       <div>
@@ -703,20 +700,22 @@ const MobileNavItem: React.FC<{
             expandedMobileItem === item.labelKey ? null : item.labelKey
           )}
           className={cn(
-            "group flex items-center justify-between w-full px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200",
+            "group flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 relative",
+            "before:absolute before:left-0 before:top-1/2 before:w-0.5 before:h-0 before:bg-blue-600 before:transition-all before:duration-300 before:transform before:-translate-y-1/2 before:rounded-r",
+            "hover:before:h-full",
             isActive(item.href)
-              ? "bg-blue-50 text-blue-700 border-l-4 border-blue-600"
-              : "text-gray-700 hover:text-blue-600 hover:bg-gray-50/80"
+              ? "bg-blue-50 text-blue-700 before:h-full"
+              : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
           )}
           aria-expanded={expandedMobileItem === item.labelKey}
           aria-controls={`mobile-submenu-${item.labelKey}`}
           role="menuitem"
         >
-          <span className="transition-transform duration-200 group-hover:translate-x-1">{t(item.labelKey)}</span>
+          <span className="transition-transform duration-200 group-hover:translate-x-0.5 ml-1">{t(item.labelKey)}</span>
           <svg
             className={cn(
-              "w-5 h-5 transition-transform duration-200",
-              expandedMobileItem === item.labelKey ? "rotate-180" : "group-hover:scale-110"
+              "w-4 h-4 transition-transform duration-200",
+              expandedMobileItem === item.labelKey ? "rotate-180" : "group-hover:scale-105"
             )}
             fill="none"
             stroke="currentColor"
@@ -731,16 +730,16 @@ const MobileNavItem: React.FC<{
           className={cn(
             "overflow-hidden transition-all duration-300 ease-in-out",
             expandedMobileItem === item.labelKey
-              ? "max-h-96 opacity-100 mt-2"
+              ? "max-h-80 opacity-100 mt-1"
               : "max-h-0 opacity-0"
           )}
           id={`mobile-submenu-${item.labelKey}`}
           role="menu"
           aria-label={`${t(item.labelKey)} submenu`}
         >
-          <div className="ml-6 space-y-1 border-l-2 border-blue-100 pl-4">
+          <div className="ml-4 space-y-1 border-l border-blue-100 pl-3">
             {item.children.map((child, childIndex) => (
-              <MobileSubNavItem
+              <CompactMobileSubNavItem
                 key={child.href}
                 item={child}
                 parentKey={item.labelKey}
@@ -758,21 +757,23 @@ const MobileNavItem: React.FC<{
       <Link
         href={item.href}
         className={cn(
-          "group flex items-center px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200",
+          "group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 relative",
+          "before:absolute before:left-0 before:top-1/2 before:w-0.5 before:h-0 before:bg-blue-600 before:transition-all before:duration-300 before:transform before:-translate-y-1/2 before:rounded-r",
+          "hover:before:h-full",
           isActive(item.href)
-            ? "bg-blue-50 text-blue-700 border-l-4 border-blue-600"
-            : "text-gray-700 hover:text-blue-600 hover:bg-gray-50/80"
+            ? "bg-blue-50 text-blue-700 before:h-full"
+            : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
         )}
         onClick={closeMobileMenu}
         role="menuitem"
       >
-        <span className="transition-transform duration-200 group-hover:translate-x-1">{t(item.labelKey, item.labelKey)}</span>
+        <span className="transition-transform duration-200 group-hover:translate-x-0.5 ml-1">{t(item.labelKey, item.labelKey)}</span>
       </Link>
     )}
   </div>
 ));
 
-const MobileSubNavItem: React.FC<{
+const CompactMobileSubNavItem: React.FC<{
   item: NavItem;
   parentKey: string;
   expandedMobileItem: string | null;
@@ -794,26 +795,26 @@ const MobileSubNavItem: React.FC<{
   if (item.children) {
     return (
       <div className="space-y-1">
-        <div className="flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50/80 rounded-md transition-all duration-200">
+        <div className="flex items-center justify-between px-2 py-1.5 text-xs font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded transition-all duration-200">
           <Link
             href={item.href}
             className="flex-1 group"
             onClick={closeMobileMenu}
             role="menuitem"
           >
-            <span className="transition-transform duration-200 group-hover:translate-x-1">• {t(item.labelKey, item.labelKey)}</span>
+            <span className="transition-transform duration-200 group-hover:translate-x-0.5">• {t(item.labelKey, item.labelKey)}</span>
           </Link>
           <button
             onClick={() => setExpandedMobileItem(
               expandedMobileItem === subMenuKey ? null : subMenuKey
             )}
-            className="p-1 hover:bg-blue-100 rounded focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all duration-200"
+            className="p-1 hover:bg-blue-100 rounded focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition-all duration-200"
             aria-expanded={expandedMobileItem === subMenuKey}
             aria-label={`Toggle ${t(item.labelKey)} submenu`}
           >
             <svg
               className={cn(
-                "w-4 h-4 transition-transform duration-200",
+                "w-3 h-3 transition-transform duration-200",
                 expandedMobileItem === subMenuKey ? "rotate-180" : ""
               )}
               fill="none"
@@ -828,20 +829,20 @@ const MobileSubNavItem: React.FC<{
         <div className={cn(
           "overflow-hidden transition-all duration-300 ease-in-out",
           expandedMobileItem === subMenuKey
-            ? "max-h-96 opacity-100"
+            ? "max-h-64 opacity-100"
             : "max-h-0 opacity-0"
         )}>
-          <div className="ml-4 space-y-1 border-l border-blue-100 pl-3">
+          <div className="ml-3 space-y-0.5 border-l border-blue-100 pl-2">
             {item.children.map((grandchild, grandchildIndex) => (
               <Link
                 key={grandchild.href}
                 href={grandchild.href}
-                className="group block px-2 py-1 text-xs text-gray-600 hover:text-blue-600 hover:bg-blue-50/80 rounded transition-all duration-200"
+                className="group block px-2 py-1 text-xs text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-all duration-200"
                 onClick={closeMobileMenu}
                 role="menuitem"
-                style={{ animationDelay: `${grandchildIndex * 30}ms` }}
+                style={{ animationDelay: `${grandchildIndex * 20}ms` }}
               >
-                <span className="transition-transform duration-200 group-hover:translate-x-1">◦ {t(grandchild.labelKey, grandchild.labelKey)}</span>
+                <span className="transition-transform duration-200 group-hover:translate-x-0.5">◦ {t(grandchild.labelKey, grandchild.labelKey)}</span>
               </Link>
             ))}
           </div>
@@ -853,20 +854,20 @@ const MobileSubNavItem: React.FC<{
   return (
     <Link
       href={item.href}
-      className="group block px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50/80 rounded-md transition-all duration-200"
+      className="group block px-2 py-1.5 text-xs text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-all duration-200"
       onClick={closeMobileMenu}
       role="menuitem"
-      style={{ animationDelay: `${index * 30}ms` }}
+      style={{ animationDelay: `${index * 20}ms` }}
     >
-      <span className="transition-transform duration-200 group-hover:translate-x-1">• {t(item.labelKey, item.labelKey)}</span>
+      <span className="transition-transform duration-200 group-hover:translate-x-0.5">• {t(item.labelKey, item.labelKey)}</span>
     </Link>
   );
 });
 
 // Set display names for better debugging
 SocialIcon.displayName = 'SocialIcon';
-DesktopNavItem.displayName = 'DesktopNavItem';
-DropdownItem.displayName = 'DropdownItem';
-MobileNavigation.displayName = 'MobileNavigation';
-MobileNavItem.displayName = 'MobileNavItem';
-MobileSubNavItem.displayName = 'MobileSubNavItem';
+CompactDesktopNavItem.displayName = 'CompactDesktopNavItem';
+CompactDropdownItem.displayName = 'CompactDropdownItem';
+CompactMobileNavigation.displayName = 'CompactMobileNavigation';
+CompactMobileNavItem.displayName = 'CompactMobileNavItem';
+CompactMobileSubNavItem.displayName = 'CompactMobileSubNavItem';
