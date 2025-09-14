@@ -8,17 +8,7 @@
     }
   },
   "regions": ["iad1"],
-  "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": "@next_public_supabase_url",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@next_public_supabase_anon_key",
-    "SUPABASE_SERVICE_ROLE_KEY": "@supabase_service_role_key",
-    "NEXT_PUBLIC_APP_URL": "@next_public_app_url",
-    "NEXT_PUBLIC_SITE_NAME": "@next_public_site_name",
-    "NEXT_PUBLIC_SITE_DESCRIPTION": "@next_public_site_description",
-    "ADMIN_EMAIL": "@admin_email",
-    "ADMIN_PASSWORD": "@admin_password",
-    "JWT_SECRET": "@jwt_secret"
-  },
+
   "headers": [
     {
       "source": "/api/(.*)",
