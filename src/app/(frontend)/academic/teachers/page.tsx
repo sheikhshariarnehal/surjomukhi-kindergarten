@@ -1,93 +1,325 @@
-import React from 'react';
-import { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Our Teachers - Surjomukhi Kindergarten',
-  description: 'Meet our qualified and experienced teachers dedicated to providing quality early childhood education.',
-  keywords: ['teachers', 'faculty', 'qualified educators', 'early childhood specialists'],
-  openGraph: {
-    title: 'Our Teachers - Surjomukhi Kindergarten',
-    description: 'Meet our dedicated teaching team.',
-    type: 'website',
-  },
-};
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
+import { motion } from 'framer-motion';
+import { Loader2, AlertCircle, Users, GraduationCap, Award, BookOpen } from 'lucide-react';
+import SimpleTeacherCard from '@/components/frontend/SimpleTeacherCard';
 
-export default function AcademicTeachersPage() {
-  const teachers = [
-    {
-      name: 'Mrs. Salma Khatun',
-      position: 'Head Teacher',
-      qualification: 'M.Ed in Early Childhood Education',
-      experience: '15+ Years',
-      specialization: 'Curriculum Development & Child Psychology',
-      classes: 'Play Group & Nursery',
-      description: 'Passionate about creating nurturing learning environments for young children.',
-      achievements: ['Child Development Specialist', 'Montessori Certified', 'Parent Counseling Expert']
-    },
-    {
-      name: 'Ms. Rashida Begum',
-      position: 'Senior Teacher',
-      qualification: 'B.Ed in Primary Education',
-      experience: '12+ Years',
-      specialization: 'Language Arts & Creative Expression',
-      classes: 'Class One & Two',
-      description: 'Dedicated to fostering creativity and language development in children.',
-      achievements: ['Creative Arts Specialist', 'Storytelling Expert', 'Reading Specialist']
-    },
-    {
-      name: 'Mr. Kamal Ahmed',
-      position: 'Mathematics Teacher',
-      qualification: 'M.Sc in Mathematics, B.Ed',
-      experience: '10+ Years',
-      specialization: 'Mathematics & Logical Thinking',
-      classes: 'Class Three, Four & Five',
-      description: 'Makes mathematics fun and accessible for young learners.',
-      achievements: ['Math Olympiad Coach', 'Problem Solving Expert', 'STEM Advocate']
-    },
-    {
-      name: 'Mrs. Fatema Rahman',
-      position: 'Science Teacher',
-      qualification: 'M.Sc in Biology, B.Ed',
-      experience: '8+ Years',
-      specialization: 'Science & Nature Studies',
-      classes: 'All Classes',
-      description: 'Encourages scientific curiosity and hands-on exploration.',
-      achievements: ['Science Fair Coordinator', 'Nature Study Expert', 'Lab Safety Specialist']
-    },
-    {
-      name: 'Ms. Nasreen Akter',
-      position: 'Art & Music Teacher',
-      qualification: 'BFA, Diploma in Music',
-      experience: '6+ Years',
-      specialization: 'Creative Arts & Music',
-      classes: 'All Classes',
-      description: 'Nurtures artistic expression and musical talents in children.',
-      achievements: ['Art Exhibition Organizer', 'Music Performance Director', 'Creative Workshop Leader']
-    },
-    {
-      name: 'Mr. Abdul Hamid',
-      position: 'Physical Education Teacher',
-      qualification: 'B.P.Ed, Sports Coaching Certificate',
-      experience: '7+ Years',
-      specialization: 'Physical Development & Sports',
-      classes: 'All Classes',
-      description: 'Promotes physical fitness and healthy lifestyle habits.',
-      achievements: ['Youth Sports Coach', 'Fitness Program Developer', 'Safety Training Certified']
+// Teacher data interface
+interface TeacherData {
+  id: string;
+  name: string;
+  designation: string;
+  photo_url?: string;
+  bio?: string;
+  qualifications?: string[];
+  subjects?: string[];
+  experience_years?: number;
+  specialization?: string;
+  classes_taught?: string[];
+  contact_email?: string;
+  contact_phone?: string;
+  join_date?: string;
+  achievements?: string[];
+  teaching_philosophy?: string;
+  certifications?: string[];
+  languages?: string[];
+}
+
+interface TeachersData {
+  teachers: TeacherData[];
+  metadata: {
+    total_teachers: number;
+    last_updated: string;
+    version: string;
+    description: string;
+  };
+}
+
+// Loading component
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center py-16">
+    <div className="text-center">
+      <Loader2 className="h-8 w-8 animate-spin text-teal-600 mx-auto mb-4" />
+      <p className="text-gray-600">Loading our amazing teachers...</p>
+    </div>
+  </div>
+);
+
+// Error component
+const ErrorMessage = ({ message, onRetry }: { message: string; onRetry: () => void }) => (
+  <div className="flex items-center justify-center py-16">
+    <div className="text-center max-w-md">
+      <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+      <h3 className="text-lg font-semibold text-gray-900 mb-2">Unable to Load Teachers</h3>
+      <p className="text-gray-600 mb-4">{message}</p>
+      <button
+        onClick={onRetry}
+        className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors"
+      >
+        Try Again
+      </button>
+    </div>
+  </div>
+);
+
+
+
+export default function TeachersPage() {
+  const [teachers, setTeachers] = useState<TeacherData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Load teacher data
+  const loadTeachers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch('/data/teachers.json');
+      if (!response.ok) {
+        throw new Error('Failed to load teacher data');
+      }
+
+      const data: TeachersData = await response.json();
+      setTeachers(data.teachers);
+    } catch (err) {
+      console.error('Error loading teachers:', err);
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    loadTeachers();
+  }, []);
+
+  // Generate structured data for SEO
+  const generateStructuredData = () => {
+    if (!teachers.length) return {};
+
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://surjomukhi.edu.bd';
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'EducationalOrganization',
+      '@id': `${baseUrl}/#organization`,
+      name: 'Surjomukhi Kindergarten',
+      alternateName: 'Surjomukhi KG',
+      url: baseUrl,
+      description: 'Meet our qualified and experienced teachers dedicated to providing quality early childhood education at Surjomukhi Kindergarten.',
+      employee: teachers.map(teacher => ({
+        '@type': 'Person',
+        '@id': `${baseUrl}/teachers/${teacher.id}`,
+        name: teacher.name,
+        jobTitle: teacher.designation,
+        description: teacher.bio,
+        email: teacher.contact_email,
+        telephone: teacher.contact_phone,
+        image: teacher.photo_url ? `${baseUrl}${teacher.photo_url}` : undefined,
+        worksFor: {
+          '@type': 'EducationalOrganization',
+          '@id': `${baseUrl}/#organization`,
+          name: 'Surjomukhi Kindergarten'
+        },
+        hasCredential: teacher.qualifications?.map(qual => ({
+          '@type': 'EducationalOccupationalCredential',
+          credentialCategory: qual
+        })),
+        knowsAbout: teacher.subjects,
+        award: teacher.achievements,
+        alumniOf: teacher.qualifications?.map(qual => ({
+          '@type': 'EducationalOrganization',
+          name: qual
+        }))
+      })),
+      numberOfEmployees: teachers.length,
+      department: [
+        {
+          '@type': 'Organization',
+          name: 'Early Childhood Education Department',
+          employee: teachers.filter(t => t.classes_taught?.some(c => ['Play Group', 'Nursery'].includes(c)))
+        },
+        {
+          '@type': 'Organization',
+          name: 'Primary Education Department',
+          employee: teachers.filter(t => t.classes_taught?.some(c => ['Class One', 'Class Two', 'Class Three', 'Class Four', 'Class Five'].includes(c)))
+        }
+      ]
+    };
+  };
+
+  // Custom SEO Head component
+  const TeachersSEO = () => (
+    <Head>
+      <title>শিক্ষকমণ্ডলী | সুর্যমুখী কিন্ডারগার্টেন - অভিজ্ঞ ও যোগ্য শিক্ষকবৃন্দ</title>
+      <meta
+        name="description"
+        content="সুর্যমুখী কিন্ডারগার্টেনের অভিজ্ঞ ও যোগ্য শিক্ষকমণ্ডলীর সাথে পরিচিত হন। আমাদের শিক্ষকরা শিশুদের সার্বিক বিকাশে নিবেদিত এবং প্রাথমিক শিক্ষায় বিশেষজ্ঞ।"
+      />
+      <meta
+        name="keywords"
+        content="সুর্যমুখী কিন্ডারগার্টেন শিক্ষক, কিন্ডারগার্টেন শিক্ষকমণ্ডলী, অভিজ্ঞ শিক্ষক, যোগ্য শিক্ষক, প্রাথমিক শিক্ষা, শিশু শিক্ষা বিশেষজ্ঞ, teachers, faculty, qualified educators, early childhood specialists"
+      />
+
+      {/* Open Graph */}
+      <meta property="og:title" content="শিক্ষকমণ্ডলী - সুর্যমুখী কিন্ডারগার্টেন" />
+      <meta property="og:description" content="সুর্যমুখী কিন্ডারগার্টেনের অভিজ্ঞ ও যোগ্য শিক্ষকমণ্ডলীর সাথে পরিচিত হন। আমাদের শিক্ষকরা শিশুদের সার্বিক বিকাশে নিবেদিত।" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="/academic/teachers" />
+      <meta property="og:image" content="/og-teachers.jpg" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content="সুর্যমুখী কিন্ডারগার্টেন শিক্ষকমণ্ডলী" />
+      <meta property="og:locale" content="bn_BD" />
+      <meta property="og:locale:alternate" content="en_US" />
+
+      {/* Twitter */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="শিক্ষকমণ্ডলী - সুর্যমুখী কিন্ডারগার্টেন" />
+      <meta name="twitter:description" content="আমাদের অভিজ্ঞ ও যোগ্য শিক্ষকমণ্ডলীর সাথে পরিচিত হন।" />
+      <meta name="twitter:image" content="/twitter-teachers.jpg" />
+
+      {/* Canonical URL */}
+      <link rel="canonical" href="/academic/teachers" />
+
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateStructuredData(), null, 2)
+        }}
+      />
+    </Head>
+  );
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <TeachersSEO />
+
+        {/* Breadcrumb */}
+        <div className="bg-white border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <nav className="flex" aria-label="Breadcrumb">
+              <ol className="flex items-center space-x-4">
+                <li><a href="/" className="text-gray-500 hover:text-gray-700 transition-colors">Home</a></li>
+                <li><span className="text-gray-400">/</span></li>
+                <li><a href="/academic" className="text-gray-500 hover:text-gray-700 transition-colors">Academic</a></li>
+                <li><span className="text-gray-400">/</span></li>
+                <li><span className="text-gray-900 font-medium">Our Teachers</span></li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+
+        {/* Hero Section */}
+        <section
+          className="bg-gradient-to-r from-teal-600 to-blue-600 text-white py-16"
+          aria-labelledby="page-title"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h1 id="page-title" className="text-4xl md:text-5xl font-bold mb-6">
+                Our Dedicated Teachers
+              </h1>
+              <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                Meet our qualified and passionate educators who are committed to nurturing your child's growth and development.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <TeachersSEO />
+
+        {/* Breadcrumb */}
+        <div className="bg-white border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <nav className="flex" aria-label="Breadcrumb">
+              <ol className="flex items-center space-x-4">
+                <li><a href="/" className="text-gray-500 hover:text-gray-700 transition-colors">Home</a></li>
+                <li><span className="text-gray-400">/</span></li>
+                <li><a href="/academic" className="text-gray-500 hover:text-gray-700 transition-colors">Academic</a></li>
+                <li><span className="text-gray-400">/</span></li>
+                <li><span className="text-gray-900 font-medium">Our Teachers</span></li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+
+        {/* Hero Section */}
+        <section className="bg-gradient-to-r from-teal-600 to-blue-600 text-white py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Dedicated Teachers</h1>
+              <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                Meet our qualified and passionate educators who are committed to nurturing your child's growth and development.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <ErrorMessage message={error} onRetry={loadTeachers} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <TeachersSEO />
+
+      {/* Skip to main content link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-teal-600 text-white px-4 py-2 rounded-lg z-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+      >
+        Skip to main content
+      </a>
+
       {/* Breadcrumb */}
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="flex items-center space-x-4">
-              <li><a href="/" className="text-gray-500 hover:text-gray-700">Home</a></li>
-              <li><span className="text-gray-400">/</span></li>
-              <li><a href="/academic" className="text-gray-500 hover:text-gray-700">Academic</a></li>
-              <li><span className="text-gray-400">/</span></li>
-              <li><span className="text-gray-900 font-medium">Our Teachers</span></li>
+          <nav aria-label="Breadcrumb navigation">
+            <ol className="flex items-center space-x-4" role="list">
+              <li role="listitem">
+                <a
+                  href="/"
+                  className="text-gray-500 hover:text-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
+                  aria-label="Go to homepage"
+                >
+                  Home
+                </a>
+              </li>
+              <li role="listitem" aria-hidden="true">
+                <span className="text-gray-400">/</span>
+              </li>
+              <li role="listitem">
+                <a
+                  href="/academic"
+                  className="text-gray-500 hover:text-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
+                  aria-label="Go to academic section"
+                >
+                  Academic
+                </a>
+              </li>
+              <li role="listitem" aria-hidden="true">
+                <span className="text-gray-400">/</span>
+              </li>
+              <li role="listitem">
+                <span className="text-gray-900 font-medium" aria-current="page">Our Teachers</span>
+              </li>
             </ol>
           </nav>
         </div>
@@ -101,75 +333,91 @@ export default function AcademicTeachersPage() {
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
               Meet our qualified and passionate educators who are committed to nurturing your child's growth and development.
             </p>
+
+            {/* Stats */}
+            <div className="flex flex-wrap justify-center gap-8 mt-8">
+              <div className="text-center">
+                <div className="text-3xl font-bold mb-1">{teachers.length}</div>
+                <div className="text-teal-100 text-sm">Expert Teachers</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold mb-1">
+                  {Math.round(teachers.reduce((sum, t) => sum + (t.experience_years || 0), 0) / teachers.length)}+
+                </div>
+                <div className="text-teal-100 text-sm">Avg. Years Experience</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold mb-1">
+                  {teachers.reduce((sum, t) => sum + (t.subjects?.length || 0), 0)}
+                </div>
+                <div className="text-teal-100 text-sm">Subject Areas</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Teachers Grid */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Experienced & Qualified Faculty
-            </h2>
+      <main id="main-content" role="main">
+        <section
+          className="py-16 bg-white"
+          aria-labelledby="faculty-heading"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
+              <h2 id="faculty-heading" className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                Experienced & Qualified Faculty
+              </h2>
             <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Our teachers are carefully selected for their expertise, experience, and passion for early childhood education. 
+              Our teachers are carefully selected for their expertise, experience, and passion for early childhood education.
               Each brings unique skills and dedication to creating the best learning environment for our students.
             </p>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-            {teachers.map((teacher, index) => (
-              <div key={index} className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
-                <div className="p-4 sm:p-6">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center mb-4">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-teal-400 to-blue-400 rounded-full flex items-center justify-center mb-3 sm:mb-0 sm:mr-4 mx-auto sm:mx-0">
-                      <span className="text-white font-bold text-lg sm:text-xl">{teacher.name.split(' ')[1]?.charAt(0) || teacher.name.charAt(0)}</span>
-                    </div>
-                    <div className="flex-1 text-center sm:text-left">
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1">{teacher.name}</h3>
-                      <p className="text-teal-600 font-medium mb-2">{teacher.position}</p>
-                      <div className="flex flex-wrap gap-2 mb-2 justify-center sm:justify-start">
-                        <span className="bg-teal-100 text-teal-800 px-2 py-1 rounded-full text-xs">
-                          {teacher.experience}
-                        </span>
-                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
-                          {teacher.classes}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <div>
-                      <h4 className="font-semibold text-gray-800 text-sm">Qualification:</h4>
-                      <p className="text-gray-600 text-sm">{teacher.qualification}</p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-semibold text-gray-800 text-sm">Specialization:</h4>
-                      <p className="text-gray-600 text-sm">{teacher.specialization}</p>
-                    </div>
-                    
-                    <div>
-                      <p className="text-gray-600 text-sm italic">{teacher.description}</p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-semibold text-gray-800 text-sm mb-2">Key Achievements:</h4>
-                      <div className="flex flex-wrap gap-1">
-                        {teacher.achievements.map((achievement, achIndex) => (
-                          <span key={achIndex} className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
-                            {achievement}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            {/* Quick Stats */}
+            <div className="flex flex-wrap justify-center gap-8 mt-8 pt-8 border-t border-gray-200">
+              <div className="flex items-center gap-3 text-gray-600">
+                <Users className="h-5 w-5 text-teal-600" />
+                <span className="text-sm font-medium">{teachers.length} Expert Educators</span>
               </div>
+              <div className="flex items-center gap-3 text-gray-600">
+                <GraduationCap className="h-5 w-5 text-teal-600" />
+                <span className="text-sm font-medium">Advanced Qualifications</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-600">
+                <Award className="h-5 w-5 text-teal-600" />
+                <span className="text-sm font-medium">Certified Specialists</span>
+              </div>
+              <div className="flex items-center gap-3 text-gray-600">
+                <BookOpen className="h-5 w-5 text-teal-600" />
+                <span className="text-sm font-medium">Diverse Subject Areas</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Teachers Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {teachers.map((teacher, index) => (
+              <SimpleTeacherCard
+                key={teacher.id}
+                teacher={teacher}
+                index={index}
+              />
             ))}
           </div>
+
+          {/* Load more button for future pagination */}
+          {teachers.length > 0 && (
+            <div className="text-center mt-12">
+              <p className="text-gray-600 text-sm">
+                Showing all {teachers.length} teachers
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -235,6 +483,7 @@ export default function AcademicTeachersPage() {
           </div>
         </div>
       </section>
+      </main>
     </div>
   );
 }

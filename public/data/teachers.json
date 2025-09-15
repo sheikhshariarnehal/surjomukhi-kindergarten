@@ -1,0 +1,208 @@
+{
+  "teachers": [
+    {
+      "id": "teacher-001",
+      "name": "Mrs. Salma Khatun",
+      "designation": "Head Teacher & Principal",
+      "photo_url": "/images/teachers/placeholder.svg",
+      "bio": "Mrs. Salma Khatun is a passionate educator with over 15 years of experience in early childhood education. She believes in creating nurturing learning environments where every child can thrive and reach their full potential.",
+      "qualifications": [
+        "M.Ed in Early Childhood Education",
+        "B.Ed in Primary Education",
+        "Diploma in Child Psychology"
+      ],
+      "subjects": ["Curriculum Development", "Child Psychology", "Educational Leadership"],
+      "experience_years": 15,
+      "specialization": "Curriculum Development & Child Psychology",
+      "classes_taught": ["Play Group", "Nursery"],
+      "contact_email": "salma.khatun@surjomukhi.edu.bd",
+      "contact_phone": "+880 1712-345678",
+      "join_date": "2009-01-15",
+      "achievements": [
+        "Child Development Specialist Certification",
+        "Montessori Teaching Certification",
+        "Parent Counseling Expert",
+        "Best Teacher Award 2022",
+        "Educational Leadership Certificate"
+      ],
+      "teaching_philosophy": "Every child is unique and deserves personalized attention to unlock their potential.",
+      "certifications": [
+        "Montessori Teaching Method",
+        "Child Safety & First Aid",
+        "Special Needs Education"
+      ],
+      "languages": ["Bengali", "English", "Hindi"]
+    },
+    {
+      "id": "teacher-002",
+      "name": "Ms. Rashida Begum",
+      "designation": "Senior Teacher - Language Arts",
+      "photo_url": "/images/teachers/placeholder.svg",
+      "bio": "Ms. Rashida Begum brings creativity and enthusiasm to language learning. She specializes in making language arts fun and engaging for young learners through storytelling and creative activities.",
+      "qualifications": [
+        "B.Ed in Primary Education",
+        "BA in Bengali Literature",
+        "Certificate in Creative Writing"
+      ],
+      "subjects": ["Bengali", "English", "Creative Writing", "Literature"],
+      "experience_years": 12,
+      "specialization": "Language Arts & Creative Expression",
+      "classes_taught": ["Class One", "Class Two", "Class Three"],
+      "contact_email": "rashida.begum@surjomukhi.edu.bd",
+      "contact_phone": "+880 1723-456789",
+      "join_date": "2012-03-10",
+      "achievements": [
+        "Creative Arts Specialist",
+        "Storytelling Expert Certification",
+        "Reading Specialist Award",
+        "Best Language Teacher 2021",
+        "Children's Literature Workshop Leader"
+      ],
+      "teaching_philosophy": "Language is the gateway to imagination and creativity.",
+      "certifications": [
+        "Creative Writing for Children",
+        "Storytelling Techniques",
+        "Reading Comprehension Methods"
+      ],
+      "languages": ["Bengali", "English", "Urdu"]
+    },
+    {
+      "id": "teacher-003",
+      "name": "Mr. Kamal Ahmed",
+      "designation": "Mathematics Teacher",
+      "photo_url": "/images/teachers/placeholder.svg",
+      "bio": "Mr. Kamal Ahmed has a passion for making mathematics accessible and enjoyable for young minds. He uses innovative teaching methods to help children develop strong mathematical foundations.",
+      "qualifications": [
+        "M.Sc in Mathematics",
+        "B.Ed in Secondary Education",
+        "Certificate in Educational Technology"
+      ],
+      "subjects": ["Mathematics", "Logical Thinking", "Problem Solving"],
+      "experience_years": 10,
+      "specialization": "Mathematics & Logical Thinking",
+      "classes_taught": ["Class Three", "Class Four", "Class Five"],
+      "contact_email": "kamal.ahmed@surjomukhi.edu.bd",
+      "contact_phone": "+880 1734-567890",
+      "join_date": "2014-08-20",
+      "achievements": [
+        "Math Olympiad Coach",
+        "Problem Solving Expert",
+        "STEM Education Advocate",
+        "Best Math Teacher 2023",
+        "Educational Technology Innovator"
+      ],
+      "teaching_philosophy": "Mathematics is everywhere - making it relatable makes it enjoyable.",
+      "certifications": [
+        "Math Olympiad Training",
+        "STEM Education Methods",
+        "Educational Technology Integration"
+      ],
+      "languages": ["Bengali", "English", "Arabic"]
+    },
+    {
+      "id": "teacher-004",
+      "name": "Mrs. Fatema Rahman",
+      "designation": "Science Teacher",
+      "photo_url": "/images/teachers/placeholder.svg",
+      "bio": "Mrs. Fatema Rahman encourages scientific curiosity and hands-on exploration. She believes in nurturing young scientists through practical experiments and nature-based learning.",
+      "qualifications": [
+        "M.Sc in Biology",
+        "B.Ed in Science Education",
+        "Environmental Science Certificate"
+      ],
+      "subjects": ["General Science", "Nature Studies", "Environmental Science"],
+      "experience_years": 8,
+      "specialization": "Science & Nature Studies",
+      "classes_taught": ["All Classes"],
+      "contact_email": "fatema.rahman@surjomukhi.edu.bd",
+      "contact_phone": "+880 1745-678901",
+      "join_date": "2016-06-15",
+      "achievements": [
+        "Science Fair Coordinator",
+        "Nature Study Expert",
+        "Lab Safety Specialist",
+        "Environmental Education Award",
+        "Young Scientist Mentor"
+      ],
+      "teaching_philosophy": "Curiosity is the engine of learning - let's explore together!",
+      "certifications": [
+        "Laboratory Safety Management",
+        "Environmental Education",
+        "Science Fair Organization"
+      ],
+      "languages": ["Bengali", "English"]
+    },
+    {
+      "id": "teacher-005",
+      "name": "Ms. Nasreen Akter",
+      "designation": "Art & Music Teacher",
+      "photo_url": "/images/teachers/placeholder.svg",
+      "bio": "Ms. Nasreen Akter nurtures artistic expression and musical talents in children. She believes that arts and music are essential for holistic child development and creative expression.",
+      "qualifications": [
+        "BFA in Fine Arts",
+        "Diploma in Music",
+        "Certificate in Art Therapy"
+      ],
+      "subjects": ["Drawing & Painting", "Music", "Crafts", "Creative Arts"],
+      "experience_years": 6,
+      "specialization": "Creative Arts & Music",
+      "classes_taught": ["All Classes"],
+      "contact_email": "nasreen.akter@surjomukhi.edu.bd",
+      "contact_phone": "+880 1756-789012",
+      "join_date": "2018-04-12",
+      "achievements": [
+        "Art Exhibition Organizer",
+        "Music Performance Director",
+        "Creative Workshop Leader",
+        "Best Arts Teacher 2022",
+        "Children's Art Therapy Specialist"
+      ],
+      "teaching_philosophy": "Art and music speak the universal language of the heart.",
+      "certifications": [
+        "Art Therapy for Children",
+        "Music Education Methods",
+        "Creative Workshop Leadership"
+      ],
+      "languages": ["Bengali", "English", "Hindi"]
+    },
+    {
+      "id": "teacher-006",
+      "name": "Mr. Abdul Hamid",
+      "designation": "Physical Education Teacher",
+      "photo_url": "/images/teachers/placeholder.svg",
+      "bio": "Mr. Abdul Hamid promotes physical fitness and healthy lifestyle habits among children. He focuses on developing motor skills, teamwork, and sportsmanship in young learners.",
+      "qualifications": [
+        "B.P.Ed in Physical Education",
+        "Sports Coaching Certificate",
+        "First Aid & CPR Certification"
+      ],
+      "subjects": ["Physical Education", "Sports", "Health & Fitness"],
+      "experience_years": 7,
+      "specialization": "Physical Development & Sports",
+      "classes_taught": ["All Classes"],
+      "contact_email": "abdul.hamid@surjomukhi.edu.bd",
+      "contact_phone": "+880 1767-890123",
+      "join_date": "2017-09-01",
+      "achievements": [
+        "Youth Sports Coach Certification",
+        "Fitness Program Developer",
+        "Safety Training Certified",
+        "Best PE Teacher 2021",
+        "Child Fitness Specialist"
+      ],
+      "teaching_philosophy": "A healthy body nurtures a healthy mind and spirit.",
+      "certifications": [
+        "Youth Sports Coaching",
+        "Child Fitness Training",
+        "Sports Safety Management"
+      ],
+      "languages": ["Bengali", "English", "Arabic"]
+    }
+  ],
+  "metadata": {
+    "total_teachers": 6,
+    "last_updated": "2024-12-19",
+    "version": "1.0",
+    "description": "Comprehensive teacher data for Surjomukhi Kindergarten academic staff"
+  }
+}

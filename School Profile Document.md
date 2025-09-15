@@ -1,6 +1,4 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" style="height:64px;margin-right:32px"/>
-
-# more detailed
+# School Profile Document
 
 Here is an expanded, production-ready school profile document with granular details and field-ready text for a website. Sections are structured for About, Academics, Admissions, Governance, Policies, Co‑curricular, Facilities, and Contact. Content reflects the attached Bangla source material and can be used verbatim or adapted.
 
