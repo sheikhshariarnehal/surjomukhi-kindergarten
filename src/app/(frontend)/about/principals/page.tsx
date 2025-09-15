@@ -7,15 +7,23 @@ import { useTranslation } from '@/contexts/LanguageContext';
 export default function PrincipalsPage() {
   const { language } = useTranslation();
 
-  const leadership = [
+  const principals = [
     {
       name: language === 'bn' ? 'বে\'লাল ইমরান মাহমুদ' : 'Belal Imran Mahmud',
       position: language === 'bn' ? 'প্রতিষ্ঠাতা ও পরিচালক' : 'Founder & Director',
       experience: language === 'bn' ? '২০+ বছর' : '20+ Years',
+      education: language === 'bn' ? 'শিক্ষাবিদ' : 'Educational Leader',
+      specialization: language === 'bn' ? 'প্রাথমিক শিক্ষা ব্যবস্থাপনা' : 'Early Childhood Education Management',
       role: language === 'bn' ? 'প্রতিষ্ঠাতা ও প্রধান উদ্যোক্তা' : 'Founder and main initiator',
       description: language === 'bn'
         ? 'সূর্যমুখী কিন্ডারগার্টেনের প্রতিষ্ঠাতা ও প্রধান উদ্যোক্তা। তিনি প্রতিষ্ঠানের পরিচালনা ও সকল সরকারি আবেদনে স্বাক্ষরদাতা হিসেবে দায়িত্ব পালন করেন।'
         : 'Founder and main initiator of Surjomukhi Kindergarten. He manages the institution and signs official applications as proprietor or director.',
+      achievements: [
+        language === 'bn' ? 'সূর্যমুখী কিন্ডারগার্টেন প্রতিষ্ঠা' : 'Established Surjomukhi Kindergarten',
+        language === 'bn' ? '২০+ বছরের শিক্ষা অভিজ্ঞতা' : '20+ years of educational experience',
+        language === 'bn' ? 'মানসম্পন্ন শিক্ষা প্রদান' : 'Quality education delivery',
+        language === 'bn' ? 'শিক্ষাক্ষেত্রে উৎকর্ষতা' : 'Excellence in education sector'
+      ],
       responsibilities: [
         language === 'bn' ? 'প্রতিষ্ঠান পরিচালনা' : 'Institution management',
         language === 'bn' ? 'সরকারি আবেদন স্বাক্ষর' : 'Official application signing',
@@ -31,10 +39,18 @@ export default function PrincipalsPage() {
       name: language === 'bn' ? 'প্রধান শিক্ষক' : 'Head Teacher',
       position: language === 'bn' ? 'প্রধান শিক্ষক ও সদস্য-সচিব' : 'Head Teacher & Member-Secretary',
       experience: language === 'bn' ? 'অভিজ্ঞ শিক্ষাবিদ' : 'Experienced Educator',
+      education: language === 'bn' ? 'শিক্ষাবিদ' : 'Professional Educator',
+      specialization: language === 'bn' ? 'শিক্ষা প্রশাসন' : 'Educational Administration',
       role: language === 'bn' ? 'শিক্ষা প্রশাসন ও পরিচালনা' : 'Educational administration and management',
       description: language === 'bn'
         ? 'প্রধান শিক্ষক প্রতিষ্ঠানের শিক্ষাগত ও প্রশাসনিক শৃঙ্খলা বজায় রাখেন, শিক্ষক ও কর্মচারীদের তত্ত্বাবধান করেন এবং পরীক্ষা প্রক্রিয়া নিয়ন্ত্রণ করেন।'
         : 'The Head Teacher maintains academic and administrative discipline, supervises teachers and staff, and controls the examination process.',
+      achievements: [
+        language === 'bn' ? 'শিক্ষাগত উৎকর্ষতা নিশ্চিতকরণ' : 'Ensuring educational excellence',
+        language === 'bn' ? 'শিক্ষক উন্নয়ন কর্মসূচি' : 'Teacher development programs',
+        language === 'bn' ? 'শৃঙ্খলা ও নিয়মানুবর্তিতা' : 'Discipline and regularity',
+        language === 'bn' ? 'পরীক্ষা ব্যবস্থাপনা' : 'Examination management'
+      ],
       responsibilities: [
         language === 'bn' ? 'শিক্ষাগত ও প্রশাসনিক শৃঙ্খলা রক্ষা' : 'Academic and administrative discipline',
         language === 'bn' ? 'শিক্ষক ও কর্মচারী তত্ত্বাবধান' : 'Teacher and staff supervision',
