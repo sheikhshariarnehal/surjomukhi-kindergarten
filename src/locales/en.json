@@ -287,7 +287,7 @@
   "about": {
     "title": "About Surjomukhi Kindergarten",
     "subtitle": "A private primary educational institution established in 2004, fostering holistic development through creative and ethical education.",
-    "description": "Surjomukhi Kindergarten is a private primary educational institution established on 01-01-2004 and located at Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320. The school offers instruction in the Bangla medium from nursery up to Grade 5 and works to foster students' holistic development through creative and ethical education.",
+    "description": "Surjomukhi Kindergarten is a private primary educational institution established on 01-01-2004 and located at Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320. The school offers instruction in the Bangla medium from play group up to Grade 5 and works to foster students' holistic development through creative and ethical education.",
     "ideals": {
       "title": "Our Ideals",
       "items": [
@@ -300,16 +300,31 @@
     "mission": {
       "title": "Our Mission",
       "items": [
-        "Bring modern education to people's doorsteps",
-        "Nurture students' creativity, moral character, and human values",
-        "Create a comprehensive learning environment through literature, culture, and sports"
+        "Ensure modern, value-based, culturally rooted education for all students",
+        "Foster creativity, moral character, and civic values in every learner",
+        "Promote sports and cultural practice as integral parts of education",
+        "Bring modern education to local residents' doorsteps and spread advanced education",
+        "Develop creative human character among students and activate latent talents"
       ]
     },
     "vision": {
       "title": "Our Vision",
       "items": [
-        "Become a reliable and model local institution",
-        "Ensure participation of underserved groups and support meritorious students in need"
+        "Build a progressive society through creative education",
+        "Become a reliable and model local educational institution",
+        "Ensure participation of underserved groups and support meritorious students in need",
+        "Evolve into a leading local school guided by founding ideals"
+      ]
+    },
+    "objectives": {
+      "title": "Our Objectives",
+      "items": [
+        "Bring modern education to local residents' doorsteps and spread advanced education",
+        "Develop creative human character among students and activate latent talents",
+        "Encourage free thinking, cultural practice, and sportsmanship",
+        "Provide moral and human values education and build a knowledge-based nation",
+        "Raise awareness among out-of-school populations",
+        "Expand quality education among disadvantaged families"
       ]
     },
     "history": {
@@ -317,7 +332,7 @@
       "subtitle": "A journey of educational excellence since 2004.",
       "founded": {
         "title": "Established in 2004",
-        "description": "Surjomukhi Kindergarten was established on January 1, 2004, with a commitment to providing quality Bangla medium education from nursery to Grade 5."
+        "description": "Surjomukhi Kindergarten was established on January 1, 2004, with a commitment to providing quality Bangla medium education from play group to Grade 5."
       },
       "growth": {
         "title": "Continuous Development",
@@ -326,7 +341,7 @@
     },
     "academics": {
       "title": "Academics",
-      "description": "Instruction is provided in Bangla medium from nursery to Grade 5. Class-wise student numbers are maintained with proper structure.",
+      "description": "Instruction is provided in Bangla medium from play group to Grade 5. Class-wise student numbers are maintained with proper structure.",
       "details": [
         "Pre-primary: 30 students",
         "Grade 1: 25 students",

@@ -10,7 +10,7 @@ const organizationStructuredData = {
   "@type": "EducationalOrganization",
   "name": "Surjomukhi Kindergarten",
   "alternateName": "সূর্যমুখী কিন্ডারগার্টেন",
-  "description": "A private primary educational institution established in 2004, fostering holistic development through creative and ethical education in Bangla medium from nursery to Grade 5.",
+  "description": "A private primary educational institution established in 2004, fostering holistic development through creative and ethical education in Bangla medium from play group to Grade 5.",
   "url": process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   "logo": `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/logo.png`,
   "address": {
@@ -92,7 +92,7 @@ export default function AboutPage() {
                   {language === 'bn' ? 'বাংলা মাধ্যম' : 'Bangla Medium'}
                 </span>
                 <span className="bg-white/20 px-4 py-2 rounded-full">
-                  {language === 'bn' ? 'নার্সারি - ৫ম শ্রেণী' : 'Nursery - Grade 5'}
+                  {language === 'bn' ? 'প্লে গ্রুপ - ৫ম শ্রেণী' : 'Play Group - Grade 5'}
                 </span>
               </div>
             </div>
@@ -164,6 +164,27 @@ export default function AboutPage() {
                   ))}
                 </ul>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Objectives */}
+        <section className="py-16 bg-blue-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                {t('about.objectives.title')}
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {t('about.objectives.items', []).map((objective: string, index: number) => (
+                <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                  <div className="flex items-start">
+                    <span className="text-blue-600 mr-3 mt-1 text-xl">🎯</span>
+                    <span className="text-gray-700 font-medium">{objective}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>

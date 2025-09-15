@@ -12,7 +12,7 @@ export type Language = 'en' | 'bn';
 export interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string, fallback?: string) => string;
+  t: (key: string, fallback?: any) => any;
   isRTL: boolean;
 }
 
@@ -60,7 +60,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   // Translation function with nested key support
-  const t = (key: string, fallback?: string): string => {
+  const t = (key: string, fallback?: any): any => {
     try {
       const keys = key.split('.');
       let value: any = translations[language];
@@ -80,7 +80,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
                 break;
               }
             }
-            if (typeof englishValue === 'string') {
+            if (englishValue !== null) {
               return englishValue;
             }
           }
@@ -90,7 +90,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         }
       }
       
-      return typeof value === 'string' ? value : (fallback || key);
+      return value !== undefined ? value : (fallback || key);
     } catch (error) {
       console.warn(`Translation error for key "${key}":`, error);
       return fallback || key;
@@ -131,7 +131,7 @@ export function useTranslation() {
 
 // Higher-order component for class components
 export function withLanguage<P extends object>(
-  Component: React.ComponentType<P & { language: Language; t: (key: string, fallback?: string) => string }>
+  Component: React.ComponentType<P & { language: Language; t: (key: string, fallback?: any) => any }>
 ) {
   return function WrappedComponent(props: P) {
     const { language, t } = useLanguage();

@@ -1,52 +1,51 @@
-import React from 'react';
-import { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Academic Rules - Surjomukhi Kindergarten',
-  description: 'Important academic rules and guidelines for students and parents at Surjomukhi Kindergarten.',
-  keywords: ['academic rules', 'school rules', 'guidelines', 'policies', 'student conduct'],
-};
+import React from 'react';
+import Head from 'next/head';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 export default function AcademicRulesPage() {
+  const { language } = useTranslation();
+
   const ruleCategories = [
     {
-      title: 'Attendance & Punctuality',
+      title: language === 'bn' ? 'উপস্থিতি ও সময়ানুবর্তিতা' : 'Attendance & Punctuality',
       icon: '⏰',
       rules: [
-        'Regular attendance is mandatory for academic progress',
-        'School hours: 8:00 AM to 3:00 PM',
-        'Students should arrive by 8:00 AM',
-        'Late arrivals must report to the office',
-        'Minimum 80% attendance required for promotion',
-        'Notify school in advance for planned absences'
+        language === 'bn' ? 'নিয়মিত উপস্থিতি শিক্ষাগত অগ্রগতির জন্য বাধ্যতামূলক' : 'Regular attendance is mandatory for academic progress',
+        language === 'bn' ? 'বিদ্যালয়ের সময়: সকাল ৮:০০ টা থেকে বিকাল ৪:০০ টা' : 'School hours: 8:00 AM to 4:00 PM',
+        language === 'bn' ? 'শিক্ষার্থীদের সকাল ৮:০০ টার মধ্যে উপস্থিত হতে হবে' : 'Students should arrive by 8:00 AM',
+        language === 'bn' ? 'দেরিতে আসলে অফিসে রিপোর্ট করতে হবে' : 'Late arrivals must report to the office',
+        language === 'bn' ? 'পরবর্তী শ্রেণীতে উত্তীর্ণ হওয়ার জন্য ন্যূনতম ৮০% উপস্থিতি প্রয়োজন' : 'Minimum 80% attendance required for promotion',
+        language === 'bn' ? 'পরিকল্পিত অনুপস্থিতির জন্য আগে থেকে বিদ্যালয়কে জানাতে হবে' : 'Notify school in advance for planned absences'
       ]
     },
     {
-      title: 'Academic Conduct',
+      title: language === 'bn' ? 'শিক্ষাগত আচরণ' : 'Academic Conduct',
       icon: '📚',
       rules: [
-        'Complete all assignments on time',
-        'Participate actively in class activities',
-        'Respect teachers and follow instructions',
-        'Maintain academic honesty and integrity',
-        'Bring required books and materials daily',
-        'Keep homework diary updated'
+        language === 'bn' ? 'সকল অ্যাসাইনমেন্ট সময়মতো সম্পন্ন করতে হবে' : 'Complete all assignments on time',
+        language === 'bn' ? 'ক্লাসের কার্যক্রমে সক্রিয়ভাবে অংশগ্রহণ করতে হবে' : 'Participate actively in class activities',
+        language === 'bn' ? 'শিক্ষকদের সম্মান করতে হবে এবং নির্দেশনা মেনে চলতে হবে' : 'Respect teachers and follow instructions',
+        language === 'bn' ? 'শিক্ষাগত সততা ও নৈতিকতা বজায় রাখতে হবে' : 'Maintain academic honesty and integrity',
+        language === 'bn' ? 'প্রতিদিন প্রয়োজনীয় বই ও উপকরণ নিয়ে আসতে হবে' : 'Bring required books and materials daily',
+        language === 'bn' ? 'হোমওয়ার্ক ডায়েরি আপডেট রাখতে হবে' : 'Keep homework diary updated'
       ]
     },
     {
-      title: 'Behavior & Discipline',
+      title: language === 'bn' ? 'আচরণ ও শৃঙ্খলা' : 'Behavior & Discipline',
       icon: '🤝',
       rules: [
-        'Treat all students and staff with respect',
-        'Use polite language at all times',
-        'No bullying or aggressive behavior',
-        'Follow classroom and playground rules',
-        'Resolve conflicts peacefully',
-        'Report any problems to teachers'
+        language === 'bn' ? 'সকল শিক্ষার্থী ও কর্মচারীদের সাথে সম্মানজনক আচরণ করতে হবে' : 'Treat all students and staff with respect',
+        language === 'bn' ? 'সর্বদা ভদ্র ভাষা ব্যবহার করতে হবে' : 'Use polite language at all times',
+        language === 'bn' ? 'কোনো ধরনের উৎপীড়ন বা আক্রমণাত্মক আচরণ করা যাবে না' : 'No bullying or aggressive behavior',
+        language === 'bn' ? 'শ্রেণীকক্ষ ও খেলার মাঠের নিয়ম মেনে চলতে হবে' : 'Follow classroom and playground rules',
+        language === 'bn' ? 'দ্বন্দ্ব শান্তিপূর্ণভাবে সমাধান করতে হবে' : 'Resolve conflicts peacefully',
+        language === 'bn' ? 'যেকোনো সমস্যা শিক্ষকদের কাছে রিপোর্ট করতে হবে' : 'Report any problems to teachers'
       ]
     },
     {
-      title: 'Uniform & Appearance',
+      title: language === 'bn' ? 'পোশাক ও চেহারা' : 'Uniform & Appearance',
       icon: '👕',
       rules: [
         'Wear complete school uniform daily',

@@ -1,54 +1,90 @@
-import React from 'react';
-import { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Campus Tour - Surjomukhi Kindergarten',
-  description: 'Take a virtual tour of our beautiful campus facilities designed for early childhood education.',
-  keywords: ['campus tour', 'facilities', 'classrooms', 'playground', 'kindergarten campus'],
-  openGraph: {
-    title: 'Campus Tour - Surjomukhi Kindergarten',
-    description: 'Explore our beautiful campus facilities.',
-    type: 'website',
-  },
-};
+import React from 'react';
+import Head from 'next/head';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 export default function CampusTourPage() {
+  const { language } = useTranslation();
+
   const facilities = [
     {
-      name: 'Bright Classrooms',
-      description: 'Spacious, well-lit classrooms designed for interactive learning with child-friendly furniture.',
-      features: ['Natural lighting', 'Interactive whiteboards', 'Child-sized furniture', 'Learning corners'],
-      icon: '🏫'
+      name: language === 'bn' ? 'বিশাল খেলার মাঠ' : 'Large Playground',
+      description: language === 'bn'
+        ? 'প্রায় ১০০ গজ × ৬০ গজ আয়তনের খেলার মাঠ যেখানে ফুটবল, ক্রিকেট, ব্যাডমিন্টন, দাবা এবং অন্যান্য ক্রীড়া কার্যক্রম অনুষ্ঠিত হয়।'
+        : 'Approximately 100 yards × 60 yards playground where football, cricket, badminton, chess, and other athletic activities are held.',
+      features: [
+        language === 'bn' ? 'ফুটবল মাঠ' : 'Football field',
+        language === 'bn' ? 'ক্রিকেট খেলার স্থান' : 'Cricket playing area',
+        language === 'bn' ? 'ব্যাডমিন্টন কোর্ট' : 'Badminton court',
+        language === 'bn' ? 'দাবা খেলার এলাকা' : 'Chess playing area'
+      ],
+      icon: '🏟️'
     },
     {
-      name: 'Safe Playground',
-      description: 'Secure outdoor play area with age-appropriate equipment for physical development.',
-      features: ['Soft play surfaces', 'Climbing structures', 'Swings and slides', 'Shaded areas'],
-      icon: '🛝'
-    },
-    {
-      name: 'Library Corner',
-      description: 'Cozy reading space filled with age-appropriate books and storytelling area.',
-      features: ['Picture books', 'Story time area', 'Reading cushions', 'Educational materials'],
+      name: language === 'bn' ? 'কার্যকর গ্রন্থাগার' : 'Functional Library',
+      description: language === 'bn'
+        ? 'প্রধান শিক্ষকের তত্ত্বাবধানে পরিচালিত গ্রন্থাগার যেখানে শিক্ষার্থীদের জন্য বিভিন্ন শিক্ষামূলক বই ও উপকরণ রয়েছে।'
+        : 'Operational library managed under Head Teacher\'s supervision with various educational books and materials for students.',
+      features: [
+        language === 'bn' ? 'শিক্ষামূলক বই' : 'Educational books',
+        language === 'bn' ? 'গল্পের বই' : 'Story books',
+        language === 'bn' ? 'পাঠ্য উপকরণ' : 'Learning materials',
+        language === 'bn' ? 'নিয়মিত তত্ত্বাবধান' : 'Regular supervision'
+      ],
       icon: '📚'
     },
     {
-      name: 'Art & Craft Room',
-      description: 'Creative space for artistic expression and hands-on learning activities.',
-      features: ['Art supplies', 'Craft materials', 'Display boards', 'Washable surfaces'],
-      icon: '🎨'
+      name: language === 'bn' ? 'শ্রেণীকক্ষ' : 'Classrooms',
+      description: language === 'bn'
+        ? 'প্রাথমিক বিদ্যালয়ের মানসম্মত শ্রেণীকক্ষ যেখানে প্রাক-প্রাথমিক থেকে পঞ্চম শ্রেণী পর্যন্ত পাঠদান করা হয়।'
+        : 'Standard primary school classrooms where teaching is conducted from pre-primary to fifth grade.',
+      features: [
+        language === 'bn' ? 'প্রাক-প্রাথমিক শ্রেণী' : 'Pre-primary class',
+        language === 'bn' ? 'প্রথম থেকে পঞ্চম শ্রেণী' : 'Class One to Five',
+        language === 'bn' ? 'শিক্ষা উপকরণ' : 'Educational materials',
+        language === 'bn' ? 'উপযুক্ত আসবাবপত্র' : 'Appropriate furniture'
+      ],
+      icon: '🏫'
     },
     {
-      name: 'Music Room',
-      description: 'Dedicated space for musical activities and rhythm-based learning.',
-      features: ['Musical instruments', 'Sound system', 'Performance area', 'Recording equipment'],
-      icon: '🎵'
+      name: language === 'bn' ? 'প্রশাসনিক কার্যালয়' : 'Administrative Office',
+      description: language === 'bn'
+        ? 'প্রধান শিক্ষক ও প্রশাসনিক কর্মকর্তাদের কার্যালয় যেখানে সকল প্রশাসনিক কাজকর্ম পরিচালিত হয়।'
+        : 'Head Teacher and administrative staff office where all administrative work is conducted.',
+      features: [
+        language === 'bn' ? 'প্রধান শিক্ষকের কক্ষ' : 'Head Teacher\'s room',
+        language === 'bn' ? 'প্রশাসনিক কাজ' : 'Administrative work',
+        language === 'bn' ? 'নথি সংরক্ষণ' : 'Document storage',
+        language === 'bn' ? 'অভিভাবক সাক্ষাৎ' : 'Parent meetings'
+      ],
+      icon: '🏢'
     },
     {
-      name: 'Cafeteria',
-      description: 'Clean and hygienic dining area serving nutritious meals and snacks.',
-      features: ['Healthy meals', 'Clean environment', 'Child-friendly seating', 'Supervised dining'],
-      icon: '🍽️'
+      name: language === 'bn' ? 'নিরাপদ নথি সংরক্ষণাগার' : 'Secure Document Storage',
+      description: language === 'bn'
+        ? 'অগ্নিনিরোধক নিরাপদ সংরক্ষণাগার যেখানে প্রতিষ্ঠানের গুরুত্বপূর্ণ নথিপত্র সংরক্ষিত থাকে।'
+        : 'Fireproof safe storage where important institutional documents are preserved.',
+      features: [
+        language === 'bn' ? 'অগ্নিনিরোধক নিরাপত্তা' : 'Fireproof security',
+        language === 'bn' ? 'গুরুত্বপূর্ণ নথি' : 'Important documents',
+        language === 'bn' ? 'প্রধান শিক্ষকের তত্ত্বাবধান' : 'Head Teacher\'s custody',
+        language === 'bn' ? 'নিয়ন্ত্রিত প্রবেশাধিকার' : 'Controlled access'
+      ],
+      icon: '🗄️'
+    },
+    {
+      name: language === 'bn' ? 'সাংস্কৃতিক কার্যক্রমের স্থান' : 'Cultural Activities Area',
+      description: language === 'bn'
+        ? 'নিয়মিত সাংস্কৃতিক প্রতিযোগিতা ও সাপ্তাহিক সমাবেশ অনুষ্ঠানের জন্য নির্ধারিত স্থান।'
+        : 'Designated area for regular cultural competitions and weekly assembly programs.',
+      features: [
+        language === 'bn' ? 'সাংস্কৃতিক প্রতিযোগিতা' : 'Cultural competitions',
+        language === 'bn' ? 'সাপ্তাহিক সমাবেশ' : 'Weekly assemblies',
+        language === 'bn' ? 'জাতীয় দিবস পালন' : 'National day observances',
+        language === 'bn' ? 'বিশেষ অনুষ্ঠান' : 'Special programs'
+      ],
+      icon: '🎭'
     }
   ];
 

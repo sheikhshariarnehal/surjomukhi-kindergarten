@@ -1,50 +1,73 @@
-import React from 'react';
-import { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Our Principals - Surjomukhi Kindergarten',
-  description: 'Meet our dedicated principals who lead our institution with vision, experience, and commitment to excellence.',
-  keywords: ['principals', 'leadership', 'administration', 'school management'],
-  openGraph: {
-    title: 'Our Principals - Surjomukhi Kindergarten',
-    description: 'Meet our dedicated educational leaders.',
-    type: 'website',
-  },
-};
+import React from 'react';
+import Head from 'next/head';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 export default function PrincipalsPage() {
-  const principals = [
+  const { language } = useTranslation();
+
+  const leadership = [
     {
-      name: 'Mrs. Fatema Khatun',
-      position: 'Principal',
-      experience: '15+ Years',
-      education: 'M.Ed in Early Childhood Education',
-      specialization: 'Child Development & Curriculum Design',
-      description: 'Mrs. Fatema Khatun brings over 15 years of experience in early childhood education. She is passionate about creating innovative learning environments that foster creativity and critical thinking in young minds.',
-      achievements: [
-        'Certified in Montessori Education',
-        'Child Psychology Specialist',
-        'Curriculum Development Expert',
-        'Parent-Teacher Relationship Advocate'
+      name: language === 'bn' ? 'বে\'লাল ইমরান মাহমুদ' : 'Belal Imran Mahmud',
+      position: language === 'bn' ? 'প্রতিষ্ঠাতা ও পরিচালক' : 'Founder & Director',
+      experience: language === 'bn' ? '২০+ বছর' : '20+ Years',
+      role: language === 'bn' ? 'প্রতিষ্ঠাতা ও প্রধান উদ্যোক্তা' : 'Founder and main initiator',
+      description: language === 'bn'
+        ? 'সূর্যমুখী কিন্ডারগার্টেনের প্রতিষ্ঠাতা ও প্রধান উদ্যোক্তা। তিনি প্রতিষ্ঠানের পরিচালনা ও সকল সরকারি আবেদনে স্বাক্ষরদাতা হিসেবে দায়িত্ব পালন করেন।'
+        : 'Founder and main initiator of Surjomukhi Kindergarten. He manages the institution and signs official applications as proprietor or director.',
+      responsibilities: [
+        language === 'bn' ? 'প্রতিষ্ঠান পরিচালনা' : 'Institution management',
+        language === 'bn' ? 'সরকারি আবেদন স্বাক্ষর' : 'Official application signing',
+        language === 'bn' ? 'নীতি নির্ধারণ' : 'Policy formulation',
+        language === 'bn' ? 'কৌশলগত পরিকল্পনা' : 'Strategic planning'
       ],
-      philosophy: 'Every child is unique and deserves an education that recognizes their individual strengths and nurtures their potential.',
-      contact: 'principal@surjomukhi.edu'
+      philosophy: language === 'bn'
+        ? 'শিক্ষাই জাতির মেরুদণ্ড - মানসম্পন্ন শিক্ষার মাধ্যমে জাতি গঠনের ভিত্তি স্থাপন করা।'
+        : 'Education is the backbone of the nation - establishing the foundation of nation building through quality education.',
+      contact: '01819198965'
     },
     {
-      name: 'Mr. Shahidul Islam',
-      position: 'Vice Principal',
-      experience: '12+ Years',
-      education: 'M.A in Education Management',
-      specialization: 'Educational Administration & Student Affairs',
-      description: 'Mr. Shahidul Islam is dedicated to ensuring smooth operations and maintaining high educational standards. His focus on student welfare and academic excellence has been instrumental in our success.',
-      achievements: [
-        'Educational Leadership Certification',
-        'Student Counseling Specialist',
-        'Quality Assurance Expert',
-        'Community Engagement Leader'
+      name: language === 'bn' ? 'প্রধান শিক্ষক' : 'Head Teacher',
+      position: language === 'bn' ? 'প্রধান শিক্ষক ও সদস্য-সচিব' : 'Head Teacher & Member-Secretary',
+      experience: language === 'bn' ? 'অভিজ্ঞ শিক্ষাবিদ' : 'Experienced Educator',
+      role: language === 'bn' ? 'শিক্ষা প্রশাসন ও পরিচালনা' : 'Educational administration and management',
+      description: language === 'bn'
+        ? 'প্রধান শিক্ষক প্রতিষ্ঠানের শিক্ষাগত ও প্রশাসনিক শৃঙ্খলা বজায় রাখেন, শিক্ষক ও কর্মচারীদের তত্ত্বাবধান করেন এবং পরীক্ষা প্রক্রিয়া নিয়ন্ত্রণ করেন।'
+        : 'The Head Teacher maintains academic and administrative discipline, supervises teachers and staff, and controls the examination process.',
+      responsibilities: [
+        language === 'bn' ? 'শিক্ষাগত ও প্রশাসনিক শৃঙ্খলা রক্ষা' : 'Academic and administrative discipline',
+        language === 'bn' ? 'শিক্ষক ও কর্মচারী তত্ত্বাবধান' : 'Teacher and staff supervision',
+        language === 'bn' ? 'ক্লাস রুটিন নিয়ন্ত্রণ' : 'Class routine control',
+        language === 'bn' ? 'পরীক্ষা প্রক্রিয়া ও ফলাফল প্রকাশ' : 'Exam process and result publication'
       ],
-      philosophy: 'Quality education is built on strong foundations of care, discipline, and continuous improvement.',
-      contact: 'viceprincipal@surjomukhi.edu'
+      philosophy: language === 'bn'
+        ? 'সেবা পরম ধর্ম - শিক্ষার মাধ্যমে সেবাপরায়ণ নাগরিক গড়ে তোলা।'
+        : 'Service is the supreme virtue - nurturing service-minded citizens through education.',
+      contact: '01711528045'
+    }
+  ];
+
+  const managingCommittee = [
+    {
+      position: language === 'bn' ? 'সভাপতি' : 'President',
+      role: language === 'bn' ? 'প্রতিষ্ঠাতা/পৃষ্ঠপোষক থেকে' : 'From founders/patrons',
+      responsibilities: language === 'bn' ? 'কমিটির নেতৃত্ব, ভাউচার সহ-স্বাক্ষর' : 'Committee leadership, voucher co-signing'
+    },
+    {
+      position: language === 'bn' ? 'প্রধান শিক্ষক' : 'Head Teacher',
+      role: language === 'bn' ? 'সদস্য-সচিব' : 'Member-secretary',
+      responsibilities: language === 'bn' ? 'প্রধান কমিটির সদস্য-সচিব' : 'Member-secretary of key committees'
+    },
+    {
+      position: language === 'bn' ? 'শিক্ষক প্রতিনিধি' : 'Teacher Representative',
+      role: language === 'bn' ? 'নির্বাচিত (১ জন)' : 'Elected (1 member)',
+      responsibilities: language === 'bn' ? 'শিক্ষকদের প্রতিনিধিত্ব' : 'Teacher representation'
+    },
+    {
+      position: language === 'bn' ? 'অভিভাবক প্রতিনিধি' : 'Guardian Representatives',
+      role: language === 'bn' ? '২ জন (১ পুরুষ, ১ মহিলা)' : '2 members (1 male, 1 female)',
+      responsibilities: language === 'bn' ? 'অভিভাবকদের প্রতিনিধিত্ব' : 'Guardian representation'
     }
   ];
 
