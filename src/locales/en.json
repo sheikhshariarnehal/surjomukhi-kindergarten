@@ -5,6 +5,15 @@
     "home": "Home",
     "about": "About",
     "contact": "Contact",
+    "academic": "Academic",
+    "admission": "Admission",
+    "students": "Students",
+    "teachers": "Teachers",
+    "news": "News",
+    "events": "Events",
+    "notices": "Notices",
+    "gallery": "Gallery",
+    "downloads": "Downloads",
     "welcome": "Welcome to our website!",
     "loading": "Loading...",
     "error": "Error",
@@ -26,7 +35,13 @@
     "previous": "Previous",
     "joinOurCommunity": "Join Our Community",
     "applyForAdmission": "Apply for Admission",
-    "contactUs": "Contact Us"
+    "contactUs": "Contact Us",
+    "established": "Established",
+    "location": "Location",
+    "phone": "Phone",
+    "email": "Email",
+    "website": "Website",
+    "address": "Address"
   },
   "stats": {
     "students": "Students",
@@ -35,7 +50,11 @@
     "classes": "Classes",
     "successRate": "Success Rate",
     "title": "Our Achievements",
-    "subtitle": "Numbers that speak for our excellence"
+    "subtitle": "Numbers that speak for our excellence",
+    "currentStudents": "55+",
+    "establishedYear": "2004",
+    "totalGrades": "6",
+    "yearsOfService": "20+"
   },
   "eventsNotices": {
     "title": "Events & Notices",
@@ -144,7 +163,24 @@
     "allRightsReserved": "All rights reserved",
     "copyright": "© 2024 Surjomukhi Kindergarten. All rights reserved.",
     "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service"
+    "termsOfService": "Terms of Service",
+    "establishedSince": "Established since 2010"
+  },
+  "newsletter": {
+    "title": "Stay Updated",
+    "description": "Subscribe to our newsletter for the latest news, events, and updates from Surjomukhi Kindergarten.",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "Enter your email address",
+    "nameLabel": "Name (optional)",
+    "namePlaceholder": "Your name (optional)",
+    "submit": "Subscribe",
+    "submitting": "Subscribing...",
+    "submitLabel": "Subscribe to newsletter",
+    "success": "Thank you for subscribing! You'll receive our latest updates.",
+    "emailRequired": "Email address is required",
+    "emailInvalid": "Please enter a valid email address",
+    "submitError": "Failed to subscribe. Please try again later.",
+    "privacy": "We respect your privacy. You can unsubscribe at any time."
   },
   "contact": {
     "getInTouch": "Get in Touch",
@@ -249,79 +285,141 @@
     }
   },
   "about": {
-    "title": "About Our School",
-    "subtitle": "Discover our journey, mission, and commitment to educational excellence since 1995.",
+    "title": "About Surjomukhi Kindergarten",
+    "subtitle": "A private primary educational institution established in 2004, fostering holistic development through creative and ethical education.",
+    "description": "Surjomukhi Kindergarten is a private primary educational institution established on 01-01-2004 and located at Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320. The school offers instruction in the Bangla medium from nursery up to Grade 5 and works to foster students' holistic development through creative and ethical education.",
+    "ideals": {
+      "title": "Our Ideals",
+      "items": [
+        "Education is the backbone of the nation",
+        "Peace is the supreme virtue",
+        "Spirit of unity and progress",
+        "Building a progressive society through creative education"
+      ]
+    },
     "mission": {
       "title": "Our Mission",
-      "description1": "To provide quality education that nurtures young minds, develops critical thinking skills, and prepares students for success in an ever-changing world. We are committed to fostering a learning environment that promotes academic excellence, character development, and social responsibility.",
-      "description2": "Our dedicated faculty and staff work tirelessly to ensure that every student receives personalized attention and support to reach their full potential."
+      "items": [
+        "Bring modern education to people's doorsteps",
+        "Nurture students' creativity, moral character, and human values",
+        "Create a comprehensive learning environment through literature, culture, and sports"
+      ]
     },
     "vision": {
       "title": "Our Vision",
-      "description": "To be a leading educational institution that inspires lifelong learning, cultivates global citizens, and empowers students to make positive contributions to society through innovation, creativity, and ethical leadership."
+      "items": [
+        "Become a reliable and model local institution",
+        "Ensure participation of underserved groups and support meritorious students in need"
+      ]
     },
     "history": {
       "title": "Our History",
-      "subtitle": "A journey of educational excellence spanning nearly three decades.",
+      "subtitle": "A journey of educational excellence since 2004.",
       "founded": {
-        "title": "Founded in 1995",
-        "description": "Our school was established with a vision to provide quality education to the local community. Starting with just 50 students and 5 teachers, we have grown into a thriving educational institution."
+        "title": "Established in 2004",
+        "description": "Surjomukhi Kindergarten was established on January 1, 2004, with a commitment to providing quality Bangla medium education from nursery to Grade 5."
       },
       "growth": {
-        "title": "Continuous Growth",
-        "description": "Over the years, we have expanded our facilities, enhanced our curriculum, and embraced modern teaching methodologies. Today, we serve over 450 students with a dedicated team of 25+ qualified teachers."
+        "title": "Continuous Development",
+        "description": "Over the years, we have maintained our commitment to holistic development, combining academic excellence with creative and ethical education in a nurturing environment."
       }
     },
-    "values": {
-      "title": "Our Core Values",
-      "subtitle": "The principles that guide everything we do.",
-      "excellence": {
-        "title": "Excellence",
-        "description": "We strive for the highest standards in education and personal development."
-      },
-      "integrity": {
-        "title": "Integrity",
-        "description": "We uphold honesty, transparency, and ethical behavior in all our actions."
-      },
-      "innovation": {
-        "title": "Innovation",
-        "description": "We embrace new ideas and technologies to enhance the learning experience."
-      },
-      "inclusivity": {
-        "title": "Inclusivity",
-        "description": "We welcome and celebrate diversity, ensuring every student feels valued."
-      },
-      "collaboration": {
-        "title": "Collaboration",
-        "description": "We work together as a community to achieve common goals."
-      },
-      "responsibility": {
-        "title": "Responsibility",
-        "description": "We take ownership of our actions and their impact on others."
-      }
+    "academics": {
+      "title": "Academics",
+      "description": "Instruction is provided in Bangla medium from nursery to Grade 5. Class-wise student numbers are maintained with proper structure.",
+      "details": [
+        "Pre-primary: 30 students",
+        "Grade 1: 25 students",
+        "Other grades: Structured enrollment"
+      ]
     },
-    "leadership": {
-      "title": "Leadership Team",
-      "subtitle": "Meet the dedicated leaders who guide our educational mission.",
-      "principal": {
-        "name": "Dr. Sarah Johnson",
-        "position": "Principal",
-        "description": "With over 20 years in education, Dr. Johnson leads our school with passion and vision."
-      },
-      "vicePrincipal": {
-        "name": "Mr. David Wilson",
-        "position": "Vice Principal",
-        "description": "An experienced educator focused on curriculum development and student success."
-      },
-      "academicDirector": {
-        "name": "Ms. Emily Chen",
-        "position": "Academic Director",
-        "description": "Dedicated to maintaining high academic standards and innovative teaching methods."
-      }
+    "governance": {
+      "title": "Governance",
+      "description": "A seven-member governing/management body framework ensures proper administration:",
+      "structure": [
+        "Seven-member governing/management body",
+        "Head Teacher as Member-Secretary",
+        "Teacher representative",
+        "Guardian representatives (male and female)",
+        "Retired government officer",
+        "Regular meetings for academic decisions"
+      ]
+    },
+    "facilities": {
+      "title": "Our Facilities",
+      "subtitle": "Comprehensive facilities to support holistic development",
+      "items": [
+        {
+          "title": "Safe Environment",
+          "description": "Two toilets and safe drinking water available",
+          "icon": "🚿"
+        },
+        {
+          "title": "Sports Facilities",
+          "description": "100x60 yards playground for football, cricket, badminton, and chess",
+          "icon": "⚽"
+        },
+        {
+          "title": "Cultural Programs",
+          "description": "Regular cultural programs, debates, and Cub Scout activities",
+          "icon": "🎭"
+        },
+        {
+          "title": "Daily Activities",
+          "description": "Daily assemblies and observance of national days",
+          "icon": "🏫"
+        }
+      ]
+    },
+    "studentSupport": {
+      "title": "Student Support",
+      "items": [
+        {
+          "title": "Library",
+          "description": "Establishing a library as resources allow"
+        },
+        {
+          "title": "Scholarships",
+          "description": "Offering scholarships through organizational examinations"
+        },
+        {
+          "title": "Safety Committee",
+          "description": "Anti-Sexual Harassment Committee with five members"
+        }
+      ]
+    },
+    "contact": {
+      "title": "Contact Information",
+      "address": "Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320",
+      "phone": "01819198965, 01711528045",
+      "email": "surjamukhikindergarten@gmail.com",
+      "website": "www.surjamukhikindergarten.com"
+    },
+    "stats": {
+      "title": "Our Impact",
+      "subtitle": "Making a difference in early childhood education",
+      "established": "2004",
+      "students": "55+",
+      "grades": "6",
+      "experience": "20+"
     },
     "cta": {
-      "title": "Join Our Community",
-      "subtitle": "Become part of our educational family and experience the difference quality education makes."
+      "title": "Join Our Educational Family",
+      "subtitle": "Experience quality education in a nurturing environment where every child can thrive."
+    },
+    "schoolInfo": {
+      "established": "2004",
+      "establishedDate": "January 1, 2004",
+      "location": "Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320",
+      "medium": "Bangla Medium",
+      "grades": "Nursery to Grade 5",
+      "type": "Private Primary Educational Institution",
+      "phone1": "01819198965",
+      "phone2": "01711528045",
+      "email": "surjamukhikindergarten@gmail.com",
+      "website": "www.surjamukhikindergarten.com",
+      "currentStudents": "55+",
+      "totalGrades": "6"
     },
     "pages": {
       "aboutUs": {
@@ -331,11 +429,39 @@
       },
       "founders": {
         "title": "Our Founders",
-        "subtitle": "Meet the visionaries who established our kindergarten"
+        "subtitle": "Meet the visionary who established our kindergarten",
+        "description": "Surjomukhi Kindergarten is a private nursery-to-Grade 5 school established on January 1, 2004, located at Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320. The school operates in Bangla medium and aims to provide creative, ethical, and holistic education.",
+        "founder": {
+          "name": "Sheikh Imran Mahmud",
+          "title": "Founder & Proprietor",
+          "description": "The founder and main initiator of Surjomukhi Kindergarten, who also manages and signs official applications as proprietor or director. Under his leadership, the school has maintained its commitment to providing quality Bangla medium education with a focus on creative, ethical, and holistic development.",
+          "vision": "To create an educational institution that serves as the backbone of the nation through quality education, fostering peace, unity, and progress in the community.",
+          "contact": {
+            "mobile": "01819198965",
+            "email": "surjamukhikindergarten@gmail.com",
+            "website": "www.surjamukhikindergarten.com"
+          }
+        }
       },
       "history": {
         "title": "Our History",
-        "subtitle": "Discover our journey of educational excellence"
+        "subtitle": "Discover our journey of educational excellence since 2004",
+        "description": "Surjomukhi Kindergarten began at the start of 2004 in Aona, Nawabganj, Dhaka. From its inception, the school has provided education for young children from nursery through Grade 5, prioritizing moral values, unity, peace, creativity, and progress.",
+        "founding": {
+          "year": "2004",
+          "title": "The Beginning",
+          "description": "Surjomukhi Kindergarten was established on January 1, 2004, in Aona, Nawabganj, Dhaka, with a vision to provide quality Bangla medium education from nursery to Grade 5."
+        },
+        "ideals": {
+          "title": "Founding Ideals",
+          "primary": "Education is the backbone of the nation",
+          "secondary": "Peace is the supreme virtue",
+          "description": "These founding ideals guide the institution to foster a progressive, inclusive society through quality education."
+        },
+        "mission": {
+          "title": "Our Mission",
+          "description": "The institution is structured to serve local community needs and actively supports underprivileged and meritorious students, maintaining focus on moral values, unity, peace, creativity, and progress."
+        }
       },
       "campusTour": {
         "title": "Campus Tour",
@@ -350,5 +476,149 @@
         "subtitle": "Our administrative team"
       }
     }
+  },
+  "academic": {
+    "title": "Academic Excellence",
+    "subtitle": "Comprehensive education from Nursery to Grade 5",
+    "description": "We provide quality Bangla medium education with a focus on holistic development through creative and ethical learning approaches.",
+    "medium": "Bangla Medium",
+    "grades": "Nursery to Grade 5",
+    "classStructure": {
+      "title": "Class Structure",
+      "prePrimary": "Pre-primary: 30 students",
+      "grade1": "Grade 1: 25 students",
+      "otherGrades": "Other grades: Structured admission"
+    },
+    "subjects": {
+      "title": "Subjects",
+      "description": "Comprehensive curriculum covering all essential subjects for primary education"
+    },
+    "teachers": {
+      "title": "Our Teachers",
+      "description": "Qualified and experienced teachers dedicated to student development"
+    },
+    "calendar": {
+      "title": "Academic Calendar",
+      "description": "Important dates and academic schedule"
+    },
+    "rules": {
+      "title": "Academic Rules",
+      "description": "Guidelines and regulations for academic excellence"
+    }
+  },
+  "admission": {
+    "title": "Admission Information",
+    "subtitle": "Join our educational family",
+    "description": "We welcome students who are eager to learn and grow in our nurturing environment.",
+    "policy": {
+      "title": "Admission Policy",
+      "description": "Our admission process is designed to ensure the best fit for each student"
+    },
+    "howToApply": {
+      "title": "How to Apply",
+      "description": "Step-by-step guide to the admission process"
+    },
+    "applyOnline": {
+      "title": "Apply Online",
+      "description": "Submit your application online for convenience"
+    },
+    "requirements": {
+      "title": "Requirements",
+      "items": [
+        "Completed application form",
+        "Birth certificate",
+        "Previous academic records (if applicable)",
+        "Guardian's contact information",
+        "Recent photographs"
+      ]
+    }
+  },
+  "students": {
+    "title": "Student Information",
+    "subtitle": "Resources and services for our students",
+    "fees": {
+      "title": "Fee Structure",
+      "description": "Transparent and affordable fee structure"
+    },
+    "examSchedule": {
+      "title": "Exam Schedule",
+      "description": "Important examination dates and information"
+    },
+    "rules": {
+      "title": "Student Rules",
+      "description": "Guidelines for student conduct and behavior"
+    },
+    "syllabus": {
+      "title": "Syllabus",
+      "description": "Comprehensive curriculum and learning objectives"
+    },
+    "list": {
+      "title": "Student List",
+      "description": "Current enrolled students information"
+    },
+    "verifyCertificate": {
+      "title": "Verify Certificate",
+      "description": "Verify the authenticity of certificates issued by our institution"
+    }
+  },
+  "teachers": {
+    "title": "Our Faculty",
+    "subtitle": "Dedicated educators committed to excellence",
+    "description": "Our qualified and experienced teachers are the backbone of our educational excellence."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with us",
+    "description": "We're here to help and answer any questions you might have.",
+    "address": "Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320",
+    "phone": "01819198965, 01711528045",
+    "email": "surjamukhikindergarten@gmail.com",
+    "website": "www.surjamukhikindergarten.com",
+    "form": {
+      "title": "Send us a message",
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send Message"
+    }
+  },
+  "news": {
+    "title": "Latest News",
+    "subtitle": "Stay updated with our latest announcements",
+    "noNews": "No news available at the moment"
+  },
+  "events": {
+    "title": "Upcoming Events",
+    "subtitle": "Join us for exciting activities and programs",
+    "noEvents": "No upcoming events at the moment"
+  },
+  "notices": {
+    "title": "Important Notices",
+    "subtitle": "Stay informed about important announcements",
+    "noNotices": "No notices available at the moment"
+  },
+  "gallery": {
+    "title": "Photo Gallery",
+    "subtitle": "Glimpses of life at Surjomukhi Kindergarten",
+    "noImages": "No images available at the moment"
+  },
+  "downloads": {
+    "title": "Downloads",
+    "subtitle": "Important documents and resources",
+    "noDownloads": "No downloads available at the moment"
+  },
+  "hero": {
+    "title": "Welcome to Surjomukhi Kindergarten",
+    "subtitle": "Excellence in Primary Education Since 2004",
+    "description": "A private primary educational institution providing quality Bangla medium education from nursery to Grade 5 with focus on creative, ethical, and holistic development.",
+    "enrollNow": "Apply for Admission",
+    "learnMore": "Learn More"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with us for admissions, inquiries, or any questions you may have.",
+    "description": "Contact Surjomukhi Kindergarten for admissions and inquiries"
   }
 }

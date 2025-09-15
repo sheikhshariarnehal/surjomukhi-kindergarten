@@ -55,9 +55,9 @@ export type {
 } from './gallery';
 
 // Student types
-export type { 
-  Student, 
-  CreateStudentData, 
+export type {
+  Student,
+  CreateStudentData,
   UpdateStudentData,
   CertificateVerification,
   CreateCertificateVerificationData,
@@ -65,3 +65,17 @@ export type {
   Class,
   Page
 } from './student';
+
+// Footer types
+export type {
+  FooterNavItem,
+  SocialLink,
+  ContactInfo,
+  FooterNavigation,
+  FooterProps,
+  NewsletterFormData,
+  NewsletterSignupProps,
+  BackToTopProps,
+  FooterSectionProps,
+  OrganizationSchema
+} from './footer';

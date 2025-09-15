@@ -1,0 +1,212 @@
+/* Footer Component Styles - Professional & Performance Optimized */
+
+.footer {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+}
+
+.footerContainer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Newsletter Section */
+.newsletterSection {
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+/* Contact Info Hover Effects */
+.contactItem {
+  transition: all 0.2s ease-in-out;
+}
+
+.contactItem:hover {
+  transform: translateX(4px);
+}
+
+.contactIcon {
+  transition: color 0.2s ease-in-out;
+}
+
+.contactItem:hover .contactIcon {
+  color: rgb(59, 130, 246);
+}
+
+/* Navigation Links */
+.navLink {
+  position: relative;
+  transition: all 0.2s ease-in-out;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: rgb(59, 130, 246);
+  transition: width 0.2s ease-in-out;
+}
+
+.navLink:hover::after {
+  width: 100%;
+}
+
+/* Social Media Links */
+.socialLink {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.socialLink::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, rgb(59, 130, 246), rgb(147, 51, 234));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.socialLink:hover::before {
+  opacity: 0.1;
+}
+
+.socialLink:hover {
+  transform: translateY(-2px) scale(1.1);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+/* Back to Top Button Enhancement */
+.backToTop {
+  background: linear-gradient(135deg, rgb(59, 130, 246), rgb(147, 51, 234));
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.backToTop:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.6);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  }
+  
+  .socialLink:hover {
+    transform: scale(1.05);
+  }
+}
+
+/* Dark mode optimizations */
+@media (prefers-color-scheme: dark) {
+  .footer {
+    background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .contactItem,
+  .navLink,
+  .socialLink,
+  .backToTop {
+    transition: none;
+  }
+  
+  .contactItem:hover,
+  .socialLink:hover,
+  .backToTop:hover {
+    transform: none;
+  }
+  
+  .navLink::after {
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .footer {
+    background: #000000;
+    border-top: 2px solid #ffffff;
+  }
+  
+  .newsletterSection {
+    background: #111111;
+    border-bottom: 1px solid #ffffff;
+  }
+}
+
+/* Print styles */
+@media print {
+  .footer {
+    background: none !important;
+    color: #000000 !important;
+  }
+  
+  .newsletterSection,
+  .backToTop {
+    display: none !important;
+  }
+  
+  .socialLink {
+    display: none !important;
+  }
+}
+
+/* Performance optimizations */
+.footer * {
+  will-change: auto;
+}
+
+.socialLink:hover,
+.backToTop:hover {
+  will-change: transform;
+}
+
+/* Focus styles for accessibility */
+.navLink:focus,
+.socialLink:focus,
+.contactItem:focus {
+  outline: 2px solid rgb(59, 130, 246);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Loading state */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.loading * {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

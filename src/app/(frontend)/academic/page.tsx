@@ -1,103 +1,110 @@
-import React from 'react';
-import { Metadata } from 'next';
-import Link from 'next/link';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Academic Programs - Surjomukhi Kindergarten',
-  description: 'Explore our comprehensive academic programs, curriculum, and educational approach designed for early childhood development.',
-  keywords: ['academic programs', 'curriculum', 'early childhood education', 'kindergarten classes'],
-  openGraph: {
-    title: 'Academic Programs - Surjomukhi Kindergarten',
-    description: 'Explore our comprehensive academic programs and curriculum.',
-    type: 'website',
-  },
-};
+import React from 'react';
+import Link from 'next/link';
+import Head from 'next/head';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 export default function AcademicPage() {
+  const { t, language } = useTranslation();
   const academicHighlights = [
     {
-      title: 'Play-Based Learning',
-      description: 'Learning through play activities that engage children naturally',
-      icon: '🎮',
+      title: language === 'bn' ? 'সৃজনশীল শিক্ষা' : 'Creative Education',
+      description: language === 'bn' ? 'সৃজনশীল পদ্ধতির মাধ্যমে শিক্ষা প্রদান যা শিশুদের স্বাভাবিকভাবে আকৃষ্ট করে' : 'Creative educational methods that naturally engage children',
+      icon: '🎨',
       color: 'bg-blue-50 text-blue-600'
     },
     {
-      title: 'Individual Attention',
-      description: 'Small class sizes ensuring personalized care for each child',
-      icon: '👥',
+      title: language === 'bn' ? 'নৈতিক শিক্ষা' : 'Ethical Education',
+      description: language === 'bn' ? 'নৈতিক মূল্যবোধ ও চরিত্র গঠনে বিশেষ গুরুত্ব' : 'Special emphasis on moral values and character building',
+      icon: '🌟',
       color: 'bg-green-50 text-green-600'
     },
     {
-      title: 'Holistic Development',
-      description: 'Focus on cognitive, social, emotional, and physical growth',
-      icon: '🌟',
+      title: language === 'bn' ? 'সামগ্রিক উন্নয়ন' : 'Holistic Development',
+      description: language === 'bn' ? 'শিশুদের সামগ্রিক উন্নয়নে ফোকাস - শারীরিক, মানসিক ও সামাজিক' : 'Focus on overall development - physical, mental and social',
+      icon: '🌱',
       color: 'bg-purple-50 text-purple-600'
     },
     {
-      title: 'Modern Methods',
-      description: 'Contemporary teaching techniques and educational resources',
-      icon: '💡',
+      title: language === 'bn' ? 'বাংলা মাধ্যম' : 'Bangla Medium',
+      description: language === 'bn' ? 'মাতৃভাষায় শিক্ষা প্রদানের মাধ্যমে শক্তিশালী ভিত্তি তৈরি' : 'Building strong foundation through mother tongue education',
+      icon: '📚',
       color: 'bg-orange-50 text-orange-600'
     }
   ];
 
   const quickLinks = [
-    { title: 'Class Schedule', href: '/academic/class-schedule', icon: '📅' },
-    { title: 'Our Classes', href: '/academic/classes', icon: '🏫' },
-    { title: 'Our Teachers', href: '/academic/teachers', icon: '👨‍🏫' },
-    { title: 'Subjects', href: '/academic/subjects', icon: '📚' },
-    { title: 'Academic Calendar', href: '/academic/calendar', icon: '📆' },
-    { title: 'Academic Rules', href: '/academic/rules', icon: '📋' }
+    { title: t('academic.calendar.title'), href: '/academic/calendar', icon: '📅' },
+    { title: t('academic.subjects.title'), href: '/academic/subjects', icon: '📚' },
+    { title: t('academic.teachers.title'), href: '/academic/teachers', icon: '👨‍🏫' },
+    { title: t('academic.rules.title'), href: '/academic/rules', icon: '📋' },
+    { title: language === 'bn' ? 'ক্লাস সময়সূচী' : 'Class Schedule', href: '/academic/class-schedule', icon: '⏰' },
+    { title: language === 'bn' ? 'আমাদের ক্লাসগুলি' : 'Our Classes', href: '/academic/classes', icon: '🏫' }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Breadcrumb */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="flex items-center space-x-4">
-              <li>
-                <a href="/" className="text-gray-500 hover:text-gray-700">Home</a>
-              </li>
-              <li>
-                <span className="text-gray-400">/</span>
-              </li>
-              <li>
-                <span className="text-gray-900 font-medium">Academic</span>
-              </li>
-            </ol>
-          </nav>
-        </div>
-      </div>
+    <>
+      {/* SEO Meta Tags */}
+      <Head>
+        <title>{language === 'bn' ? 'শিক্ষাক্রম - সূর্যমুখী কিন্ডারগার্টেন' : 'Academic Programs - Surjomukhi Kindergarten'}</title>
+        <meta
+          name="description"
+          content={language === 'bn'
+            ? 'নার্সারি থেকে ৫ম শ্রেণী পর্যন্ত আমাদের ব্যাপক শিক্ষাক্রম এবং শিক্ষাগত পদ্ধতি অন্বেষণ করুন।'
+            : 'Explore our comprehensive academic programs from nursery to Grade 5 with Bangla medium education and holistic development approach.'
+          }
+        />
+        <meta property="og:title" content={t('academic.title')} />
+        <meta property="og:description" content={t('academic.description')} />
+        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/academic`} />
+      </Head>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Academic Excellence
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-              Discover our comprehensive academic programs designed to nurture young minds and foster lifelong learning.
-            </p>
+      <div className="min-h-screen bg-gray-50">
+        {/* Breadcrumb */}
+        <div className="bg-white border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <nav className="flex" aria-label="Breadcrumb">
+              <ol className="flex items-center space-x-4">
+                <li>
+                  <a href="/" className="text-gray-500 hover:text-gray-700 transition-colors">{t('common.home')}</a>
+                </li>
+                <li>
+                  <span className="text-gray-400">/</span>
+                </li>
+                <li>
+                  <span className="text-gray-900 font-medium">{t('common.academic')}</span>
+                </li>
+              </ol>
+            </nav>
           </div>
         </div>
-      </section>
 
-      {/* Academic Overview */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Our Academic Approach
-            </h2>
-            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              At Surjomukhi Kindergarten, we believe that early childhood education should be engaging, 
-              nurturing, and developmentally appropriate. Our academic programs are designed to support 
-              each child's unique learning journey while building strong foundations for future success.
-            </p>
+        {/* Hero Section */}
+        <section className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+                {t('academic.title')}
+              </h1>
+              <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                {t('academic.subtitle')}
+              </p>
+            </div>
           </div>
+        </section>
+
+        {/* Academic Overview */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                {language === 'bn' ? 'আমাদের শিক্ষাগত পদ্ধতি' : 'Our Academic Approach'}
+              </h2>
+              <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                {t('academic.description')}
+              </p>
+            </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {academicHighlights.map((highlight, index) => (
@@ -267,6 +274,7 @@ export default function AcademicPage() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

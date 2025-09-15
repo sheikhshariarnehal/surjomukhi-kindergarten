@@ -200,11 +200,11 @@ const LinkCard = React.memo(({ link, index, colorScheme }: {
           <IconComponent iconType={link.icon} className="w-6 h-6" />
         </div>
         <div className="flex-1 min-w-0">
-          <h4 className={`font-semibold text-gray-900 group-hover:${colorScheme.text} mb-1.5 text-sm leading-tight`}>
+          <h4 className={`font-semibold text-gray-900 group-hover:${colorScheme.text} mb-1.5 text-sm md:text-base leading-tight`}>
             {link.title}
             {link.external && <ExternalLinkIcon />}
           </h4>
-          <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">{link.description}</p>
+          <p className="text-xs md:text-sm text-gray-600 leading-relaxed line-clamp-2">{link.description}</p>
         </div>
       </LinkWrapper>
     </motion.div>
@@ -311,12 +311,12 @@ export default function QuickLinks() {
             <h2 id="quick-links-title" className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
               Quick Links & Resources
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Access important government portals, educational resources, and school services with just one click.
             </p>
           </motion.header>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
             <CategorySection
               title="Government Portals"
               icon={<IconComponent iconType="government" className="w-5 h-5" />}
@@ -346,11 +346,11 @@ export default function QuickLinks() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-center"
           >
-            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm max-w-4xl mx-auto">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
+            <div className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 border border-gray-100 shadow-sm max-w-4xl mx-auto">
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
                 Need Help Finding Something?
               </h3>
-              <p className="text-gray-600 mb-6 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-sm md:text-base text-gray-600 mb-6 max-w-2xl mx-auto leading-relaxed">
                 Can&apos;t find what you&apos;re looking for? Our support team is here to help you navigate our resources and services.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">

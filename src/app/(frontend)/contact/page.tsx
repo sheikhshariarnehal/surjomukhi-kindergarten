@@ -2,28 +2,32 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import Head from 'next/head';
 import { Button, Input, Textarea } from '@/lib';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 const contactStructuredData = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
-  "name": "Contact Us - School Name",
-  "description": "Get in touch with our school for admissions, inquiries, or any questions you may have.",
+  "name": "Contact Us - Surjomukhi Kindergarten",
+  "description": "Get in touch with Surjomukhi Kindergarten for admissions, inquiries, or any questions you may have.",
   "url": `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/contact`,
   "mainEntity": {
     "@type": "EducationalOrganization",
-    "name": "School Name",
+    "name": "Surjomukhi Kindergarten",
+    "alternateName": "সূর্যমুখী কিন্ডারগার্টেন",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "123 School Street",
-      "addressLocality": "Education City",
-      "addressRegion": "EC",
-      "postalCode": "12345",
-      "addressCountry": "US"
+      "streetAddress": "Salauddin Complex, Aona Bazar",
+      "addressLocality": "Nawabganj",
+      "addressRegion": "Dhaka",
+      "postalCode": "1320",
+      "addressCountry": "BD"
     },
-    "telephone": "+1-555-123-4567",
-    "email": "info@school.edu",
-    "openingHours": "Mo-Fr 08:00-17:00"
+    "telephone": ["+880-1819198965", "+880-1711528045"],
+    "email": "surjamukhikindergarten@gmail.com",
+    "url": "http://www.surjamukhikindergarten.com",
+    "openingHours": "Mo-Sa 08:00-16:00"
   }
 };
 
@@ -36,6 +40,7 @@ interface ContactFormData {
 }
 
 export default function ContactPage() {
+  const { t, language } = useTranslation();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -93,6 +98,21 @@ export default function ContactPage() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <Head>
+        <title>{language === 'bn' ? 'যোগাযোগ - সূর্যমুখী কিন্ডারগার্টেন' : 'Contact Us - Surjomukhi Kindergarten'}</title>
+        <meta
+          name="description"
+          content={language === 'bn'
+            ? 'ভর্তি, অনুসন্ধান বা যেকোনো প্রশ্নের জন্য সূর্যমুখী কিন্ডারগার্টেনের সাথে যোগাযোগ করুন।'
+            : 'Get in touch with Surjomukhi Kindergarten for admissions, inquiries, or any questions you may have.'
+          }
+        />
+        <meta property="og:title" content={t('contact.title')} />
+        <meta property="og:description" content={t('contact.description')} />
+        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/contact`} />
+      </Head>
+
       {/* Structured Data */}
       <script
         type="application/ld+json"
@@ -103,14 +123,14 @@ export default function ContactPage() {
 
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-20">
+        <section className="bg-gradient-to-r from-blue-600 to-green-600 text-white py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Contact Us
+                {t('contact.title')}
               </h1>
               <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-                Get in touch with us for admissions, inquiries, or any questions you may have.
+                {t('contact.subtitle')}
               </p>
             </div>
           </div>
@@ -127,58 +147,57 @@ export default function ContactPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <h2 className="text-3xl font-bold text-gray-900 mb-8">Get in Touch</h2>
-                
+                <h2 className="text-3xl font-bold text-gray-900 mb-8">{language === 'bn' ? 'যোগাযোগ করুন' : 'Get in Touch'}</h2>
+
                 <div className="space-y-6">
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
-                      <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                       </div>
                     </div>
                     <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-900">Address</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">{language === 'bn' ? 'ঠিকানা' : 'Address'}</h3>
                       <p className="text-gray-600">
-                        123 School Street<br />
-                        Education City, EC 12345<br />
-                        United States
+                        {t('schoolInfo.location')}<br />
+                        {language === 'bn' ? 'বাংলাদেশ' : 'Bangladesh'}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
-                      <div className="w-10 h-10 bg-secondary-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                         </svg>
                       </div>
                     </div>
                     <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-900">Phone</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">{language === 'bn' ? 'ফোন' : 'Phone'}</h3>
                       <p className="text-gray-600">
-                        Main: +1 (555) 123-4567<br />
-                        Admissions: +1 (555) 123-4568
+                        {t('schoolInfo.phone1')}<br />
+                        {t('schoolInfo.phone2')}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
-                      <div className="w-10 h-10 bg-accent-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
                       </div>
                     </div>
                     <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-900">Email</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">{language === 'bn' ? 'ইমেইল' : 'Email'}</h3>
                       <p className="text-gray-600">
-                        General: info@school.edu<br />
-                        Admissions: admissions@school.edu
+                        {t('schoolInfo.email')}<br />
+                        {language === 'bn' ? 'ওয়েবসাইট: ' : 'Website: '}{t('schoolInfo.website')}
                       </p>
                     </div>
                   </div>

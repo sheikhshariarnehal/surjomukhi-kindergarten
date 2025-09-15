@@ -13,29 +13,29 @@ import type { HomePageData } from '@/types/homepage';
 
 // Enhanced metadata with comprehensive SEO optimization
 export const metadata: Metadata = {
-  title: 'Surjomukhi Kindergarten | Premier Early Childhood Education in Bangladesh',
-  description: 'Surjomukhi Kindergarten offers exceptional early childhood education with experienced teachers, modern facilities, and holistic child development programs. Enroll your child in Bangladesh\'s leading kindergarten for quality education and nurturing care.',
+  title: 'Surjomukhi Kindergarten | Bangla Medium Primary Education | Established 2004',
+  description: 'Surjomukhi Kindergarten is a private primary educational institution established in 2004, located in Nawabganj, Dhaka. We provide quality Bangla medium education from nursery to Grade 5 with focus on creative, ethical, and holistic development.',
   keywords: [
     'Surjomukhi Kindergarten',
-    'kindergarten Bangladesh',
-    'early childhood education',
-    'preschool admission',
+    'Bangla medium school',
+    'primary education Bangladesh',
+    'Nawabganj school',
+    'Dhaka kindergarten',
+    'nursery to grade 5',
+    'private school Bangladesh',
+    'creative education',
+    'ethical education',
+    'holistic development',
+    'Aona Bazar school',
+    'established 2004',
     'quality education',
     'child development',
-    'play-based learning',
-    'experienced teachers',
-    'safe learning environment',
-    'holistic development',
-    'academic excellence',
-    'kindergarten admission',
-    'nursery school',
-    'pre-primary education',
-    'child care center',
-    'educational excellence',
-    'modern teaching methods',
-    'qualified faculty',
-    'student-centered learning',
-    'creative learning environment'
+    'primary school admission',
+    'Salauddin Complex',
+    'educational institution',
+    'student development',
+    'moral values education',
+    'progressive education'
   ],
   authors: [{ name: 'Surjomukhi Kindergarten' }],
   creator: 'Surjomukhi Kindergarten',
@@ -68,8 +68,8 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: '/',
     siteName: 'Surjomukhi Kindergarten',
-    title: 'Surjomukhi Kindergarten - Premier Early Childhood Education in Bangladesh',
-    description: 'Experience excellence in early childhood education with our qualified teachers, modern facilities, and comprehensive development programs designed for your child\'s success.',
+    title: 'Surjomukhi Kindergarten - Bangla Medium Primary Education Since 2004',
+    description: 'Private primary educational institution in Nawabganj, Dhaka providing quality Bangla medium education from nursery to Grade 5 with focus on creative, ethical, and holistic development.',
     images: [
       {
         url: '/og-home.jpg',
@@ -132,27 +132,31 @@ export default async function HomePage() {
             "@context": "https://schema.org",
             "@type": "EducationalOrganization",
             "name": "Surjomukhi Kindergarten",
-            "alternateName": "Surjomukhi KG",
-            "description": "Premier early childhood education institution providing quality education and holistic child development programs.",
-            "url": "/",
+            "alternateName": "সূর্যমুখী কিন্ডারগার্টেন",
+            "description": "Private primary educational institution established in 2004, providing quality Bangla medium education from nursery to Grade 5 with focus on creative, ethical, and holistic development.",
+            "url": "http://www.surjamukhikindergarten.com",
             "logo": "/logo.png",
             "image": "/og-home.jpg",
-            "telephone": "+880-XXX-XXXXXXX", // Replace with actual phone
-            "email": "info@surjomukhikg.edu.bd", // Replace with actual email
+            "telephone": ["+880-1819198965", "+880-1711528045"],
+            "email": "surjamukhikindergarten@gmail.com",
             "address": {
               "@type": "PostalAddress",
               "addressCountry": "BD",
-              "addressLocality": "Your City", // Replace with actual city
-              "addressRegion": "Your Division", // Replace with actual division
-              "streetAddress": "Your Address" // Replace with actual address
+              "addressLocality": "Nawabganj",
+              "addressRegion": "Dhaka",
+              "postalCode": "1320",
+              "streetAddress": "Salauddin Complex, Aona Bazar"
             },
-            "sameAs": [
-              "https://facebook.com/surjomukhikg", // Replace with actual social media
-              "https://youtube.com/surjomukhikg"
-            ],
-            "foundingDate": "YYYY", // Replace with actual founding year
-            "numberOfStudents": "XXX", // Replace with actual number
-            "educationalCredentialAwarded": "Early Childhood Education Certificate"
+            "foundingDate": "2004-01-01",
+            "numberOfStudents": 55,
+            "educationalCredentialAwarded": "Primary Education Certificate",
+            "hasCredential": "Bangla Medium Primary Education",
+            "educationalLevel": "Primary Education",
+            "audience": {
+              "@type": "EducationalAudience",
+              "educationalRole": "student",
+              "audienceType": "children aged 3-11"
+            }
           })
         }}
       />

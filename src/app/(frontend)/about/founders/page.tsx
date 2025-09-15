@@ -2,163 +2,184 @@
 
 import React from 'react';
 import { useTranslation } from '@/contexts/LanguageContext';
+import Head from 'next/head';
 
 export default function FoundersPage() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Breadcrumb */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="flex items-center space-x-4">
-              <li>
-                <a href="/" className="text-gray-500 hover:text-gray-700">{t('common.home')}</a>
-              </li>
-              <li>
-                <span className="text-gray-400">/</span>
-              </li>
-              <li>
-                <a href="/about" className="text-gray-500 hover:text-gray-700">{t('common.about')}</a>
-              </li>
-              <li>
-                <span className="text-gray-400">/</span>
-              </li>
-              <li>
-                <span className="text-gray-900 font-medium">{t('about.pages.founders.title')}</span>
-              </li>
-            </ol>
-          </nav>
-        </div>
-      </div>
+    <>
+      {/* SEO Meta Tags */}
+      <Head>
+        <title>{language === 'bn' ? 'আমাদের প্রতিষ্ঠাতা - সূর্যমুখী কিন্ডারগার্টেন' : 'Our Founder - Surjomukhi Kindergarten'}</title>
+        <meta
+          name="description"
+          content={language === 'bn'
+            ? 'শেখ ইমরান মাহমুদ - সূর্যমুখী কিন্ডারগার্টেনের প্রতিষ্ঠাতা ও স্বত্বাধিকারী। ২০০৪ সালে প্রতিষ্ঠিত এই শিক্ষা প্রতিষ্ঠানের দূরদর্শী নেতা।'
+            : 'Sheikh Imran Mahmud - Founder and Proprietor of Surjomukhi Kindergarten. The visionary leader behind this educational institution established in 2004.'
+          }
+        />
+        <meta property="og:title" content={language === 'bn' ? 'আমাদের প্রতিষ্ঠাতা' : 'Our Founder'} />
+        <meta property="og:description" content={t('about.pages.founders.description')} />
+        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/about/founders`} />
+      </Head>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-green-600 to-blue-600 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Our Visionary Founders
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-              Meet the dedicated individuals who laid the foundation of our educational institution.
-            </p>
+      <div className="min-h-screen bg-gray-50">
+        {/* Breadcrumb */}
+        <div className="bg-white border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <nav className="flex" aria-label="Breadcrumb">
+              <ol className="flex items-center space-x-4">
+                <li>
+                  <a href="/" className="text-gray-500 hover:text-gray-700 transition-colors">{t('common.home')}</a>
+                </li>
+                <li>
+                  <span className="text-gray-400">/</span>
+                </li>
+                <li>
+                  <a href="/about" className="text-gray-500 hover:text-gray-700 transition-colors">{t('common.about')}</a>
+                </li>
+                <li>
+                  <span className="text-gray-400">/</span>
+                </li>
+                <li>
+                  <span className="text-gray-900 font-medium">{t('about.pages.founders.title')}</span>
+                </li>
+              </ol>
+            </nav>
           </div>
         </div>
-      </section>
 
-      {/* Main Content */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Founding Story */}
-          <div className="mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-              The Beginning of Our Journey
-            </h2>
-            <div className="max-w-4xl mx-auto text-center">
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                Surjomukhi Kindergarten was founded with a simple yet powerful vision: to provide 
-                quality early childhood education that nurtures young minds and prepares them for 
-                a bright future. Our founders believed that every child deserves the best start 
-                in their educational journey.
-              </p>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                With years of experience in education and a deep understanding of child development, 
-                our founders established this institution to create a learning environment that 
-                combines academic excellence with emotional and social growth.
+        {/* Hero Section */}
+        <section className="bg-gradient-to-r from-green-600 to-blue-600 text-white py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+                {t('about.pages.founders.title')}
+              </h1>
+              <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                {t('about.pages.founders.subtitle')}
               </p>
             </div>
           </div>
+        </section>
 
-          {/* Founders Profiles */}
-          <div className="mb-16">
+        {/* About the Institution */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                {language === 'bn' ? 'প্রতিষ্ঠান সম্পর্কে' : 'About the Institution'}
+              </h2>
+              <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                {t('about.pages.founders.description')}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Founder Profile */}
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
-              Meet Our Founders
+              {language === 'bn' ? 'আমাদের প্রতিষ্ঠাতার সাথে পরিচিত হন' : 'Meet Our Founder'}
             </h2>
-            
-            <div className="space-y-16">
-              {/* Founder 1 */}
-              <div className="flex flex-col lg:flex-row items-center gap-12">
-                <div className="lg:w-1/3">
-                  <div className="w-64 h-64 bg-gradient-to-br from-blue-400 to-green-400 rounded-full mx-auto"></div>
-                </div>
-                <div className="lg:w-2/3">
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                    Mrs. Rashida Begum
-                  </h3>
-                  <p className="text-xl text-blue-600 font-medium mb-6">Founder & Chairman</p>
-                  <p className="text-lg text-gray-600 mb-4 leading-relaxed">
-                    Mrs. Rashida Begum, with over 25 years of experience in early childhood education, 
-                    founded Surjomukhi Kindergarten with a vision to create a nurturing environment 
-                    for young learners. Her dedication to child development and innovative teaching 
-                    methods has been the cornerstone of our institution.
-                  </p>
-                  <p className="text-lg text-gray-600 mb-4 leading-relaxed">
-                    She holds a Master's degree in Education and has been recognized for her 
-                    contributions to early childhood education in the community. Her philosophy 
-                    of "learning through play" continues to guide our educational approach.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">M.Ed in Education</span>
-                    <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">25+ Years Experience</span>
-                    <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">Child Development Expert</span>
+
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="flex flex-col lg:flex-row">
+                <div className="lg:w-1/3 bg-gradient-to-br from-green-500 to-blue-500 p-8 flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <div className="w-48 h-48 bg-white/20 rounded-full mx-auto mb-6 flex items-center justify-center">
+                      <span className="text-6xl">👨‍🏫</span>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">{t('about.pages.founders.founder.name')}</h3>
+                    <p className="text-lg opacity-90">{t('about.pages.founders.founder.title')}</p>
                   </div>
                 </div>
-              </div>
 
-              {/* Founder 2 */}
-              <div className="flex flex-col lg:flex-row-reverse items-center gap-12">
-                <div className="lg:w-1/3">
-                  <div className="w-64 h-64 bg-gradient-to-br from-green-400 to-blue-400 rounded-full mx-auto"></div>
-                </div>
-                <div className="lg:w-2/3">
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                    Mr. Abdul Karim
-                  </h3>
-                  <p className="text-xl text-green-600 font-medium mb-6">Co-Founder & Managing Director</p>
-                  <p className="text-lg text-gray-600 mb-4 leading-relaxed">
-                    Mr. Abdul Karim brings extensive experience in educational administration and 
-                    child psychology to our institution. His vision of creating a holistic learning 
-                    environment has shaped our curriculum and teaching methodologies.
-                  </p>
-                  <p className="text-lg text-gray-600 mb-4 leading-relaxed">
-                    With a background in child psychology and educational management, he has been 
-                    instrumental in developing our unique approach to early childhood education 
-                    that focuses on individual growth and development.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Child Psychology</span>
-                    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Educational Management</span>
-                    <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">Curriculum Developer</span>
+                <div className="lg:w-2/3 p-8">
+                  <div className="mb-6">
+                    <h4 className="text-xl font-bold text-gray-900 mb-3">
+                      {language === 'bn' ? 'পরিচিতি' : 'About'}
+                    </h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      {t('about.pages.founders.founder.description')}
+                    </p>
+                  </div>
+
+                  <div className="mb-6">
+                    <h4 className="text-xl font-bold text-gray-900 mb-3">
+                      {language === 'bn' ? 'দৃষ্টিভঙ্গি' : 'Vision'}
+                    </h4>
+                    <p className="text-gray-600 leading-relaxed italic">
+                      "{t('about.pages.founders.founder.vision')}"
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-3">
+                      {language === 'bn' ? 'যোগাযোগ' : 'Contact'}
+                    </h4>
+                    <div className="space-y-2">
+                      <div className="flex items-center">
+                        <span className="text-blue-600 mr-3">📱</span>
+                        <span className="text-gray-600">{t('about.pages.founders.founder.contact.mobile')}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-blue-600 mr-3">✉️</span>
+                        <span className="text-gray-600">{t('about.pages.founders.founder.contact.email')}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-blue-600 mr-3">🌐</span>
+                        <span className="text-gray-600">{t('about.pages.founders.founder.contact.website')}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </section>
 
-          {/* Vision & Mission */}
-          <div className="bg-gradient-to-r from-blue-50 to-green-50 p-8 rounded-lg">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-              Founders' Vision & Mission
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h3 className="text-xl font-bold text-blue-600 mb-4">Our Vision</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  "To create a world where every child has access to quality early childhood education 
-                  that nurtures their natural curiosity, creativity, and love for learning."
+        {/* School Ideals */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                {language === 'bn' ? 'আমাদের আদর্শ' : 'Our Founding Ideals'}
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-lg text-center">
+                <div className="text-4xl mb-4">📚</div>
+                <h3 className="text-xl font-bold text-blue-800 mb-4">
+                  {language === 'bn' ? 'শিক্ষাই জাতির মেরুদণ্ড' : 'Education is the backbone of the nation'}
+                </h3>
+                <p className="text-blue-700">
+                  {language === 'bn'
+                    ? 'আমাদের প্রতিষ্ঠানের মূল ভিত্তি হলো মানসম্পন্ন শিক্ষার মাধ্যমে জাতি গঠন।'
+                    : 'Our institution is built on the foundation of nation-building through quality education.'
+                  }
                 </p>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h3 className="text-xl font-bold text-green-600 mb-4">Our Mission</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  "To provide a safe, nurturing, and stimulating environment where children can 
-                  develop their full potential through play-based learning and individual attention."
+
+              <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-lg text-center">
+                <div className="text-4xl mb-4">☮️</div>
+                <h3 className="text-xl font-bold text-green-800 mb-4">
+                  {language === 'bn' ? 'শান্তিই পরম ধর্ম' : 'Peace is the supreme virtue'}
+                </h3>
+                <p className="text-green-700">
+                  {language === 'bn'
+                    ? 'শান্তি ও সম্প্রীতির মাধ্যমে একটি উন্নত সমাজ গড়ার প্রত্যাশা।'
+                    : 'Building a better society through peace and harmony.'
+                  }
                 </p>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </>
   );
 }

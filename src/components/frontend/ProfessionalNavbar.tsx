@@ -347,11 +347,11 @@ export default function ProfessionalNavbar() {
                     />
                   </div>
                 </div>
-                <div className="ml-2.5 hidden sm:block">
-                  <div className="text-lg lg:text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-blue-600 leading-tight">
+                <div className="ml-2.5">
+                  <div className="text-sm sm:text-lg lg:text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-blue-600 leading-tight">
                     {t('common.schoolName')}
                   </div>
-                  <div className="text-xs text-gray-600 font-medium leading-tight">
+                  <div className="text-xs text-gray-600 font-medium leading-tight hidden xs:block">
                     {t('common.tagline')}
                   </div>
                 </div>

@@ -116,27 +116,27 @@ SlideIndicators.displayName = 'SlideIndicators';
 // Inline InstitutionalFooter component for better bundle optimization
 const InstitutionalFooter: React.FC = React.memo(() => {
   const institutionalData = [
-    { 
-      label: "EIIN", 
-      value: "06310160508", 
+    {
+      label: "EIIN",
+      value: "06310160508",
       bgColor: "bg-orange-500",
       description: "Educational Institution Identification Number"
     },
-    { 
-      label: "Institution Code", 
-      value: "424528", 
+    {
+      label: "Institution Code",
+      value: "424528",
       bgColor: "bg-blue-800",
       description: "Official Institution Code"
     },
-    { 
-      label: "Center Code", 
-      value: "N/A", 
+    {
+      label: "Center Code",
+      value: "N/A",
       bgColor: "bg-orange-500",
       description: "Center Identification Code"
     },
-    { 
-      label: "Estd Year", 
-      value: "1836", 
+    {
+      label: "Estd Year",
+      value: "2004",
       bgColor: "bg-blue-800",
       description: "Year of Establishment"
     }
@@ -153,7 +153,7 @@ const InstitutionalFooter: React.FC = React.memo(() => {
     >
       <div className="bg-gradient-to-r from-orange-500 via-blue-800 to-orange-500">
         <div className="grid grid-cols-2 lg:grid-cols-4">
-          {institutionalData.map((item, index) => (
+          {institutionalData.map((item) => (
             <div
               key={item.label}
               className={`${item.bgColor} text-white text-center py-2 sm:py-3 px-1 sm:px-2 lg:px-4 transition-all duration-200 hover:brightness-110`}
@@ -202,7 +202,7 @@ const Hero: React.FC = () => {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   
-  const autoPlayTimeoutRef = useRef<NodeJS.Timeout>();
+  const autoPlayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const shouldReduceMotion = useReducedMotion();
 
   // Optimized image preloading - only preload first image initially
@@ -329,9 +329,9 @@ const Hero: React.FC = () => {
     initial: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.02 },
     animate: shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 },
     exit: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98 },
-    transition: shouldReduceMotion 
-      ? { duration: 0.3 } 
-      : { duration: 0.6, ease: "easeInOut" }
+    transition: shouldReduceMotion
+      ? { duration: 0.3 }
+      : { duration: 0.6 }
   }), [shouldReduceMotion]);
 
   if (!imagesLoaded) {
@@ -347,7 +347,7 @@ const Hero: React.FC = () => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Schema.org structured data for SEO */}
+      {/* Schema.org structured data for SEO - Updated with actual school data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -355,13 +355,33 @@ const Hero: React.FC = () => {
             "@context": "https://schema.org",
             "@type": "EducationalOrganization",
             "name": "Surjomukhi Kindergarten",
-            "description": "Premier kindergarten providing quality early childhood education",
-            "url": "https://surjomukhi-kindergarten.com",
-            "foundingDate": "1836",
+            "alternateName": "সূর্যমুখী কিন্ডারগার্টেন",
+            "description": "Private primary educational institution providing quality Bangla medium education from nursery to Grade 5",
+            "url": "http://www.surjamukhikindergarten.com",
+            "foundingDate": "2004-01-01",
+            "numberOfStudents": 55,
+            "identifier": [
+              {
+                "@type": "PropertyValue",
+                "name": "EIIN",
+                "value": "06310160508"
+              },
+              {
+                "@type": "PropertyValue", 
+                "name": "Institution Code",
+                "value": "424528"
+              }
+            ],
             "address": {
               "@type": "PostalAddress",
+              "streetAddress": "Salauddin Complex, Aona Bazar",
+              "addressLocality": "Nawabganj",
+              "addressRegion": "Dhaka",
+              "postalCode": "1320",
               "addressCountry": "BD"
-            }
+            },
+            "telephone": ["+880-1819198965", "+880-1711528045"],
+            "email": "surjamukhikindergarten@gmail.com"
           })
         }}
       />
