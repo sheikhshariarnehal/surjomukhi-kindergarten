@@ -7,7 +7,7 @@ interface StructuredDataProps {
 
 const StructuredData: React.FC<StructuredDataProps> = ({ type, data = {} }) => {
   const getStructuredData = () => {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://surjomukhi-kindergarten.com';
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com';
     
     switch (type) {
       case 'organization':
@@ -16,15 +16,15 @@ const StructuredData: React.FC<StructuredDataProps> = ({ type, data = {} }) => {
           "@context": "https://schema.org",
           "@type": "EducationalOrganization",
           "@id": `${baseUrl}/#organization`,
-          "name": "Surjomukhi Kindergarten",
-          "alternateName": "Surjomukhi KG",
+          "name": "Surjamukhi Kindergarten",
+          "alternateName": "Surjamukhi KG",
           "description": "A premier kindergarten providing quality early childhood education with experienced teachers and modern facilities for holistic child development.",
           "url": baseUrl,
           "logo": {
             "@type": "ImageObject",
-            "url": `${baseUrl}/logo.png`,
-            "width": 200,
-            "height": 200
+            "url": `${baseUrl}/logo.webp`,
+            "width": 512,
+            "height": 512
           },
           "image": [
             {

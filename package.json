@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postbuild": "echo 'Build completed successfully!'"
+    "postbuild": "echo 'Build completed successfully!'",
+    "generate-favicons": "node scripts/generate-favicons.js",
+    "generate-seo-assets": "node scripts/generate-seo-assets.js",
+    "generate-all-assets": "npm run generate-favicons && npm run generate-seo-assets"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

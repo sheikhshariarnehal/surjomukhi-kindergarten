@@ -1,0 +1,33 @@
+# Robots.txt for Surjamukhi Kindergarten
+# https://www.surjamukhikindergarten.com
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /_next/
+Disallow: /static/
+Disallow: *.json
+Disallow: /test*
+Disallow: /demo*
+Crawl-delay: 1
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+
+# Sitemap location
+Sitemap: https://www.surjamukhikindergarten.com/sitemap.xml
+
+# Host directive
+Host: https://www.surjamukhikindergarten.com

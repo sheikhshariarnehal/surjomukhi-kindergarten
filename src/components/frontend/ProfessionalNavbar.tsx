@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/contexts/LanguageContext';
@@ -329,17 +330,21 @@ export default function ProfessionalNavbar() {
           <div className="flex justify-between items-center h-14 lg:h-16">
             {/* Compact Logo */}
             <div className="flex-shrink-0">
-              <Link 
-                href="/" 
-                className="group flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500/30 rounded-lg p-1 transition-all duration-200" 
-                aria-label="Homepage"
+              <Link
+                href="/"
+                className="group flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500/30 rounded-lg p-1 transition-all duration-200"
+                aria-label="Surjamukhi Kindergarten - Homepage"
               >
                 <div className="relative">
-                  <div className="w-9 h-9 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 rounded-lg flex items-center justify-center shadow-md transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
-                    <svg className="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                    </svg>
+                  <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-lg overflow-hidden shadow-md transition-all duration-300 group-hover:shadow-lg group-hover:scale-105 bg-white border border-gray-100">
+                    <Image
+                      src="/logo.webp"
+                      alt="Surjamukhi Kindergarten Logo"
+                      width={40}
+                      height={40}
+                      className="w-full h-full object-contain p-0.5"
+                      priority
+                    />
                   </div>
                 </div>
                 <div className="ml-2.5 hidden sm:block">
