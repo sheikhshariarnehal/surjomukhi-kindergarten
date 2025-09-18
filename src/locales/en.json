@@ -552,8 +552,96 @@
     "title": "Student Information",
     "subtitle": "Resources and services for our students",
     "fees": {
-      "title": "Fee Structure",
-      "description": "Transparent and affordable fee structure"
+      "title": "Student Fees",
+      "subtitle": "Transparent and affordable fee structure for quality early childhood education",
+      "description": "All fees are in Bangladeshi Taka (BDT). Fees are subject to annual review.",
+      "monthlyFees": "Monthly Fees",
+      "admissionFees": "Admission Fees",
+      "additionalFees": "Additional Fees",
+      "paymentMethods": "Payment Methods",
+      "paymentSchedule": "Payment Schedule",
+      "financialAssistance": "Financial Assistance Available",
+      "classes": {
+        "play": "Play",
+        "nursery": "Nursery", 
+        "one": "Class One",
+        "two": "Class Two",
+        "three": "Class Three",
+        "four": "Class Four",
+        "five": "Class Five"
+      },
+      "feeStructure": {
+        "play": {
+          "monthlyFee": "300",
+          "admissionFee": "500"
+        },
+        "nursery": {
+          "monthlyFee": "300", 
+          "admissionFee": "500"
+        },
+        "one": {
+          "monthlyFee": "400",
+          "admissionFee": "600"
+        },
+        "two": {
+          "monthlyFee": "400",
+          "admissionFee": "600"
+        },
+        "three": {
+          "monthlyFee": "450",
+          "admissionFee": "700"
+        },
+        "four": {
+          "monthlyFee": "450",
+          "admissionFee": "800"
+        },
+        "five": {
+          "monthlyFee": "500",
+          "admissionFee": "800"
+        }
+      },
+      "paymentInfo": {
+        "methods": {
+          "bankTransfer": {
+            "title": "Bank Transfer",
+            "description": "Direct transfer to school account"
+          },
+          "cash": {
+            "title": "Cash Payment", 
+            "description": "Pay at school office during business hours"
+          },
+          "mobileBanking": {
+            "title": "Mobile Banking",
+            "description": "bKash, Nagad, Rocket accepted"
+          }
+        },
+        "schedule": {
+          "monthlyDue": "Monthly fees due by 10th of each month",
+          "lateFee": "Late payment fee: ৳50 after 15th",
+          "siblingDiscount": "Sibling discount: 10% for second child"
+        }
+      },
+      "assistance": {
+        "title": "We believe quality education should be accessible to all. Limited financial assistance is available for eligible families.",
+        "needBased": {
+          "title": "Need-Based Aid",
+          "description": "Financial assistance based on family income"
+        },
+        "merit": {
+          "title": "Merit Scholarships", 
+          "description": "Awards for exceptional students"
+        },
+        "paymentPlans": {
+          "title": "Payment Plans",
+          "description": "Flexible payment arrangements available"
+        }
+      },
+      "contact": {
+        "title": "Questions About Fees?",
+        "subtitle": "Our finance team is available to discuss payment options and answer any questions about our fee structure.",
+        "contactOffice": "Contact Finance Office",
+        "applyNow": "Apply Now"
+      }
     },
     "examSchedule": {
       "title": "Exam Schedule",
