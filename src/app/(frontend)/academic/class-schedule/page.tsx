@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function ClassSchedulePage() {
-  const [language] = useState<'bn' | 'en'>('bn'); // Default to Bengali since the CSV is in Bengali
+  const { language, t } = useLanguage();
   const [selectedClass, setSelectedClass] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
   const [scheduleData, setScheduleData] = useState<any>(null);
@@ -33,7 +34,7 @@ export default function ClassSchedulePage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading class schedule...</p>
+          <p className="text-gray-600">{t('common.loading', 'Loading class schedule...')}</p>
         </div>
       </div>
     );
@@ -43,14 +44,14 @@ export default function ClassSchedulePage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600">Failed to load class schedule data.</p>
+          <p className="text-red-600">{t('common.error', 'Failed to load class schedule data.')}</p>
         </div>
       </div>
     );
   }
 
   const classOptions = [
-    { value: 'all', label: language === 'bn' ? 'সব ক্লাস' : 'All Classes' },
+    { value: 'all', label: t('classSchedule.allClasses', 'All Classes') },
     ...scheduleData.classes.map((cls: any) => ({
       value: cls.className,
       label: language === 'bn' ? cls.className : cls.classNameEn
@@ -98,7 +99,7 @@ export default function ClassSchedulePage() {
             <ol className="flex items-center space-x-4">
               <li>
                 <a href="/" className="text-gray-500 hover:text-gray-700">
-                  {language === 'bn' ? 'হোম' : 'Home'}
+                  {t('common.home', 'Home')}
                 </a>
               </li>
               <li>
@@ -106,7 +107,7 @@ export default function ClassSchedulePage() {
               </li>
               <li>
                 <a href="/academic" className="text-gray-500 hover:text-gray-700">
-                  {language === 'bn' ? 'একাডেমিক' : 'Academic'}
+                  {t('common.academic', 'Academic')}
                 </a>
               </li>
               <li>
@@ -114,7 +115,7 @@ export default function ClassSchedulePage() {
               </li>
               <li>
                 <span className="text-gray-900 font-medium">
-                  {language === 'bn' ? 'ক্লাস রুটিন' : 'Class Schedule'}
+                  {t('classSchedule.title', 'Class Schedule')}
                 </span>
               </li>
             </ol>
@@ -127,13 +128,10 @@ export default function ClassSchedulePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              {language === 'bn' ? scheduleData.title : 'Surjomukhi Kindergarten - Class Schedule 2025'}
+              {language === 'bn' ? scheduleData.title : t('classSchedule.title', 'Class Schedule')}
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-              {language === 'bn' 
-                ? 'আমাদের প্রতিদিনের শ্রেণী রুটিন যা আপনার সন্তানের সর্বোচ্চ শিক্ষার জন্য পরিকল্পিত।'
-                : 'Our structured daily class routine designed for optimal learning and development of your child.'
-              }
+              {t('classSchedule.subtitle', 'Our structured daily class routine designed for optimal learning and development')}
             </p>
           </div>
         </div>
@@ -146,7 +144,7 @@ export default function ClassSchedulePage() {
             {/* Class Filter */}
             <div className="flex items-center gap-4">
               <label className="text-sm font-medium text-gray-700">
-                {language === 'bn' ? 'ক্লাস নির্বাচন:' : 'Select Class:'}
+                {t('classSchedule.selectClass', 'Select Class:')}
               </label>
               <select
                 value={selectedClass}
@@ -164,7 +162,7 @@ export default function ClassSchedulePage() {
             {/* View Mode Toggle */}
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-gray-700">
-                {language === 'bn' ? 'দেখার ধরন:' : 'View Mode:'}
+                {t('classSchedule.viewMode', 'View Mode:')}
               </span>
               <div className="flex border border-gray-300 rounded-lg">
                 <button
@@ -175,7 +173,7 @@ export default function ClassSchedulePage() {
                       : 'bg-white text-gray-700 hover:bg-gray-50'
                   }`}
                 >
-                  {language === 'bn' ? 'টেবিল' : 'Table'}
+                  {t('classSchedule.table', 'Table')}
                 </button>
                 <button
                   onClick={() => setViewMode('cards')}
@@ -185,7 +183,7 @@ export default function ClassSchedulePage() {
                       : 'bg-white text-gray-700 hover:bg-gray-50'
                   }`}
                 >
-                  {language === 'bn' ? 'কার্ড' : 'Cards'}
+                  {t('classSchedule.cards', 'Cards')}
                 </button>
               </div>
             </div>
@@ -204,7 +202,7 @@ export default function ClassSchedulePage() {
                   <thead className="bg-indigo-600 text-white">
                     <tr>
                       <th className="px-6 py-4 text-left text-sm font-semibold">
-                        {language === 'bn' ? 'ক্লাস' : 'Class'}
+                        {t('classSchedule.class', 'Class')}
                       </th>
                       {scheduleData.timeSlots.map((slot: any, index: number) => (
                         <th key={index} className="px-4 py-4 text-center text-sm font-semibold min-w-[120px]">
@@ -243,7 +241,7 @@ export default function ClassSchedulePage() {
                               </div>
                             ) : (
                               <div className="text-gray-400 text-sm">
-                                {language === 'bn' ? 'বিরতি' : 'Free Period'}
+                                {t('classSchedule.freePeriod', 'Free Period')}
                               </div>
                             )}
                           </td>
@@ -285,12 +283,12 @@ export default function ClassSchedulePage() {
                           <div className="font-semibold mb-1">
                             {subject.subject !== '—' 
                               ? (language === 'bn' ? subject.subject : subject.subjectEn)
-                              : (language === 'bn' ? 'বিরতি' : 'Free Period')
+                              : t('classSchedule.freePeriod', 'Free Period')
                             }
                           </div>
                           {subject.teacher && subject.subject !== '—' && (
                             <div className="text-sm opacity-80">
-                              {language === 'bn' ? `শিক্ষক: ${subject.teacher}` : `Teacher: ${subject.teacherEn}`}
+                              {language === 'bn' ? `${t('classSchedule.teacher', 'Teacher')}: ${subject.teacher}` : `${t('classSchedule.teacher', 'Teacher')}: ${subject.teacherEn}`}
                             </div>
                           )}
                         </div>
@@ -311,37 +309,28 @@ export default function ClassSchedulePage() {
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <div className="text-3xl mb-4">📅</div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                {language === 'bn' ? 'সাপ্তাহিক সময়সূচী' : 'Weekly Schedule'}
+                {t('classSchedule.scheduleInfo.weeklySchedule.title', 'Weekly Schedule')}
               </h3>
               <p className="text-gray-600 text-sm">
-                {language === 'bn' 
-                  ? 'রবিবার থেকে বৃহস্পতিবার: নিয়মিত ক্লাস\nশুক্রবার: বিশেষ কার্যক্রম\nশনিবার: ছুটি'
-                  : 'Sunday to Thursday: Regular classes\nFriday: Special activities\nSaturday: Holiday'
-                }
+                {t('classSchedule.scheduleInfo.weeklySchedule.description', 'Sunday to Thursday: Regular classes\nFriday: Special activities\nSaturday: Holiday')}
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <div className="text-3xl mb-4">🕘</div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                {language === 'bn' ? 'স্কুল সময়' : 'School Hours'}
+                {t('classSchedule.scheduleInfo.schoolHours.title', 'School Hours')}
               </h3>
               <p className="text-gray-600 text-sm">
-                {language === 'bn' 
-                  ? 'সকাল ৯:০০ - দুপুর ১২:০০\nমোট ৬টি ক্লাস প্রতিদিন\nপ্রতিটি ক্লাস ৩০ মিনিট'
-                  : '9:00 AM - 12:00 PM\nTotal 6 classes daily\nEach class 30 minutes'
-                }
+                {t('classSchedule.scheduleInfo.schoolHours.description', '9:00 AM - 12:00 PM\nTotal 6 classes daily\nEach class 30 minutes')}
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <div className="text-3xl mb-4">�‍🏫</div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                {language === 'bn' ? 'শিক্ষক তথ্য' : 'Teacher Information'}
+                {t('classSchedule.scheduleInfo.teacherInfo.title', 'Teacher Information')}
               </h3>
               <p className="text-gray-600 text-sm">
-                {language === 'bn' 
-                  ? 'অভিজ্ঞ ও যোগ্য শিক্ষকমণ্ডলী\nপ্রতিটি বিষয়ে বিশেষজ্ঞ শিক্ষক\nনিয়মিত প্রশিক্ষণপ্রাপ্ত'
-                  : 'Experienced and qualified teachers\nSubject specialists\nRegularly trained staff'
-                }
+                {t('classSchedule.scheduleInfo.teacherInfo.description', 'Experienced and qualified teachers\nSubject specialists\nRegularly trained staff')}
               </p>
             </div>
           </div>
@@ -352,22 +341,16 @@ export default function ClassSchedulePage() {
       <section className="py-16 bg-indigo-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            {language === 'bn' 
-              ? 'আমাদের ক্লাস রুটিন সম্পর্কে প্রশ্ন আছে?'
-              : 'Have Questions About Our Class Schedule?'
-            }
+            {t('classSchedule.contactSection.title', 'Have Questions About Our Class Schedule?')}
           </h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
-            {language === 'bn' 
-              ? 'আমাদের সাথে যোগাযোগ করুন এবং আপনার সন্তানের শিক্ষা সম্পর্কে আরো জানুন।'
-              : 'Contact us to learn more about our daily routine and how it benefits your child\'s development.'
-            }
+            {t('classSchedule.contactSection.subtitle', 'Contact us to learn more about our daily routine and how it benefits your child\'s development.')}
           </p>
           <a
             href="/contact"
             className="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
           >
-            {language === 'bn' ? 'যোগাযোগ করুন' : 'Contact Us'}
+            {t('common.contactUs', 'Contact Us')}
           </a>
         </div>
       </section>
