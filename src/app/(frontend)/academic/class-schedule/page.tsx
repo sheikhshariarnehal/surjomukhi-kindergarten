@@ -1,16 +1,57 @@
 'use client';
 
-import React, { useState } from 'react';
-import scheduleData from '@/data/class-schedule.json';
+import React, { useState, useEffect } from 'react';
 
 export default function ClassSchedulePage() {
   const [language] = useState<'bn' | 'en'>('bn'); // Default to Bengali since the CSV is in Bengali
   const [selectedClass, setSelectedClass] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
+  const [scheduleData, setScheduleData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadScheduleData = async () => {
+      try {
+        const response = await fetch('/data/class-schedule.json');
+        if (!response.ok) {
+          throw new Error('Failed to load schedule data');
+        }
+        const data = await response.json();
+        setScheduleData(data);
+      } catch (error) {
+        console.error('Error loading schedule data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadScheduleData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading class schedule...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!scheduleData) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600">Failed to load class schedule data.</p>
+        </div>
+      </div>
+    );
+  }
 
   const classOptions = [
     { value: 'all', label: language === 'bn' ? 'সব ক্লাস' : 'All Classes' },
-    ...scheduleData.classes.map(cls => ({
+    ...scheduleData.classes.map((cls: any) => ({
       value: cls.className,
       label: language === 'bn' ? cls.className : cls.classNameEn
     }))
@@ -20,7 +61,7 @@ export default function ClassSchedulePage() {
     if (selectedClass === 'all') {
       return scheduleData.classes;
     }
-    return scheduleData.classes.filter(cls => cls.className === selectedClass);
+    return scheduleData.classes.filter((cls: any) => cls.className === selectedClass);
   };
 
   const getSubjectColors = (index: number) => {
@@ -165,7 +206,7 @@ export default function ClassSchedulePage() {
                       <th className="px-6 py-4 text-left text-sm font-semibold">
                         {language === 'bn' ? 'ক্লাস' : 'Class'}
                       </th>
-                      {scheduleData.timeSlots.map((slot, index) => (
+                      {scheduleData.timeSlots.map((slot: any, index: number) => (
                         <th key={index} className="px-4 py-4 text-center text-sm font-semibold min-w-[120px]">
                           <div>
                             <div className="font-bold">
@@ -180,14 +221,14 @@ export default function ClassSchedulePage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {getFilteredSchedule().map((classItem, classIndex) => (
+                    {getFilteredSchedule().map((classItem: any, classIndex: number) => (
                       <tr key={classIndex} className={classIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
                         <td className="px-6 py-4">
                           <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getClassColors(classItem.className)}`}>
                             {language === 'bn' ? classItem.className : classItem.classNameEn}
                           </div>
                         </td>
-                        {classItem.schedule.map((subject, subjectIndex) => (
+                        {classItem.schedule.map((subject: any, subjectIndex: number) => (
                           <td key={subjectIndex} className="px-4 py-4 text-center">
                             {subject.subject !== '—' ? (
                               <div className={`p-3 rounded-lg border ${getSubjectColors(subjectIndex)}`}>
@@ -216,7 +257,7 @@ export default function ClassSchedulePage() {
           ) : (
             // Cards View
             <div className="grid gap-8">
-              {getFilteredSchedule().map((classItem, classIndex) => (
+              {getFilteredSchedule().map((classItem: any, classIndex: number) => (
                 <div key={classIndex} className="bg-white rounded-lg shadow-lg overflow-hidden">
                   <div className={`px-6 py-4 border-b ${getClassColors(classItem.className)} border`}>
                     <h3 className="text-xl font-bold">
@@ -225,7 +266,7 @@ export default function ClassSchedulePage() {
                   </div>
                   <div className="p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {classItem.schedule.map((subject, subjectIndex) => (
+                      {classItem.schedule.map((subject: any, subjectIndex: number) => (
                         <div key={subjectIndex} className={`p-4 rounded-lg border ${getSubjectColors(subjectIndex)}`}>
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-xs font-medium opacity-70">

@@ -3,10 +3,11 @@
 {
 "id": "teacher-001",
 "name": "মোঃ শাহিনুর ইসলাম",
-"designation": "Head Teacher & Principal",
+"designation": "Head Teacher & Member Secretary",
+"designation_bangla": "প্রধান শিক্ষক/সদস্য সচিব",
 "photo_url": "/images/teachers/placeholder.svg",
 "bio": "",
-"qualifications": ["বি,এ"],
+"qualifications": ["বি", "এ"],
 "subjects": [],
 "experience_years": 21,
 "specialization": "",
@@ -18,15 +19,17 @@
 "teaching_philosophy": "",
 "certifications": [],
 "languages": ["Bengali"],
-"age": 52
+"age": 52,
+"employment_status": "Permanent"
 },
 {
 "id": "teacher-002",
 "name": "শেখ শাহরিন শায়লা",
 "designation": "Assistant Teacher",
+"designation_bangla": "সহকারী শিক্ষক",
 "photo_url": "/images/teachers/placeholder.svg",
 "bio": "",
-"qualifications": ["বি,এ (অনার্স)"],
+"qualifications": ["বি", "এ (অনার্স)"],
 "subjects": [],
 "experience_years": 2,
 "specialization": "",
@@ -38,15 +41,17 @@
 "teaching_philosophy": "",
 "certifications": [],
 "languages": ["Bengali"],
-"age": 23
+"age": 23,
+"employment_status": "Permanent"
 },
 {
 "id": "teacher-003",
 "name": "শিফা আক্তার",
 "designation": "Assistant Teacher",
+"designation_bangla": "সহকারী শিক্ষক",
 "photo_url": "/images/teachers/placeholder.svg",
 "bio": "",
-"qualifications": ["বি,এ"],
+"qualifications": ["বি", "এ"],
 "subjects": [],
 "experience_years": 21,
 "specialization": "",
@@ -58,15 +63,17 @@
 "teaching_philosophy": "",
 "certifications": [],
 "languages": ["Bengali"],
-"age": 41
+"age": 41,
+"employment_status": ""
 },
 {
 "id": "teacher-004",
 "name": "মোঃ মনিরুল ইসলাম",
 "designation": "Assistant Teacher",
+"designation_bangla": "সহকারী শিক্ষক",
 "photo_url": "/images/teachers/placeholder.svg",
 "bio": "",
-"qualifications": ["বি,এ"],
+"qualifications": ["বি", "এ"],
 "subjects": [],
 "experience_years": 21,
 "specialization": "",
@@ -78,12 +85,14 @@
 "teaching_philosophy": "",
 "certifications": [],
 "languages": ["Bengali"],
-"age": 45
+"age": 45,
+"employment_status": ""
 },
 {
 "id": "teacher-005",
 "name": "সাথী আক্তার",
 "designation": "Assistant Teacher",
+"designation_bangla": "সহকারী শিক্ষক",
 "photo_url": "/images/teachers/placeholder.svg",
 "bio": "",
 "qualifications": ["বি.এস.সি"],
@@ -98,70 +107,58 @@
 "teaching_philosophy": "",
 "certifications": [],
 "languages": ["Bengali"],
-"age": 25
+"age": 25,
+"employment_status": ""
 },
 {
 "id": "teacher-006",
 "name": "এশা তামান্না সাথী",
 "designation": "Assistant Teacher",
+"designation_bangla": "সহকারী শিক্ষক",
 "photo_url": "/images/teachers/teacher-006.webp",
-"bio": "Masters of Pharmacy graduate with experience in quality control and oncology brand management; passionate about science education and student mentorship.",
-"qualifications": [
-"M.Pharm (University of Asia Pacific, 2021)",
-"B.Pharm (Stamford University Bangladesh, 2020)"
-],
-"subjects": ["Bangla", "Mathematics", "English"],
+"bio": "",
+"qualifications": ["বি.এস.সি"],
+"subjects": [],
 "experience_years": 1,
-"specialization": "Pharmacy & Life Sciences",
-"classes_taught": ["All Classes"],
-"contact_email": "eshasathi1997@gmail.com",
-"contact_phone": "+8801313631305",
+"specialization": "",
+"classes_taught": [],
+"contact_email": "",
+"contact_phone": "",
 "join_date": "2024-01-01",
-"achievements": [
-"Research publication in IOSR-JPBS",
-"Oncology brand strategy execution at Techno Drugs Limited",
-"Quality Control experience at Zhaofeng Gelatin Limited"
-],
-"teaching_philosophy": "Integrate real-world science with classroom learning to build curiosity and critical thinking.",
-"certifications": [
-"Webinar: Shin-Etsu excipients for modified release dosage forms (2021)",
-"Workshop: Quality Management System (QMS) & Documentations (2019)"
-],
-"languages": ["Bengali", "English"],
-"age": 25
+"achievements": [],
+"teaching_philosophy": "",
+"certifications": [],
+"languages": ["Bengali"],
+"age": 25,
+"employment_status": ""
 },
 {
 "id": "teacher-007",
 "name": "মোঃ রাকিবুল হাসান",
 "designation": "Assistant Teacher",
+"designation_bangla": "সহকারী শিক্ষক",
 "photo_url": "/images/teachers/teacher-007.webp",
-"bio": "Banking professional with experience in operations, ATM/CRM services, and customer service; skilled in documentation, problem solving, and MS Office, with interest in teaching economics and business skills.",
-"qualifications": [
-"M.S.S in Economics (2019)",
-"B.S.S in Economics (2018)"
-],
-"subjects": ["Bangla", "Mathematics", "English"],
+"bio": "",
+"qualifications": ["এম.এস.এস"],
+"subjects": [],
 "experience_years": 1,
-"specialization": "Economics & Operations",
-"classes_taught": ["Class Nine", "Class Ten"],
-"contact_email": "rakib0560@gmail.com",
-"contact_phone": "+8801837161597",
+"specialization": "",
+"classes_taught": [],
+"contact_email": "",
+"contact_phone": "",
 "join_date": "2024-01-01",
-"achievements": [
-"Officer, Standard Chartered (CCMU & ATM Service)",
-"Customer Service Executive, Mutual Trust Bank PLC"
-],
-"teaching_philosophy": "Apply practical, real-world problem solving to make lessons engaging and relevant.",
-"certifications": [
-"Certificate in National Skill Standard Basic Course (BTEB)"
-],
-"languages": ["Bengali", "English"],
-"age": 25
+"achievements": [],
+"teaching_philosophy": "",
+"certifications": [],
+"languages": ["Bengali"],
+"age": 25,
+"employment_status": ""
 },
 {
 "id": "teacher-008",
 "name": "আবুল কাশেম",
 "designation": "Assistant Teacher & Cub Basic Course",
+"designation_bangla": "সহকারী শিক্ষক/কাব বেসিক কোর্স",
 "photo_url": "/images/teachers/placeholder.svg",
 "bio": "",
 "qualifications": ["এইচ.এস.সি", "কাব বেসিক কোর্স"],
@@ -176,13 +173,14 @@
 "teaching_philosophy": "",
 "certifications": [],
 "languages": ["Bengali"],
-"age": 50
+"age": 50,
+"employment_status": ""
 }
 ],
 "metadata": {
 "total_teachers": 8,
 "last_updated": "2025-09-15",
 "version": "1.0",
-"description": "Comprehensive teacher data generated from CSV for Surjomukhi staff"
+"description": "Teacher data imported from CSV; fields enriched with defaults and Bangla date parsing"
 }
 }
