@@ -329,16 +329,6 @@ export default function TeachersPage() {
                 </li>
               </ol>
             </nav>
-            
-            {/* Language Toggle */}
-            <button
-              onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}
-              className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-              aria-label={`Switch to ${language === 'en' ? 'Bengali' : 'English'}`}
-            >
-              <Globe className="h-4 w-4" />
-              <span>{language === 'en' ? 'বাংলা' : 'English'}</span>
-            </button>
           </div>
         </div>
       </div>
