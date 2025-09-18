@@ -67,75 +67,96 @@ const SimpleTeacherCard = React.memo(({ teacher, index = 0 }: SimpleTeacherCardP
       variants={cardVariants}
       initial="hidden"
       animate="visible"
-      whileHover={{ y: -2, transition: { duration: 0.3 } }}
-      className="group bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 overflow-hidden transition-all duration-300 h-full flex flex-col max-w-xs mx-auto"
+      whileHover={{ y: -2, scale: 1.01, transition: { duration: 0.3 } }}
+      className="group bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 hover:border-gray-300 overflow-hidden transition-all duration-300 h-full flex flex-col w-full max-w-xs mx-auto"
       role="article"
       aria-label={`${teacher.name} - ${teacher.designation}`}
       itemScope
       itemType="https://schema.org/Person"
     >
       {/* Profile Image Section */}
-      <div className="relative pt-6 pb-4 px-6 bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
+      <div className="relative pt-4 pb-3 px-4 bg-gradient-to-br from-gray-50 via-white to-gray-50">
         <div className="flex justify-center">
-          <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden bg-gray-100 ring-3 ring-white shadow-sm">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 ring-2 ring-white shadow-sm group-hover:shadow-md transition-all duration-300">
             {shouldShowImage ? (
               <Image
                 src={validImageUrl}
                 alt={`${teacher.name} - ${teacher.designation} - সুর্যমুখী কিন্ডারগার্টেন`}
                 fill
-                className="object-cover"
-                sizes="(max-width: 640px) 80px, 96px"
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 640px) 64px, 80px"
                 loading={index < 6 ? 'eager' : 'lazy'}
                 quality={85}
                 onError={() => setImageError(true)}
                 itemProp="image"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                <User className="h-8 w-8 sm:h-10 sm:w-10 text-gray-400" />
+              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-100 to-blue-100">
+                <User className="h-6 w-6 sm:h-8 sm:w-8 text-teal-600" />
               </div>
             )}
+            {/* Online status indicator */}
+            <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white shadow-sm"></div>
           </div>
         </div>
       </div>
 
       {/* Content Section */}
-      <div className="flex-1 px-6 py-5 flex flex-col">
+      <div className="flex-1 px-4 py-3 flex flex-col">
         {/* Academic Information */}
-        <div className="text-center mb-4 flex-1">
+        <div className="text-center mb-3 flex-1">
           <h3 
-            className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 leading-tight font-serif"
+            className="text-base sm:text-lg font-semibold text-gray-900 mb-1 leading-tight font-serif group-hover:text-teal-700 transition-colors duration-300"
             itemProp="name"
           >
             {teacher.name}
           </h3>
           
           <p 
-            className="text-sm text-gray-600 font-medium mb-3 leading-relaxed"
+            className="text-xs sm:text-sm text-gray-600 font-medium mb-3 leading-relaxed"
             itemProp="jobTitle"
           >
             {teacher.designation}
           </p>
 
           {/* Academic Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md">
-            <Calendar className="h-3.5 w-3.5 text-gray-500" />
-            <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-teal-50 to-blue-50 border border-teal-200 rounded-md shadow-sm">
+            <Calendar className="h-3 w-3 text-teal-600" />
+            <span className="text-xs font-medium text-teal-800">
               {teacher.experience_years ? `${teacher.experience_years} বছর অভিজ্ঞতা` : 'অভিজ্ঞ শিক্ষক'}
             </span>
           </div>
+
+          {/* Subjects Display - Only show if available and keep it minimal */}
+          {displaySubjects.length > 0 && (
+            <div className="mt-2 flex flex-wrap justify-center gap-1">
+              {displaySubjects.slice(0, 1).map((subject, idx) => (
+                <span 
+                  key={idx}
+                  className="px-2 py-0.5 bg-gray-100 text-gray-700 text-xs font-medium rounded-full border border-gray-200"
+                >
+                  {subject}
+                </span>
+              ))}
+              {(teacher.subjects?.length || 0) > 1 && (
+                <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-medium rounded-full border border-gray-200">
+                  +{(teacher.subjects?.length || 0) - 1}
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Professional Action */}
-        <div className="mt-auto border-t border-gray-100 pt-4">
+        <div className="mt-auto border-t border-gray-100 pt-3">
           <Link
             href={`/academic/teachers/${teacherSlug}`}
-            className="inline-flex items-center justify-center w-full gap-2 text-gray-700 font-medium text-sm py-2.5 px-4 rounded-md border border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500/20 focus:border-gray-400 group/btn"
+            className="inline-flex items-center justify-center w-full gap-1.5 text-white font-medium text-sm py-2 px-3 rounded-md bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-700 hover:to-blue-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:ring-offset-1 group/btn shadow-sm hover:shadow-md"
             aria-label={`${teacher.name} এর বিস্তারিত তথ্য দেখুন`}
             title={`${teacher.name} - ${teacher.designation} - সুর্যমুখী কিন্ডারগার্টেন`}
           >
             <span className="font-medium">বিস্তারিত দেখুন</span>
-            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-0.5" />
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
           </Link>
         </div>
       </div>

@@ -326,31 +326,31 @@ export default function TeachersPage() {
       </div>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-teal-600 to-blue-600 text-white py-16">
+      <section className="bg-gradient-to-r from-teal-600 to-blue-600 text-white py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Dedicated Teachers</h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">Our Dedicated Teachers</h1>
+            <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed">
               Meet our qualified and passionate educators who are committed to nurturing your child's growth and development.
             </p>
 
             {/* Stats */}
-            <div className="flex flex-wrap justify-center gap-8 mt-8">
-              <div className="text-center">
-                <div className="text-3xl font-bold mb-1">{teachers.length}</div>
-                <div className="text-teal-100 text-sm">Expert Teachers</div>
+            <div className="flex flex-wrap justify-center gap-6 sm:gap-8 lg:gap-12 mt-6 sm:mt-8">
+              <div className="text-center min-w-[120px]">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1">{teachers.length}</div>
+                <div className="text-teal-100 text-xs sm:text-sm">Expert Teachers</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold mb-1">
+              <div className="text-center min-w-[120px]">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1">
                   {Math.round(teachers.reduce((sum, t) => sum + (t.experience_years || 0), 0) / teachers.length)}+
                 </div>
-                <div className="text-teal-100 text-sm">Avg. Years Experience</div>
+                <div className="text-teal-100 text-xs sm:text-sm">Avg. Years Experience</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold mb-1">
+              <div className="text-center min-w-[120px]">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1">
                   {teachers.reduce((sum, t) => sum + (t.subjects?.length || 0), 0)}
                 </div>
-                <div className="text-teal-100 text-sm">Subject Areas</div>
+                <div className="text-teal-100 text-xs sm:text-sm">Subject Areas</div>
               </div>
             </div>
           </div>
@@ -360,7 +360,7 @@ export default function TeachersPage() {
       {/* Teachers Grid */}
       <main id="main-content" role="main">
         <section
-          className="py-16 bg-white"
+          className="py-8 sm:py-12 lg:py-16 bg-white"
           aria-labelledby="faculty-heading"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -368,7 +368,7 @@ export default function TeachersPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-16"
+              className="text-center mb-8 sm:mb-10 lg:mb-12"
             >
               <h2 id="faculty-heading" className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                 Experienced & Qualified Faculty
@@ -379,34 +379,35 @@ export default function TeachersPage() {
             </p>
 
             {/* Quick Stats */}
-            <div className="flex flex-wrap justify-center gap-8 mt-8 pt-8 border-t border-gray-200">
-              <div className="flex items-center gap-3 text-gray-600">
-                <Users className="h-5 w-5 text-teal-600" />
-                <span className="text-sm font-medium">{teachers.length} Expert Educators</span>
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8 mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-200">
+              <div className="flex items-center gap-2 sm:gap-3 text-gray-600 min-w-[140px] justify-center">
+                <Users className="h-4 w-4 sm:h-5 sm:w-5 text-teal-600 flex-shrink-0" />
+                <span className="text-xs sm:text-sm font-medium">{teachers.length} Expert Educators</span>
               </div>
-              <div className="flex items-center gap-3 text-gray-600">
-                <GraduationCap className="h-5 w-5 text-teal-600" />
-                <span className="text-sm font-medium">Advanced Qualifications</span>
+              <div className="flex items-center gap-2 sm:gap-3 text-gray-600 min-w-[140px] justify-center">
+                <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5 text-teal-600 flex-shrink-0" />
+                <span className="text-xs sm:text-sm font-medium">Advanced Qualifications</span>
               </div>
-              <div className="flex items-center gap-3 text-gray-600">
-                <Award className="h-5 w-5 text-teal-600" />
-                <span className="text-sm font-medium">Certified Specialists</span>
+              <div className="flex items-center gap-2 sm:gap-3 text-gray-600 min-w-[140px] justify-center">
+                <Award className="h-4 w-4 sm:h-5 sm:w-5 text-teal-600 flex-shrink-0" />
+                <span className="text-xs sm:text-sm font-medium">Certified Specialists</span>
               </div>
-              <div className="flex items-center gap-3 text-gray-600">
-                <BookOpen className="h-5 w-5 text-teal-600" />
-                <span className="text-sm font-medium">Diverse Subject Areas</span>
+              <div className="flex items-center gap-2 sm:gap-3 text-gray-600 min-w-[140px] justify-center">
+                <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-teal-600 flex-shrink-0" />
+                <span className="text-xs sm:text-sm font-medium">Diverse Subject Areas</span>
               </div>
             </div>
           </motion.div>
 
           {/* Teachers Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5 lg:gap-6">
             {teachers.map((teacher, index) => (
-              <SimpleTeacherCard
-                key={teacher.id}
-                teacher={teacher}
-                index={index}
-              />
+              <div key={teacher.id} className="flex justify-center">
+                <SimpleTeacherCard
+                  teacher={teacher}
+                  index={index}
+                />
+              </div>
             ))}
           </div>
 
@@ -422,61 +423,61 @@ export default function TeachersPage() {
       </section>
 
       {/* Teaching Philosophy */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-10 sm:py-12 lg:py-14 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          <div className="text-center mb-8 sm:mb-10">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
               Our Teaching Philosophy
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
               Our teachers share a common commitment to excellence in early childhood education.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-sm">
-              <div className="text-4xl mb-4">❤️</div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Nurturing Care</h3>
-              <p className="text-gray-600 text-sm">Creating a loving and supportive environment</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="text-center p-3 sm:p-4 bg-white rounded-lg shadow-sm">
+              <div className="text-3xl mb-3">❤️</div>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">Nurturing Care</h3>
+              <p className="text-gray-600 text-xs sm:text-sm">Creating a loving and supportive environment</p>
             </div>
-            <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-sm">
-              <div className="text-4xl mb-4">🎯</div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Individual Focus</h3>
-              <p className="text-gray-600 text-sm">Recognizing each child's unique needs and potential</p>
+            <div className="text-center p-3 sm:p-4 bg-white rounded-lg shadow-sm">
+              <div className="text-3xl mb-3">🎯</div>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">Individual Focus</h3>
+              <p className="text-gray-600 text-xs sm:text-sm">Recognizing each child's unique needs and potential</p>
             </div>
-            <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-sm">
-              <div className="text-4xl mb-4">🌱</div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Growth Mindset</h3>
-              <p className="text-gray-600 text-sm">Encouraging continuous learning and development</p>
+            <div className="text-center p-3 sm:p-4 bg-white rounded-lg shadow-sm">
+              <div className="text-3xl mb-3">🌱</div>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">Growth Mindset</h3>
+              <p className="text-gray-600 text-xs sm:text-sm">Encouraging continuous learning and development</p>
             </div>
-            <div className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-sm">
-              <div className="text-4xl mb-4">🤝</div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Partnership</h3>
-              <p className="text-gray-600 text-sm">Working closely with parents and families</p>
+            <div className="text-center p-3 sm:p-4 bg-white rounded-lg shadow-sm">
+              <div className="text-3xl mb-3">🤝</div>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">Partnership</h3>
+              <p className="text-gray-600 text-xs sm:text-sm">Working closely with parents and families</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-teal-600 text-white">
+      <section className="py-12 sm:py-16 lg:py-20 bg-teal-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
             Meet Our Teachers in Person
           </h2>
-          <p className="text-xl mb-8 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed">
             Schedule a visit to meet our dedicated teaching team and see how they create magical learning experiences.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center max-w-md sm:max-w-none mx-auto">
             <a
               href="/contact"
-              className="bg-white text-teal-600 px-6 sm:px-8 py-4 text-base sm:text-lg rounded-lg font-semibold hover:bg-gray-100 transition-colors text-center min-h-[48px] flex items-center justify-center"
+              className="bg-white text-teal-600 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 text-center min-h-[48px] sm:min-h-[56px] flex items-center justify-center shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
               Schedule a Visit
             </a>
             <a
               href="/admission"
-              className="border-2 border-white text-white px-6 sm:px-8 py-4 text-base sm:text-lg rounded-lg font-semibold hover:bg-white hover:text-teal-600 transition-colors text-center min-h-[48px] flex items-center justify-center"
+              className="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-lg font-semibold hover:bg-white hover:text-teal-600 transition-all duration-300 text-center min-h-[48px] sm:min-h-[56px] flex items-center justify-center shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
               Apply for Admission
             </a>
