@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { User, Calendar, ArrowRight } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface TeacherData {
   id: string;
@@ -24,6 +25,7 @@ interface SimpleTeacherCardProps {
 
 const SimpleTeacherCard = React.memo(({ teacher, index = 0 }: SimpleTeacherCardProps) => {
   const [imageError, setImageError] = useState(false);
+  const { t } = useLanguage();
 
   // Optimize image URL handling
   const getValidImageUrl = (url: string | undefined): string | null => {
@@ -123,7 +125,10 @@ const SimpleTeacherCard = React.memo(({ teacher, index = 0 }: SimpleTeacherCardP
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-teal-50 to-blue-50 border border-teal-200 rounded-md shadow-sm">
             <Calendar className="h-3 w-3 text-teal-600" />
             <span className="text-xs font-medium text-teal-800">
-              {teacher.experience_years ? `${teacher.experience_years} বছর অভিজ্ঞতা` : 'অভিজ্ঞ শিক্ষক'}
+              {teacher.experience_years ? 
+                `${teacher.experience_years} ${t('teachersCard.yearsExperience', 'বছর অভিজ্ঞতা')}` : 
+                t('teachersCard.experiencedTeacher', 'অভিজ্ঞ শিক্ষক')
+              }
             </span>
           </div>
 
@@ -155,7 +160,7 @@ const SimpleTeacherCard = React.memo(({ teacher, index = 0 }: SimpleTeacherCardP
             aria-label={`${teacher.name} এর বিস্তারিত তথ্য দেখুন`}
             title={`${teacher.name} - ${teacher.designation} - সুর্যমুখী কিন্ডারগার্টেন`}
           >
-            <span className="font-medium">বিস্তারিত দেখুন</span>
+            <span className="font-medium">{t('teachersCard.viewDetails', 'বিস্তারিত দেখুন')}</span>
             <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
           </Link>
         </div>
