@@ -3,6 +3,7 @@
 import React from 'react';
 import { useTranslation } from '@/contexts/LanguageContext';
 import Head from 'next/head';
+import Image from 'next/image';
 
 export default function FoundersPage() {
   const { t, language } = useTranslation();
@@ -64,19 +65,6 @@ export default function FoundersPage() {
           </div>
         </section>
 
-        {/* About the Institution */}
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                {language === 'bn' ? 'প্রতিষ্ঠান সম্পর্কে' : 'About the Institution'}
-              </h2>
-              <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-                {t('about.pages.founders.description')}
-              </p>
-            </div>
-          </div>
-        </section>
 
         {/* Founder Profile */}
         <section className="py-16 bg-gray-50">
@@ -89,8 +77,14 @@ export default function FoundersPage() {
               <div className="flex flex-col lg:flex-row">
                 <div className="lg:w-1/3 bg-gradient-to-br from-green-500 to-blue-500 p-8 flex items-center justify-center">
                   <div className="text-center text-white">
-                    <div className="w-48 h-48 bg-white/20 rounded-full mx-auto mb-6 flex items-center justify-center">
-                      <span className="text-6xl">👨‍🏫</span>
+                    <div className="w-48 h-48 bg-white/20 rounded-full mx-auto mb-6 flex items-center justify-center overflow-hidden">
+                      <Image
+                        src="/images/SheikhImranMahmud.png"
+                        alt={t('about.pages.founders.founder.name')}
+                        width={192}
+                        height={192}
+                        className="w-full h-full object-cover rounded-full"
+                      />
                     </div>
                     <h3 className="text-2xl font-bold mb-2">{t('about.pages.founders.founder.name')}</h3>
                     <p className="text-lg opacity-90">{t('about.pages.founders.founder.title')}</p>
