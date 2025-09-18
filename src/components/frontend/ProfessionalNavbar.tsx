@@ -214,7 +214,7 @@ export default function ProfessionalNavbar() {
 
   // Custom hooks
   useClickOutside(dropdownRef, () => setActiveDropdown(null));
-  useClickOutside(mobileMenuRef, closeMobileMenu);
+  // Note: We don't need useClickOutside for mobile menu since we handle it with backdrop click
   
   useKeyboardNavigation({
     'Escape': closeAllMenus
@@ -639,43 +639,102 @@ const CompactMobileNavigation: React.FC<{
   mobileMenuRef, 
   t 
 }) => {
-  if (!isMobileMenuOpen) return null;
-
   return (
-    <div 
-      className="lg:hidden border-t border-gray-100 bg-white shadow-lg animate-in slide-in-from-top-2 duration-200"
-      ref={mobileMenuRef}
-      id="mobile-menu"
-      role="menu"
-      aria-label="Mobile navigation menu"
-    >
-      <div className="px-3 py-4 space-y-1 max-h-[calc(100vh-180px)] overflow-y-auto">
-        {navigationItems.map((item, index) => (
-          <CompactMobileNavItem
-            key={item.labelKey}
-            item={item}
-            expandedMobileItem={expandedMobileItem}
-            setExpandedMobileItem={setExpandedMobileItem}
-            isActive={isActive}
-            closeMobileMenu={closeMobileMenu}
-            t={t}
-            index={index}
-          />
-        ))}
+    <>
+      {/* Backdrop overlay */}
+      <div 
+        className={cn(
+          "lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300",
+          isMobileMenuOpen 
+            ? "opacity-100 pointer-events-auto" 
+            : "opacity-0 pointer-events-none"
+        )}
+        onClick={closeMobileMenu}
+        aria-hidden="true"
+      />
 
-        <div className="pt-4 mt-4 border-t border-gray-200">
-          <Link
-            href="/admission"
-            className="group flex items-center justify-center w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-lg font-medium transition-all duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:ring-offset-1 overflow-hidden relative text-sm"
+      {/* Side menu panel */}
+      <div 
+        className={cn(
+          "lg:hidden fixed top-0 left-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl z-50 transition-transform duration-300 ease-in-out",
+          isMobileMenuOpen 
+            ? "transform translate-x-0" 
+            : "transform -translate-x-full"
+        )}
+        ref={mobileMenuRef}
+        id="mobile-menu"
+        role="menu"
+        aria-label="Mobile navigation menu"
+      >
+        {/* Header with close button */}
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50">
+          <div className="flex items-center">
+            <div className="w-8 h-8 rounded-lg overflow-hidden mr-3">
+              <Image
+                src="/logo.webp"
+                alt="Logo"
+                width={32}
+                height={32}
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <div>
+              <div className="text-sm font-bold text-gray-900">
+                {t('common.schoolName')}
+              </div>
+              <div className="text-xs text-gray-600">
+                {t('navigation.menu')}
+              </div>
+            </div>
+          </div>
+          <button
             onClick={closeMobileMenu}
-            role="menuitem"
+            className="p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-200 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+            aria-label="Close menu"
           >
-            <span className="relative z-10">{t('navigation.admission')}</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-indigo-700 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-          </Link>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Navigation content */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="px-4 py-4 space-y-1">
+            {navigationItems.map((item, index) => (
+              <CompactMobileNavItem
+                key={item.labelKey}
+                item={item}
+                expandedMobileItem={expandedMobileItem}
+                setExpandedMobileItem={setExpandedMobileItem}
+                isActive={isActive}
+                closeMobileMenu={closeMobileMenu}
+                t={t}
+                index={index}
+              />
+            ))}
+          </div>
+
+          {/* CTA Button at bottom */}
+          <div className="p-4 border-t border-gray-200 bg-gray-50">
+            <Link
+              href="/admission"
+              className="group flex items-center justify-center w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-lg font-medium transition-all duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:ring-offset-1 overflow-hidden relative text-sm"
+              onClick={closeMobileMenu}
+              role="menuitem"
+            >
+              <span className="relative z-10 flex items-center">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                {t('navigation.admission')}
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-indigo-700 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 });
 
