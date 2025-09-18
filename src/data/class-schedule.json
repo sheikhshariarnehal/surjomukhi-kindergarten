@@ -1,0 +1,337 @@
+{
+  "title": "সূর্যমুখী কিন্ডার গার্টেন স্কুল - ক্লাস রুটিন ২০২৫",
+  "timeSlots": [
+    {
+      "time": "৯.০০-৯.৩০",
+      "timeEn": "9:00-9:30 AM",
+      "period": "প্রথম ঘন্টা",
+      "periodEn": "1st Period"
+    },
+    {
+      "time": "৯.৩০-১০.০০", 
+      "timeEn": "9:30-10:00 AM",
+      "period": "২য় ঘন্টা",
+      "periodEn": "2nd Period"
+    },
+    {
+      "time": "১০.০০-১০.৩০",
+      "timeEn": "10:00-10:30 AM", 
+      "period": "৩য় ঘন্টা",
+      "periodEn": "3rd Period"
+    },
+    {
+      "time": "১০.৩০-১১.০০",
+      "timeEn": "10:30-11:00 AM",
+      "period": "৪র্থ ঘন্টা", 
+      "periodEn": "4th Period"
+    },
+    {
+      "time": "১১.০০-১১.৩০",
+      "timeEn": "11:00-11:30 AM",
+      "period": "৫ম ঘন্টা",
+      "periodEn": "5th Period"
+    },
+    {
+      "time": "১১.৩০-১২.০০",
+      "timeEn": "11:30-12:00 PM", 
+      "period": "৬ষ্ঠ ঘন্টা",
+      "periodEn": "6th Period"
+    }
+  ],
+  "classes": [
+    {
+      "className": "প্লে",
+      "classNameEn": "Play",
+      "schedule": [
+        {
+          "subject": "ইংরেজি",
+          "subjectEn": "English",
+          "teacher": "শিফা আক্তার",
+          "teacherEn": "Shifa Akter"
+        },
+        {
+          "subject": "আরবি শিক্ষা", 
+          "subjectEn": "Arabic Education",
+          "teacher": "মাসুদা খানম",
+          "teacherEn": "Masuda Khanom"
+        },
+        {
+          "subject": "বাংলা",
+          "subjectEn": "Bengali", 
+          "teacher": "শারমিন খান",
+          "teacherEn": "Sharmin Khan"
+        },
+        {
+          "subject": "সাধারন জ্ঞান ও ড্রয়িং",
+          "subjectEn": "General Knowledge & Drawing",
+          "teacher": "রুপা সুএধর", 
+          "teacherEn": "Rupa Suedhor"
+        },
+        {
+          "subject": "গান",
+          "subjectEn": "Music",
+          "teacher": "মনিরা ইয়াসমিন",
+          "teacherEn": "Monira Yasmin"
+        },
+        {
+          "subject": "—",
+          "subjectEn": "Free Period",
+          "teacher": "",
+          "teacherEn": ""
+        }
+      ]
+    },
+    {
+      "className": "নার্সারি",
+      "classNameEn": "Nursery", 
+      "schedule": [
+        {
+          "subject": "সাধারণ জ্ঞান ও ড্রয়িং",
+          "subjectEn": "General Knowledge & Drawing",
+          "teacher": "রুপা সুএধর",
+          "teacherEn": "Rupa Suedhor"
+        },
+        {
+          "subject": "আরবি শিক্ষা",
+          "subjectEn": "Arabic Education", 
+          "teacher": "শিফা আক্তার",
+          "teacherEn": "Shifa Akter"
+        },
+        {
+          "subject": "গণিত",
+          "subjectEn": "Mathematics",
+          "teacher": "মনিরা ইয়াসমিন",
+          "teacherEn": "Monira Yasmin"
+        },
+        {
+          "subject": "বাংলা",
+          "subjectEn": "Bengali",
+          "teacher": "শারমিন খান", 
+          "teacherEn": "Sharmin Khan"
+        },
+        {
+          "subject": "ইংরেজি",
+          "subjectEn": "English",
+          "teacher": "মাসুদা খানম",
+          "teacherEn": "Masuda Khanom"
+        },
+        {
+          "subject": "—",
+          "subjectEn": "Free Period",
+          "teacher": "",
+          "teacherEn": ""
+        }
+      ]
+    },
+    {
+      "className": "প্রথম",
+      "classNameEn": "Class One",
+      "schedule": [
+        {
+          "subject": "ইংরেজী ২য় পএ",
+          "subjectEn": "English 2nd Paper", 
+          "teacher": "শারমিন খান",
+          "teacherEn": "Sharmin Khan"
+        },
+        {
+          "subject": "গণিত",
+          "subjectEn": "Mathematics",
+          "teacher": "রুপা সুএধর",
+          "teacherEn": "Rupa Suedhor"
+        },
+        {
+          "subject": "ধর্ম ও নৈতিক শিক্ষা",
+          "subjectEn": "Religious & Moral Education",
+          "teacher": "মাসুদা খানম",
+          "teacherEn": "Masuda Khanom"
+        },
+        {
+          "subject": "বাংলা ১ম পএ  + ২য় পএ",
+          "subjectEn": "Bengali 1st & 2nd Paper", 
+          "teacher": "মনিরা ইয়াসমিন",
+          "teacherEn": "Monira Yasmin"
+        },
+        {
+          "subject": "Active English",
+          "subjectEn": "Active English",
+          "teacher": "শিফা আক্তার",
+          "teacherEn": "Shifa Akter"
+        },
+        {
+          "subject": "—",
+          "subjectEn": "Free Period",
+          "teacher": "",
+          "teacherEn": ""
+        }
+      ]
+    },
+    {
+      "className": "দ্বিতীয়",
+      "classNameEn": "Class Two",
+      "schedule": [
+        {
+          "subject": "গণিত",
+          "subjectEn": "Mathematics",
+          "teacher": "মাসুদা খানম",
+          "teacherEn": "Masuda Khanom"
+        },
+        {
+          "subject": "বাংলা ১ম পএ  + ২য় পএ", 
+          "subjectEn": "Bengali 1st & 2nd Paper",
+          "teacher": "মনিরা ইয়াসমিন",
+          "teacherEn": "Monira Yasmin"
+        },
+        {
+          "subject": "ধর্ম +সা:জ্ঞান ও ড্রয়িং",
+          "subjectEn": "Religion + General Knowledge & Drawing",
+          "teacher": "শিফা আক্তার",
+          "teacherEn": "Shifa Akter"
+        },
+        {
+          "subject": "Active English",
+          "subjectEn": "Active English",
+          "teacher": "আবুল কাশেম",
+          "teacherEn": "Abul Kashem"
+        },
+        {
+          "subject": "ইংরেজি ২য় পএ",
+          "subjectEn": "English 2nd Paper",
+          "teacher": "শারমিন খান",
+          "teacherEn": "Sharmin Khan"
+        },
+        {
+          "subject": "—",
+          "subjectEn": "Free Period", 
+          "teacher": "",
+          "teacherEn": ""
+        }
+      ]
+    },
+    {
+      "className": "তৃতীয়",
+      "classNameEn": "Class Three",
+      "schedule": [
+        {
+          "subject": "গণিত",
+          "subjectEn": "Mathematics",
+          "teacher": "মনিরুল ইসলাম",
+          "teacherEn": "Monirul Islam"
+        },
+        {
+          "subject": "ধর্ম +সা:জ্ঞান ও ড্রয়িং",
+          "subjectEn": "Religion + General Knowledge & Drawing", 
+          "teacher": "শারমিন খান",
+          "teacherEn": "Sharmin Khan"
+        },
+        {
+          "subject": "ধর্ম +সা:জ্ঞান ও ড্রয়িং",
+          "subjectEn": "Religion + General Knowledge & Drawing",
+          "teacher": "রুপা সুএধর",
+          "teacherEn": "Rupa Suedhor"
+        },
+        {
+          "subject": "বাংলা ১ম পএ  + ২য় পএ",
+          "subjectEn": "Bengali 1st & 2nd Paper",
+          "teacher": "মাসুদা খানম",
+          "teacherEn": "Masuda Khanom"
+        },
+        {
+          "subject": "ইংরেজি ২য় পএ",
+          "subjectEn": "English 2nd Paper",
+          "teacher": "আবুল কাশেম",
+          "teacherEn": "Abul Kashem"
+        },
+        {
+          "subject": "ইংরেজি ১ম পএ",
+          "subjectEn": "English 1st Paper",
+          "teacher": "মনিরুল ইসলাম", 
+          "teacherEn": "Monirul Islam"
+        }
+      ]
+    },
+    {
+      "className": "চতুর্থ",
+      "classNameEn": "Class Four",
+      "schedule": [
+        {
+          "subject": "ধর্ম +সা:জ্ঞান ও ড্রয়িং",
+          "subjectEn": "Religion + General Knowledge & Drawing",
+          "teacher": "মনিরা ইয়াসমিন ",
+          "teacherEn": "Monira Yasmin"
+        },
+        {
+          "subject": "গণিত",
+          "subjectEn": "Mathematics",
+          "teacher": "মনিরুল ইসলাম",
+          "teacherEn": "Monirul Islam"
+        },
+        {
+          "subject": "সমাজ + বিজ্ঞান ",
+          "subjectEn": "Social Studies + Science",
+          "teacher": "আবুল কাশেম",
+          "teacherEn": "Abul Kashem"
+        },
+        {
+          "subject": "ইংরেজি ১ম পএ",
+          "subjectEn": "English 1st Paper", 
+          "teacher": "মনিরুল ইসলাম",
+          "teacherEn": "Monirul Islam"
+        },
+        {
+          "subject": "সমাজ + বিজ্ঞান",
+          "subjectEn": "Social Studies + Science",
+          "teacher": "শারমিন খান",
+          "teacherEn": "Sharmin Khan"
+        },
+        {
+          "subject": "বাংলা ১ম+২য় পএ",
+          "subjectEn": "Bengali 1st & 2nd Paper",
+          "teacher": "রুপা সুএধর",
+          "teacherEn": "Rupa Suedhor"
+        }
+      ]
+    },
+    {
+      "className": "পঞ্চম",
+      "classNameEn": "Class Five",
+      "schedule": [
+        {
+          "subject": "ইংরেজি",
+          "subjectEn": "English",
+          "teacher": "আবুল কাশেম",
+          "teacherEn": "Abul Kashem"
+        },
+        {
+          "subject": "বিজ্ঞান",
+          "subjectEn": "Science", 
+          "teacher": "আবুল কাশেম",
+          "teacherEn": "Abul Kashem"
+        },
+        {
+          "subject": "গণিত",
+          "subjectEn": "Mathematics",
+          "teacher": "মনিরুল ইসলাম",
+          "teacherEn": "Monirul Islam"
+        },
+        {
+          "subject": "সমাজ ",
+          "subjectEn": "Social Studies",
+          "teacher": "শিফা আক্তার",
+          "teacherEn": "Shifa Akter"
+        },
+        {
+          "subject": "বাংলা",
+          "subjectEn": "Bengali",
+          "teacher": "মনিরুল ইসলাম",
+          "teacherEn": "Monirul Islam"
+        },
+        {
+          "subject": "ইসলাম শিক্ষা",
+          "subjectEn": "Islamic Studies",
+          "teacher": "শিফা আক্তার",
+          "teacherEn": "Shifa Akter"
+        }
+      ]
+    }
+  ]
+}

@@ -1,120 +1,52 @@
-import React from 'react';
-import { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Class Schedule - Surjomukhi Kindergarten',
-  description: 'View our daily class schedules and timetables for all grade levels at Surjomukhi Kindergarten.',
-  keywords: ['class schedule', 'timetable', 'daily routine', 'school hours'],
-  openGraph: {
-    title: 'Class Schedule - Surjomukhi Kindergarten',
-    description: 'View our daily class schedules and timetables.',
-    type: 'website',
-  },
-};
+import React, { useState } from 'react';
+import scheduleData from '@/data/class-schedule.json';
 
 export default function ClassSchedulePage() {
-  const scheduleData = [
-    {
-      time: '8:00 - 8:30 AM',
-      activity: 'Arrival & Free Play',
-      description: 'Children arrive and engage in free play activities',
-      allClasses: true
-    },
-    {
-      time: '8:30 - 9:00 AM',
-      activity: 'Morning Circle',
-      description: 'Welcome song, calendar time, and daily discussion',
-      allClasses: true
-    },
-    {
-      time: '9:00 - 9:45 AM',
-      activity: 'Language Arts',
-      description: 'Reading, writing, and communication skills',
-      playGroup: 'Story Time & Vocabulary',
-      nursery: 'Letter Recognition & Phonics',
-      classOne: 'Reading & Writing Practice',
-      classTwo: 'Grammar & Comprehension',
-      classThree: 'Advanced Reading & Writing',
-      classFour: 'Literature & Composition',
-      classFive: 'Creative Writing & Analysis'
-    },
-    {
-      time: '9:45 - 10:00 AM',
-      activity: 'Snack Break',
-      description: 'Healthy snack time and social interaction',
-      allClasses: true
-    },
-    {
-      time: '10:00 - 10:45 AM',
-      activity: 'Mathematics',
-      description: 'Number concepts and problem-solving',
-      playGroup: 'Counting & Shapes',
-      nursery: 'Numbers 1-20 & Patterns',
-      classOne: 'Addition & Subtraction',
-      classTwo: 'Multiplication & Division',
-      classThree: 'Fractions & Geometry',
-      classFour: 'Advanced Math Concepts',
-      classFive: 'Problem Solving & Logic'
-    },
-    {
-      time: '10:45 - 11:30 AM',
-      activity: 'Science & Discovery',
-      description: 'Exploration and hands-on learning',
-      playGroup: 'Sensory Exploration',
-      nursery: 'Nature Discovery',
-      classOne: 'Basic Science Concepts',
-      classTwo: 'Simple Experiments',
-      classThree: 'Earth & Life Science',
-      classFour: 'Physical Science',
-      classFive: 'Scientific Method'
-    },
-    {
-      time: '11:30 - 12:15 PM',
-      activity: 'Creative Arts',
-      description: 'Art, music, and creative expression',
-      allClasses: true
-    },
-    {
-      time: '12:15 - 1:00 PM',
-      activity: 'Lunch Break',
-      description: 'Nutritious meal and rest time',
-      allClasses: true
-    },
-    {
-      time: '1:00 - 1:45 PM',
-      activity: 'Physical Education',
-      description: 'Outdoor play and physical activities',
-      allClasses: true
-    },
-    {
-      time: '1:45 - 2:30 PM',
-      activity: 'Social Studies',
-      description: 'Community awareness and social skills',
-      playGroup: 'Family & Friends',
-      nursery: 'My Community',
-      classOne: 'Our School & Neighborhood',
-      classTwo: 'Our City & Country',
-      classThree: 'Geography & Culture',
-      classFour: 'History & Civics',
-      classFive: 'World Studies'
-    },
-    {
-      time: '2:30 - 3:00 PM',
-      activity: 'Review & Dismissal',
-      description: 'Day recap and preparation for home',
-      allClasses: true
-    }
+  const [language] = useState<'bn' | 'en'>('bn'); // Default to Bengali since the CSV is in Bengali
+  const [selectedClass, setSelectedClass] = useState<string>('all');
+  const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
+
+  const classOptions = [
+    { value: 'all', label: language === 'bn' ? 'সব ক্লাস' : 'All Classes' },
+    ...scheduleData.classes.map(cls => ({
+      value: cls.className,
+      label: language === 'bn' ? cls.className : cls.classNameEn
+    }))
   ];
 
-  const classLevels = [
-    { key: 'playGroup', name: 'Play Group', color: 'bg-pink-100 text-pink-800' },
-    { key: 'nursery', name: 'Nursery', color: 'bg-purple-100 text-purple-800' },
-    { key: 'classOne', name: 'Class One', color: 'bg-blue-100 text-blue-800' },
-    { key: 'classTwo', name: 'Class Two', color: 'bg-green-100 text-green-800' },
-    { key: 'classThree', name: 'Class Three', color: 'bg-yellow-100 text-yellow-800' },
-    { key: 'classFour', name: 'Class Four', color: 'bg-orange-100 text-orange-800' },
-    { key: 'classFive', name: 'Class Five', color: 'bg-red-100 text-red-800' }
-  ];
+  const getFilteredSchedule = () => {
+    if (selectedClass === 'all') {
+      return scheduleData.classes;
+    }
+    return scheduleData.classes.filter(cls => cls.className === selectedClass);
+  };
+
+  const getSubjectColors = (index: number) => {
+    const colors = [
+      'bg-blue-50 border-blue-200 text-blue-800',
+      'bg-green-50 border-green-200 text-green-800', 
+      'bg-purple-50 border-purple-200 text-purple-800',
+      'bg-orange-50 border-orange-200 text-orange-800',
+      'bg-pink-50 border-pink-200 text-pink-800',
+      'bg-indigo-50 border-indigo-200 text-indigo-800'
+    ];
+    return colors[index % colors.length];
+  };
+
+  const getClassColors = (className: string) => {
+    const colorMap: { [key: string]: string } = {
+      'প্লে': 'bg-pink-100 text-pink-800 border-pink-200',
+      'নার্সারি': 'bg-purple-100 text-purple-800 border-purple-200',
+      'প্রথম': 'bg-blue-100 text-blue-800 border-blue-200',
+      'দ্বিতীয়': 'bg-green-100 text-green-800 border-green-200',
+      'তৃতীয়': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+      'চতুর্থ': 'bg-orange-100 text-orange-800 border-orange-200',
+      'পঞ্চম': 'bg-red-100 text-red-800 border-red-200'
+    };
+    return colorMap[className] || 'bg-gray-100 text-gray-800 border-gray-200';
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -124,19 +56,25 @@ export default function ClassSchedulePage() {
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
-                <a href="/" className="text-gray-500 hover:text-gray-700">Home</a>
+                <a href="/" className="text-gray-500 hover:text-gray-700">
+                  {language === 'bn' ? 'হোম' : 'Home'}
+                </a>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
               </li>
               <li>
-                <a href="/academic" className="text-gray-500 hover:text-gray-700">Academic</a>
+                <a href="/academic" className="text-gray-500 hover:text-gray-700">
+                  {language === 'bn' ? 'একাডেমিক' : 'Academic'}
+                </a>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
               </li>
               <li>
-                <span className="text-gray-900 font-medium">Class Schedule</span>
+                <span className="text-gray-900 font-medium">
+                  {language === 'bn' ? 'ক্লাস রুটিন' : 'Class Schedule'}
+                </span>
               </li>
             </ol>
           </nav>
@@ -148,139 +86,247 @@ export default function ClassSchedulePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Daily Class Schedule
+              {language === 'bn' ? scheduleData.title : 'Surjomukhi Kindergarten - Class Schedule 2025'}
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-              Our structured daily routine provides a balanced mix of learning, play, and development activities.
+              {language === 'bn' 
+                ? 'আমাদের প্রতিদিনের শ্রেণী রুটিন যা আপনার সন্তানের সর্বোচ্চ শিক্ষার জন্য পরিকল্পিত।'
+                : 'Our structured daily class routine designed for optimal learning and development of your child.'
+              }
             </p>
           </div>
         </div>
       </section>
 
-      {/* Schedule Overview */}
-      <section className="py-16 bg-white">
+      {/* Controls Section */}
+      <section className="py-8 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              School Hours: 8:00 AM - 3:00 PM
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our daily schedule is designed to provide a perfect balance of structured learning and 
-              creative play time, ensuring optimal development for each age group.
-            </p>
-          </div>
+          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+            {/* Class Filter */}
+            <div className="flex items-center gap-4">
+              <label className="text-sm font-medium text-gray-700">
+                {language === 'bn' ? 'ক্লাস নির্বাচন:' : 'Select Class:'}
+              </label>
+              <select
+                value={selectedClass}
+                onChange={(e) => setSelectedClass(e.target.value)}
+                className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                {classOptions.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* Class Level Legend */}
-          <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Class Levels:</h3>
-            <div className="flex flex-wrap gap-2">
-              {classLevels.map((level) => (
-                <span key={level.key} className={`px-3 py-1 rounded-full text-sm font-medium ${level.color}`}>
-                  {level.name}
-                </span>
-              ))}
+            {/* View Mode Toggle */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-gray-700">
+                {language === 'bn' ? 'দেখার ধরন:' : 'View Mode:'}
+              </span>
+              <div className="flex border border-gray-300 rounded-lg">
+                <button
+                  onClick={() => setViewMode('table')}
+                  className={`px-4 py-2 rounded-l-lg text-sm font-medium transition-colors ${
+                    viewMode === 'table'
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {language === 'bn' ? 'টেবিল' : 'Table'}
+                </button>
+                <button
+                  onClick={() => setViewMode('cards')}
+                  className={`px-4 py-2 rounded-r-lg text-sm font-medium transition-colors ${
+                    viewMode === 'cards'
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {language === 'bn' ? 'কার্ড' : 'Cards'}
+                </button>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Schedule Table */}
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-indigo-600 text-white">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold">Time</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold">Activity</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold">Description</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {scheduleData.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                      <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                        {item.time}
-                      </td>
-                      <td className="px-6 py-4 text-sm font-semibold text-indigo-600">
-                        {item.activity}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
-                        {item.allClasses ? (
-                          item.description
-                        ) : (
-                          <div className="space-y-1">
-                            <p className="font-medium text-gray-800 mb-2">{item.description}</p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-1 text-xs">
-                              {classLevels.map((level) => {
-                                const content = item[level.key as keyof typeof item];
-                                return content ? (
-                                  <div key={level.key} className="flex items-center">
-                                    <span className={`inline-block w-2 h-2 rounded-full mr-2 ${level.color.split(' ')[0].replace('bg-', 'bg-').replace('-100', '-400')}`}></span>
-                                    <span className="font-medium">{level.name}:</span>
-                                    <span className="ml-1">{content}</span>
-                                  </div>
-                                ) : null;
-                              })}
+      {/* Schedule Content */}
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {viewMode === 'table' ? (
+            // Table View
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-indigo-600 text-white">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-sm font-semibold">
+                        {language === 'bn' ? 'ক্লাস' : 'Class'}
+                      </th>
+                      {scheduleData.timeSlots.map((slot, index) => (
+                        <th key={index} className="px-4 py-4 text-center text-sm font-semibold min-w-[120px]">
+                          <div>
+                            <div className="font-bold">
+                              {language === 'bn' ? slot.period : slot.periodEn}
+                            </div>
+                            <div className="text-xs font-normal opacity-90">
+                              {language === 'bn' ? slot.time : slot.timeEn}
                             </div>
                           </div>
-                        )}
-                      </td>
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {getFilteredSchedule().map((classItem, classIndex) => (
+                      <tr key={classIndex} className={classIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                        <td className="px-6 py-4">
+                          <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getClassColors(classItem.className)}`}>
+                            {language === 'bn' ? classItem.className : classItem.classNameEn}
+                          </div>
+                        </td>
+                        {classItem.schedule.map((subject, subjectIndex) => (
+                          <td key={subjectIndex} className="px-4 py-4 text-center">
+                            {subject.subject !== '—' ? (
+                              <div className={`p-3 rounded-lg border ${getSubjectColors(subjectIndex)}`}>
+                                <div className="font-semibold text-sm mb-1">
+                                  {language === 'bn' ? subject.subject : subject.subjectEn}
+                                </div>
+                                {subject.teacher && (
+                                  <div className="text-xs opacity-80">
+                                    {language === 'bn' ? subject.teacher : subject.teacherEn}
+                                  </div>
+                                )}
+                              </div>
+                            ) : (
+                              <div className="text-gray-400 text-sm">
+                                {language === 'bn' ? 'বিরতি' : 'Free Period'}
+                              </div>
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          ) : (
+            // Cards View
+            <div className="grid gap-8">
+              {getFilteredSchedule().map((classItem, classIndex) => (
+                <div key={classIndex} className="bg-white rounded-lg shadow-lg overflow-hidden">
+                  <div className={`px-6 py-4 border-b ${getClassColors(classItem.className)} border`}>
+                    <h3 className="text-xl font-bold">
+                      {language === 'bn' ? classItem.className : classItem.classNameEn}
+                    </h3>
+                  </div>
+                  <div className="p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {classItem.schedule.map((subject, subjectIndex) => (
+                        <div key={subjectIndex} className={`p-4 rounded-lg border ${getSubjectColors(subjectIndex)}`}>
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-xs font-medium opacity-70">
+                              {language === 'bn' 
+                                ? scheduleData.timeSlots[subjectIndex]?.period 
+                                : scheduleData.timeSlots[subjectIndex]?.periodEn
+                              }
+                            </span>
+                            <span className="text-xs opacity-70">
+                              {language === 'bn' 
+                                ? scheduleData.timeSlots[subjectIndex]?.time 
+                                : scheduleData.timeSlots[subjectIndex]?.timeEn
+                              }
+                            </span>
+                          </div>
+                          <div className="font-semibold mb-1">
+                            {subject.subject !== '—' 
+                              ? (language === 'bn' ? subject.subject : subject.subjectEn)
+                              : (language === 'bn' ? 'বিরতি' : 'Free Period')
+                            }
+                          </div>
+                          {subject.teacher && subject.subject !== '—' && (
+                            <div className="text-sm opacity-80">
+                              {language === 'bn' ? `শিক্ষক: ${subject.teacher}` : `Teacher: ${subject.teacherEn}`}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Additional Information */}
+      {/* Schedule Information */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <div className="text-3xl mb-4">📅</div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Weekly Schedule</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Monday to Friday: Regular classes
-                Saturday: Special activities and events
-                Sunday: Holiday
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
+                {language === 'bn' ? 'সাপ্তাহিক সময়সূচী' : 'Weekly Schedule'}
+              </h3>
+              <p className="text-gray-600 text-sm">
+                {language === 'bn' 
+                  ? 'রবিবার থেকে বৃহস্পতিবার: নিয়মিত ক্লাস\nশুক্রবার: বিশেষ কার্যক্রম\nশনিবার: ছুটি'
+                  : 'Sunday to Thursday: Regular classes\nFriday: Special activities\nSaturday: Holiday'
+                }
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="text-3xl mb-4">🍎</div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Meal Times</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                Morning Snack: 9:45 AM
-                Lunch: 12:15 PM
-                Afternoon Snack: Available upon request
+              <div className="text-3xl mb-4">🕘</div>
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
+                {language === 'bn' ? 'স্কুল সময়' : 'School Hours'}
+              </h3>
+              <p className="text-gray-600 text-sm">
+                {language === 'bn' 
+                  ? 'সকাল ৯:০০ - দুপুর ১২:০০\nমোট ৬টি ক্লাস প্রতিদিন\nপ্রতিটি ক্লাস ৩০ মিনিট'
+                  : '9:00 AM - 12:00 PM\nTotal 6 classes daily\nEach class 30 minutes'
+                }
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="text-3xl mb-4">🚌</div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Transportation</h3>
-              <p className="text-gray-600 text-sm mb-4">
-                School bus service available
-                Pick-up: 7:30 AM onwards
-                Drop-off: 3:15 PM onwards
+              <div className="text-3xl mb-4">�‍🏫</div>
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
+                {language === 'bn' ? 'শিক্ষক তথ্য' : 'Teacher Information'}
+              </h3>
+              <p className="text-gray-600 text-sm">
+                {language === 'bn' 
+                  ? 'অভিজ্ঞ ও যোগ্য শিক্ষকমণ্ডলী\nপ্রতিটি বিষয়ে বিশেষজ্ঞ শিক্ষক\nনিয়মিত প্রশিক্ষণপ্রাপ্ত'
+                  : 'Experienced and qualified teachers\nSubject specialists\nRegularly trained staff'
+                }
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Contact for More Info */}
+      {/* Contact Section */}
       <section className="py-16 bg-indigo-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Have Questions About Our Schedule?
+            {language === 'bn' 
+              ? 'আমাদের ক্লাস রুটিন সম্পর্কে প্রশ্ন আছে?'
+              : 'Have Questions About Our Class Schedule?'
+            }
           </h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
-            Contact us to learn more about our daily routine and how it benefits your child's development.
+            {language === 'bn' 
+              ? 'আমাদের সাথে যোগাযোগ করুন এবং আপনার সন্তানের শিক্ষা সম্পর্কে আরো জানুন।'
+              : 'Contact us to learn more about our daily routine and how it benefits your child\'s development.'
+            }
           </p>
           <a
             href="/contact"
             className="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
           >
-            Contact Us
+            {language === 'bn' ? 'যোগাযোগ করুন' : 'Contact Us'}
           </a>
         </div>
       </section>

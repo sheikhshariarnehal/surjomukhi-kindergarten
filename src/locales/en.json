@@ -723,5 +723,36 @@
     "title": "Contact Us",
     "subtitle": "Get in touch with us for admissions, inquiries, or any questions you may have.",
     "description": "Contact Surjomukhi Kindergarten for admissions and inquiries"
+  },
+  "classSchedule": {
+    "title": "Class Schedule",
+    "subtitle": "Our structured daily class routine designed for optimal learning and development",
+    "allClasses": "All Classes",
+    "selectClass": "Select Class:",
+    "viewMode": "View Mode:",
+    "table": "Table",
+    "cards": "Cards",
+    "class": "Class",
+    "teacher": "Teacher",
+    "freePeriod": "Free Period",
+    "scheduleInfo": {
+      "weeklySchedule": {
+        "title": "Weekly Schedule",
+        "description": "Sunday to Thursday: Regular classes\nFriday: Special activities\nSaturday: Holiday"
+      },
+      "schoolHours": {
+        "title": "School Hours", 
+        "description": "9:00 AM - 12:00 PM\nTotal 6 classes daily\nEach class 30 minutes"
+      },
+      "teacherInfo": {
+        "title": "Teacher Information",
+        "description": "Experienced and qualified teachers\nSubject specialists\nRegularly trained staff"
+      }
+    },
+    "contactSection": {
+      "title": "Have Questions About Our Class Schedule?",
+      "subtitle": "Contact us to learn more about our daily routine and how it benefits your child's development.",
+      "contactUs": "Contact Us"
+    }
   }
 }
