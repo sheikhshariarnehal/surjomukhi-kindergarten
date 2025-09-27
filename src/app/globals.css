@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
-/* Base styles */
-* {
+/* Base styles - Mobile-first approach */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -11,6 +13,10 @@ html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Improve mobile performance */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
 }
 
 body {
@@ -20,6 +26,11 @@ body {
   color: #1f2937;
   background-color: #ffffff;
   font-feature-settings: "rlig" 1, "calt" 1;
+  /* Prevent horizontal scroll on mobile */
+  overflow-x: hidden;
+  /* Improve text rendering on mobile */
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 /* Reduced motion for accessibility */
@@ -283,6 +294,29 @@ body {
   transition: transform 300ms ease-in;
 }
 
+/* Enhanced mobile navigation animations */
+.mobile-nav-enter {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.mobile-nav-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms ease;
+}
+
+.mobile-nav-exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.mobile-nav-exit-active {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms ease;
+}
+
 /* Search bar animation */
 .search-expand {
   animation: searchExpand 0.3s ease-out forwards;
@@ -311,5 +345,53 @@ body {
   to {
     width: 0;
     opacity: 0;
+  }
+}
+
+/* Mobile-optimized touch targets */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .touch-target {
+    min-height: auto;
+    min-width: auto;
+  }
+}
+
+/* Performance optimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Remove will-change after animation */
+.animation-finished {
+  will-change: auto;
+}
+
+/* Enhanced focus styles for better accessibility */
+.focus-visible:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn-primary {
+    border: 2px solid currentColor;
+  }
+
+  .card {
+    border: 1px solid #000;
   }
 }

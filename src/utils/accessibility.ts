@@ -1,10 +1,82 @@
-// Accessibility utilities for better user experience
+// Enhanced accessibility utilities for better user experience
+import { useEffect, useRef, useCallback, useState } from 'react';
 
 /**
  * Generate unique IDs for ARIA relationships
  */
 export function generateId(prefix: string = 'element'): string {
   return `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
+}
+
+/**
+ * Enhanced React hooks for accessibility
+ */
+
+// Hook for reduced motion preference
+export function useReducedMotion(): boolean {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  return prefersReducedMotion;
+}
+
+// Hook for high contrast preference
+export function useHighContrast(): boolean {
+  const [prefersHighContrast, setPrefersHighContrast] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const mediaQuery = window.matchMedia('(prefers-contrast: high)');
+    setPrefersHighContrast(mediaQuery.matches);
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersHighContrast(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  return prefersHighContrast;
+}
+
+// Hook for focus management
+export function useFocusManagement() {
+  const focusStackRef = useRef<HTMLElement[]>([]);
+
+  const saveFocus = useCallback((element?: HTMLElement) => {
+    const currentFocus = document.activeElement as HTMLElement;
+    if (currentFocus && currentFocus !== document.body) {
+      focusStackRef.current.push(currentFocus);
+    }
+
+    if (element) {
+      element.focus();
+    }
+  }, []);
+
+  const restoreFocus = useCallback(() => {
+    const previousFocus = focusStackRef.current.pop();
+    if (previousFocus && document.contains(previousFocus)) {
+      previousFocus.focus();
+    }
+  }, []);
+
+  return { saveFocus, restoreFocus };
 }
 
 /**
@@ -163,12 +235,13 @@ export const KeyboardNavigation = {
 };
 
 /**
- * ARIA live region manager
+ * ARIA live region manager - SSR safe
  */
 export class LiveRegionManager {
   private static instance: LiveRegionManager;
   private politeRegion: HTMLElement | null = null;
   private assertiveRegion: HTMLElement | null = null;
+  private isInitialized = false;
 
   static getInstance(): LiveRegionManager {
     if (!LiveRegionManager.instance) {
@@ -178,15 +251,31 @@ export class LiveRegionManager {
   }
 
   private constructor() {
-    this.createLiveRegions();
+    // Don't create regions during SSR
+    if (typeof window !== 'undefined') {
+      this.initializeRegions();
+    }
   }
 
-  private createLiveRegions(): void {
+  private initializeRegions(): void {
+    if (this.isInitialized || typeof document === 'undefined') return;
+
     // Polite live region
     this.politeRegion = document.createElement('div');
     this.politeRegion.setAttribute('aria-live', 'polite');
     this.politeRegion.setAttribute('aria-atomic', 'true');
     this.politeRegion.className = 'sr-only';
+    this.politeRegion.style.cssText = `
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    `;
     document.body.appendChild(this.politeRegion);
 
     // Assertive live region
@@ -194,15 +283,35 @@ export class LiveRegionManager {
     this.assertiveRegion.setAttribute('aria-live', 'assertive');
     this.assertiveRegion.setAttribute('aria-atomic', 'true');
     this.assertiveRegion.className = 'sr-only';
+    this.assertiveRegion.style.cssText = `
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    `;
     document.body.appendChild(this.assertiveRegion);
+
+    this.isInitialized = true;
   }
 
   announce(message: string, priority: 'polite' | 'assertive' = 'polite'): void {
+    // Ensure regions are initialized on client side
+    if (!this.isInitialized && typeof window !== 'undefined') {
+      this.initializeRegions();
+    }
+
     const region = priority === 'assertive' ? this.assertiveRegion : this.politeRegion;
-    if (region) {
+    if (region && typeof window !== 'undefined') {
       region.textContent = message;
       setTimeout(() => {
-        region.textContent = '';
+        if (region) {
+          region.textContent = '';
+        }
       }, 1000);
     }
   }

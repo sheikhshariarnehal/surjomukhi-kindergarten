@@ -1,12 +1,29 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
+import {
+  useDebounce,
+  useThrottle,
+  performanceMonitor,
+  initializeNavigationPerformance
+} from '@/utils/navigation-performance';
+import {
+  useReducedMotion,
+  useHighContrast,
+  useFocusManagement,
+  LiveRegionManager
+} from '@/utils/accessibility';
+import { safeBodyStyle } from '@/utils/ssr-safe';
+
+// Performance optimization: Lazy load heavy components
+const LazySearchModal = React.lazy(() => import('./SearchModal'));
+const LazyMobileMenu = React.lazy(() => import('./MobileMenu'));
 
 // Types
 interface NavItem {
@@ -111,51 +128,55 @@ const CONTACT_INFO = {
   }
 } as const;
 
-// Custom Hooks
+// Custom Hooks - Enhanced with performance optimizations
 const useScrolled = (threshold: number = 10) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // Use throttled scroll handler for better performance
+  const throttledScrollHandler = useThrottle(() => {
+    const currentScrollY = window.scrollY;
+    setIsScrolled(currentScrollY > threshold);
+  }, 16); // ~60fps
+
   useEffect(() => {
-    let ticking = false;
-    
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > threshold);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [threshold]);
+    // Initial check
+    setIsScrolled(window.scrollY > threshold);
+
+    window.addEventListener('scroll', throttledScrollHandler, { passive: true });
+    return () => window.removeEventListener('scroll', throttledScrollHandler);
+  }, [threshold, throttledScrollHandler]);
 
   return isScrolled;
 };
 
 const useClickOutside = (ref: React.RefObject<HTMLElement>, callback: () => void) => {
+  const callbackRef = useRef(callback);
+  callbackRef.current = callback;
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
-        callback();
+        callbackRef.current();
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('touchstart', handleClickOutside);
+    // Use capture phase for better performance
+    document.addEventListener('mousedown', handleClickOutside, true);
+    document.addEventListener('touchstart', handleClickOutside, { passive: true, capture: true });
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside, true);
+      document.removeEventListener('touchstart', handleClickOutside, true);
     };
-  }, [ref, callback]);
+  }, [ref]);
 };
 
 const useKeyboardNavigation = (callbacks: Record<string, () => void>) => {
+  const callbacksRef = useRef(callbacks);
+  callbacksRef.current = callbacks;
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      const callback = callbacks[event.key];
+      const callback = callbacksRef.current[event.key];
       if (callback) {
         event.preventDefault();
         callback();
@@ -164,27 +185,72 @@ const useKeyboardNavigation = (callbacks: Record<string, () => void>) => {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [callbacks]);
+  }, []);
+};
+
+// Enhanced mobile detection hook
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile, { passive: true });
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  return isMobile;
 };
 
 // Main Component
 export default function ProfessionalNavbar() {
+  // Performance monitoring
+  useEffect(() => {
+    performanceMonitor.startTiming('navbar-render');
+    initializeNavigationPerformance();
+    return () => {
+      performanceMonitor.endTiming('navbar-render');
+    };
+  }, []);
+
   // Hooks
   const pathname = usePathname();
   const { t } = useTranslation();
   const isScrolled = useScrolled(10);
+  const isMobile = useIsMobile();
 
-  // State
+  // Accessibility hooks
+  const prefersReducedMotion = useReducedMotion();
+  const prefersHighContrast = useHighContrast();
+  const { saveFocus, restoreFocus } = useFocusManagement();
+
+  // State - Optimized with lazy initial state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [expandedMobileItem, setExpandedMobileItem] = useState<string | null>(null);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+
+  // Debounced search query for better performance
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+
+  // Live region for announcements - initialized on client side only
+  const [liveRegion, setLiveRegion] = useState<LiveRegionManager | null>(null);
+
+  useEffect(() => {
+    // Initialize live region on client side
+    setLiveRegion(LiveRegionManager.getInstance());
+  }, []);
 
   // Refs
   const searchRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
 
   // Memoized values
   const isActive = useCallback((href: string) => {
@@ -192,46 +258,92 @@ export default function ProfessionalNavbar() {
     return pathname.startsWith(href);
   }, [pathname]);
 
-  // Event handlers
+  // Event handlers - Optimized with useCallback
   const handleSearch = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
+      // Use router.push for better performance than window.location
       window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
     }
   }, [searchQuery]);
 
+  const handleSearchModalOpen = useCallback(() => {
+    setIsSearchModalOpen(true);
+    setIsSearchOpen(false);
+  }, []);
+
   const closeMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(false);
     setExpandedMobileItem(null);
+    // Re-enable body scroll
+    safeBodyStyle.resetOverflow();
   }, []);
 
   const closeAllMenus = useCallback(() => {
     setActiveDropdown(null);
     setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
+    setIsSearchModalOpen(false);
     setExpandedMobileItem(null);
+    // Re-enable body scroll
+    safeBodyStyle.resetOverflow();
   }, []);
 
-  // Custom hooks
-  useClickOutside(dropdownRef, () => setActiveDropdown(null));
-  // Note: We don't need useClickOutside for mobile menu since we handle it with backdrop click
-  
-  useKeyboardNavigation({
-    'Escape': closeAllMenus
-  });
+  const toggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(prev => {
+      const newState = !prev;
 
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+      if (newState) {
+        // Save focus and announce menu opening
+        saveFocus();
+        liveRegion?.announce('Navigation menu opened', 'polite');
+        // Prevent body scroll when menu is open
+        safeBodyStyle.setOverflow('hidden');
+      } else {
+        // Restore focus and announce menu closing
+        restoreFocus();
+        liveRegion?.announce('Navigation menu closed', 'polite');
+        // Re-enable body scroll
+        safeBodyStyle.resetOverflow();
+      }
+
+      return newState;
+    });
+  }, [saveFocus, restoreFocus, liveRegion]);
+
+  // Custom hooks
+  useClickOutside(dropdownRef, useCallback(() => setActiveDropdown(null), []));
+
+  useKeyboardNavigation(useMemo(() => ({
+    'Escape': closeAllMenus,
+    'Tab': () => {
+      // Enhanced keyboard navigation for accessibility
+      if (activeDropdown) {
+        setActiveDropdown(null);
+      }
     }
-    
-    return () => {
-      document.body.style.overflow = 'unset';
+  }), [closeAllMenus, activeDropdown]));
+
+  // Performance optimization: Debounced resize handler
+  useEffect(() => {
+    let resizeTimeout: NodeJS.Timeout;
+
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        // Close mobile menu on desktop resize
+        if (window.innerWidth >= 1024 && isMobileMenuOpen) {
+          closeMobileMenu();
+        }
+      }, 150);
     };
-  }, [isMobileMenuOpen]);
+
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimeout);
+    };
+  }, [isMobileMenuOpen, closeMobileMenu]);
 
   // SEO structured data
   const structuredData = useMemo(() => ({
@@ -317,14 +429,23 @@ export default function ProfessionalNavbar() {
         </div>
       </div>
 
-      {/* Compact Main Navigation */}
-      <nav 
+      {/* Enhanced Main Navigation */}
+      <nav
+        ref={navRef}
         className={cn(
           "bg-white shadow-sm sticky top-0 z-50 transition-all duration-300 border-b border-gray-100",
-          isScrolled ? "shadow-md bg-white/96 backdrop-blur-sm" : "shadow-sm"
+          isScrolled ? "shadow-md bg-white/96 backdrop-blur-sm" : "shadow-sm",
+          prefersReducedMotion && "transition-none",
+          prefersHighContrast && "border-b-2 border-black"
         )}
         role="navigation"
         aria-label="Main navigation"
+        onKeyDown={(e) => {
+          // Enhanced keyboard navigation
+          if (e.key === 'Escape') {
+            closeAllMenus();
+          }
+        }}
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
           <div className="flex justify-between items-center h-14 lg:h-16">
@@ -372,58 +493,71 @@ export default function ProfessionalNavbar() {
               ))}
             </div>
 
-            {/* Compact Actions */}
-            <div className="flex items-center space-x-2">
-              {/* Compact Search */}
+            {/* Enhanced Actions */}
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              {/* Enhanced Search - Mobile optimized */}
               <div className="relative">
-                <form onSubmit={handleSearch} role="search">
-                  {isSearchOpen ? (
-                    <div className="fixed inset-0 bg-black/40 z-40 lg:relative lg:inset-auto lg:bg-transparent lg:z-auto backdrop-blur-sm">
-                      <div className="flex items-center justify-center min-h-screen lg:min-h-0 p-4 lg:p-0">
-                        <div className="bg-white rounded-xl shadow-xl p-4 w-full max-w-md lg:bg-white lg:shadow-lg lg:border lg:border-gray-200 lg:p-0 lg:max-w-none lg:w-64 lg:rounded-lg animate-in zoom-in-95 duration-200">
-                          <div className="relative">
-                            <input
-                              ref={searchRef}
-                              type="search"
-                              placeholder={t('common.searchPlaceholder', 'Search...')}
-                              value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
-                              className="w-full pl-9 pr-9 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white text-gray-700 placeholder-gray-500 text-sm"
-                              aria-label="Search the website"
-                              autoFocus
-                            />
-                            <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                              <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                              </svg>
+                {isMobile ? (
+                  <button
+                    type="button"
+                    onClick={handleSearchModalOpen}
+                    className="group p-2.5 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                    aria-label="Open search"
+                  >
+                    <svg className="w-5 h-5 transition-transform duration-200 group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </button>
+                ) : (
+                  <form onSubmit={handleSearch} role="search">
+                    {isSearchOpen ? (
+                      <div className="fixed inset-0 bg-black/40 z-40 lg:relative lg:inset-auto lg:bg-transparent lg:z-auto backdrop-blur-sm">
+                        <div className="flex items-center justify-center min-h-screen lg:min-h-0 p-4 lg:p-0">
+                          <div className="bg-white rounded-xl shadow-xl p-4 w-full max-w-md lg:bg-white lg:shadow-lg lg:border lg:border-gray-200 lg:p-0 lg:max-w-none lg:w-64 lg:rounded-lg animate-in zoom-in-95 duration-200">
+                            <div className="relative">
+                              <input
+                                ref={searchRef}
+                                type="search"
+                                placeholder={t('common.searchPlaceholder', 'Search...')}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full pl-9 pr-9 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white text-gray-700 placeholder-gray-500 text-sm"
+                                aria-label="Search the website"
+                                autoFocus
+                              />
+                              <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                                <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => setIsSearchOpen(false)}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-blue-500/30 rounded p-0.5"
+                                aria-label="Close search"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
                             </div>
-                            <button
-                              type="button"
-                              onClick={() => setIsSearchOpen(false)}
-                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-blue-500/30 rounded p-0.5"
-                              aria-label="Close search"
-                            >
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                            </button>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => setIsSearchOpen(true)}
-                      className="group p-2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-                      aria-label="Open search"
-                    >
-                      <svg className="w-4 h-4 transition-transform duration-200 group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    </button>
-                  )}
-                </form>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setIsSearchOpen(true)}
+                        className="group p-2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                        aria-label="Open search"
+                      >
+                        <svg className="w-4 h-4 transition-transform duration-200 group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </button>
+                    )}
+                  </form>
+                )}
               </div>
 
               {/* Compact CTA */}
@@ -439,15 +573,15 @@ export default function ProfessionalNavbar() {
                 </Link>
               </div>
 
-              {/* Mobile Menu Button */}
+              {/* Enhanced Mobile Menu Button */}
               <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden group p-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                onClick={toggleMobileMenu}
+                className="lg:hidden group p-2.5 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-expanded={isMobileMenuOpen}
-                aria-label="Toggle navigation menu"
+                aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
                 aria-controls="mobile-menu"
               >
-                <svg className="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-6 h-6 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   {isMobileMenuOpen ? (
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   ) : (
@@ -458,17 +592,41 @@ export default function ProfessionalNavbar() {
             </div>
           </div>
 
-          {/* Mobile Navigation */}
-          <CompactMobileNavigation
-            isMobileMenuOpen={isMobileMenuOpen}
-            expandedMobileItem={expandedMobileItem}
-            setExpandedMobileItem={setExpandedMobileItem}
-            navigationItems={NAVIGATION_ITEMS}
-            isActive={isActive}
-            closeMobileMenu={closeMobileMenu}
-            mobileMenuRef={mobileMenuRef}
-            t={t}
-          />
+          {/* Enhanced Mobile Navigation with Lazy Loading */}
+          {isMobileMenuOpen && (
+            <Suspense fallback={
+              <div className="lg:hidden fixed inset-0 bg-black/50 z-40 flex items-center justify-center">
+                <div className="bg-white rounded-lg p-4">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                </div>
+              </div>
+            }>
+              <LazyMobileMenu
+                isOpen={isMobileMenuOpen}
+                expandedItem={expandedMobileItem}
+                setExpandedItem={setExpandedMobileItem}
+                navigationItems={NAVIGATION_ITEMS}
+                isActive={isActive}
+                onClose={closeMobileMenu}
+                menuRef={mobileMenuRef}
+                t={t}
+              />
+            </Suspense>
+          )}
+
+          {/* Enhanced Search Modal for Mobile */}
+          {isSearchModalOpen && (
+            <Suspense fallback={null}>
+              <LazySearchModal
+                isOpen={isSearchModalOpen}
+                onClose={() => setIsSearchModalOpen(false)}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                onSearch={handleSearch}
+                t={t}
+              />
+            </Suspense>
+          )}
         </div>
       </nav>
     </>
