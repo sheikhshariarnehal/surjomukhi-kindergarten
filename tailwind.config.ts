@@ -10,9 +10,21 @@ const config: Config = {
     extend: {
       screens: {
         'xs': '475px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
         '3xl': '1600px',
+        // Mobile-first breakpoints
+        'mobile': { 'max': '639px' },
+        'tablet': { 'min': '640px', 'max': '1023px' },
+        'desktop': { 'min': '1024px' },
+        // Touch and hover detection
         'touch': { 'raw': '(hover: none)' },
         'no-touch': { 'raw': '(hover: hover)' },
+        // High DPI screens
+        'retina': { 'raw': '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)' },
       },
       colors: {
         primary: {
@@ -63,6 +75,11 @@ const config: Config = {
         '18': '4.5rem',
         '88': '22rem',
         '128': '32rem',
+        // Safe area spacing
+        'safe-top': 'env(safe-area-inset-top)',
+        'safe-bottom': 'env(safe-area-inset-bottom)',
+        'safe-left': 'env(safe-area-inset-left)',
+        'safe-right': 'env(safe-area-inset-right)',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
