@@ -28,7 +28,7 @@ const heroSlides: HeroSlide[] = [
     titleKey: "hero.title",
     subtitleKey: "hero.subtitle", 
     descriptionKey: "hero.description",
-    image: "/hero/campus3.webp", // TODO: Convert to .webp for better performance
+    image: "/hero/school-tour.webp", // TODO: Convert to .webp for better performance
     imageAlt: "Surjomukhi Kindergarten campus - Modern educational facility for early childhood development",
     cta: {
       primary: { 
@@ -48,7 +48,7 @@ const heroSlides: HeroSlide[] = [
     titleKey: "Safe Learning Environment",
     subtitleKey: "Modern Kindergarten Facilities",
     descriptionKey: "Our campus provides a safe, nurturing environment with age-appropriate facilities designed for early childhood development.",
-    image: "/hero/campus4.webp", // TODO: Convert to .webp
+    image: "/hero/campus.webp", // TODO: Convert to .webp
     imageAlt: "Safe learning environment at Surjomukhi Kindergarten with modern facilities",
     cta: {
       primary: { 
