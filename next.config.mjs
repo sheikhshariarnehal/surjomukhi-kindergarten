@@ -4,12 +4,14 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['framer-motion', 'lucide-react'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  },
+
+  // Turbopack configuration (moved from experimental.turbo)
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
@@ -143,10 +145,7 @@ const nextConfig = {
   
   // Disable source maps in production for better performance
   productionBrowserSourceMaps: false,
-  
-  // Enable SWC minification
-  swcMinify: true,
-  
+
   // Redirect configuration
   async redirects() {
     return [

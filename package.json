@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "type-check": "tsc --noEmit",
     "postbuild": "echo 'Build completed successfully!'",
+    "fix-deployment": "node scripts/fix-deployment-issues.js",
     "generate-favicons": "node scripts/generate-favicons.js",
     "generate-seo-assets": "node scripts/generate-seo-assets.js",
     "generate-all-assets": "npm run generate-favicons && npm run generate-seo-assets"
