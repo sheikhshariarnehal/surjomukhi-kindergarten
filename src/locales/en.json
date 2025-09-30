@@ -535,7 +535,155 @@
     },
     "applyOnline": {
       "title": "Apply Online",
-      "description": "Submit your application online for convenience"
+      "description": "Submit your application online for convenience",
+      "breadcrumb": {
+        "home": "Home",
+        "admission": "Admission",
+        "applyOnline": "Apply Online"
+      },
+      "hero": {
+        "title": "Apply Online",
+        "subtitle": "Complete your application for admission to Surjomukhi Kindergarten online."
+      },
+      "formTitle": "Online Application Form",
+      "formSubtitle": "Please fill out all required fields carefully. You can save your progress and return later if needed.",
+      "sections": {
+        "studentInfo": "Student Information",
+        "parentInfo": "Parent/Guardian Information",
+        "addressInfo": "Address Information",
+        "additionalInfo": "Additional Information"
+      },
+      "fields": {
+        "studentName": {
+          "label": "Child's Full Name",
+          "placeholder": "Enter child's full name",
+          "error": "Please enter the child's full name"
+        },
+        "dateOfBirth": {
+          "label": "Date of Birth",
+          "placeholder": "Select date of birth",
+          "error": "Please select a valid date of birth",
+          "ageError": "Student must be between 3 and 15 years old"
+        },
+        "gender": {
+          "label": "Gender",
+          "placeholder": "Select gender",
+          "options": {
+            "male": "Male",
+            "female": "Female",
+            "other": "Other"
+          },
+          "error": "Please select a gender"
+        },
+        "classApplying": {
+          "label": "Class Applying For",
+          "placeholder": "Select class",
+          "error": "Please select a class",
+          "autoSelected": "Auto-selected based on age"
+        },
+        "parentName": {
+          "label": "Primary Guardian Name",
+          "placeholder": "Enter primary guardian's full name",
+          "error": "Please enter the guardian's name"
+        },
+        "fatherName": {
+          "label": "Father's Name",
+          "placeholder": "Enter father's full name",
+          "error": "Please enter father's name"
+        },
+        "motherName": {
+          "label": "Mother's Name",
+          "placeholder": "Enter mother's full name",
+          "error": "Please enter mother's name"
+        },
+        "parentEmail": {
+          "label": "Email Address",
+          "placeholder": "Enter email address",
+          "error": "Please enter a valid email address"
+        },
+        "parentPhone": {
+          "label": "Primary Contact Number",
+          "placeholder": "Enter contact number",
+          "error": "Please enter a valid phone number"
+        },
+        "address": {
+          "label": "Complete Address",
+          "placeholder": "Enter complete address",
+          "error": "Please provide a complete address"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "Enter city",
+          "error": "Please enter city name"
+        },
+        "postalCode": {
+          "label": "Postal Code",
+          "placeholder": "Enter postal code"
+        },
+        "previousSchool": {
+          "label": "Previous School (if any)",
+          "placeholder": "Enter previous school name"
+        },
+        "specialNeeds": {
+          "label": "Special Needs or Medical Conditions",
+          "placeholder": "Please describe any special needs or medical conditions"
+        },
+        "howDidYouHear": {
+          "label": "How did you hear about our school?",
+          "placeholder": "Select an option",
+          "options": {
+            "website": "School Website",
+            "socialMedia": "Social Media",
+            "friendReferral": "Friend/Family Referral",
+            "advertisement": "Advertisement",
+            "other": "Other"
+          }
+        },
+        "termsAccepted": {
+          "label": "I hereby declare that the information provided above is true and complete to the best of my knowledge. I understand that any false information may result in the rejection of this application.",
+          "linkText": "I agree to the admission policy and terms and conditions of Surjomukhi Kindergarten.",
+          "error": "You must accept the terms and conditions"
+        }
+      },
+      "feeInfo": {
+        "title": "Fee Information",
+        "monthlyFee": "Monthly Fee",
+        "admissionFee": "Admission Fee",
+        "currency": "৳"
+      },
+      "buttons": {
+        "submit": "Submit Application",
+        "submitting": "Submitting...",
+        "reset": "Reset Form"
+      },
+      "messages": {
+        "success": "Application submitted successfully!",
+        "successDescription": "Thank you for your application. We will contact you within 3-5 business days.",
+        "error": "Failed to submit application",
+        "errorDescription": "Please check your information and try again.",
+        "validationError": "Please fix the errors in the form"
+      },
+      "nextSteps": {
+        "title": "What Happens Next?",
+        "subtitle": "After submitting your online application, here's what you can expect.",
+        "steps": [
+          {
+            "icon": "📧",
+            "title": "Confirmation Email",
+            "description": "You'll receive a confirmation email with your application reference number within 24 hours."
+          },
+          {
+            "icon": "📞",
+            "title": "Contact from School",
+            "description": "Our admission team will contact you within 3-5 working days to schedule an assessment."
+          },
+          {
+            "icon": "✅",
+            "title": "Admission Decision",
+            "description": "Final admission decision will be communicated within 2 weeks of the assessment."
+          }
+        ]
+      }
     },
     "requirements": {
       "title": "Requirements",

@@ -240,6 +240,119 @@ export const settingsSchema = z.object({
 
 export const updateSettingsSchema = settingsSchema.partial();
 
+// Admission Application validation schemas
+export const admissionApplicationSchema = z.object({
+  // Student Information
+  student_name: z.string().min(2, 'Student name must be at least 2 characters').max(100, 'Student name is too long'),
+  date_of_birth: z.string().refine((val) => {
+    const date = new Date(val);
+    const now = new Date();
+    const age = now.getFullYear() - date.getFullYear();
+    return age >= 3 && age <= 15;
+  }, 'Student must be between 3 and 15 years old'),
+  gender: z.enum(['male', 'female', 'other'], {
+    errorMap: () => ({ message: 'Please select a valid gender' })
+  }),
+  class_applying: z.string().min(1, 'Please select a class'),
+
+  // Parent/Guardian Information
+  parent_name: z.string().min(2, 'Parent/Guardian name must be at least 2 characters').max(100, 'Parent/Guardian name is too long'),
+  father_name: z.string().min(2, 'Father\'s name must be at least 2 characters').max(100, 'Father\'s name is too long').optional(),
+  mother_name: z.string().min(2, 'Mother\'s name must be at least 2 characters').max(100, 'Mother\'s name is too long').optional(),
+  parent_email: z.string().email('Please enter a valid email address'),
+  parent_phone: z.string()
+    .min(10, 'Phone number must be at least 10 digits')
+    .max(15, 'Phone number is too long')
+    .regex(/^[+]?[\d\s-()]+$/, 'Please enter a valid phone number'),
+
+  // Address Information
+  address: z.string().min(10, 'Please provide a complete address').max(500, 'Address is too long'),
+  city: z.string().min(2, 'City name is required').max(100, 'City name is too long').optional(),
+  postal_code: z.string().max(10, 'Postal code is too long').optional(),
+
+  // Additional Information
+  previous_school: z.string().max(200, 'Previous school name is too long').optional(),
+  special_needs: z.string().max(1000, 'Special needs description is too long').optional(),
+  how_did_you_hear: z.string().optional(),
+
+  // Terms and Conditions
+  terms_accepted: z.boolean().refine((val) => val === true, {
+    message: 'You must accept the terms and conditions'
+  }),
+});
+
+export type AdmissionApplicationFormData = z.infer<typeof admissionApplicationSchema>;
+
+// Age to Class mapping configuration
+export const AGE_CLASS_FEE_MAPPING = [
+  {
+    age: 5,
+    className: 'Play',
+    monthlyFee: 300,
+    admissionFee: 500
+  },
+  {
+    age: 6,
+    className: 'Nursery',
+    monthlyFee: 300,
+    admissionFee: 500
+  },
+  {
+    age: 7,
+    className: 'Class One',
+    monthlyFee: 400,
+    admissionFee: 600
+  },
+  {
+    age: 8,
+    className: 'Class Two',
+    monthlyFee: 400,
+    admissionFee: 600
+  },
+  {
+    age: 9,
+    className: 'Class Three',
+    monthlyFee: 450,
+    admissionFee: 700
+  },
+  {
+    age: 10,
+    className: 'Class Four',
+    monthlyFee: 450,
+    admissionFee: 800
+  },
+  {
+    age: 11,
+    className: 'Class Five',
+    monthlyFee: 500,
+    admissionFee: 800
+  }
+] as const;
+
+// Helper function to calculate age from date of birth
+export function calculateAge(dateOfBirth: string): number {
+  const today = new Date();
+  const birthDate = new Date(dateOfBirth);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age;
+}
+
+// Helper function to get class options based on age
+export function getClassOptionsForAge(age: number) {
+  return AGE_CLASS_FEE_MAPPING.filter(mapping => mapping.age === age);
+}
+
+// Helper function to get fee structure for a class
+export function getFeeStructureForClass(className: string) {
+  return AGE_CLASS_FEE_MAPPING.find(mapping => mapping.className === className);
+}
+
 // Generic validation helper
 export function validateData<T>(schema: z.ZodSchema<T>, data: unknown): { success: true; data: T } | { success: false; errors: string[] } {
   try {
