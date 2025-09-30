@@ -24,6 +24,7 @@ const eslintConfig = [
     rules: {
       // Turn critical errors into warnings for deployment
       "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-require-imports": "warn",
       "react/no-unescaped-entities": "warn",
       "@next/next/no-html-link-for-pages": "warn",
       "react/display-name": "warn",

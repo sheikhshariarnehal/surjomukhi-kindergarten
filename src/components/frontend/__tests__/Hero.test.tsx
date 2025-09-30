@@ -269,26 +269,28 @@ describe('Hero Component', () => {
 
   describe('Performance Optimizations', () => {
     it('preloads critical images', async () => {
-      const { heroPerformanceMonitor } = require('@/utils/performance');
-      
+      // heroPerformanceMonitor is already mocked at the top of the file
+      const performanceUtils = await import('@/utils/performance');
+
       renderHero();
-      
+
       await waitFor(() => {
-        expect(heroPerformanceMonitor.measureImageLoad).toHaveBeenCalled();
-        expect(heroPerformanceMonitor.measureComponentMount).toHaveBeenCalled();
+        expect(performanceUtils.heroPerformanceMonitor.measureImageLoad).toHaveBeenCalled();
+        expect(performanceUtils.heroPerformanceMonitor.measureComponentMount).toHaveBeenCalled();
       });
     });
 
     it('lazy loads non-critical images', async () => {
       renderHero();
-      
+
       await waitFor(() => {
         expect(global.requestIdleCallback).toHaveBeenCalled();
       });
     });
 
     it('cleans up performance monitoring on unmount', async () => {
-      const { heroPerformanceMonitor } = require('@/utils/performance');
+      // heroPerformanceMonitor is already mocked at the top of the file
+      const performanceUtils = await import('@/utils/performance');
       const { unmount } = renderHero();
       
       await waitFor(() => {

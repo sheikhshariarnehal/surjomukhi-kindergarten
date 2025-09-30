@@ -4,7 +4,7 @@ export interface Teacher {
   designation: string;
   bio?: string;
   photo_url?: string;
-  subjects: string[];
+  subjects?: string[];
   join_date?: string;
   slug?: string;
   qualifications?: string[];
@@ -25,7 +25,7 @@ export interface CreateTeacherData {
   designation: string;
   bio?: string;
   photo_url?: string;
-  subjects: string[];
+  subjects?: string[];
   join_date?: string;
   slug?: string;
   qualifications?: string[];
@@ -63,7 +63,7 @@ export interface TeacherListItem {
   name: string;
   designation: string;
   photo_url?: string;
-  subjects: string[];
+  subjects?: string[];
 }
 
 export interface Staff {

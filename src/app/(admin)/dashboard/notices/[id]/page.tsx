@@ -184,6 +184,7 @@ export default function ViewNoticePage() {
                     variant="outline"
                     size="sm"
                     onClick={() => {
+                      if (!notice.file_url) return;
                       const link = document.createElement('a');
                       link.href = notice.file_url;
                       link.download = notice.file_url.split('/').pop() || 'document.pdf';

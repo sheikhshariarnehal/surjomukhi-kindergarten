@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
-import { Form } from '@/components/admin/Form';
 import { UploadWidget } from '@/components/admin/UploadWidget';
 import { 
   Settings as SettingsIcon, 
@@ -144,7 +143,7 @@ export default function SettingsPage() {
         </p>
       </div>
 
-      <Form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Settings */}
           <div className="lg:col-span-2 space-y-6">
@@ -337,10 +336,12 @@ export default function SettingsPage() {
                     </div>
                   </div>
                 )}
-                
+
                 <UploadWidget
                   onUpload={handleLogoUpload}
-                  accept="image/*"
+                  accept={{
+                    'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'],
+                  }}
                   maxSize={2 * 1024 * 1024} // 2MB
                   bucket="uploads"
                   folder="school"
@@ -383,7 +384,7 @@ export default function SettingsPage() {
             </Card>
           </div>
         </div>
-      </Form>
+      </form>
     </div>
   );
 }

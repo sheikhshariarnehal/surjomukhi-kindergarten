@@ -272,11 +272,6 @@ export default function NewsPage() {
           columns={columns}
           loading={loading}
           emptyMessage="No news found"
-          pagination={{
-            currentPage,
-            totalPages,
-            onPageChange: setCurrentPage,
-          }}
         />
       </Card>
     </div>

@@ -212,7 +212,9 @@ export default function CreateNoticePage() {
                     {watch('publish_date') ?
                       (() => {
                         try {
-                          const date = new Date(watch('publish_date'));
+                          const publishDate = watch('publish_date');
+                          if (!publishDate) return 'Now';
+                          const date = new Date(publishDate);
                           return date.toLocaleString();
                         } catch {
                           return 'Invalid date';

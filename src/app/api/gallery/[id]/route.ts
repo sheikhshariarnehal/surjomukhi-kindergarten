@@ -7,10 +7,11 @@ import { GalleryImage } from '@/types/gallery';
 // GET /api/gallery/[id] - Get single gallery item
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const image = await DatabaseService.getById<GalleryImage>('gallery_images', params.id);
+    const { id } = await params;
+    const image = await DatabaseService.getById<GalleryImage>('gallery_images', id);
 
     if (!image) {
       return NextResponse.json(
@@ -32,9 +33,11 @@ export async function GET(
 // PUT /api/gallery/[id] - Update gallery item
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+
     // Check authentication
     const token = request.cookies.get('auth-token')?.value ||
                   request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -48,7 +51,7 @@ export async function PUT(
     }
 
     // Check if gallery item exists
-    const existingImage = await DatabaseService.getById<GalleryImage>('gallery_images', params.id);
+    const existingImage = await DatabaseService.getById<GalleryImage>('gallery_images', id);
     if (!existingImage) {
       return NextResponse.json(
         { error: 'Gallery image not found' },
@@ -70,7 +73,7 @@ export async function PUT(
     const updateData = validation.data;
 
     // Update gallery item
-    const image = await DatabaseService.update<GalleryImage>('gallery_images', params.id, updateData);
+    const image = await DatabaseService.update<GalleryImage>('gallery_images', id, updateData);
 
     return NextResponse.json({
       success: true,
@@ -88,13 +91,15 @@ export async function PUT(
 // DELETE /api/gallery/[id] - Delete gallery item
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+
     // Check authentication
-    const token = request.cookies.get('auth-token')?.value || 
+    const token = request.cookies.get('auth-token')?.value ||
                   request.headers.get('Authorization')?.replace('Bearer ', '');
-    
+
     const user = await AuthService.authenticateRequest(token || '');
     if (!user) {
       return NextResponse.json(
@@ -115,7 +120,7 @@ export async function DELETE(
     const { data: existingItem } = await supabaseAdmin
       .from('gallery_images')
       .select('id')
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (!existingItem) {
@@ -129,7 +134,7 @@ export async function DELETE(
     const { error } = await supabaseAdmin
       .from('gallery_images')
       .delete()
-      .eq('id', params.id);
+      .eq('id', id);
 
     if (error) {
       console.error('Error deleting gallery item:', error);

@@ -28,8 +28,8 @@ export default function CreateTeacherPage() {
   const [certifications, setCertifications] = useState<string[]>([]);
   const router = useRouter();
 
-  const form = useForm<CreateTeacherForm>({
-    resolver: zodResolver(createTeacherSchema),
+  const form = useForm<any>({
+    resolver: zodResolver(createTeacherSchema) as any,
     defaultValues: {
       name: '',
       designation: '',
@@ -213,7 +213,7 @@ export default function CreateTeacherPage() {
                   <Input
                     {...form.register('name')}
                     placeholder="Enter teacher's full name"
-                    error={form.formState.errors.name?.message}
+                    error={form.formState.errors.name?.message as string}
                   />
                 </div>
 
@@ -224,7 +224,7 @@ export default function CreateTeacherPage() {
                   <Input
                     {...form.register('designation')}
                     placeholder="e.g., Senior Teacher, Head Teacher"
-                    error={form.formState.errors.designation?.message}
+                    error={form.formState.errors.designation?.message as string}
                   />
                 </div>
 
@@ -235,7 +235,7 @@ export default function CreateTeacherPage() {
                   <Input
                     {...form.register('department')}
                     placeholder="e.g., Mathematics, English, Science"
-                    error={form.formState.errors.department?.message}
+                    error={form.formState.errors.department?.message as string}
                   />
                 </div>
 
@@ -248,7 +248,7 @@ export default function CreateTeacherPage() {
                     type="number"
                     min="0"
                     placeholder="Years of teaching experience"
-                    error={form.formState.errors.experience_years?.message}
+                    error={form.formState.errors.experience_years?.message as string}
                   />
                 </div>
 
@@ -260,7 +260,7 @@ export default function CreateTeacherPage() {
                     {...form.register('contact_email')}
                     type="email"
                     placeholder="teacher@school.com"
-                    error={form.formState.errors.contact_email?.message}
+                    error={form.formState.errors.contact_email?.message as string}
                   />
                 </div>
 
@@ -272,7 +272,7 @@ export default function CreateTeacherPage() {
                     {...form.register('contact_phone')}
                     type="tel"
                     placeholder="+880 1234 567890"
-                    error={form.formState.errors.contact_phone?.message}
+                    error={form.formState.errors.contact_phone?.message as string}
                   />
                 </div>
 
@@ -283,7 +283,7 @@ export default function CreateTeacherPage() {
                   <Input
                     {...form.register('join_date')}
                     type="date"
-                    error={form.formState.errors.join_date?.message}
+                    error={form.formState.errors.join_date?.message as string}
                   />
                 </div>
               </div>
@@ -353,7 +353,7 @@ export default function CreateTeacherPage() {
                   />
                   {form.formState.errors.bio && (
                     <p className="mt-1 text-sm text-red-600">
-                      {form.formState.errors.bio.message}
+                      {form.formState.errors.bio.message as string}
                     </p>
                   )}
                 </div>

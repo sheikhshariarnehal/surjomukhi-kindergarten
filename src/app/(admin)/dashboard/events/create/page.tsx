@@ -254,7 +254,9 @@ export default function CreateEventPage() {
                     <p className="text-sm text-gray-500 mt-1">
                       {(() => {
                         try {
-                          const date = new Date(watch('end_date'));
+                          const endDate = watch('end_date');
+                          if (!endDate) return 'No date selected';
+                          const date = new Date(endDate);
                           return date.toLocaleString();
                         } catch {
                           return 'Invalid date';

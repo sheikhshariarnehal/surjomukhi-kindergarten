@@ -26,11 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title: news.title,
         description: news.excerpt || news.content?.substring(0, 160) || 'Read the latest news from Surjomukhi Kindergarten.',
         type: 'article',
-        publishedTime: news.published_at,
+        publishedTime: news.publish_date,
         modifiedTime: news.updated_at,
-        images: news.featured_image ? [
+        images: news.image_url ? [
           {
-            url: news.featured_image,
+            url: news.image_url,
             width: 1200,
             height: 630,
             alt: news.title,
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         card: 'summary_large_image',
         title: news.title,
         description: news.excerpt || news.content?.substring(0, 160) || 'Read the latest news from Surjomukhi Kindergarten.',
-        images: news.featured_image ? [news.featured_image] : [],
+        images: news.image_url ? [news.image_url] : [],
       },
     };
   } catch (error) {

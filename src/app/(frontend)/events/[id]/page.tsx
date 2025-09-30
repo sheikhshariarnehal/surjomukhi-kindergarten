@@ -311,11 +311,6 @@ export default function EventDetailPage() {
                     <span className={`px-4 py-2 rounded-full text-sm font-medium ${eventStatus.color}`}>
                       {eventStatus.status.charAt(0).toUpperCase() + eventStatus.status.slice(1)}
                     </span>
-                    {event?.category && (
-                      <span className="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                        {event.category}
-                      </span>
-                    )}
                   </div>
 
                   <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-6 leading-tight">
@@ -334,44 +329,9 @@ export default function EventDetailPage() {
                           <p className="text-sm text-gray-600">{formatEventDate(event?.start_date || '', event?.end_date)}</p>
                         </div>
                       </div>
-
-                      {event?.start_time && (
-                        <div className="flex items-center text-gray-700">
-                          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                            <Clock className="w-5 h-5 text-blue-600" />
-                          </div>
-                          <div>
-                            <p className="font-medium text-gray-900">Time</p>
-                            <p className="text-sm text-gray-600">{event.start_time}</p>
-                          </div>
-                        </div>
-                      )}
                     </div>
 
                     <div className="space-y-4">
-                      {event?.location && (
-                        <div className="flex items-center text-gray-700">
-                          <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-                            <MapPin className="w-5 h-5 text-purple-600" />
-                          </div>
-                          <div>
-                            <p className="font-medium text-gray-900">Location</p>
-                            <p className="text-sm text-gray-600">{event.location}</p>
-                          </div>
-                        </div>
-                      )}
-
-                      {event?.organizer && (
-                        <div className="flex items-center text-gray-700">
-                          <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mr-4">
-                            <User className="w-5 h-5 text-orange-600" />
-                          </div>
-                          <div>
-                            <p className="font-medium text-gray-900">Organizer</p>
-                            <p className="text-sm text-gray-600">{event.organizer}</p>
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
 

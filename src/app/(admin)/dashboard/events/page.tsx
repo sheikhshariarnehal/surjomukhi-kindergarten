@@ -494,11 +494,6 @@ export default function EventsPage() {
           columns={columns}
           loading={loading}
           emptyMessage="No events found"
-          pagination={{
-            currentPage,
-            totalPages,
-            onPageChange: setCurrentPage,
-          }}
         />
       </Card>
     </div>

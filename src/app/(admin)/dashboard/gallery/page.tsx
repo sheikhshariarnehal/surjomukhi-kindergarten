@@ -301,7 +301,10 @@ export default function GalleryPage() {
           <div className="flex items-center space-x-4">
             <UploadWidget
               onUpload={handleUpload}
-              accept="image/*,video/*"
+              accept={{
+                'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
+                'video/*': ['.mp4', '.webm', '.ogg'],
+              }}
               maxSize={50 * 1024 * 1024} // 50MB
               bucket="uploads"
               folder="gallery"
@@ -334,7 +337,10 @@ export default function GalleryPage() {
           <p className="text-gray-500 mb-4">Upload your first image or video to get started.</p>
           <UploadWidget
             onUpload={handleUpload}
-            accept="image/*,video/*"
+            accept={{
+              'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
+              'video/*': ['.mp4', '.webm', '.ogg'],
+            }}
             maxSize={50 * 1024 * 1024}
             bucket="uploads"
             folder="gallery"

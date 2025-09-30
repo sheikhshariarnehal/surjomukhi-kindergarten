@@ -34,9 +34,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         type: 'article',
         publishedTime: event.created_at,
         modifiedTime: event.updated_at,
-        images: event.featured_image ? [
+        images: event.image_url ? [
           {
-            url: event.featured_image,
+            url: event.image_url,
             width: 1200,
             height: 630,
             alt: event.title,
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         card: 'summary_large_image',
         title: event.title,
         description: event.description?.substring(0, 160) || `Join us for ${event.title} on ${eventDate}.`,
-        images: event.featured_image ? [event.featured_image] : [],
+        images: event.image_url ? [event.image_url] : [],
       },
     };
   } catch (error) {

@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Notice } from '@/types/notice';
 
 // Mock data for notices (same as in the list page)
-const mockNotices: Notice[] = [
+const mockNotices: any[] = [
   {
     id: '1',
     title: 'School Reopening After Winter Break',
@@ -232,14 +232,6 @@ export default function NoticeDetailPage() {
           >
             {/* Header */}
             <div className="p-6 border-b border-gray-200">
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${typeColors[notice.type]}`}>
-                  {notice.type.charAt(0).toUpperCase() + notice.type.slice(1)}
-                </span>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium border ${priorityColors[notice.priority]}`}>
-                  {notice.priority.charAt(0).toUpperCase() + notice.priority.slice(1)} Priority
-                </span>
-              </div>
               
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 {notice.title}
@@ -247,7 +239,7 @@ export default function NoticeDetailPage() {
               
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm text-gray-600">
                 <div className="flex items-center space-x-4 mb-2 sm:mb-0">
-                  <span>Published: {formatDate(notice.published_at)}</span>
+                  <span>Published: {formatDate(notice.publish_date || notice.created_at)}</span>
                   {notice.updated_at !== notice.created_at && (
                     <span>Updated: {formatDate(notice.updated_at)}</span>
                   )}

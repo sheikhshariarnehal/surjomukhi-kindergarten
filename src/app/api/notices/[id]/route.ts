@@ -7,10 +7,11 @@ import { Notice } from '@/types/notice';
 // GET /api/notices/[id] - Get single notice
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const notice = await DatabaseService.getById<Notice>('notices', params.id);
+    const { id } = await params;
+    const notice = await DatabaseService.getById<Notice>('notices', id);
     
     if (!notice) {
       return NextResponse.json(
@@ -32,13 +33,15 @@ export async function GET(
 // PUT /api/notices/[id] - Update notice
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+
     // Check authentication
-    const token = request.cookies.get('auth-token')?.value || 
+    const token = request.cookies.get('auth-token')?.value ||
                   request.headers.get('Authorization')?.replace('Bearer ', '');
-    
+
     const user = await AuthService.authenticateRequest(token || '');
     if (!user) {
       return NextResponse.json(
@@ -56,7 +59,7 @@ export async function PUT(
     }
 
     // Check if notice exists
-    const existingNotice = await DatabaseService.getById<Notice>('notices', params.id);
+    const existingNotice = await DatabaseService.getById<Notice>('notices', id);
     if (!existingNotice) {
       return NextResponse.json(
         { error: 'Notice not found' },
@@ -81,7 +84,7 @@ export async function PUT(
     };
 
     // Update notice
-    const notice = await DatabaseService.update<Notice>('notices', params.id, updateData);
+    const notice = await DatabaseService.update<Notice>('notices', id, updateData);
 
     return NextResponse.json({
       success: true,
@@ -99,13 +102,15 @@ export async function PUT(
 // DELETE /api/notices/[id] - Delete notice
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+
     // Check authentication
-    const token = request.cookies.get('auth-token')?.value || 
+    const token = request.cookies.get('auth-token')?.value ||
                   request.headers.get('Authorization')?.replace('Bearer ', '');
-    
+
     const user = await AuthService.authenticateRequest(token || '');
     if (!user) {
       return NextResponse.json(
@@ -123,7 +128,7 @@ export async function DELETE(
     }
 
     // Check if notice exists
-    const existingNotice = await DatabaseService.getById<Notice>('notices', params.id);
+    const existingNotice = await DatabaseService.getById<Notice>('notices', id);
     if (!existingNotice) {
       return NextResponse.json(
         { error: 'Notice not found' },
@@ -132,7 +137,7 @@ export async function DELETE(
     }
 
     // Delete notice
-    await DatabaseService.delete('notices', params.id);
+    await DatabaseService.delete('notices', id);
 
     return NextResponse.json({
       success: true,

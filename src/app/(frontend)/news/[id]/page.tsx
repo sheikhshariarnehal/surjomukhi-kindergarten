@@ -137,10 +137,10 @@ export default function NewsDetailPage() {
             className="bg-white rounded-lg shadow-lg overflow-hidden"
           >
             {/* Featured Image */}
-            {news.featured_image && (
+            {news.image_url && (
               <div className="aspect-video relative">
                 <Image
-                  src={news.featured_image}
+                  src={news.image_url}
                   alt={news.title}
                   fill
                   className="object-cover"
@@ -155,11 +155,6 @@ export default function NewsDetailPage() {
                 <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                   News
                 </span>
-                {news.category && (
-                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                    {news.category}
-                  </span>
-                )}
               </div>
               
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -174,7 +169,7 @@ export default function NewsDetailPage() {
               
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm text-gray-600">
                 <div className="flex items-center space-x-4 mb-2 sm:mb-0">
-                  <span>Published: {formatDate(news.published_at)}</span>
+                  <span>Published: {formatDate(news.publish_date || news.created_at)}</span>
                   {news.updated_at !== news.created_at && (
                     <span>Updated: {formatDate(news.updated_at)}</span>
                   )}
