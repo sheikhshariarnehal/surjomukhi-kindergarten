@@ -117,7 +117,6 @@ export default function TeacherPreview() {
                   <ModernTeacherCard
                     teacher={teacher}
                     index={index}
-                    variant="default"
                   />
                 </div>
               ))}

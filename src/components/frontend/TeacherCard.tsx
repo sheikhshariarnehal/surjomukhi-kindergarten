@@ -20,7 +20,7 @@ const TeacherCard = React.memo(({ teacher, index = 0 }: TeacherCardProps) => {
     teacher.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 
   const displaySubjects = teacher.subjects?.slice(0, 3) || [];
-  const hasMoreSubjects = teacher.subjects?.length > 3;
+  const hasMoreSubjects = (teacher.subjects?.length || 0) > 3;
 
   // Validate and normalize image URL
   const getValidImageUrl = (url: string | undefined): string | null => {
@@ -129,10 +129,10 @@ const TeacherCard = React.memo(({ teacher, index = 0 }: TeacherCardProps) => {
                       {hasMoreSubjects && (
                         <span
                           className="flex-shrink-0 text-[11px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium border border-blue-200 shadow-sm inline-block"
-                          aria-label={`${teacher.subjects.length - 3} more subjects`}
-                          title={`${teacher.subjects.length - 3} more subjects`}
+                          aria-label={`${(teacher.subjects?.length || 0) - 3} more subjects`}
+                          title={`${(teacher.subjects?.length || 0) - 3} more subjects`}
                         >
-                          +{teacher.subjects.length - 3}
+                          +{(teacher.subjects?.length || 0) - 3}
                         </span>
                       )}
                     </>

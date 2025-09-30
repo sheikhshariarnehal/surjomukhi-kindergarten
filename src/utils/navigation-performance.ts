@@ -24,7 +24,7 @@ export function useThrottle<T extends (...args: any[]) => any>(
   callback: T,
   delay: number
 ): T {
-  const throttleRef = useRef<NodeJS.Timeout>();
+  const throttleRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const callbackRef = useRef(callback);
   callbackRef.current = callback;
 

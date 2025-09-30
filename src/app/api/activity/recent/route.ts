@@ -4,7 +4,14 @@ import { supabaseAdmin } from '@/lib/db';
 export async function GET(request: NextRequest) {
   try {
     // Get recent activities from different tables
-    const activities = [];
+    const activities: Array<{
+      id: string;
+      type: string;
+      title: string;
+      description: string;
+      created_at: string;
+      icon: string;
+    }> = [];
 
     // Recent notices
     const { data: notices } = await supabaseAdmin

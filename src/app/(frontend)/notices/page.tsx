@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Notice } from '@/types/notice';
 
 // Mock data for notices
-const mockNotices: Notice[] = [
+const mockNotices: any[] = [
   {
     id: '1',
     title: 'School Reopening After Winter Break',
@@ -106,16 +106,6 @@ export default function NoticesPage() {
 
   useEffect(() => {
     let filtered = notices;
-
-    // Filter by type
-    if (selectedType !== 'all') {
-      filtered = filtered.filter(notice => notice.type === selectedType);
-    }
-
-    // Filter by priority
-    if (selectedPriority !== 'all') {
-      filtered = filtered.filter(notice => notice.priority === selectedPriority);
-    }
 
     // Filter by search term
     if (searchTerm) {
@@ -236,21 +226,13 @@ export default function NoticesPage() {
                 >
                   <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                     <div className="flex-1">
-                      <div className="flex flex-wrap gap-2 mb-3">
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${typeColors[notice.type]}`}>
-                          {notice.type.charAt(0).toUpperCase() + notice.type.slice(1)}
-                        </span>
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium border ${priorityColors[notice.priority]}`}>
-                          {notice.priority.charAt(0).toUpperCase() + notice.priority.slice(1)} Priority
-                        </span>
-                      </div>
                       <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
                         {notice.title}
                       </h2>
                     </div>
                     <div className="text-sm text-gray-500 md:ml-4 md:text-right">
                       <p>Published</p>
-                      <p className="font-medium">{formatDate(notice.published_at)}</p>
+                      <p className="font-medium">{formatDate(notice.publish_date || notice.created_at)}</p>
                     </div>
                   </div>
                   

@@ -98,7 +98,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   // Check if current language is RTL (Bengali is LTR, but keeping for future languages)
-  const isRTL = language === 'ar' || language === 'ur'; // Add RTL languages here
+  const isRTL = false; // Currently no RTL languages supported
 
   const value: LanguageContextType = {
     language,

@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 export async function POST(request: NextRequest) {
   try {
     // Clear the auth cookie
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     cookieStore.delete('auth-token');
 
     return NextResponse.json({

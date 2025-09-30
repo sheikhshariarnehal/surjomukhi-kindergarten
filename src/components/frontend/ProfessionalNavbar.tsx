@@ -149,7 +149,7 @@ const useScrolled = (threshold: number = 10) => {
   return isScrolled;
 };
 
-const useClickOutside = (ref: React.RefObject<HTMLElement>, callback: () => void) => {
+const useClickOutside = (ref: React.RefObject<HTMLElement | HTMLDivElement | null>, callback: () => void) => {
   const callbackRef = useRef(callback);
   callbackRef.current = callback;
 
@@ -312,7 +312,7 @@ export default function ProfessionalNavbar() {
   }, [saveFocus, restoreFocus, liveRegion]);
 
   // Custom hooks
-  useClickOutside(dropdownRef, useCallback(() => setActiveDropdown(null), []));
+  useClickOutside(dropdownRef as any, useCallback(() => setActiveDropdown(null), []));
 
   useKeyboardNavigation(useMemo(() => ({
     'Escape': closeAllMenus,

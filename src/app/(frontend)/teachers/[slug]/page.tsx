@@ -28,26 +28,26 @@ import { Teacher } from '@/types/teacher';
 const ANIMATION_CONFIG = {
   container: {
     hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1, 
-      transition: { 
+    visible: {
+      opacity: 1,
+      transition: {
         staggerChildren: 0.04,
-        duration: 0.2 
-      } 
+        duration: 0.2
+      }
     }
   },
   item: {
     hidden: { opacity: 0, y: 12 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
         duration: 0.25,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      } 
+        ease: "easeOut" as const
+      }
     }
   }
-};
+} as const;
 
 const DISPLAY_LIMITS = {
   qualifications: 4,
@@ -184,22 +184,22 @@ const StatusDisplay: React.FC<{
 // Profile stats component
 const ProfileStats: React.FC<{ teacher: Teacher }> = ({ teacher }) => {
   const stats = useMemo(() => [
-    teacher.experience_years && {
+    teacher.experience_years ? {
       value: `${teacher.experience_years}+`,
       label: 'Years Exp.',
       color: 'text-blue-600'
-    },
-    teacher.subjects?.length && {
+    } : null,
+    teacher.subjects?.length ? {
       value: teacher.subjects.length,
       label: 'Subjects',
       color: 'text-green-600'
-    },
-    teacher.qualifications?.length && {
+    } : null,
+    teacher.qualifications?.length ? {
       value: teacher.qualifications.length,
       label: 'Qualifications',
       color: 'text-purple-600'
-    }
-  ].filter(Boolean), [teacher]);
+    } : null
+  ].filter(stat => stat !== null) as Array<{ value: string | number; label: string; color: string }>, [teacher]);
 
   if (stats.length === 0) return null;
 
@@ -207,8 +207,8 @@ const ProfileStats: React.FC<{ teacher: Teacher }> = ({ teacher }) => {
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 py-3 border-t border-b border-gray-100">
       {stats.map((stat, index) => (
         <div key={index} className="text-center">
-          <div className={`text-lg font-bold ${stat!.color}`}>{stat!.value}</div>
-          <div className="text-xs text-gray-500">{stat!.label}</div>
+          <div className={`text-lg font-bold ${stat.color}`}>{stat.value}</div>
+          <div className="text-xs text-gray-500">{stat.label}</div>
         </div>
       ))}
     </div>
@@ -295,9 +295,9 @@ export default function TeacherDetailPage() {
   // Error state
   if (error || !teacher) {
     return (
-      <StatusDisplay 
-        type="error" 
-        message={error} 
+      <StatusDisplay
+        type="error"
+        message={error || undefined}
         onBack={handleBack}
         onRetry={error ? refetch : undefined}
       />

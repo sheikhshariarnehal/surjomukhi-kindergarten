@@ -71,9 +71,12 @@ export async function GET(request: NextRequest) {
 // POST /api/students - Create a new student
 export async function POST(request: NextRequest) {
   try {
-    // Check authentication and authorization
-    const authResult = await AuthService.verifyAuth(request);
-    if (!authResult.success || !authResult.user) {
+    // Check authentication
+    const token = request.cookies.get('auth-token')?.value ||
+                  request.headers.get('Authorization')?.replace('Bearer ', '');
+
+    const user = await AuthService.authenticateRequest(token || '');
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -81,7 +84,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user has permission to create students
-    if (!['admin', 'superadmin'].includes(authResult.user.role)) {
+    if (!['admin', 'superadmin'].includes(user.role)) {
       return NextResponse.json(
         { error: 'Insufficient permissions' },
         { status: 403 }

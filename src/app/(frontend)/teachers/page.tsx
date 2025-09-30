@@ -243,7 +243,6 @@ export default function TeachersPage() {
                   key={teacher.id}
                   teacher={teacher}
                   index={index}
-                  variant="detailed"
                   showContactInfo={false}
                 />
               ))}

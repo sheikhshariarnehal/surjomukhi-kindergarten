@@ -11,9 +11,12 @@ export async function PATCH(
     // Await params
     const { id } = await params;
 
-    // Check authentication and authorization
-    const authResult = await AuthService.verifyAuth(request);
-    if (!authResult.success || !authResult.user) {
+    // Check authentication
+    const token = request.cookies.get('auth-token')?.value ||
+                  request.headers.get('Authorization')?.replace('Bearer ', '');
+
+    const user = await AuthService.authenticateRequest(token || '');
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -21,7 +24,7 @@ export async function PATCH(
     }
 
     // Check if user has permission to update admission status
-    if (!['admin', 'superadmin'].includes(authResult.user.role)) {
+    if (!['admin', 'superadmin'].includes(user.role)) {
       return NextResponse.json(
         { error: 'Insufficient permissions' },
         { status: 403 }

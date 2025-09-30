@@ -43,13 +43,13 @@ const ModernTeacherCard = React.memo(({
   // Simplified animation variants for better performance
   const cardVariants = {
     hidden: { opacity: 0, y: 12 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.3,
         delay: index * 0.05,
-        ease: 'easeOut'
+        ease: "easeOut" as const
       }
     }
   };

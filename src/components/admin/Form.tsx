@@ -43,10 +43,10 @@ export function Form<T extends FieldValues>({
   className,
   children,
 }: FormProps<T>) {
-  const form = useForm<T>({
-    resolver: zodResolver(schema),
+  const form = useForm({
+    resolver: zodResolver(schema as any),
     defaultValues: defaultValues as any,
-  });
+  }) as UseFormReturn<T>;
 
   const {
     register,
@@ -159,10 +159,10 @@ export function useFormHandler<T extends FieldValues>(
   schema: z.ZodSchema<T>,
   defaultValues?: Partial<T>
 ) {
-  return useForm<T>({
-    resolver: zodResolver(schema),
+  return useForm({
+    resolver: zodResolver(schema as any),
     defaultValues: defaultValues as any,
-  });
+  }) as UseFormReturn<T>;
 }
 
 export default Form;

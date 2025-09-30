@@ -23,9 +23,12 @@ interface AdmissionApplication {
 // GET /api/admissions - List all admission applications with pagination and filters
 export async function GET(request: NextRequest) {
   try {
-    // Check authentication and authorization
-    const authResult = await AuthService.verifyAuth(request);
-    if (!authResult.success || !authResult.user) {
+    // Check authentication
+    const token = request.cookies.get('auth-token')?.value ||
+                  request.headers.get('Authorization')?.replace('Bearer ', '');
+
+    const user = await AuthService.authenticateRequest(token || '');
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

@@ -20,7 +20,7 @@ interface MobileMenuProps {
   navigationItems: readonly NavItem[];
   isActive: (href: string) => boolean;
   onClose: () => void;
-  menuRef: React.RefObject<HTMLDivElement>;
+  menuRef: React.RefObject<HTMLDivElement | null>;
   t: (key: string, fallback?: string) => string;
 }
 
