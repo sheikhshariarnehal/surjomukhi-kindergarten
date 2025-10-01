@@ -179,6 +179,11 @@ export default async function HomePage() {
           <StatsCounter />
         </ErrorBoundary>
 
+        {/* Teachers Section - Using Optimized Component */}
+        <ErrorBoundary>
+          <TeacherPreview />
+        </ErrorBoundary>
+
         {/* Events & Notices Section */}
         <ErrorBoundary>
           <EventsNoticesSection initialEvents={events as any} initialNotices={notices as any} />
@@ -187,11 +192,6 @@ export default async function HomePage() {
         {/* Latest News & Upcoming Events */}
         <ErrorBoundary>
           <NewsEventsPreview initialNews={news as any} initialEvents={events as any} />
-        </ErrorBoundary>
-
-        {/* Teachers Section - Using Optimized Component */}
-        <ErrorBoundary>
-          <TeacherPreview />
         </ErrorBoundary>
 
         {/* Quick Links Section - Using Optimized Component */}
