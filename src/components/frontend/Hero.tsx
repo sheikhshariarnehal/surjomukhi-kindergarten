@@ -25,9 +25,9 @@ interface HeroSlide {
 const heroSlides: HeroSlide[] = [
   {
     id: 1,
-    titleKey: "hero.title",
-    subtitleKey: "hero.subtitle", 
-    descriptionKey: "hero.description",
+    titleKey: "Welcome to Surjomukhi Kindergarten",
+    subtitleKey: "Where curiosity grows and every child shines", 
+    descriptionKey: "A safe, playful, and nurturing learning environment focused on early childhood development, creative exploration, and foundational skills for lifelong learning.",
     image: "/hero/school-tour.webp", // TODO: Convert to .webp for better performance
     imageAlt: "Surjomukhi Kindergarten campus - Modern educational facility for early childhood development",
     cta: {
@@ -48,7 +48,7 @@ const heroSlides: HeroSlide[] = [
     titleKey: "Safe Learning Environment",
     subtitleKey: "Modern Kindergarten Facilities",
     descriptionKey: "Our campus provides a safe, nurturing environment with age-appropriate facilities designed for early childhood development.",
-    image: "/hero/campus.webp", // TODO: Convert to .webp
+    image: "/hero/school-playground2", // TODO: Convert to .webp
     imageAlt: "Safe learning environment at Surjomukhi Kindergarten with modern facilities",
     cta: {
       primary: { 
