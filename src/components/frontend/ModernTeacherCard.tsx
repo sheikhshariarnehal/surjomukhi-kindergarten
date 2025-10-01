@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { User, Calendar } from 'lucide-react';
 import { Teacher } from '@/types/teacher';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ModernTeacherCardProps {
   teacher: Teacher;
@@ -19,6 +20,12 @@ const ModernTeacherCard = React.memo(({
   showContactInfo = false 
 }: ModernTeacherCardProps) => {
   const [imageError, setImageError] = useState(false);
+  const { t, language } = useLanguage();
+
+  // Memoize translation with fallback
+  const experienceText = useMemo(() => {
+    return t('teachers.experience') || (language === 'bn' ? 'বছরের অভিজ্ঞতা' : 'years experience');
+  }, [t, language]);
 
   // Generate teacher slug for navigation
   const teacherSlug = teacher.slug || 
@@ -119,7 +126,7 @@ const ModernTeacherCard = React.memo(({
               <div className="flex items-center gap-1 text-xs text-gray-500">
                 <Calendar className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
                 <span itemProp="experienceLevel">
-                  {teacher.experience_years}+ years experience
+                  {teacher.experience_years}+ {experienceText}
                 </span>
               </div>
             )}
