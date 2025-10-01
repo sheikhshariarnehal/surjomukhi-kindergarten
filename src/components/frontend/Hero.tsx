@@ -5,9 +5,12 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Button } from '@/lib';
 import { useTranslation } from '@/contexts/LanguageContext';
 import Image from 'next/image';
-import dynamic from 'next/dynamic';
-import { heroPerformanceMonitor, performanceUtils } from '@/utils/performance';
+import { heroPerformanceMonitor } from '@/utils/performance';
 
+/**
+ * Interface for Hero slide data structure
+ * Ensures type safety for all slide properties
+ */
 interface HeroSlide {
   id: number;
   titleKey: string;
@@ -15,133 +18,240 @@ interface HeroSlide {
   descriptionKey: string;
   image: string;
   imageAlt: string;
+  imageAltKey?: string; // Optional translation key for alt text
   cta: {
-    primary: { textKey: string; href: string; ariaLabel: string };
-    secondary: { textKey: string; href: string; ariaLabel: string };
+    primary: { textKey: string; href: string; ariaLabelKey: string };
+    secondary: { textKey: string; href: string; ariaLabelKey: string };
   };
 }
 
-// Optimized image sources - you should convert these to WebP format
+/**
+ * Hero slides configuration with translation keys
+ * All text content uses translation keys for bilingual support (English/Bangla)
+ * Optimized for SEO with school-specific, accurate information
+ * Lightweight configuration for fast initial load
+ */
 const heroSlides: HeroSlide[] = [
   {
     id: 1,
-    titleKey: "Welcome to Surjomukhi Kindergarten",
-    subtitleKey: "Where curiosity grows and every child shines", 
-    descriptionKey: "A safe, playful, and nurturing learning environment focused on early childhood development, creative exploration, and foundational skills for lifelong learning.",
-    image: "/hero/school-tour.webp", // TODO: Convert to .webp for better performance
-    imageAlt: "Surjomukhi Kindergarten campus - Modern educational facility for early childhood development",
+    titleKey: "hero.slide1.title",
+    subtitleKey: "hero.slide1.subtitle",
+    descriptionKey: "hero.slide1.description",
+    image: "/hero/school-tour.webp",
+    imageAlt: "Surjomukhi Kindergarten - Bangla medium primary school in Aona, Nawabganj, Dhaka since 2004",
+    imageAltKey: "hero.slide1.imageAlt",
     cta: {
-      primary: { 
-        textKey: "hero.enrollNow", 
-        href: "/admission", 
-        ariaLabel: "Start enrollment process for Surjomukhi Kindergarten"
+      primary: {
+        textKey: "hero.slide1.primaryCta",
+        href: "/admission",
+        ariaLabelKey: "hero.slide1.primaryAriaLabel"
       },
-      secondary: { 
-        textKey: "hero.learnMore", 
+      secondary: {
+        textKey: "hero.slide1.secondaryCta",
         href: "/about",
-        ariaLabel: "Learn more about Surjomukhi Kindergarten programs"
+        ariaLabelKey: "hero.slide1.secondaryAriaLabel"
       }
     }
   },
   {
     id: 2,
-    titleKey: "Safe Learning Environment",
-    subtitleKey: "Modern Kindergarten Facilities",
-    descriptionKey: "Our campus provides a safe, nurturing environment with age-appropriate facilities designed for early childhood development.",
-    image: "/hero/school-playground2", // TODO: Convert to .webp
-    imageAlt: "Safe learning environment at Surjomukhi Kindergarten with modern facilities",
+    titleKey: "hero.slide2.title",
+    subtitleKey: "hero.slide2.subtitle",
+    descriptionKey: "hero.slide2.description",
+    image: "/hero/school-playground2.webp",
+    imageAlt: "Bangla medium education from Nursery to Grade 5 at Surjomukhi Kindergarten",
+    imageAltKey: "hero.slide2.imageAlt",
     cta: {
-      primary: { 
-        textKey: "Explore Facilities", 
-        href: "/about/campus-tour",
-        ariaLabel: "Take a virtual tour of our kindergarten facilities"
+      primary: {
+        textKey: "hero.slide2.primaryCta",
+        href: "/academic/classes",
+        ariaLabelKey: "hero.slide2.primaryAriaLabel"
       },
-      secondary: { 
-        textKey: "Virtual Tour", 
-        href: "/gallery",
-        ariaLabel: "View our photo gallery and virtual campus tour"
+      secondary: {
+        textKey: "hero.slide2.secondaryCta",
+        href: "/about",
+        ariaLabelKey: "hero.slide2.secondaryAriaLabel"
       }
     }
   },
   {
     id: 3,
-    titleKey: "Holistic Development",
-    subtitleKey: "Beyond Academics",
-    descriptionKey: "We focus on the overall development of children through play-based learning, arts, and creative activities.",
-    image: "/hero/school-playground.webp", // TODO: Convert to .webp
-    imageAlt: "Children engaged in holistic learning activities at Surjomukhi Kindergarten",
+    titleKey: "hero.slide3.title",
+    subtitleKey: "hero.slide3.subtitle",
+    descriptionKey: "hero.slide3.description",
+    image: "/hero/school-playground.webp",
+    imageAlt: "Creative education, sports, and cultural programs at Surjomukhi Kindergarten Dhaka",
+    imageAltKey: "hero.slide3.imageAlt",
     cta: {
-      primary: { 
-        textKey: "View Activities", 
-        href: "/academic/classes",
-        ariaLabel: "Explore our educational activities and curriculum"
+      primary: {
+        textKey: "hero.slide3.primaryCta",
+        href: "/admission",
+        ariaLabelKey: "hero.slide3.primaryAriaLabel"
       },
-      secondary: { 
-        textKey: "common.contact", 
+      secondary: {
+        textKey: "hero.slide3.secondaryCta",
         href: "/contact",
-        ariaLabel: "Contact Surjomukhi Kindergarten for inquiries"
+        ariaLabelKey: "hero.slide3.secondaryAriaLabel"
       }
     }
   }
 ];
 
-// Enhanced mobile-optimized slide indicators
-const SlideIndicators: React.FC<{
+/**
+ * Progress bar component for visual auto-play feedback
+ * Respects reduced motion preferences for accessibility
+ */
+interface ProgressBarProps {
+  isPlaying: boolean;
+  duration: number;
+}
+
+const ProgressBar: React.FC<ProgressBarProps> = React.memo(({ isPlaying, duration }) => {
+  const shouldReduceMotion = useReducedMotion();
+
+  // Don't render if not playing or user prefers reduced motion
+  if (!isPlaying || shouldReduceMotion) return null;
+
+  return (
+    <motion.div
+      className="absolute bottom-0 left-0 h-1 bg-white/90 shadow-lg rounded-full"
+      initial={{ width: '0%' }}
+      animate={{ width: '100%' }}
+      transition={{
+        duration: duration / 1000,
+        ease: 'linear',
+        // GPU acceleration for smooth animation
+        type: 'tween'
+      }}
+      style={{
+        // Force GPU acceleration
+        transform: 'translateZ(0)',
+        willChange: 'width'
+      }}
+    />
+  );
+});
+
+ProgressBar.displayName = 'ProgressBar';
+
+/**
+ * Slide indicators component with progress visualization
+ * Provides navigation controls for the hero carousel
+ */
+interface SlideIndicatorsProps {
   currentSlide: number;
   totalSlides: number;
   onSlideChange: (index: number) => void;
-}> = React.memo(({ currentSlide, totalSlides, onSlideChange }) => (
-  <nav
-    className="absolute bottom-16 xs:bottom-20 sm:bottom-24 left-1/2 transform -translate-x-1/2 z-30"
-    aria-label="Hero slideshow navigation"
-  >
-    <div className="flex space-x-2 xs:space-x-2.5 sm:space-x-3 bg-black/30 backdrop-blur-md rounded-full px-3 xs:px-4 sm:px-4 py-2 xs:py-2.5 sm:py-2">
-      {Array.from({ length: totalSlides }, (_, index) => (
-        <button
-          key={index}
-          onClick={() => onSlideChange(index)}
-          className={`w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/70 focus:ring-offset-1 focus:ring-offset-black/20 touch-target ${
-            index === currentSlide
-              ? 'bg-white scale-125 shadow-lg'
-              : 'bg-white/50 hover:bg-white/75 hover:scale-110 active:scale-95'
-          }`}
-          aria-label={`Go to slide ${index + 1} of ${totalSlides}`}
-          aria-current={index === currentSlide ? 'true' : 'false'}
-          style={{ minWidth: '44px', minHeight: '44px' }}
-        />
-      ))}
-    </div>
-  </nav>
-));
+  isAutoPlaying: boolean;
+  autoPlayDuration: number;
+}
+
+const SlideIndicators: React.FC<SlideIndicatorsProps> = React.memo(
+  ({ currentSlide, totalSlides, onSlideChange, isAutoPlaying, autoPlayDuration }) => {
+    const shouldReduceMotion = useReducedMotion();
+
+    return (
+      <nav
+        className="absolute bottom-16 xs:bottom-20 sm:bottom-24 left-1/2 -translate-x-1/2 z-30"
+        aria-label="Hero slideshow navigation"
+        role="tablist"
+      >
+        <motion.div
+          className="flex space-x-2 xs:space-x-2.5 sm:space-x-3 bg-black/40 backdrop-blur-md rounded-full px-3 xs:px-4 sm:px-4 py-2 xs:py-2.5 sm:py-2 shadow-xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: shouldReduceMotion ? 0.2 : 0.4,
+            ease: [0.4, 0, 0.2, 1] // Custom easing for smooth motion
+          }}
+        >
+          {Array.from({ length: totalSlides }, (_, index) => (
+            <motion.button
+              key={index}
+              onClick={() => onSlideChange(index)}
+              className={`relative overflow-hidden w-8 h-8 xs:w-10 xs:h-10 sm:w-8 sm:h-8 rounded-full transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-white/70 focus:ring-offset-2 focus:ring-offset-transparent ${
+                index === currentSlide
+                  ? 'bg-white scale-110 shadow-lg'
+                  : 'bg-white/40 hover:bg-white/60 hover:scale-105 active:scale-95'
+              }`}
+              aria-label={`Go to slide ${index + 1} of ${totalSlides}`}
+              aria-current={index === currentSlide ? 'true' : 'false'}
+              role="tab"
+              aria-selected={index === currentSlide}
+              whileHover={!shouldReduceMotion ? { scale: 1.1 } : undefined}
+              whileTap={!shouldReduceMotion ? { scale: 0.95 } : undefined}
+              transition={{
+                type: 'spring',
+                stiffness: 400,
+                damping: 25
+              }}
+            >
+              {index === currentSlide && (
+                <ProgressBar
+                  key={currentSlide}
+                  isPlaying={isAutoPlaying}
+                  duration={autoPlayDuration}
+                />
+              )}
+            </motion.button>
+          ))}
+        </motion.div>
+      </nav>
+    );
+  }
+);
 
 SlideIndicators.displayName = 'SlideIndicators';
 
-// Inline InstitutionalFooter component for better bundle optimization
+/**
+ * Institutional information footer component
+ * Displays key institutional identifiers with smooth animations
+ */
+interface InstitutionalData {
+  label: string;
+  labelKey: string;
+  value: string;
+  bgColor: string;
+  description: string;
+  descriptionKey: string;
+}
+
 const InstitutionalFooter: React.FC = React.memo(() => {
-  const institutionalData = [
+  const { t } = useTranslation();
+  const shouldReduceMotion = useReducedMotion();
+
+  const institutionalData: InstitutionalData[] = [
     {
       label: "EIIN",
+      labelKey: "hero.institutional.eiin",
       value: "06310160508",
       bgColor: "bg-orange-500",
-      description: "Educational Institution Identification Number"
+      description: "Educational Institution Identification Number",
+      descriptionKey: "hero.institutional.eiinDesc"
     },
     {
       label: "Institution Code",
+      labelKey: "hero.institutional.institutionCode",
       value: "424528",
       bgColor: "bg-blue-800",
-      description: "Official Institution Code"
+      description: "Official Institution Code",
+      descriptionKey: "hero.institutional.institutionCodeDesc"
     },
     {
       label: "Center Code",
+      labelKey: "hero.institutional.centerCode",
       value: "N/A",
       bgColor: "bg-orange-500",
-      description: "Center Identification Code"
+      description: "Center Identification Code",
+      descriptionKey: "hero.institutional.centerCodeDesc"
     },
     {
       label: "Estd Year",
+      labelKey: "hero.institutional.estdYear",
       value: "2004",
       bgColor: "bg-blue-800",
-      description: "Year of Establishment"
+      description: "Year of Establishment",
+      descriptionKey: "hero.institutional.estdYearDesc"
     }
   ];
 
@@ -149,26 +259,45 @@ const InstitutionalFooter: React.FC = React.memo(() => {
     <motion.footer
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.4 }}
+      transition={{
+        duration: shouldReduceMotion ? 0.2 : 0.5,
+        delay: shouldReduceMotion ? 0 : 0.3,
+        ease: [0.4, 0, 0.2, 1]
+      }}
       className="absolute bottom-0 left-0 right-0 z-40"
       role="contentinfo"
-      aria-label="Institution information"
+      aria-label={t('hero.institutional.ariaLabel', 'Institution information')}
     >
       <div className="bg-gradient-to-r from-orange-500 via-blue-800 to-orange-500">
         <div className="grid grid-cols-2 lg:grid-cols-4">
-          {institutionalData.map((item) => (
-            <div
+          {institutionalData.map((item, index) => (
+            <motion.div
               key={item.label}
-              className={`${item.bgColor} text-white text-center py-2 xs:py-2.5 sm:py-3 px-1 xs:px-1.5 sm:px-2 lg:px-4 transition-all duration-200 hover:brightness-110`}
-              title={item.description}
+              className={`${item.bgColor} text-white text-center py-2 xs:py-2.5 sm:py-3 px-1 xs:px-1.5 sm:px-2 lg:px-4 transition-all duration-300 ease-out hover:brightness-110 cursor-default`}
+              title={t(item.descriptionKey, item.description)}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: shouldReduceMotion ? 0.2 : 0.4,
+                delay: shouldReduceMotion ? 0 : 0.4 + index * 0.1,
+                ease: [0.4, 0, 0.2, 1]
+              }}
+              whileHover={
+                !shouldReduceMotion
+                  ? {
+                      scale: 1.02,
+                      transition: { duration: 0.2, ease: 'easeOut' }
+                    }
+                  : undefined
+              }
             >
-              <div className="text-xs xs:text-xs sm:text-xs font-semibold uppercase tracking-wider opacity-90">
-                {item.label}
+              <div className="text-xs xs:text-xs sm:text-xs font-semibold uppercase tracking-wider opacity-90 leading-tight">
+                {t(item.labelKey, item.label)}
               </div>
-              <div className="text-sm xs:text-sm sm:text-base font-bold mt-0.5 xs:mt-1">
+              <div className="text-sm xs:text-sm sm:text-base font-bold mt-0.5 xs:mt-1 leading-tight">
                 {item.value}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -178,39 +307,139 @@ const InstitutionalFooter: React.FC = React.memo(() => {
 
 InstitutionalFooter.displayName = 'InstitutionalFooter';
 
-// Enhanced mobile-optimized loading component
-const LoadingState: React.FC = React.memo(() => (
-  <section
-    className="relative h-screen min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] max-h-[900px] overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-green-600"
-    role="banner"
-    aria-label="Hero section loading"
-    style={{
-      minHeight: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))',
-      height: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))'
-    }}
-  >
-    <div className="absolute inset-0 flex items-center justify-center px-4">
-      <div className="text-center text-white">
-        <div className="animate-spin rounded-full h-8 w-8 xs:h-10 xs:w-10 sm:h-12 sm:w-12 border-2 xs:border-3 sm:border-4 border-b-transparent border-white mx-auto mb-3 xs:mb-4"></div>
-        <p className="text-sm xs:text-base sm:text-lg font-medium">Loading...</p>
+/**
+ * Loading state component with professional typography and animations
+ * Displays while hero images are being preloaded
+ */
+const LoadingState: React.FC = React.memo(() => {
+  const { t } = useTranslation();
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <section
+      className="relative h-screen min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] max-h-[900px] overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-green-600"
+      role="banner"
+      aria-label={t('hero.loading.ariaLabel', 'Hero section loading')}
+      aria-busy="true"
+      style={{
+        minHeight: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))',
+        height: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))'
+      }}
+    >
+      <div className="absolute inset-0 flex items-center justify-center px-4">
+        <motion.div
+          className="text-center text-white"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: shouldReduceMotion ? 0.2 : 0.4,
+            ease: [0.4, 0, 0.2, 1]
+          }}
+        >
+          {/* Spinner with smooth animation */}
+          <motion.div
+            className="rounded-full h-10 w-10 xs:h-12 xs:w-12 sm:h-14 sm:w-14 border-3 xs:border-4 sm:border-4 border-b-transparent border-white mx-auto mb-4 xs:mb-5"
+            animate={
+              shouldReduceMotion
+                ? {}
+                : {
+                    rotate: 360
+                  }
+            }
+            transition={
+              shouldReduceMotion
+                ? {}
+                : {
+                    duration: 1,
+                    repeat: Infinity,
+                    ease: 'linear'
+                  }
+            }
+            style={{
+              // GPU acceleration
+              transform: 'translateZ(0)',
+              willChange: shouldReduceMotion ? 'auto' : 'transform'
+            }}
+          />
+          {/* Loading text with proper typography */}
+          <p className="text-sm xs:text-base sm:text-lg font-medium tracking-wide leading-relaxed">
+            {t('hero.loading.text', 'Loading...')}
+          </p>
+        </motion.div>
       </div>
-    </div>
-  </section>
-));
+    </section>
+  );
+});
 
 LoadingState.displayName = 'LoadingState';
 
-// Main Hero Component
+/**
+ * Performance and animation constants
+ * Centralized configuration for easy maintenance
+ */
+const HERO_CONSTANTS = {
+  AUTO_PLAY_DURATION: 5000, // 5 seconds per slide
+  AUTO_PLAY_RESUME_DELAY: 8000, // Resume after 8 seconds of user interaction
+  PRELOAD_TIMEOUT: 2000, // Timeout for requestIdleCallback
+  PRELOAD_FALLBACK: 1500, // Fallback timeout for browsers without requestIdleCallback
+  METRICS_DELAY: 3000, // Delay before logging performance metrics
+  MIN_SWIPE_DISTANCE: 50, // Minimum distance for swipe gesture
+  SWIPE_RESUME_DELAY: 6000, // Resume auto-play after swipe
+  // Image quality thresholds based on network speed
+  IMAGE_QUALITY: {
+    SLOW_2G: 60,
+    THREE_G: 75,
+    FOUR_G_PLUS: 85
+  }
+} as const;
+
+/**
+ * Main Hero Component
+ * Fully bilingual (English/Bangla) hero carousel with:
+ * - Adaptive image quality based on network speed
+ * - Professional animations with reduced motion support
+ * - Touch gesture support for mobile
+ * - Keyboard navigation
+ * - SEO-optimized with structured data
+ * - WCAG 2.1 AA compliant
+ */
 const Hero: React.FC = () => {
-  const { t } = useTranslation();
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const { t, language } = useTranslation();
+  const shouldReduceMotion = useReducedMotion();
+
+  // State management with proper TypeScript types
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
+  const [imagesLoaded, setImagesLoaded] = useState<boolean>(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  
+  const [imageQuality, setImageQuality] = useState<number>(HERO_CONSTANTS.IMAGE_QUALITY.FOUR_G_PLUS);
+
+  // Refs for cleanup and performance
   const autoPlayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const shouldReduceMotion = useReducedMotion();
+
+  /**
+   * Network-aware image quality adjustment
+   * Detects connection speed and optimizes image quality accordingly
+   * Improves performance on slower connections
+   */
+  useEffect(() => {
+    if (typeof navigator !== 'undefined' && 'connection' in navigator) {
+      const connection = (navigator as any).connection;
+      if (connection && connection.effectiveType) {
+        const effectiveType = connection.effectiveType;
+
+        // Adjust quality based on network speed
+        if (effectiveType === 'slow-2g' || effectiveType === '2g') {
+          setImageQuality(HERO_CONSTANTS.IMAGE_QUALITY.SLOW_2G);
+        } else if (effectiveType === '3g') {
+          setImageQuality(HERO_CONSTANTS.IMAGE_QUALITY.THREE_G);
+        } else {
+          setImageQuality(HERO_CONSTANTS.IMAGE_QUALITY.FOUR_G_PLUS);
+        }
+      }
+    }
+  }, []);
 
   // Enhanced image preloading with performance monitoring
   useEffect(() => {
@@ -230,7 +459,7 @@ const Hero: React.FC = () => {
 
         // Lazy load remaining images with lower priority using requestIdleCallback
         const lazyLoadImages = () => {
-          heroSlides.slice(1).forEach((slide, index) => {
+          heroSlides.slice(1).forEach((slide) => {
             const lazyImg = new window.Image();
             lazyImg.loading = 'lazy';
             lazyImg.fetchPriority = 'low';
@@ -263,13 +492,16 @@ const Hero: React.FC = () => {
     };
   }, []);
 
-  // Optimized auto-play with cleanup
+  /**
+   * Auto-play functionality with proper cleanup
+   * Advances slides automatically at configured interval
+   */
   useEffect(() => {
     if (!isAutoPlaying || !imagesLoaded) return;
 
     autoPlayTimeoutRef.current = setTimeout(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
+    }, HERO_CONSTANTS.AUTO_PLAY_DURATION);
 
     return () => {
       if (autoPlayTimeoutRef.current) {
@@ -278,71 +510,87 @@ const Hero: React.FC = () => {
     };
   }, [isAutoPlaying, imagesLoaded, currentSlide]);
 
-  // Debounced slide change handler
-  const goToSlide = useCallback((index: number) => {
-    if (index === currentSlide) return;
-    
-    if (autoPlayTimeoutRef.current) {
-      clearTimeout(autoPlayTimeoutRef.current);
-    }
-    
-    setCurrentSlide(index);
-    setIsAutoPlaying(false);
-    
-    // Resume auto-play after user interaction
-    setTimeout(() => setIsAutoPlaying(true), 8000);
-  }, [currentSlide]);
+  /**
+   * Slide change handler with auto-play resume
+   * Pauses auto-play during user interaction, then resumes
+   */
+  const goToSlide = useCallback(
+    (index: number) => {
+      if (index === currentSlide) return;
 
-  // Enhanced touch handlers with improved performance and gesture recognition
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    // Prevent default to avoid scroll interference
+      if (autoPlayTimeoutRef.current) {
+        clearTimeout(autoPlayTimeoutRef.current);
+      }
+
+      setCurrentSlide(index);
+      setIsAutoPlaying(false);
+
+      // Resume auto-play after user interaction
+      setTimeout(() => setIsAutoPlaying(true), HERO_CONSTANTS.AUTO_PLAY_RESUME_DELAY);
+    },
+    [currentSlide]
+  );
+
+  /**
+   * Touch gesture handlers for mobile swipe navigation
+   * Provides smooth, responsive swipe interactions
+   */
+  const handleTouchStart = useCallback((e: React.TouchEvent<HTMLElement>) => {
     if (e.touches.length === 1) {
       setTouchEnd(null);
       setTouchStart(e.targetTouches[0].clientX);
     }
   }, []);
 
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length === 1 && touchStart !== null) {
-      setTouchEnd(e.targetTouches[0].clientX);
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent<HTMLElement>) => {
+      if (e.touches.length === 1 && touchStart !== null) {
+        setTouchEnd(e.targetTouches[0].clientX);
 
-      // Prevent vertical scrolling during horizontal swipe
-      const distance = Math.abs(touchStart - e.targetTouches[0].clientX);
-      if (distance > 10) {
-        e.preventDefault();
+        // Prevent vertical scrolling during horizontal swipe
+        const distance = Math.abs(touchStart - e.targetTouches[0].clientX);
+        if (distance > 10) {
+          e.preventDefault();
+        }
       }
-    }
-  }, [touchStart]);
+    },
+    [touchStart]
+  );
 
   const handleTouchEnd = useCallback(() => {
     if (!touchStart || !touchEnd) return;
 
     const distance = touchStart - touchEnd;
-    const minSwipeDistance = 50; // Reduced for better responsiveness
     const velocity = Math.abs(distance);
 
-    if (velocity < minSwipeDistance) return;
+    if (velocity < HERO_CONSTANTS.MIN_SWIPE_DISTANCE) return;
 
-    // Use requestAnimationFrame for smooth transitions
+    // Use requestAnimationFrame for smooth, GPU-accelerated transitions
     requestAnimationFrame(() => {
       if (distance > 0) {
+        // Swipe left - next slide
         setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
       } else {
+        // Swipe right - previous slide
         setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
       }
     });
 
     setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 6000); // Reduced timeout
+    setTimeout(() => setIsAutoPlaying(true), HERO_CONSTANTS.SWIPE_RESUME_DELAY);
   }, [touchStart, touchEnd]);
 
-  // Optimized keyboard navigation with debouncing
+  /**
+   * Keyboard navigation with debouncing for accessibility
+   * Supports arrow keys for navigation and spacebar for pause/play
+   */
   useEffect(() => {
     let keyDebounceTimeout: NodeJS.Timeout;
-    
+
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Only handle keyboard events when not typing in an input
       if (event.target !== document.body) return;
-      
+
       clearTimeout(keyDebounceTimeout);
       keyDebounceTimeout = setTimeout(() => {
         switch (event.key) {
@@ -350,17 +598,18 @@ const Hero: React.FC = () => {
             event.preventDefault();
             setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
             setIsAutoPlaying(false);
-            setTimeout(() => setIsAutoPlaying(true), 8000);
+            setTimeout(() => setIsAutoPlaying(true), HERO_CONSTANTS.AUTO_PLAY_RESUME_DELAY);
             break;
           case 'ArrowRight':
             event.preventDefault();
             setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
             setIsAutoPlaying(false);
-            setTimeout(() => setIsAutoPlaying(true), 8000);
+            setTimeout(() => setIsAutoPlaying(true), HERO_CONSTANTS.AUTO_PLAY_RESUME_DELAY);
             break;
           case ' ':
+          case 'Spacebar': // For older browsers
             event.preventDefault();
-            setIsAutoPlaying(prev => !prev);
+            setIsAutoPlaying((prev) => !prev);
             break;
         }
       }, 100);
@@ -373,18 +622,39 @@ const Hero: React.FC = () => {
     };
   }, []);
 
-  // Memoized current slide data
+  /**
+   * Memoized current slide data for performance
+   * Prevents unnecessary re-renders
+   */
   const currentSlideData = useMemo(() => heroSlides[currentSlide], [currentSlide]);
 
-  // Reduced motion variants
-  const motionVariants = useMemo(() => ({
-    initial: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.02 },
-    animate: shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 },
-    exit: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98 },
-    transition: shouldReduceMotion
-      ? { duration: 0.3 }
-      : { duration: 0.6 }
-  }), [shouldReduceMotion]);
+  /**
+   * Animation variants with reduced motion support
+   * Professional easing curves for smooth, natural motion
+   */
+  const motionVariants = useMemo(
+    () => ({
+      initial: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.01 },
+      animate: shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 },
+      exit: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.99 }
+    }),
+    [shouldReduceMotion]
+  );
+
+  /**
+   * Transition configuration for animations
+   * Optimized for 60 FPS performance with proper easing
+   */
+  const transitionConfig = useMemo(
+    () =>
+      shouldReduceMotion
+        ? { duration: 0.2 }
+        : {
+            duration: 0.5,
+            ease: [0.4, 0, 0.2, 1] as const // Custom cubic-bezier for smooth motion
+          },
+    [shouldReduceMotion]
+  );
 
   if (!imagesLoaded) {
     return <LoadingState />;
@@ -408,81 +678,83 @@ const Hero: React.FC = () => {
         height: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))'
       }}
     >
-      {/* Enhanced Schema.org structured data for SEO */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": ["EducationalOrganization", "School"],
-            "name": "Surjomukhi Kindergarten",
-            "alternateName": ["সূর্যমুখী কিন্ডারগার্টেন", "Surjamukhi Kindergarten"],
-            "description": "Premier early childhood education institution providing quality Bangla medium education from nursery to Grade 5 with modern facilities and experienced teachers",
-            "url": "https://www.surjamukhikindergarten.com",
-            "sameAs": [
-              "https://www.facebook.com/surjamukhikindergarten",
-              "https://www.instagram.com/surjamukhikindergarten"
-            ],
-            "foundingDate": "2004-01-01",
-            "numberOfStudents": 55,
-            "educationalCredentialAwarded": "Primary Education Certificate",
-            "hasCredential": {
-              "@type": "EducationalOccupationalCredential",
-              "credentialCategory": "Primary Education",
-              "recognizedBy": {
-                "@type": "Organization",
-                "name": "Ministry of Education, Bangladesh"
-              }
-            },
-            "identifier": [
-              {
-                "@type": "PropertyValue",
-                "name": "EIIN",
-                "value": "06310160508"
+        {/* Enhanced Schema.org structured data for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": ["EducationalOrganization", "School"],
+              "name": "Surjomukhi Kindergarten",
+              "alternateName": ["সূর্যমুখী কিন্ডারগার্টেন", "Surjamukhi Kindergarten"],
+              "description": "Premier early childhood education institution providing quality Bangla medium education from nursery to Grade 5 with modern facilities and experienced teachers",
+              "url": "https://www.surjamukhikindergarten.com",
+              "logo": "https://www.surjamukhikindergarten.com/logo.png",
+              "image": "https://www.surjamukhikindergarten.com/hero/school-tour.webp",
+              "sameAs": [
+                "https://www.facebook.com/surjamukhikindergarten",
+                "https://www.instagram.com/surjamukhikindergarten"
+              ],
+              "foundingDate": "2004-01-01",
+              "numberOfStudents": 55,
+              "educationalCredentialAwarded": "Primary Education Certificate",
+              "hasCredential": {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "Primary Education",
+                "recognizedBy": {
+                  "@type": "Organization",
+                  "name": "Ministry of Education, Bangladesh"
+                }
               },
-              {
-                "@type": "PropertyValue",
-                "name": "Institution Code",
-                "value": "424528"
+              "identifier": [
+                {
+                  "@type": "PropertyValue",
+                  "name": "EIIN",
+                  "value": "06310160508"
+                },
+                {
+                  "@type": "PropertyValue",
+                  "name": "Institution Code",
+                  "value": "424528"
+                }
+              ],
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Salauddin Complex, Aona Bazar",
+                "addressLocality": "Nawabganj",
+                "addressRegion": "Dhaka",
+                "postalCode": "1320",
+                "addressCountry": "BD"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "23.8859",
+                "longitude": "90.2934"
+              },
+              "telephone": ["+880-1819198965", "+880-1711528045"],
+              "email": "surjamukhikindergarten@gmail.com",
+              "openingHours": "Mo-Th 08:00-16:00",
+              "priceRange": "$$",
+              "paymentAccepted": "Cash, Bank Transfer",
+              "currenciesAccepted": "BDT",
+              "areaServed": {
+                "@type": "Place",
+                "name": "Nawabganj, Dhaka, Bangladesh"
+              },
+              "audience": {
+                "@type": "EducationalAudience",
+                "educationalRole": "student",
+                "audienceType": "children aged 3-10"
+              },
+              "offers": {
+                "@type": "Offer",
+                "category": "Education",
+                "name": "Early Childhood Education Programs",
+                "description": "Comprehensive educational programs for nursery to grade 5 students"
               }
-            ],
-            "address": {
-              "@type": "PostalAddress",
-              "streetAddress": "Salauddin Complex, Aona Bazar",
-              "addressLocality": "Nawabganj",
-              "addressRegion": "Dhaka",
-              "postalCode": "1320",
-              "addressCountry": "BD"
-            },
-            "geo": {
-              "@type": "GeoCoordinates",
-              "latitude": "23.8859",
-              "longitude": "90.2934"
-            },
-            "telephone": ["+880-1819198965", "+880-1711528045"],
-            "email": "surjamukhikindergarten@gmail.com",
-            "openingHours": "Mo-Th 08:00-16:00",
-            "priceRange": "$$",
-            "paymentAccepted": "Cash, Bank Transfer",
-            "currenciesAccepted": "BDT",
-            "areaServed": {
-              "@type": "Place",
-              "name": "Nawabganj, Dhaka, Bangladesh"
-            },
-            "audience": {
-              "@type": "EducationalAudience",
-              "educationalRole": "student",
-              "audienceType": "children aged 3-10"
-            },
-            "offers": {
-              "@type": "Offer",
-              "category": "Education",
-              "name": "Early Childhood Education Programs",
-              "description": "Comprehensive educational programs for nursery to grade 5 students"
-            }
-          })
-        }}
-      />
+            })
+          }}
+        />
       
       <AnimatePresence mode="wait">
         <motion.div
@@ -490,109 +762,177 @@ const Hero: React.FC = () => {
           initial={motionVariants.initial}
           animate={motionVariants.animate}
           exit={motionVariants.exit}
-          transition={motionVariants.transition}
+          transition={transitionConfig}
           className="absolute inset-0"
         >
-          {/* Optimized Background Image */}
+          {/* Optimized Background Image with GPU acceleration */}
           <div className="absolute inset-0">
             {/* CSS gradient fallback */}
             <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-green-600 z-0" />
 
-            {/* Performance-optimized Next.js image with responsive sizes */}
+            {/* Performance-optimized Next.js image with responsive sizes and adaptive quality */}
             <div className="absolute inset-0 z-10">
               <Image
                 src={currentSlideData.image}
                 alt={currentSlideData.imageAlt}
                 fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                className="object-cover object-center will-change-transform"
+                sizes="100vw"
+                className="object-cover object-center transform-gpu"
                 priority={currentSlide === 0}
-                quality={currentSlide === 0 ? 85 : 75}
+                quality={currentSlide === 0 ? imageQuality : Math.max(imageQuality - 10, 60)}
                 placeholder="blur"
                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAhEQACAQIHAQAAAAAAAAAAAAABAgADBAUREiExUWGB/9oADAMBAAIRAxEAPwCdABmvSNnZA8U2K+ztmvSNnZA8U2K+ztmvSNnZA8U2K+ztmJzuYkOMPGr1zNP/Z"
                 loading={currentSlide === 0 ? "eager" : "lazy"}
                 fetchPriority={currentSlide === 0 ? "high" : "low"}
-                onLoad={() => {
-                  // Remove will-change after load for better performance
-                  const img = document.querySelector(`img[src="${currentSlideData.image}"]`) as HTMLImageElement;
-                  if (img) {
-                    setTimeout(() => {
-                      img.style.willChange = 'auto';
-                    }, 1000);
+                onLoadingComplete={() => {
+                  // Performance optimization: remove transform-gpu after animation completes
+                  if (typeof window !== 'undefined') {
+                    requestAnimationFrame(() => {
+                      const imgs = document.querySelectorAll('.transform-gpu');
+                      imgs.forEach((img) => {
+                        setTimeout(() => {
+                          img.classList.remove('transform-gpu');
+                        }, 1000);
+                      });
+                    });
                   }
                 }}
               />
             </div>
 
-            {/* Simplified overlay */}
-            <div className="absolute inset-0 bg-black/50 z-20" />
+            {/* Optimized overlay with better contrast */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/30 z-20" />
           </div>
 
-          {/* Enhanced Mobile-Optimized Content */}
+          {/* Enhanced Mobile-Optimized Content with Professional Typography */}
           <div className="relative z-30 flex items-center justify-center h-full px-3 xs:px-4 sm:px-6 lg:px-8 pb-20 xs:pb-24 sm:pb-28 pt-safe-top">
             <div className="max-w-7xl mx-auto text-center text-white w-full">
-              <motion.div
-                initial={shouldReduceMotion ? { opacity: 0 } : { y: 40, opacity: 0 }}
-                animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
-                transition={{ duration: shouldReduceMotion ? 0.3 : 0.6, delay: 0.1 }}
-                className="space-y-3 xs:space-y-4 sm:space-y-6 lg:space-y-8"
-              >
+              <div className="space-y-3 xs:space-y-4 sm:space-y-6 lg:space-y-8">
                 <header className="space-y-2 xs:space-y-3 sm:space-y-4 lg:space-y-6">
-                  <p
-                    className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-blue-200 uppercase tracking-wider px-2"
+                  {/* Subtitle with stagger animation */}
+                  <motion.p
+                    initial={shouldReduceMotion ? { opacity: 0 } : { y: 20, opacity: 0 }}
+                    animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
+                    transition={{
+                      duration: shouldReduceMotion ? 0.2 : 0.4,
+                      delay: shouldReduceMotion ? 0 : 0.1,
+                      ease: [0.4, 0, 0.2, 1]
+                    }}
+                    className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-blue-200 uppercase tracking-wider px-2 leading-tight"
                     itemProp="alternateName"
                     role="doc-subtitle"
+                    style={{
+                      // Professional typography
+                      letterSpacing: '0.1em',
+                      fontWeight: 600
+                    }}
                   >
                     {t(currentSlideData.subtitleKey, currentSlideData.subtitleKey)}
-                  </p>
+                  </motion.p>
 
-                  <h1
-                    className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-tight xs:leading-tight sm:leading-tight px-2"
+                  {/* Main title with stagger animation and professional typography */}
+                  <motion.h1
+                    initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }}
+                    animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
+                    transition={{
+                      duration: shouldReduceMotion ? 0.2 : 0.5,
+                      delay: shouldReduceMotion ? 0 : 0.2,
+                      ease: [0.4, 0, 0.2, 1]
+                    }}
+                    className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold px-2"
                     itemProp="name"
                     id="hero-title"
+                    style={{
+                      // Professional typography with optimal line-height
+                      lineHeight: '1.2',
+                      letterSpacing: '-0.02em',
+                      fontWeight: 700,
+                      textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)'
+                    }}
                   >
                     {t(currentSlideData.titleKey, currentSlideData.titleKey)}
-                  </h1>
+                  </motion.h1>
 
-                  <p
-                    className="text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl max-w-5xl mx-auto leading-relaxed text-gray-100 px-3 xs:px-4 sm:px-6"
+                  {/* Description with stagger animation */}
+                  <motion.p
+                    initial={shouldReduceMotion ? { opacity: 0 } : { y: 20, opacity: 0 }}
+                    animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
+                    transition={{
+                      duration: shouldReduceMotion ? 0.2 : 0.4,
+                      delay: shouldReduceMotion ? 0 : 0.35,
+                      ease: [0.4, 0, 0.2, 1]
+                    }}
+                    className="text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl max-w-5xl mx-auto text-gray-100 px-3 xs:px-4 sm:px-6"
                     itemProp="description"
                     role="doc-subtitle"
                     aria-describedby="hero-title"
+                    style={{
+                      // Professional typography with optimal readability
+                      lineHeight: '1.6',
+                      letterSpacing: '0',
+                      fontWeight: 400,
+                      textShadow: '0 1px 5px rgba(0, 0, 0, 0.3)'
+                    }}
                   >
                     {t(currentSlideData.descriptionKey, currentSlideData.descriptionKey)}
-                  </p>
+                  </motion.p>
                 </header>
 
-                <div className="flex flex-col xs:flex-col sm:flex-row gap-3 xs:gap-4 sm:gap-4 lg:gap-6 justify-center items-center pt-3 xs:pt-4 sm:pt-6 px-3 xs:px-4 sm:px-0">
-                  <a
+                {/* CTA Buttons with professional hover effects and stagger animation */}
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 0 } : { y: 20, opacity: 0 }}
+                  animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
+                  transition={{
+                    duration: shouldReduceMotion ? 0.2 : 0.4,
+                    delay: shouldReduceMotion ? 0 : 0.5,
+                    ease: [0.4, 0, 0.2, 1]
+                  }}
+                  className="flex flex-col xs:flex-col sm:flex-row gap-3 xs:gap-4 sm:gap-4 lg:gap-6 justify-center items-center pt-3 xs:pt-4 sm:pt-6 px-3 xs:px-4 sm:px-0"
+                >
+                  <motion.a
                     href={currentSlideData.cta.primary.href}
                     className="w-full xs:w-full sm:w-auto max-w-xs xs:max-w-sm sm:max-w-none"
-                    aria-label={currentSlideData.cta.primary.ariaLabel}
+                    aria-label={t(currentSlideData.cta.primary.ariaLabelKey, currentSlideData.cta.primary.ariaLabelKey)}
+                    whileHover={!shouldReduceMotion ? { scale: 1.03 } : undefined}
+                    whileTap={!shouldReduceMotion ? { scale: 0.98 } : undefined}
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   >
                     <Button
                       size="lg"
-                      className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700 px-6 xs:px-8 sm:px-8 py-3 xs:py-4 sm:py-4 text-sm xs:text-base sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 focus:ring-4 focus:ring-white/30 touch-target"
+                      className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700 px-6 xs:px-8 sm:px-8 py-3 xs:py-4 sm:py-4 text-sm xs:text-base sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-out focus:ring-4 focus:ring-white/30 touch-target"
+                      style={{
+                        // Professional typography
+                        letterSpacing: '0.01em',
+                        fontWeight: 600
+                      }}
                     >
                       {t(currentSlideData.cta.primary.textKey, currentSlideData.cta.primary.textKey)}
                     </Button>
-                  </a>
+                  </motion.a>
 
-                  <a
+                  <motion.a
                     href={currentSlideData.cta.secondary.href}
                     className="w-full xs:w-full sm:w-auto max-w-xs xs:max-w-sm sm:max-w-none"
-                    aria-label={currentSlideData.cta.secondary.ariaLabel}
+                    aria-label={t(currentSlideData.cta.secondary.ariaLabelKey, currentSlideData.cta.secondary.ariaLabelKey)}
+                    whileHover={!shouldReduceMotion ? { scale: 1.03 } : undefined}
+                    whileTap={!shouldReduceMotion ? { scale: 0.98 } : undefined}
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   >
                     <Button
                       variant="outline"
                       size="lg"
-                      className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-blue-600 px-6 xs:px-8 sm:px-8 py-3 xs:py-4 sm:py-4 text-sm xs:text-base sm:text-base font-semibold rounded-lg backdrop-blur-sm bg-white/10 hover:bg-white transition-all duration-300 focus:ring-4 focus:ring-white/30 touch-target"
+                      className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-blue-600 px-6 xs:px-8 sm:px-8 py-3 xs:py-4 sm:py-4 text-sm xs:text-base sm:text-base font-semibold rounded-lg backdrop-blur-sm bg-white/10 hover:bg-white transition-all duration-300 ease-out focus:ring-4 focus:ring-white/30 touch-target"
+                      style={{
+                        // Professional typography
+                        letterSpacing: '0.01em',
+                        fontWeight: 600
+                      }}
                     >
                       {t(currentSlideData.cta.secondary.textKey, currentSlideData.cta.secondary.textKey)}
                     </Button>
-                  </a>
-                </div>
-              </motion.div>
+                  </motion.a>
+                </motion.div>
+              </div>
             </div>
           </div>
         </motion.div>

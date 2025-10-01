@@ -113,11 +113,51 @@
     "contact": "Contact"
   },
   "hero": {
-    "title": "Welcome to Surjomukhi Kindergarten",
-    "subtitle": "Excellence in Early Childhood Education",
-    "description": "Nurturing young minds with quality education, experienced teachers, and a safe learning environment for your child's bright future.",
-    "enrollNow": "Enroll Now",
-    "learnMore": "Learn More",
+    "slide1": {
+      "title": "Surjomukhi Kindergarten",
+      "subtitle": "Education is the Backbone of the Nation",
+      "description": "Quality Bangla medium education from Nursery to Grade 5 since 2004. Building a progressive society through creative, ethical, and value-based learning.",
+      "primaryCta": "Apply for Admission",
+      "secondaryCta": "Learn More",
+      "imageAlt": "Surjomukhi Kindergarten - Bangla medium primary school in Aona, Nawabganj, Dhaka since 2004",
+      "primaryAriaLabel": "Apply for admission to Surjomukhi Kindergarten",
+      "secondaryAriaLabel": "Learn more about Surjomukhi Kindergarten"
+    },
+    "slide2": {
+      "title": "Bangla Medium Excellence",
+      "subtitle": "Nursery to Grade 5",
+      "description": "Comprehensive Bangla medium curriculum fostering creativity, moral character, and human values. Modern education at your doorstep in Aona, Nawabganj.",
+      "primaryCta": "View Classes",
+      "secondaryCta": "Our Mission",
+      "imageAlt": "Bangla medium education from Nursery to Grade 5 at Surjomukhi Kindergarten",
+      "primaryAriaLabel": "View our class programs and curriculum",
+      "secondaryAriaLabel": "Learn about our mission and vision"
+    },
+    "slide3": {
+      "title": "Holistic Development",
+      "subtitle": "Culture, Sports & Values",
+      "description": "Regular sports competitions, cultural programs, Cub Scouts, and character building. Creating well-rounded students through comprehensive education.",
+      "primaryCta": "Enroll Today",
+      "secondaryCta": "Contact Us",
+      "imageAlt": "Creative education, sports, and cultural programs at Surjomukhi Kindergarten Dhaka",
+      "primaryAriaLabel": "Start enrollment process today",
+      "secondaryAriaLabel": "Contact us for inquiries"
+    },
+    "institutional": {
+      "eiin": "EIIN",
+      "institutionCode": "Institution Code",
+      "centerCode": "Center Code",
+      "estdYear": "Estd Year",
+      "eiinDesc": "Educational Institution Identification Number",
+      "institutionCodeDesc": "Official Institution Code",
+      "centerCodeDesc": "Center Identification Code",
+      "estdYearDesc": "Year of Establishment",
+      "ariaLabel": "Institution information"
+    },
+    "loading": {
+      "text": "Loading...",
+      "ariaLabel": "Hero section loading"
+    },
     "watchVideo": "Watch Video"
   },
   "teachers": {
@@ -859,13 +899,6 @@
     "title": "Downloads",
     "subtitle": "Important documents and resources",
     "noDownloads": "No downloads available at the moment"
-  },
-  "hero": {
-    "title": "Welcome to Surjomukhi Kindergarten",
-    "subtitle": "Excellence in Primary Education Since 2004",
-    "description": "A private primary educational institution providing quality Bangla medium education from nursery to Grade 5 with focus on creative, ethical, and holistic development.",
-    "enrollNow": "Apply for Admission",
-    "learnMore": "Learn More"
   },
   "contact": {
     "title": "Contact Us",
