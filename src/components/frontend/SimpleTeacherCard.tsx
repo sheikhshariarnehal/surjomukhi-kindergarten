@@ -131,25 +131,6 @@ const SimpleTeacherCard = React.memo(({ teacher, index = 0 }: SimpleTeacherCardP
               }
             </span>
           </div>
-
-          {/* Subjects Display - Only show if available and keep it minimal */}
-          {displaySubjects.length > 0 && (
-            <div className="mt-2 flex flex-wrap justify-center gap-1">
-              {displaySubjects.slice(0, 1).map((subject, idx) => (
-                <span 
-                  key={idx}
-                  className="px-2 py-0.5 bg-gray-100 text-gray-700 text-xs font-medium rounded-full border border-gray-200"
-                >
-                  {subject}
-                </span>
-              ))}
-              {(teacher.subjects?.length || 0) > 1 && (
-                <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-medium rounded-full border border-gray-200">
-                  +{(teacher.subjects?.length || 0) - 1}
-                </span>
-              )}
-            </div>
-          )}
         </div>
 
         {/* Professional Action */}

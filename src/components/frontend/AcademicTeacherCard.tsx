@@ -177,29 +177,6 @@ const AcademicTeacherCard = React.memo(({
         </div>
       </div>
 
-      {/* Subjects */}
-      {teacher.subjects && teacher.subjects.length > 0 && (
-        <div className="px-6 pb-4">
-          <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-            {teacher.subjects.slice(0, 4).map((subject, idx) => (
-              <span
-                key={idx}
-                className="inline-flex items-center gap-1 bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium border border-gray-200 hover:bg-gray-200 transition-colors"
-                title={subject}
-              >
-                <BookOpen className="h-3 w-3" />
-                {subject}
-              </span>
-            ))}
-            {teacher.subjects.length > 4 && (
-              <span className="inline-flex items-center bg-gray-50 text-gray-500 px-3 py-1 rounded-full text-xs font-medium border border-gray-200">
-                +{teacher.subjects.length - 4} more
-              </span>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* Bio Preview */}
       {teacher.bio && (
         <div className="px-6 pb-4">

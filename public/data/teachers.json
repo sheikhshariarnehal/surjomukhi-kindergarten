@@ -3,7 +3,7 @@
     {
       "id": "teacher-001",
       "name": "মোঃ শাহিনুর ইসলাম",
-      "designation": "Head Teacher & Member Secretary",
+      "designation": "Head Teacher",
       "designation_bangla": "প্রধান শিক্ষক/সদস্য সচিব",
       "photo_url": "/images/teachers/teacher-001.webp",
       "bio": "Experienced head teacher with over two decades of educational leadership, dedicated to providing quality primary education and administrative excellence.",
@@ -12,8 +12,8 @@
       "experience_years": 21,
       "specialization": "Educational Administration & Leadership",
       "classes_taught": ["চতুর্থ", "পঞ্চম"],
-      "contact_email": "headteacher.school@example.com",
-      "contact_phone": "+88017XXXXXX01",
+      "contact_email": "sheikhshaheen2006@gmail.com",
+      "contact_phone": "+8801711528045",
       "join_date": "2004-01-01",
       "achievements": ["Long Service Award 2020", "Best School Management 2018"],
       "teaching_philosophy": "Quality education builds the foundation for a better society, and every child deserves equal opportunity to learn and grow.",
@@ -157,7 +157,7 @@
     {
       "id": "teacher-008",
       "name": "আবুল কাশেম",
-      "designation": "Assistant Teacher & Cub Basic Course",
+      "designation": "PT Teacher",
       "designation_bangla": "সহকারী শিক্ষক/কাব বেসিক কোর্স",
       "photo_url": "/images/teachers/teacher-008.webp",
       "bio": "Experienced teacher and scout leader, combining academic teaching with character building and extracurricular development.",
