@@ -16,7 +16,7 @@ interface LanguageSwitcherProps {
 export default function LanguageSwitcher({
   variant = 'dropdown',
   size = 'md',
-  showFlag = true,
+  showFlag = false,
   showText = true,
   className = '',
 }: LanguageSwitcherProps) {
@@ -193,7 +193,7 @@ export default function LanguageSwitcher({
                 aria-selected={language === langCode}
                 title={`Switch to ${langData.name}`}
               >
-                <span className="mr-3 text-lg" aria-hidden="true">{langData.flag}</span>
+                {showFlag && langData.flag && <span className="mr-3 text-lg" aria-hidden="true">{langData.flag}</span>}
                 <div className="flex-1 text-left">
                   <div className="font-medium">{langData.nativeName}</div>
                   <div className="text-xs text-gray-500">{langData.name}</div>
@@ -216,8 +216,8 @@ export function CompactLanguageSwitcher({ className = '' }: { className?: string
     <LanguageSwitcher
       variant="toggle"
       size="sm"
-      showFlag={true}
-      showText={false}
+      showFlag={false}
+      showText={true}
       className={className}
     />
   );
@@ -229,7 +229,7 @@ export function FullLanguageSwitcher({ className = '' }: { className?: string })
     <LanguageSwitcher
       variant="dropdown"
       size="md"
-      showFlag={true}
+      showFlag={false}
       showText={true}
       className={className}
     />
