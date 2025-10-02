@@ -417,9 +417,9 @@ function ProfessionalNavbar() {
             </div>
 
             {/* Language Switcher & Social Links - Compact professional design */}
-            <div className="flex items-center space-x-1.5 xs:space-x-2 lg:space-x-3 flex-shrink-0">
-              <Suspense fallback={<div className="w-16 xs:w-20 h-6 bg-blue-700/30 rounded" />}>
-                <LanguageSwitcher variant="toggle" size="sm" className="text-white" />
+            <div className="flex items-center space-x-1 xs:space-x-1.5 lg:space-x-2 flex-shrink-0">
+              <Suspense fallback={<div className="w-12 xs:w-16 h-5 bg-blue-700/30 rounded" />}>
+                <LanguageSwitcher variant="toggle" size="sm" className="text-white scale-[0.65] xs:scale-75 sm:scale-[0.85] lg:scale-90 origin-right" />
               </Suspense>
 
               <div className="flex items-center space-x-0.5 xs:space-x-1 lg:space-x-1.5 border-l border-blue-600/40 pl-1 xs:pl-1.5 sm:pl-2 lg:pl-3" role="navigation" aria-label="Social media links">
@@ -473,10 +473,10 @@ function ProfessionalNavbar() {
                 </div>
                 <div className="ml-1.5 xs:ml-2.5 min-w-0 flex-1 sm:flex-initial">
                   <div className="text-xs xs:text-sm sm:text-lg lg:text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-blue-600 leading-tight truncate">
-                    {t('common.schoolName')}
+                    {t('common.schoolName', 'Surjomukhi Kindergarten')}
                   </div>
-                  <div className="text-[10px] xs:text-xs text-gray-600 font-medium leading-tight hidden xs:block truncate">
-                    {t('common.tagline')}
+                  <div className="text-[9px] xs:text-[10px] sm:text-xs text-gray-600 font-medium leading-tight block truncate mt-0.5">
+                    {t('common.tagline', 'Excellence in Early Education')}
                   </div>
                 </div>
               </Link>
