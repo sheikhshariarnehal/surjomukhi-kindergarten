@@ -1,28 +1,6 @@
 {
   "teachers": [
     {
-      "id": "teacher-001",
-      "name": "মোঃ শাহিনুর ইসলাম",
-      "designation": "Head Teacher",
-      "designation_bangla": "প্রধান শিক্ষক/সদস্য সচিব",
-      "photo_url": "/images/teachers/teacher-001.webp",
-      "bio": "Experienced head teacher with over two decades of educational leadership, dedicated to providing quality primary education and administrative excellence.",
-      "qualifications": ["HSC", "বিএ", "এমএ"],
-      "subjects": ["বাংলা", "ইংরেজি", "সমাজ"],
-      "experience_years": 21,
-      "specialization": "Educational Administration & Leadership",
-      "classes_taught": ["চতুর্থ", "পঞ্চম"],
-      "contact_email": "sheikhshaheen2006@gmail.com",
-      "contact_phone": "+8801711528045",
-      "join_date": "2004-01-01",
-      "achievements": ["Long Service Award 2020", "Best School Management 2018"],
-      "teaching_philosophy": "Quality education builds the foundation for a better society, and every child deserves equal opportunity to learn and grow.",
-      "certifications": ["Head Teachers Training Program", "Educational Management Workshop"],
-      "languages": ["Bengali"],
-      "age": 52,
-      "employment_status": "Permanent"
-    },
-    {
       "id": "teacher-002",
       "name": "শেখ শাহরিন শায়লা",
       "designation": "Assistant Teacher",
