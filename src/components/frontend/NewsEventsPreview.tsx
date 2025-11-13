@@ -102,18 +102,18 @@ const truncateText = (text: string, maxLength: number): string => {
 
 // Loading Skeleton Component
 const LoadingSkeleton = memo(() => (
-  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
-    {Array.from({ length: 6 }, (_, i) => (
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+    {Array.from({ length: 3 }, (_, i) => (
       <div 
         key={i} 
-        className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 animate-pulse"
+        className="bg-white rounded-lg p-3 sm:p-4 shadow-sm border border-gray-100 animate-pulse"
       >
-        <div className="flex items-center justify-between mb-4">
-          <div className="h-6 w-16 bg-gray-200 rounded-full" />
-          <div className="h-4 w-20 bg-gray-200 rounded-full" />
+        <div className="flex items-center justify-between mb-2.5">
+          <div className="h-4 w-12 bg-gray-200 rounded-full" />
+          <div className="h-3 w-16 bg-gray-200 rounded-full" />
         </div>
-        <div className="h-6 bg-gray-200 rounded mb-3" />
-        <div className="space-y-2 mb-4">
+        <div className="h-5 bg-gray-200 rounded mb-1.5" />
+        <div className="space-y-1.5 mb-3">
           <div className="h-4 bg-gray-200 rounded" />
           <div className="h-4 bg-gray-200 rounded w-3/4" />
         </div>
@@ -139,10 +139,10 @@ const EmptyState = memo(({
 }) => (
   <motion.div
     variants={itemVariants}
-    className="col-span-full bg-white rounded-xl p-12 text-center shadow-sm border border-gray-100"
+    className="col-span-full bg-white rounded-lg p-6 sm:p-8 text-center shadow-sm border border-gray-100"
   >
     <div className={`
-      w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6
+      w-12 h-12 sm:w-14 sm:h-14 rounded-lg flex items-center justify-center mx-auto mb-4
       ${type === 'news' 
         ? 'bg-gradient-to-br from-blue-50 to-blue-100' 
         : 'bg-gradient-to-br from-emerald-50 to-emerald-100'
@@ -150,8 +150,8 @@ const EmptyState = memo(({
     `}>
       {icon}
     </div>
-    <h3 className="text-xl font-semibold text-gray-900 mb-3">{title}</h3>
-    <p className="text-gray-600 max-w-sm mx-auto leading-relaxed">{description}</p>
+    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">{title}</h3>
+    <p className="text-sm text-gray-600 max-w-sm mx-auto leading-relaxed px-4">{description}</p>
   </motion.div>
 ));
 
@@ -161,38 +161,52 @@ EmptyState.displayName = 'EmptyState';
 const NewsCard = memo(({ item, index }: { item: News; index: number }) => (
   <motion.article
     variants={itemVariants}
-    className="group bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:border-blue-200 transition-all duration-300"
+    className="group bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-blue-200 transition-all duration-300"
   >
-    <div className="flex items-center justify-between mb-4">
-      <span className="px-3 py-1 text-xs font-medium bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full">
-        News
-      </span>
-      <time 
-        className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full" 
-        dateTime={item.publish_date || item.created_at}
+    {/* Thumbnail Image */}
+    {item.image_url && (
+      <div className="relative w-full h-48 bg-gray-100 overflow-hidden">
+        <img
+          src={item.image_url}
+          alt={item.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
+        />
+      </div>
+    )}
+    
+    <div className="p-4">
+      <div className="flex items-center justify-between mb-2.5">
+        <span className="px-2 py-0.5 text-[10px] sm:text-xs font-medium bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full">
+          News
+        </span>
+        <time 
+          className="text-[10px] sm:text-xs text-gray-500 bg-gray-50 px-2 py-0.5 rounded-full"
+          dateTime={item.publish_date || item.created_at}
+        >
+          {formatRelativeTime(item.publish_date || item.created_at || '')}
+        </time>
+      </div>
+
+      <h3 className="font-semibold text-gray-900 mb-1.5 line-clamp-1 group-hover:text-blue-600 transition-colors text-sm sm:text-base leading-snug">
+        {item.title}
+      </h3>
+
+      <p className="text-gray-600 text-xs sm:text-sm line-clamp-2 mb-3 leading-relaxed">
+        {truncateText(item.excerpt || item.content || '', 150)}
+      </p>
+
+      <Link
+        href={`/news/${item.id}`}
+        className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-xs sm:text-sm transition-colors group"
+        aria-label={`Read full article: ${item.title}`}
       >
-        {formatRelativeTime(item.publish_date || item.created_at || '')}
-      </time>
+        Read Article
+        <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </Link>
     </div>
-
-    <h3 className="font-semibold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors text-lg leading-tight">
-      {item.title}
-    </h3>
-
-    <p className="text-gray-600 text-sm line-clamp-3 mb-6 leading-relaxed">
-      {truncateText(item.excerpt || item.content || '', 150)}
-    </p>
-
-    <Link
-      href={`/news/${item.id}`}
-      className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors group"
-      aria-label={`Read full article: ${item.title}`}
-    >
-      Read Article
-      <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-      </svg>
-    </Link>
   </motion.article>
 ));
 
@@ -202,38 +216,58 @@ NewsCard.displayName = 'NewsCard';
 const EventCard = memo(({ item, index }: { item: Event; index: number }) => (
   <motion.article
     variants={itemVariants}
-    className="group bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:border-emerald-200 transition-all duration-300"
+    className="group bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-emerald-200 transition-all duration-300"
   >
-    <div className="flex items-center justify-between mb-4">
-      <span className="px-3 py-1 text-xs font-medium bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-full">
-        Event
-      </span>
-      <time 
-        className="text-xs text-gray-500 bg-gray-50 px-3 py-1 rounded-full" 
-        dateTime={item.start_date}
-      >
-        {formatEventDate(item.start_date, item.end_date)}
-      </time>
+    {/* Thumbnail Image */}
+    <div className="relative w-full h-32 sm:h-36 bg-gradient-to-br from-emerald-50 to-emerald-100 overflow-hidden">
+      {item.image_url ? (
+        <img
+          src={item.image_url}
+          alt={item.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
+        />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center">
+          <svg className="w-12 h-12 sm:w-16 sm:h-16 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+      )}
     </div>
+    
+    <div className="p-3 sm:p-4">
+      <div className="flex items-center justify-between mb-2.5">
+        <span className="px-2 py-0.5 text-[10px] sm:text-xs font-medium bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-full">
+          Event
+        </span>
+        <time 
+          className="text-[10px] sm:text-xs text-gray-500 bg-gray-50 px-2 py-0.5 rounded-full" 
+          dateTime={item.start_date}
+        >
+          {formatEventDate(item.start_date, item.end_date)}
+        </time>
+      </div>
 
-    <h3 className="font-semibold text-gray-900 mb-3 line-clamp-2 group-hover:text-emerald-600 transition-colors text-lg leading-tight">
-      {item.title}
-    </h3>
+      <h3 className="font-semibold text-gray-900 mb-1.5 line-clamp-1 group-hover:text-emerald-600 transition-colors text-sm sm:text-base leading-snug">
+        {item.title}
+      </h3>
 
-    <p className="text-gray-600 text-sm line-clamp-3 mb-6 leading-relaxed">
-      {truncateText(item.description || '', 150)}
-    </p>
+      <p className="text-gray-600 text-xs sm:text-sm line-clamp-2 mb-3 leading-relaxed">
+        {truncateText(item.description || '', 150)}
+      </p>
 
-    <Link
-      href={`/events/${item.id}`}
-      className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium text-sm transition-colors group"
-      aria-label={`View event details: ${item.title}`}
-    >
-      View Event
-      <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-      </svg>
-    </Link>
+      <Link
+        href={`/events/${item.id}`}
+        className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium text-xs sm:text-sm transition-colors group"
+        aria-label={`View event details: ${item.title}`}
+      >
+        View Event
+        <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </Link>
+    </div>
   </motion.article>
 ));
 
@@ -241,19 +275,19 @@ EventCard.displayName = 'EventCard';
 
 // Error State Component
 const ErrorState = memo(({ onRetry }: { onRetry: () => void }) => (
-  <div className="text-center py-16">
-    <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
-      <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <div className="text-center py-10 sm:py-12">
+    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+      <svg className="w-6 h-6 sm:w-7 sm:h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     </div>
-    <h3 className="text-xl font-semibold text-gray-900 mb-3">Unable to Load Content</h3>
-    <p className="text-gray-600 mb-6 max-w-md mx-auto">
+    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">Unable to Load Content</h3>
+    <p className="text-sm text-gray-600 mb-4 sm:mb-5 max-w-md mx-auto px-4">
       We're having trouble loading the latest news and events. Please try again.
     </p>
     <button
       onClick={onRetry}
-      className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+      className="inline-flex items-center px-4 sm:px-5 py-2 sm:py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
     >
       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -284,7 +318,7 @@ const TabButton = memo(({
   <button
     onClick={onClick}
     className={`
-      flex items-center space-x-2 px-6 py-3 rounded-lg font-medium text-sm transition-all duration-200
+      flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 rounded-lg font-medium text-xs sm:text-sm transition-all duration-200
       ${active
         ? `bg-gradient-to-r ${colorScheme === 'blue' 
           ? 'from-blue-500 to-blue-600' 
@@ -321,11 +355,11 @@ const ViewAllButton = memo(({
   colorScheme: 'blue' | 'emerald';
   children: React.ReactNode;
 }) => (
-  <div className="flex justify-end mb-8">
+  <div className="flex justify-end mb-4 sm:mb-5">
     <Link
       href={href}
       className={`
-        inline-flex items-center px-5 py-2.5 text-sm font-medium rounded-lg transition-all duration-200
+        inline-flex items-center px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg transition-all duration-200 shadow-sm
         ${colorScheme === 'blue'
           ? 'bg-blue-500 hover:bg-blue-600 text-white'
           : 'bg-emerald-500 hover:bg-emerald-600 text-white'
@@ -362,8 +396,8 @@ export default function NewsEventsPreview({
       setError(null);
 
       const [newsResponse, eventsResponse] = await Promise.all([
-        fetch('/api/news?limit=6'),
-        fetch('/api/events?limit=6&upcoming=true')
+        fetch('/api/news?limit=3'),
+        fetch('/api/events?limit=3') // Get recent events, not just upcoming
       ]);
 
       if (!newsResponse.ok || !eventsResponse.ok) {
@@ -393,8 +427,8 @@ export default function NewsEventsPreview({
     fetchData();
   }, [fetchData]);
 
-  const newsItems = news.slice(0, 6);
-  const eventItems = events.slice(0, 6);
+  const newsItems = news.slice(0, 3);
+  const eventItems = events.slice(0, 3);
   const hasContent = newsItems.length > 0 || eventItems.length > 0;
 
   // Structured data for SEO
@@ -434,7 +468,7 @@ export default function NewsEventsPreview({
 
   return (
     <section 
-      className="py-16 lg:py-24 bg-gray-50"
+      className="py-8 sm:py-10 lg:py-12 bg-gray-50"
       aria-labelledby="news-events-section"
     >
       <script
@@ -450,11 +484,11 @@ export default function NewsEventsPreview({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.2 }}
-            className="flex justify-center mb-8"
+            className="flex justify-center mb-6"
             role="tablist"
             aria-label="Content type selection"
           >
-            <div className="bg-white rounded-xl p-2 shadow-sm border border-gray-200">
+            <div className="bg-white rounded-lg p-1.5 shadow-sm border border-gray-200">
               <div className="flex space-x-2">
                 <TabButton
                   active={activeTab === 'news'}
@@ -512,7 +546,7 @@ export default function NewsEventsPreview({
                   variants={containerVariants}
                   initial="hidden"
                   animate="visible"
-                  className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
                 >
                   {newsItems.length > 0 ? (
                     newsItems.map((item) => (
@@ -554,7 +588,7 @@ export default function NewsEventsPreview({
                   variants={containerVariants}
                   initial="hidden"
                   animate="visible"
-                  className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
                 >
                   {eventItems.length > 0 ? (
                     eventItems.map((item) => (

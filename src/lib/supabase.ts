@@ -225,11 +225,40 @@ export const eventsApi = {
 
   // Get upcoming events
   async getUpcoming(limit: number = 5): Promise<Event[]> {
+    // Get today's date at midnight for comparison
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
     const { data, error } = await supabase
       .from('events')
       .select('*')
-      .gte('start_date', new Date().toISOString())
+      .gte('start_date', today.toISOString())
       .order('start_date', { ascending: true })
+      .limit(limit);
+
+    if (error) throw error;
+    
+    // If no upcoming events, get recent past events instead
+    if (!data || data.length === 0) {
+      const { data: pastData, error: pastError } = await supabase
+        .from('events')
+        .select('*')
+        .order('start_date', { ascending: false })
+        .limit(limit);
+      
+      if (pastError) throw pastError;
+      return pastData || [];
+    }
+    
+    return data || [];
+  },
+
+  // Get recent events for homepage (shows latest events regardless of date)
+  async getRecent(limit: number = 4): Promise<Event[]> {
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .order('start_date', { ascending: false })
       .limit(limit);
 
     if (error) throw error;

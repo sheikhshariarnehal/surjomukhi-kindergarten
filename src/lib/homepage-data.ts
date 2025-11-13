@@ -31,12 +31,13 @@ async function withRetry<T>(
 // Optimized data fetching with error handling, caching, and retry logic
 export async function getHomePageData(): Promise<HomePageData> {
   try {
-    // Fetch only critical data - reduce items to speed up initial load
+    // Fetch data for display - 3 items each for news and events
+    // Use getRecent for events to show latest regardless of date
     // Teachers are deferred as they're not above the fold
     const [newsResult, eventsResult, noticesResult] = await Promise.allSettled([
-      withRetry(() => newsApi.getRecent(2), 2, 500), // Reduced from 3 to 2
-      withRetry(() => eventsApi.getUpcoming(2), 2, 500), // Reduced from 3 to 2
-      withRetry(() => noticesApi.getRecent(3), 2, 500), // Reduced from 4 to 3
+      withRetry(() => newsApi.getRecent(3), 2, 500), // 3 news items
+      withRetry(() => eventsApi.getRecent(3), 2, 500), // 3 recent events (not just upcoming)
+      withRetry(() => noticesApi.getRecent(3), 2, 500), // 3 notices
     ]);
 
     // Extract data with fallbacks
