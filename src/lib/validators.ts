@@ -80,7 +80,7 @@ export const updateNewsSchema = createNewsSchema.partial();
 // Event validation schemas
 export const createEventSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  slug: z.string().min(1, 'Slug is required'),
+  slug: z.string().optional(),
   description: z.string().min(1, 'Description is required'),
   start_date: z.string()
     .refine((val) => {
