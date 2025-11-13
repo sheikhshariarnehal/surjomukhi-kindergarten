@@ -1,35 +1,27 @@
-import HeroLoading from '@/components/frontend/HeroLoading';
-
 /**
- * Loading UI for homepage
- * Displays while page is being generated/loaded
- * Provides instant visual feedback
+ * Minimal Professional Loading Screen
+ * Clean and elegant loading state
  */
 export default function Loading() {
   return (
-    <div className="min-h-screen">
-      {/* Hero skeleton */}
-      <HeroLoading />
-      
-      {/* Stats skeleton */}
-      <div className="h-32 bg-gray-50 animate-pulse" />
-      
-      {/* Events & Notices skeleton */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="h-96 bg-white rounded-lg shadow animate-pulse" />
-          <div className="h-96 bg-white rounded-lg shadow animate-pulse" />
+    <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
+      <div className="text-center">
+        {/* Elegant spinner */}
+        <div className="relative w-16 h-16 mx-auto mb-6">
+          <div className="absolute inset-0 border-4 border-gray-200 rounded-full"></div>
+          <div className="absolute inset-0 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
         </div>
+        
+        {/* School name */}
+        <h2 className="text-xl font-semibold text-gray-800 mb-2">
+          Surjomukhi Kindergarten
+        </h2>
+        
+        {/* Loading text */}
+        <p className="text-sm text-gray-500">
+          Loading...
+        </p>
       </div>
-      
-      {/* Teachers skeleton */}
-      <div className="h-96 bg-gray-50 animate-pulse" />
-      
-      {/* News skeleton */}
-      <div className="h-96 bg-white animate-pulse" />
-      
-      {/* Quick links skeleton */}
-      <div className="h-64 bg-gray-50 animate-pulse" />
     </div>
   );
 }
