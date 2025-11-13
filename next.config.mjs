@@ -3,7 +3,7 @@ const nextConfig = {
   // Enable experimental features for better performance
   experimental: {
     optimizeCss: true,
-    optimizePackageImports: ['framer-motion', 'lucide-react'],
+    optimizePackageImports: ['framer-motion', 'lucide-react', 'react-hook-form'],
   },
 
   // Turbopack configuration (moved from experimental.turbo)
@@ -78,6 +78,15 @@ const nextConfig = {
           },
         ],
       },
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
     ];
   },
 
@@ -85,6 +94,7 @@ const nextConfig = {
   webpack: (config, { dev, isServer }) => {
     // Optimize bundle size
     if (!dev && !isServer) {
+      // Aggressive code splitting
       config.optimization.splitChunks = {
         chunks: 'all',
         cacheGroups: {
@@ -113,8 +123,20 @@ const nextConfig = {
             chunks: 'all',
             priority: 30,
           },
+          // React libraries chunk
+          react: {
+            name: 'react',
+            test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+            chunks: 'all',
+            priority: 40,
+          },
         },
       };
+
+      // Tree shaking and minification
+      config.optimization.usedExports = true;
+      config.optimization.sideEffects = false;
+      config.optimization.minimize = true;
     }
 
     // Optimize images

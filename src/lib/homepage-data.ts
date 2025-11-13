@@ -31,23 +31,22 @@ async function withRetry<T>(
 // Optimized data fetching with error handling, caching, and retry logic
 export async function getHomePageData(): Promise<HomePageData> {
   try {
-    // Use Promise.allSettled for better error handling with retry mechanism
-    const [newsResult, eventsResult, noticesResult, teachersResult] = await Promise.allSettled([
-      withRetry(() => newsApi.getRecent(3), 2, 500),
-      withRetry(() => eventsApi.getUpcoming(3), 2, 500),
-      withRetry(() => noticesApi.getRecent(4), 2, 500),
-      withRetry(() => teachersApi.getAll(), 2, 500)
+    // Fetch only critical data - reduce items to speed up initial load
+    // Teachers are deferred as they're not above the fold
+    const [newsResult, eventsResult, noticesResult] = await Promise.allSettled([
+      withRetry(() => newsApi.getRecent(2), 2, 500), // Reduced from 3 to 2
+      withRetry(() => eventsApi.getUpcoming(2), 2, 500), // Reduced from 3 to 2
+      withRetry(() => noticesApi.getRecent(3), 2, 500), // Reduced from 4 to 3
     ]);
 
     // Extract data with fallbacks
     const news = newsResult.status === 'fulfilled' ? newsResult.value : [];
     const events = eventsResult.status === 'fulfilled' ? eventsResult.value : [];
     const notices = noticesResult.status === 'fulfilled' ? noticesResult.value : [];
-    const allTeachers = teachersResult.status === 'fulfilled' ? teachersResult.value : [];
 
     // Log any errors for monitoring with more context
-    const dataTypes = ['news', 'events', 'notices', 'teachers'];
-    [newsResult, eventsResult, noticesResult, teachersResult].forEach((result, index) => {
+    const dataTypes = ['news', 'events', 'notices'];
+    [newsResult, eventsResult, noticesResult].forEach((result, index) => {
       if (result.status === 'rejected') {
         const errorInfo = {
           dataType: dataTypes[index],
@@ -69,7 +68,7 @@ export async function getHomePageData(): Promise<HomePageData> {
       news,
       events,
       notices,
-      teachers: allTeachers.slice(0, 4) // Limit to 4 featured teachers for performance
+      teachers: [] // Teachers loaded separately by component for better performance
     };
   } catch (error) {
     console.error('Critical error in getHomePageData:', error);

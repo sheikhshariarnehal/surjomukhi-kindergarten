@@ -1,15 +1,43 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
-import Hero from '@/components/frontend/Hero';
-import StatsCounter from '@/components/frontend/StatsCounter';
-import NewsEventsPreview from '@/components/frontend/NewsEventsPreview';
-import EventsNoticesSection from '@/components/frontend/EventsNoticesSection';
+import dynamic from 'next/dynamic';
+import HeroLoading from '@/components/frontend/HeroLoading';
 import StructuredData from '@/components/frontend/StructuredData';
 import ErrorBoundary from '@/components/frontend/ErrorBoundary';
-import TeacherPreview from '@/components/frontend/TeacherPreview';
-import QuickLinks from '@/components/frontend/QuickLinks';
 import { getHomePageData } from '@/lib/homepage-data';
 import type { HomePageData } from '@/types/homepage';
+
+// Dynamic import for Hero with lightweight loading state
+const Hero = dynamic(() => import('@/components/frontend/Hero'), {
+  loading: () => <HeroLoading />,
+  ssr: true
+});
+
+// Dynamic imports for heavy components - reduces initial bundle
+const StatsCounter = dynamic(() => import('@/components/frontend/StatsCounter'), {
+  loading: () => <div className="h-32 bg-gray-50 animate-pulse" />,
+  ssr: true
+});
+
+const EventsNoticesSection = dynamic(() => import('@/components/frontend/EventsNoticesSection'), {
+  loading: () => <div className="h-96 bg-white animate-pulse" />,
+  ssr: true
+});
+
+const TeacherPreview = dynamic(() => import('@/components/frontend/TeacherPreview'), {
+  loading: () => <div className="h-96 bg-gray-50 animate-pulse" />,
+  ssr: true
+});
+
+const NewsEventsPreview = dynamic(() => import('@/components/frontend/NewsEventsPreview'), {
+  loading: () => <div className="h-96 bg-white animate-pulse" />,
+  ssr: true
+});
+
+const QuickLinks = dynamic(() => import('@/components/frontend/QuickLinks'), {
+  loading: () => <div className="h-64 bg-gray-50 animate-pulse" />,
+  ssr: true
+});
 
 // Enhanced metadata with comprehensive SEO optimization
 export const metadata: Metadata = {
@@ -108,8 +136,11 @@ export const metadata: Metadata = {
   },
 };
 
+// Enable ISR (Incremental Static Regeneration) for better performance
+export const revalidate = 300; // Revalidate every 5 minutes
+
 export default async function HomePage() {
-  // Fetch homepage data with optimized error handling
+  // Fetch only critical initial data - defer non-critical data
   const { news, events, notices }: HomePageData = await getHomePageData();
 
   return (
@@ -162,7 +193,7 @@ export default async function HomePage() {
       />
 
       <main id="main-content" className="min-h-screen" role="main">
-        {/* Hero Section */}
+        {/* Hero Section - Priority loading */}
         <ErrorBoundary fallback={
           <div className="h-screen bg-gradient-to-br from-blue-600 to-green-600 flex items-center justify-center">
             <div className="text-center text-white">
@@ -171,34 +202,46 @@ export default async function HomePage() {
             </div>
           </div>
         }>
-          <Hero />
+          <Suspense fallback={<HeroLoading />}>
+            <Hero />
+          </Suspense>
         </ErrorBoundary>
 
-        {/* Stats Counter */}
+        {/* Stats Counter - Deferred loading */}
         <ErrorBoundary>
-          <StatsCounter />
+          <Suspense fallback={<div className="h-32 bg-gray-50 animate-pulse" />}>
+            <StatsCounter />
+          </Suspense>
         </ErrorBoundary>
 
-        {/* Events & Notices Section */}
+        {/* Events & Notices Section - Below fold, can be deferred */}
         <ErrorBoundary>
-          <EventsNoticesSection initialEvents={events as any} initialNotices={notices as any} />
+          <Suspense fallback={<div className="h-96 bg-white animate-pulse" />}>
+            <EventsNoticesSection initialEvents={events as any} initialNotices={notices as any} />
+          </Suspense>
         </ErrorBoundary>
 
-        {/* Teachers Section - Using Optimized Component */}
+        {/* Teachers Section - Deferred loading */}
         <ErrorBoundary>
-          <TeacherPreview />
+          <Suspense fallback={<div className="h-96 bg-gray-50 animate-pulse" />}>
+            <TeacherPreview />
+          </Suspense>
         </ErrorBoundary>
 
-        {/* Latest News & Upcoming Events */}
+        {/* Latest News & Upcoming Events - Lower priority */}
         <ErrorBoundary>
-          <NewsEventsPreview initialNews={news as any} initialEvents={events as any} />
+          <Suspense fallback={<div className="h-96 bg-white animate-pulse" />}>
+            <NewsEventsPreview initialNews={news as any} initialEvents={events as any} />
+          </Suspense>
         </ErrorBoundary>
 
-        {/* Quick Links Section - Using Optimized Component */}
+        {/* Quick Links Section - Lowest priority */}
         <ErrorBoundary>
-          <QuickLinks />
+          <Suspense fallback={<div className="h-64 bg-gray-50 animate-pulse" />}>
+            <QuickLinks />
+          </Suspense>
         </ErrorBoundary>
-    </main>
+      </main>
     </>
   );
 }
