@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Notice } from '@/types/notice';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function NoticesPage() {
   const [notices, setNotices] = useState<Notice[]>([]);
@@ -11,6 +12,45 @@ export default function NoticesPage() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
+
+  // Bilingual content
+  const content = {
+    en: {
+      title: 'School Notices',
+      subtitle: 'Stay informed with the latest announcements and important updates from our school community',
+      loading: 'Loading notices...',
+      error: 'Error Loading Notices',
+      tryAgain: 'Try Again',
+      readFullNotice: 'Read Full Notice',
+      download: 'Download',
+      share: 'Share',
+      print: 'Print',
+      shareNotice: 'Share Notice',
+      printNotice: 'Print Notice',
+      downloadAttachment: 'Download Attachment',
+      totalNotices: 'Total Notices',
+      showing: 'Showing'
+    },
+    bn: {
+      title: 'স্কুল নোটিশ',
+      subtitle: 'আমাদের স্কুল সম্প্রদায় থেকে সর্বশেষ ঘোষণা এবং গুরুত্বপূর্ণ আপডেট সম্পর্কে অবগত থাকুন',
+      loading: 'নোটিশ লোড হচ্ছে...',
+      error: 'নোটিশ লোড করতে ত্রুটি',
+      tryAgain: 'আবার চেষ্টা করুন',
+      readFullNotice: 'সম্পূর্ণ নোটিশ পড়ুন',
+      download: 'ডাউনলোড',
+      share: 'শেয়ার',
+      print: 'প্রিন্ট',
+      shareNotice: 'নোটিশ শেয়ার করুন',
+      printNotice: 'নোটিশ প্রিন্ট করুন',
+      downloadAttachment: 'সংযুক্তি ডাউনলোড করুন',
+      totalNotices: 'মোট নোটিশ',
+      showing: 'দেখানো হচ্ছে'
+    }
+  };
+
+  const t = content[language];
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -68,8 +108,8 @@ export default function NoticesPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading notices...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">{t.loading}</p>
         </div>
       </div>
     );
@@ -82,13 +122,13 @@ export default function NoticesPage() {
           <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Notices</h3>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">{t.error}</h3>
           <p className="text-gray-600 mb-4">{error}</p>
           <button 
             onClick={() => window.location.reload()} 
-            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Try Again
+            {t.tryAgain}
           </button>
         </div>
       </div>
@@ -121,10 +161,10 @@ export default function NoticesPage() {
             </div>
             
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6 text-white">
-              School Notices
+              {t.title}
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto leading-relaxed">
-              Stay informed with the latest announcements and important updates from our school community
+              {t.subtitle}
             </p>
             
             {/* Stats */}
@@ -236,7 +276,7 @@ export default function NoticesPage() {
                         href={`/notices/${notice.id}`}
                         className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-md transition-all font-semibold text-sm shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 group/btn"
                       >
-                        <span>Read Full Notice</span>
+                        <span>{t.readFullNotice}</span>
                         <svg className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
@@ -251,12 +291,12 @@ export default function NoticesPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1.5 px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md transition-all border border-blue-200 font-medium text-sm"
-                            title="Download Attachment"
+                            title={t.downloadAttachment}
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
-                            <span className="hidden sm:inline">Download</span>
+                            <span className="hidden sm:inline">{t.download}</span>
                           </a>
                         )}
                         
@@ -271,7 +311,7 @@ export default function NoticesPage() {
                             }
                           }}
                           className="inline-flex items-center justify-center w-9 h-9 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-md transition-all border border-gray-200 hover:border-blue-300"
-                          title="Share Notice"
+                          title={t.shareNotice}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
@@ -280,7 +320,7 @@ export default function NoticesPage() {
                         <button 
                           onClick={() => window.print()}
                           className="inline-flex items-center justify-center w-9 h-9 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-md transition-all border border-gray-200 hover:border-blue-300"
-                          title="Print Notice"
+                          title={t.printNotice}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
