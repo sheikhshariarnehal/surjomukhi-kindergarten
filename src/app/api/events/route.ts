@@ -98,9 +98,12 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
+    console.log('Received event data:', JSON.stringify(body, null, 2));
     
     // Validate request data
     const validation = validateData(createEventSchema, body);
+    console.log('Validation result:', JSON.stringify({ success: validation.success, errors: validation.errors }, null, 2));
+    
     if (!validation.success) {
       return NextResponse.json(
         { error: 'Invalid input', details: validation.errors },

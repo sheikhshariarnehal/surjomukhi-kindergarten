@@ -34,7 +34,7 @@ export function MultipleImageUpload({
   onImagesChange,
   onError,
   accept = {
-    'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
+    'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.avif'],
   },
   maxSize = 5 * 1024 * 1024, // 5MB
   maxImages = 10,
@@ -52,14 +52,55 @@ export function MultipleImageUpload({
   const [urlInput, setUrlInput] = useState('');
   const [bulkUrlInput, setBulkUrlInput] = useState('');
 
+  const convertToSupportedFormat = async (file: File): Promise<File> => {
+    // If it's already a supported format, return as is
+    const supportedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
+    if (supportedTypes.includes(file.type)) {
+      return file;
+    }
+
+    // Convert unsupported formats (like AVIF) to JPEG
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx?.drawImage(img, 0, 0);
+
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const convertedFile = new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), {
+              type: 'image/jpeg',
+              lastModified: Date.now(),
+            });
+            resolve(convertedFile);
+          } else {
+            reject(new Error('Failed to convert image'));
+          }
+        }, 'image/jpeg', 0.9);
+      };
+
+      img.onerror = () => reject(new Error('Failed to load image'));
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
   const uploadFile = async (file: File): Promise<string> => {
-    const fileExt = file.name.split('.').pop();
+    // Convert file to supported format if needed
+    const processedFile = await convertToSupportedFormat(file);
+    const fileExt = processedFile.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
     const filePath = folder ? `${folder}/${fileName}` : fileName;
 
     const { data, error } = await supabaseAdmin.storage
       .from(bucket)
-      .upload(filePath, file);
+      .upload(filePath, processedFile, {
+        contentType: processedFile.type,
+        upsert: false
+      });
 
     if (error) {
       throw new Error(error.message);

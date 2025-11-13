@@ -9,6 +9,7 @@ export interface EventImage {
 export interface Event {
   id: string;
   title: string;
+  slug: string;
   description: string;
   start_date: string;
   end_date?: string;
@@ -20,6 +21,7 @@ export interface Event {
 
 export interface CreateEventData {
   title: string;
+  slug: string;
   description: string;
   start_date: string;
   end_date?: string;
@@ -29,6 +31,7 @@ export interface CreateEventData {
 
 export interface UpdateEventData {
   title?: string;
+  slug?: string;
   description?: string;
   start_date?: string;
   end_date?: string;

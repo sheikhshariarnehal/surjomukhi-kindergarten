@@ -100,6 +100,15 @@ const truncateText = (text: string, maxLength: number): string => {
   return text.substring(0, maxLength).trim() + '...';
 };
 
+const createSlug = (title: string): string => {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+};
+
 // Loading Skeleton Component
 const LoadingSkeleton = memo(() => (
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
@@ -258,7 +267,7 @@ const EventCard = memo(({ item, index }: { item: Event; index: number }) => (
       </p>
 
       <Link
-        href={`/events/${item.id}`}
+        href={`/events/${createSlug(item.title)}/${item.id}`}
         className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium text-xs sm:text-sm transition-colors group"
         aria-label={`View event details: ${item.title}`}
       >

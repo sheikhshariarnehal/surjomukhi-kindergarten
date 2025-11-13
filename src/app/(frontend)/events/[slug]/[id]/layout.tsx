@@ -3,7 +3,7 @@ import { DatabaseService } from '@/lib/db';
 import { Event } from '@/types';
 
 interface Props {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string; id: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

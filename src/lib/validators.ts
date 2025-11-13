@@ -80,6 +80,7 @@ export const updateNewsSchema = createNewsSchema.partial();
 // Event validation schemas
 export const createEventSchema = z.object({
   title: z.string().min(1, 'Title is required'),
+  slug: z.string().min(1, 'Slug is required'),
   description: z.string().min(1, 'Description is required'),
   start_date: z.string()
     .refine((val) => {
@@ -114,7 +115,10 @@ export const createEventSchema = z.object({
       // If it's already a valid date string, ensure it's ISO format
       return new Date(val).toISOString();
     }),
-  image_url: z.string().url().optional().or(z.literal('')),
+  image_url: z.string().optional().nullable().transform(val => {
+    if (!val || val === '') return undefined;
+    return val;
+  }),
 });
 
 export const updateEventSchema = createEventSchema.partial();

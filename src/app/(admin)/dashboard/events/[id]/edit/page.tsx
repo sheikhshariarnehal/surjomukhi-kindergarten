@@ -37,6 +37,15 @@ export default function EditEventPage() {
     resolver: zodResolver(updateEventSchema),
   });
 
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+  };
+
   useEffect(() => {
     if (eventId) {
       fetchEvent();
@@ -95,6 +104,9 @@ export default function EditEventPage() {
 
   const onSubmit = async (data: UpdateEventFormData) => {
     try {
+      // Generate slug from title if title is being updated
+      const slug = data.title ? generateSlug(data.title) : undefined;
+      
       // Update the event first
       const response = await fetch(`/api/events/${eventId}`, {
         method: 'PUT',
@@ -103,6 +115,7 @@ export default function EditEventPage() {
         },
         body: JSON.stringify({
           ...data,
+          ...(slug && { slug }),
           image_url: imageUrl || (eventImages.length > 0 ? eventImages.find(img => img.is_primary)?.url || eventImages[0]?.url : undefined),
         }),
       });

@@ -7,6 +7,15 @@ import { Event } from '@/types/event';
 import { formatDate } from '@/lib/utils';
 import { DataLoadingErrorFallback } from '@/components/frontend/ErrorFallback';
 
+const createSlug = (title: string): string => {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+};
+
 interface EventsComponentProps {
   initialEvents?: Event[];
   limit?: number;
@@ -221,7 +230,7 @@ export default function EventsComponent({
                 role="listitem"
               >
                 <Link
-                  href={`/events/${event.id}`}
+                  href={`/events/${createSlug(event.title)}/${event.id}`}
                   className="flex items-start space-x-4 p-4 bg-gray-50 hover:bg-emerald-50 rounded-xl transition-all duration-300 hover:shadow-md border border-transparent hover:border-emerald-100"
                 >
                   {/* Event Icon */}

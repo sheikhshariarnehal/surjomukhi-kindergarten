@@ -6,6 +6,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Event } from '@/types';
 
+const createSlug = (title: string): string => {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+};
+
 interface EventsResponse {
   events: Event[];
   pagination: {
@@ -298,7 +307,7 @@ export default function EventsPage() {
                         </p>
                         <div className="mt-4 pt-4 border-t border-gray-100">
                           <Link
-                            href={`/events/${event.id}`}
+                            href={`/events/${createSlug(event.title)}/${event.id}`}
                             className="inline-flex items-center text-indigo-600 hover:text-indigo-700 font-semibold text-sm transition-colors duration-200"
                           >
                             Learn More

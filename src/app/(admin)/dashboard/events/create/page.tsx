@@ -50,20 +50,32 @@ export default function CreateEventPage() {
 
   const onSubmit = async (data: CreateEventFormData) => {
     try {
+      // Generate slug from title
+      const slug = generateSlug(data.title);
+      
+      const payload = {
+        ...data,
+        slug,
+        image_url: imageUrl || (eventImages.length > 0 ? eventImages.find(img => img.is_primary)?.url || eventImages[0]?.url : undefined),
+      };
+
+      console.log('Submitting event data:', payload);
+      
       // Create the event first
       const response = await fetch('/api/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...data,
-          image_url: imageUrl || (eventImages.length > 0 ? eventImages.find(img => img.is_primary)?.url || eventImages[0]?.url : undefined),
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
         const error = await response.json();
+        console.error('API Error Response:', JSON.stringify(error, null, 2));
+        if (error.details) {
+          console.error('Validation Errors:', error.details);
+        }
         throw new Error(error.error || 'Failed to create event');
       }
 

@@ -39,7 +39,8 @@ export default function EventDetailPage() {
       setLoading(true);
       
       try {
-        const response = await fetch(`/api/events/${params.id}`);
+        const eventId = params.id as string;
+        const response = await fetch(`/api/events/${eventId}`);
         
         if (response.ok) {
           const data = await response.json();
@@ -219,41 +220,39 @@ export default function EventDetailPage() {
   const eventStatus = getEventStatus(event.start_date, event.end_date);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
-      <section className="bg-white/80 backdrop-blur-sm border-b border-gray-200/50 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <nav className="flex items-center space-x-2 text-sm">
-              <Link href="/" className="text-gray-500 hover:text-emerald-600 transition-colors">
+      <section className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-3">
+          <div className="flex items-center justify-between gap-3">
+            <nav className="flex items-center space-x-1.5 text-xs sm:text-sm overflow-x-auto">
+              <Link href="/" className="text-gray-500 hover:text-emerald-600 transition-colors whitespace-nowrap">
                 Home
               </Link>
-              <ChevronRight className="w-4 h-4 text-gray-400" />
-              <Link href="/events" className="text-gray-500 hover:text-emerald-600 transition-colors">
+              <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 flex-shrink-0" />
+              <Link href="/events" className="text-gray-500 hover:text-emerald-600 transition-colors whitespace-nowrap">
                 Events
               </Link>
-              <ChevronRight className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-900 font-medium truncate max-w-xs">
+              <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 flex-shrink-0" />
+              <span className="text-gray-900 font-medium truncate max-w-[150px] sm:max-w-xs">
                 {event?.title || 'Event Details'}
               </span>
             </nav>
 
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => router.back()}
-                className="flex items-center px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all duration-200"
-              >
-                <ArrowLeft className="w-4 h-4 mr-1" />
-                Back
-              </button>
-            </div>
+            <button
+              onClick={() => router.back()}
+              className="flex items-center px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all duration-200 whitespace-nowrap flex-shrink-0"
+            >
+              <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-1" />
+              <span className="hidden sm:inline">Back</span>
+            </button>
           </div>
         </div>
       </section>
 
       {/* Event Content */}
-      <section className="py-8 lg:py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-4 sm:py-6 lg:py-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <motion.div
@@ -262,7 +261,7 @@ export default function EventDetailPage() {
               transition={{ duration: 0.6 }}
               className="lg:col-span-2"
             >
-              <article className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200/50">
+              <article className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden border border-gray-200">
                 {/* Hero Image Section */}
                 {(() => {
                   const primaryImage = event?.images?.find(img => img.is_primary)?.url ||
@@ -272,7 +271,7 @@ export default function EventDetailPage() {
                   if (!primaryImage) return null;
 
                   return (
-                    <div className="relative aspect-video group cursor-pointer" onClick={() => handleImageClick(0)}>
+                    <div className="relative aspect-[4/3] sm:aspect-video group cursor-pointer" onClick={() => handleImageClick(0)}>
                       <Image
                         src={primaryImage}
                         alt={event?.title || 'Event image'}
@@ -302,60 +301,43 @@ export default function EventDetailPage() {
                   );
                 })()}
                 {/* Event Header */}
-                <div className="p-6 lg:p-8">
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    <span className="px-4 py-2 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800 flex items-center">
-                      <Calendar className="w-4 h-4 mr-2" />
+                <div className="p-5 sm:p-6 md:p-8">
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 flex items-center border border-emerald-200">
+                      <Calendar className="w-3.5 h-3.5 mr-1.5" />
                       Event
                     </span>
-                    <span className={`px-4 py-2 rounded-full text-sm font-medium ${eventStatus.color}`}>
+                    <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${eventStatus.color}`}>
                       {eventStatus.status.charAt(0).toUpperCase() + eventStatus.status.slice(1)}
                     </span>
                   </div>
 
-                  <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
                     {event?.title}
                   </h1>
 
-                  {/* Event Meta Information */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-                    <div className="space-y-4">
-                      <div className="flex items-center text-gray-700">
-                        <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center mr-4">
-                          <Calendar className="w-5 h-5 text-emerald-600" />
-                        </div>
-                        <div>
-                          <p className="font-medium text-gray-900">Date</p>
-                          <p className="text-sm text-gray-600">{formatEventDate(event?.start_date || '', event?.end_date)}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                    </div>
-                  </div>
-
                   {/* Action Buttons */}
-                  <div className="flex flex-wrap gap-3 mb-8 pb-8 border-b border-gray-200">
+                  <div className="flex flex-wrap gap-2 mb-6 pb-6 border-b border-gray-200">
                     <button
                       onClick={() => setIsLiked(!isLiked)}
-                      className={`flex items-center px-4 py-2 rounded-full font-medium transition-all duration-200 ${
+                      className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                         isLiked
-                          ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          ? 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-200'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
                       }`}
                     >
-                      <Heart className={`w-4 h-4 mr-2 ${isLiked ? 'fill-current' : ''}`} />
-                      {isLiked ? 'Liked' : 'Like'}
+                      <Heart className={`w-4 h-4 mr-1.5 ${isLiked ? 'fill-current' : ''}`} />
+                      <span className="hidden sm:inline">{isLiked ? 'Liked' : 'Like'}</span>
+                      <span className="sm:hidden"><Heart className="w-0 h-0" /></span>
                     </button>
 
                     <div className="relative">
                       <button
                         onClick={() => handleShare()}
-                        className="flex items-center px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full font-medium hover:bg-emerald-200 transition-all duration-200"
+                        className="flex items-center px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg text-sm font-medium hover:bg-emerald-100 transition-all duration-200 border border-emerald-200"
                       >
-                        <Share2 className="w-4 h-4 mr-2" />
-                        Share
+                        <Share2 className="w-4 h-4 mr-1.5" />
+                        <span className="hidden sm:inline">Share</span>
                       </button>
 
                       {shareMenuOpen && (
@@ -386,24 +368,24 @@ export default function EventDetailPage() {
 
                     <button
                       onClick={handlePrint}
-                      className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-all duration-200"
+                      className="flex items-center px-4 py-2 bg-gray-50 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-100 transition-all duration-200 border border-gray-200"
                     >
-                      <Printer className="w-4 h-4 mr-2" />
-                      Print
+                      <Printer className="w-4 h-4 mr-1.5" />
+                      <span className="hidden sm:inline">Print</span>
                     </button>
                   </div>
 
                   {/* Event Description */}
-                  <div className="prose prose-lg max-w-none">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4">About This Event</h2>
+                  <div className="prose prose-sm sm:prose max-w-none">
+                    <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">About This Event</h2>
                     {event?.description ? (
                       event.description.split('\n').map((paragraph, index) => (
-                        <p key={index} className="mb-4 text-gray-700 leading-relaxed">
+                        <p key={index} className="mb-3 text-sm sm:text-base text-gray-700 leading-relaxed">
                           {paragraph}
                         </p>
                       ))
                     ) : (
-                      <p className="text-gray-700 leading-relaxed">
+                      <p className="text-sm sm:text-base text-gray-500 leading-relaxed">
                         No description available for this event.
                       </p>
                     )}
@@ -411,11 +393,11 @@ export default function EventDetailPage() {
 
                   {/* Image Gallery */}
                   {event?.images && event.images.length > 1 && (
-                    <div className="mt-12 pt-8 border-t border-gray-200">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                    <div className="mt-8 pt-8 border-t border-gray-200">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-4">
                         Event Gallery
                       </h3>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
                         {event.images.map((image, index) => (
                           <motion.div
                             key={image.id || index}
@@ -424,7 +406,7 @@ export default function EventDetailPage() {
                             transition={{ duration: 0.2 }}
                             onClick={() => handleImageClick(index)}
                           >
-                            <div className="aspect-square relative overflow-hidden rounded-xl bg-gray-100">
+                            <div className="aspect-square relative overflow-hidden rounded-lg bg-gray-100">
                               <Image
                                 src={image.url}
                                 alt={image.caption || `Event photo ${index + 1}`}
@@ -462,67 +444,67 @@ export default function EventDetailPage() {
             >
               <div className="sticky top-24 space-y-6">
                 {/* Event Quick Info */}
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-200/50 p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Quick Info</h3>
-                  <div className="space-y-4">
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-5">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3">Quick Info</h3>
+                  <div className="space-y-3">
                     <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                      <span className="text-gray-600">Status</span>
+                      <span className="text-xs sm:text-sm text-gray-600">Status</span>
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${eventStatus.color}`}>
                         {eventStatus.status.charAt(0).toUpperCase() + eventStatus.status.slice(1)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                      <span className="text-gray-600">Published</span>
-                      <span className="text-sm text-gray-900">{formatDate(event?.created_at || '')}</span>
+                      <span className="text-xs sm:text-sm text-gray-600">Published</span>
+                      <span className="text-xs sm:text-sm text-gray-900">{formatDate(event?.created_at || '')}</span>
                     </div>
                     {event?.updated_at !== event?.created_at && (
                       <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                        <span className="text-gray-600">Updated</span>
-                        <span className="text-sm text-gray-900">{formatDate(event?.updated_at || '')}</span>
+                        <span className="text-xs sm:text-sm text-gray-600">Updated</span>
+                        <span className="text-xs sm:text-sm text-gray-900">{formatDate(event?.updated_at || '')}</span>
                       </div>
                     )}
                     <div className="flex items-center justify-between py-2">
-                      <span className="text-gray-600">Event ID</span>
-                      <span className="text-xs text-gray-500 font-mono">{event?.id.slice(-8)}</span>
+                      <span className="text-xs sm:text-sm text-gray-600">Event ID</span>
+                      <span className="text-[10px] sm:text-xs text-gray-500 font-mono">{event?.id.slice(-8)}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Related Actions */}
-                <div className="bg-gradient-to-br from-emerald-50 to-blue-50 rounded-2xl shadow-lg border border-emerald-200/50 p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Actions</h3>
-                  <div className="space-y-3">
+                <div className="bg-gradient-to-br from-emerald-50 to-blue-50 rounded-lg shadow-sm border border-emerald-200 p-4 sm:p-5">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3">Actions</h3>
+                  <div className="space-y-2">
                     <Link
                       href="/events"
-                      className="w-full flex items-center justify-center px-4 py-3 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700 transition-colors"
+                      className="w-full flex items-center justify-center px-3 sm:px-4 py-2 sm:py-2.5 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors shadow-sm"
                     >
-                      <ArrowLeft className="w-4 h-4 mr-2" />
+                      <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5" />
                       Back to Events
                     </Link>
                     <button
                       onClick={() => handleShare()}
-                      className="w-full flex items-center justify-center px-4 py-3 bg-white text-emerald-600 border border-emerald-200 rounded-xl font-medium hover:bg-emerald-50 transition-colors"
+                      className="w-full flex items-center justify-center px-3 sm:px-4 py-2 sm:py-2.5 bg-white text-emerald-600 border border-emerald-200 rounded-lg text-sm font-medium hover:bg-emerald-50 transition-colors"
                     >
-                      <Share2 className="w-4 h-4 mr-2" />
+                      <Share2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5" />
                       Share Event
                     </button>
                     <button
                       onClick={handlePrint}
-                      className="w-full flex items-center justify-center px-4 py-3 bg-white text-gray-600 border border-gray-200 rounded-xl font-medium hover:bg-gray-50 transition-colors"
+                      className="w-full flex items-center justify-center px-3 sm:px-4 py-2 sm:py-2.5 bg-white text-gray-600 border border-gray-200 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
                     >
-                      <Printer className="w-4 h-4 mr-2" />
+                      <Printer className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5" />
                       Print Details
                     </button>
                   </div>
                 </div>
 
                 {/* Contact Info */}
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-200/50 p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Need Help?</h3>
-                  <p className="text-gray-600 text-sm mb-4">
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-5">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3">Need Help?</h3>
+                  <p className="text-gray-600 text-xs sm:text-sm mb-3">
                     Have questions about this event? Contact our team for more information.
                   </p>
-                  <div className="space-y-2 text-sm">
+                  <div className="space-y-2 text-xs sm:text-sm">
                     <div className="flex items-center text-gray-600">
                       <span className="font-medium">Email:</span>
                       <span className="ml-2">info@surjomukhi.edu</span>
@@ -553,15 +535,15 @@ export default function EventDetailPage() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="relative max-w-4xl max-h-full"
+              className="relative w-full max-w-6xl mx-auto px-4"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}
               <button
                 onClick={() => setShowImageModal(false)}
-                className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10"
+                className="absolute -top-10 sm:-top-12 right-4 sm:right-0 text-white hover:text-gray-300 transition-colors z-10 bg-black/50 backdrop-blur-sm rounded-full p-2"
               >
-                <X className="w-8 h-8" />
+                <X className="w-6 h-6 sm:w-8 sm:h-8" />
               </button>
 
               {/* Navigation Buttons */}
@@ -569,49 +551,50 @@ export default function EventDetailPage() {
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors z-10 bg-black/50 rounded-full p-2"
+                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors z-10 bg-black/70 backdrop-blur-sm hover:bg-black/80 rounded-full p-2 sm:p-3"
                   >
-                    <ChevronLeft className="w-6 h-6" />
+                    <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors z-10 bg-black/50 rounded-full p-2"
+                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors z-10 bg-black/70 backdrop-blur-sm hover:bg-black/80 rounded-full p-2 sm:p-3"
                   >
-                    <ChevronRight className="w-6 h-6" />
+                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
                   </button>
                 </>
               )}
 
               {/* Image */}
-              <div className="relative aspect-video max-h-[80vh] bg-gray-900 rounded-lg overflow-hidden">
+              <div className="relative w-full aspect-video max-h-[70vh] sm:max-h-[80vh] bg-black rounded-lg overflow-hidden shadow-2xl">
                 <Image
                   src={event.images[selectedImageIndex].url}
                   alt={event.images[selectedImageIndex].caption || `Event photo ${selectedImageIndex + 1}`}
                   fill
                   className="object-contain"
                   priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
                 />
               </div>
 
               {/* Image Info */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-lg">
-                <div className="flex items-center justify-between text-white">
-                  <div>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent p-4 sm:p-6 rounded-b-lg">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-white">
+                  <div className="flex-1">
                     {event.images[selectedImageIndex].caption && (
-                      <p className="text-lg font-medium mb-1">
+                      <p className="text-sm sm:text-base font-medium mb-1">
                         {event.images[selectedImageIndex].caption}
                       </p>
                     )}
-                    <p className="text-sm text-gray-300">
+                    <p className="text-xs sm:text-sm text-gray-300">
                       {selectedImageIndex + 1} of {event.images.length}
                       {event.images[selectedImageIndex].is_primary && ' • Featured Image'}
                     </p>
                   </div>
                   <button
                     onClick={handleDownloadImage}
-                    className="flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-lg hover:bg-white/30 transition-colors"
+                    className="flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 backdrop-blur-sm text-white rounded-lg hover:bg-white/30 transition-colors text-sm"
                   >
-                    <Download className="w-4 h-4 mr-2" />
+                    <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
                     Download
                   </button>
                 </div>
@@ -619,13 +602,15 @@ export default function EventDetailPage() {
 
               {/* Thumbnail Navigation */}
               {event.images.length > 1 && (
-                <div className="absolute -bottom-20 left-0 right-0 flex justify-center space-x-2 overflow-x-auto py-2">
+                <div className="mt-3 sm:mt-4 flex justify-center gap-2 overflow-x-auto pb-2 px-2">
                   {event.images.map((image, index) => (
                     <button
                       key={image.id || index}
                       onClick={() => setSelectedImageIndex(index)}
-                      className={`relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 ${
-                        index === selectedImageIndex ? 'ring-2 ring-white' : 'opacity-60 hover:opacity-80'
+                      className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden flex-shrink-0 transition-all ${
+                        index === selectedImageIndex 
+                          ? 'ring-2 ring-white scale-110' 
+                          : 'opacity-60 hover:opacity-90 hover:scale-105'
                       }`}
                     >
                       <Image
@@ -633,6 +618,7 @@ export default function EventDetailPage() {
                         alt={`Thumbnail ${index + 1}`}
                         fill
                         className="object-cover"
+                        sizes="64px"
                       />
                     </button>
                   ))}
