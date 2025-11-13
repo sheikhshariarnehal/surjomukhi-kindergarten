@@ -115,7 +115,7 @@ export const createEventSchema = z.object({
       // If it's already a valid date string, ensure it's ISO format
       return new Date(val).toISOString();
     }),
-  image_url: z.string().optional().nullable().transform(val => {
+  image_url: z.string().optional().or(z.literal('')).transform(val => {
     if (!val || val === '') return undefined;
     return val;
   }),

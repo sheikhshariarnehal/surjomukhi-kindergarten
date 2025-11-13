@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
     
     // Validate request data
     const validation = validateData(createEventSchema, body);
-    console.log('Validation result:', JSON.stringify({ success: validation.success, errors: validation.errors }, null, 2));
+    console.log('Validation result:', JSON.stringify({ success: validation.success, errors: !validation.success ? validation.errors : [] }, null, 2));
     
     if (!validation.success) {
       return NextResponse.json(
