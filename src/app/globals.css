@@ -504,3 +504,149 @@ body {
     background-position: -200% 0;
   }
 }
+
+/* ============================================
+   Admin Dashboard Styles
+   ============================================ */
+
+/* Sidebar scrollbar styling */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
+
+.scrollbar-thumb-slate-700::-webkit-scrollbar-thumb {
+  background: rgba(51, 65, 85, 0.5);
+}
+
+.scrollbar-thumb-slate-700::-webkit-scrollbar-thumb:hover {
+  background: rgba(51, 65, 85, 0.8);
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Admin sidebar animations */
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Smooth sidebar transitions */
+.sidebar-enter {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+.sidebar-exit {
+  animation: slideInRight 0.3s ease-out reverse;
+}
+
+/* Glass morphism effect for admin UI */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Professional gradient backgrounds */
+.gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-secondary {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.gradient-success {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.gradient-slate {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+/* Dashboard card hover effects */
+.dashboard-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Badge pulse animation */
+.badge-pulse {
+  animation: badgePulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* Smooth color transitions */
+.transition-colors-smooth {
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Professional shadow utilities */
+.shadow-professional {
+  box-shadow: 
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-professional-lg {
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive sidebar width */
+@media (max-width: 1024px) {
+  .sidebar-mobile {
+    width: 100%;
+    max-width: 280px;
+  }
+}

@@ -59,8 +59,8 @@ export default function AdminLayout({
     <div className="min-h-screen bg-slate-50 flex">
       {/* Sidebar - Desktop */}
       <div className={cn(
-        "hidden lg:flex lg:flex-shrink-0 transition-all duration-300",
-        sidebarCollapsed ? "lg:w-16" : "lg:w-64"
+        "hidden lg:flex lg:flex-shrink-0 transition-all duration-300 fixed lg:sticky top-0 h-screen z-40",
+        sidebarCollapsed ? "lg:w-20" : "lg:w-72"
       )}>
         <Sidebar
           collapsed={sidebarCollapsed}
@@ -71,10 +71,10 @@ export default function AdminLayout({
 
       {/* Sidebar - Mobile */}
       <div className={cn(
-        "fixed inset-y-0 left-0 z-50 lg:hidden transition-transform duration-300 ease-in-out",
+        "fixed inset-y-0 left-0 z-50 lg:hidden transition-transform duration-300 ease-in-out shadow-2xl",
         sidebarCollapsed ? "-translate-x-full" : "translate-x-0"
       )}>
-        <div className="w-64">
+        <div className="w-72 h-full sidebar-mobile">
           <Sidebar
             collapsed={false}
             onToggle={handleSidebarToggle}
@@ -84,17 +84,22 @@ export default function AdminLayout({
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0 lg:ml-0">
+      <div className={cn(
+        "flex-1 flex flex-col min-w-0 transition-all duration-300",
+        !sidebarCollapsed && "lg:ml-0"
+      )}>
         {/* Topbar */}
-        <Topbar
-          user={user}
-          onMenuToggle={handleSidebarToggle}
-          onLogout={handleLogout}
-        />
+        <div className="sticky top-0 z-30">
+          <Topbar
+            user={user}
+            onMenuToggle={handleSidebarToggle}
+            onLogout={handleLogout}
+          />
+        </div>
 
         {/* Page content */}
-        <main className="flex-1 p-4 lg:p-6 overflow-auto bg-slate-50">
-          <div className="max-w-7xl mx-auto">
+        <main className="flex-1 p-4 lg:p-6 overflow-auto bg-gradient-to-br from-slate-50 via-slate-50 to-blue-50/30">
+          <div className="w-full">
             {children}
           </div>
         </main>
@@ -103,8 +108,9 @@ export default function AdminLayout({
       {/* Mobile sidebar overlay */}
       {!sidebarCollapsed && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
           onClick={() => setSidebarCollapsed(true)}
+          aria-label="Close sidebar"
         />
       )}
 
@@ -114,19 +120,35 @@ export default function AdminLayout({
         toastOptions={{
           duration: 4000,
           style: {
-            background: '#363636',
+            background: '#1e293b',
             color: '#fff',
+            borderRadius: '0.75rem',
+            padding: '1rem 1.25rem',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
           },
           success: {
             duration: 3000,
             style: {
-              background: '#10b981',
+              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+            },
+            iconTheme: {
+              primary: '#fff',
+              secondary: '#10b981',
             },
           },
           error: {
             duration: 5000,
             style: {
-              background: '#ef4444',
+              background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+            },
+            iconTheme: {
+              primary: '#fff',
+              secondary: '#ef4444',
+            },
+          },
+          loading: {
+            style: {
+              background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
             },
           },
         }}
