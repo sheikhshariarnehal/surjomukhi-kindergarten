@@ -5,100 +5,36 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Notice } from '@/types/notice';
 
-// Mock data for notices
-const mockNotices: any[] = [
-  {
-    id: '1',
-    title: 'School Reopening After Winter Break',
-    content: 'Dear students and parents, we are pleased to announce that school will reopen on January 8th, 2024 after the winter break. Please ensure all students are ready with their books and uniforms.',
-    type: 'general',
-    priority: 'high',
-    is_published: true,
-    published_at: '2024-01-02T10:00:00Z',
-    created_at: '2024-01-02T10:00:00Z',
-    updated_at: '2024-01-02T10:00:00Z',
-    author_id: 'admin-1'
-  },
-  {
-    id: '2',
-    title: 'Parent-Teacher Meeting Schedule',
-    content: 'Parent-teacher meetings for all grades will be held from January 15-17, 2024. Please check the detailed schedule on the school notice board.',
-    type: 'academic',
-    priority: 'medium',
-    is_published: true,
-    published_at: '2024-01-05T09:00:00Z',
-    created_at: '2024-01-05T09:00:00Z',
-    updated_at: '2024-01-05T09:00:00Z',
-    author_id: 'admin-1'
-  },
-  {
-    id: '3',
-    title: 'Annual Sports Day Registration',
-    content: 'Registration for Annual Sports Day is now open. Students interested in participating should submit their names to their respective class teachers by January 20th, 2024.',
-    type: 'event',
-    priority: 'medium',
-    is_published: true,
-    published_at: '2024-01-08T11:00:00Z',
-    created_at: '2024-01-08T11:00:00Z',
-    updated_at: '2024-01-08T11:00:00Z',
-    author_id: 'admin-1'
-  },
-  {
-    id: '4',
-    title: 'Library Book Return Reminder',
-    content: 'All students who have borrowed books from the library are requested to return them by January 25th, 2024. Late returns will incur a fine.',
-    type: 'general',
-    priority: 'low',
-    is_published: true,
-    published_at: '2024-01-10T14:00:00Z',
-    created_at: '2024-01-10T14:00:00Z',
-    updated_at: '2024-01-10T14:00:00Z',
-    author_id: 'admin-1'
-  },
-  {
-    id: '5',
-    title: 'Science Fair 2024 Announcement',
-    content: 'The annual Science Fair will be held on February 15th, 2024. Students from grades 6-12 are encouraged to participate. Registration deadline is January 30th, 2024.',
-    type: 'academic',
-    priority: 'high',
-    is_published: true,
-    published_at: '2024-01-12T08:00:00Z',
-    created_at: '2024-01-12T08:00:00Z',
-    updated_at: '2024-01-12T08:00:00Z',
-    author_id: 'admin-1'
-  }
-];
-
-const priorityColors = {
-  high: 'bg-red-100 text-red-800 border-red-200',
-  medium: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  low: 'bg-green-100 text-green-800 border-green-200'
-};
-
-const typeColors = {
-  general: 'bg-blue-100 text-blue-800',
-  academic: 'bg-purple-100 text-purple-800',
-  event: 'bg-orange-100 text-orange-800',
-  urgent: 'bg-red-100 text-red-800'
-};
-
 export default function NoticesPage() {
   const [notices, setNotices] = useState<Notice[]>([]);
   const [filteredNotices, setFilteredNotices] = useState<Notice[]>([]);
-  const [selectedType, setSelectedType] = useState<string>('all');
-  const [selectedPriority, setSelectedPriority] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Simulate API call
     const fetchNotices = async () => {
-      setLoading(true);
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setNotices(mockNotices);
-      setFilteredNotices(mockNotices);
-      setLoading(false);
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await fetch('/api/notices?limit=100');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch notices');
+        }
+        
+        const data = await response.json();
+        const noticesList = data.notices || [];
+        
+        setNotices(noticesList);
+        setFilteredNotices(noticesList);
+      } catch (err) {
+        console.error('Error fetching notices:', err);
+        setError('Failed to load notices. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchNotices();
@@ -116,7 +52,7 @@ export default function NoticesPage() {
     }
 
     setFilteredNotices(filtered);
-  }, [notices, selectedType, selectedPriority, searchTerm]);
+  }, [notices, searchTerm]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -139,134 +75,221 @@ export default function NoticesPage() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              School Notices
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-              Stay updated with the latest announcements and important information from our school.
-            </p>
-          </div>
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Notices</h3>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+          >
+            Try Again
+          </button>
         </div>
-      </section>
+      </div>
+    );
+  }
 
-      {/* Filters and Search */}
-      <section className="py-8 bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div className="flex flex-col sm:flex-row gap-4">
-              {/* Type Filter */}
-              <select
-                value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              >
-                <option value="all">All Types</option>
-                <option value="general">General</option>
-                <option value="academic">Academic</option>
-                <option value="event">Event</option>
-                <option value="urgent">Urgent</option>
-              </select>
-
-              {/* Priority Filter */}
-              <select
-                value={selectedPriority}
-                onChange={(e) => setSelectedPriority(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              >
-                <option value="all">All Priorities</option>
-                <option value="high">High Priority</option>
-                <option value="medium">Medium Priority</option>
-                <option value="low">Low Priority</option>
-              </select>
-            </div>
-
-            {/* Search */}
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search notices..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full md:w-80"
-              />
-              <svg className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Modern Hero Section with Pattern */}
+      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white py-20 md:py-28 overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-full h-full" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center"
+          >
+            {/* Icon */}
+            <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-white/20 backdrop-blur-lg rounded-2xl mb-6 shadow-lg">
+              <svg className="w-8 h-8 md:w-10 md:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
             </div>
-          </div>
+            
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6 text-white">
+              School Notices
+            </h1>
+            <p className="text-lg sm:text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto leading-relaxed">
+              Stay informed with the latest announcements and important updates from our school community
+            </p>
+            
+            {/* Stats */}
+            <div className="flex flex-wrap justify-center gap-4 md:gap-8">
+              <div className="bg-white/20 backdrop-blur-lg rounded-xl px-6 py-3 shadow-lg">
+                <div className="text-2xl md:text-3xl font-bold text-white">{notices.length}</div>
+                <div className="text-sm md:text-base text-white">Total Notices</div>
+              </div>
+              <div className="bg-white/20 backdrop-blur-lg rounded-xl px-6 py-3 shadow-lg">
+                <div className="text-2xl md:text-3xl font-bold text-white">{filteredNotices.length}</div>
+                <div className="text-sm md:text-base text-white">Showing</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+        
+        {/* Wave Divider */}
+        <div className="absolute bottom-0 left-0 w-full">
+          <svg className="w-full h-12 md:h-16" viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0,50 C240,100 480,0 720,50 C960,100 1200,0 1440,50 L1440,100 L0,100 Z" fill="rgb(249, 250, 251)"/>
+          </svg>
         </div>
       </section>
 
       {/* Notices List */}
-      <section className="py-12">
+      <section className="py-12 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredNotices.length === 0 ? (
-            <div className="text-center py-12">
-              <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No notices found</h3>
-              <p className="text-gray-600">Try adjusting your filters or search terms.</p>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="text-center py-16"
+            >
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-6">
+                <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">No notices found</h3>
+              <p className="text-gray-600 mb-6">We couldn&apos;t find any notices matching your search.</p>
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors font-medium"
+                >
+                  Clear Search
+                </button>
+              )}
+            </motion.div>
           ) : (
-            <div className="space-y-6">
+            <div className="grid gap-4">
               {filteredNotices.map((notice, index) => (
-                <motion.div
+                <motion.article
                   key={notice.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  className="group relative bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 hover:border-blue-300"
                 >
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
-                    <div className="flex-1">
-                      <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
-                        {notice.title}
-                      </h2>
-                    </div>
-                    <div className="text-sm text-gray-500 md:ml-4 md:text-right">
-                      <p>Published</p>
-                      <p className="font-medium">{formatDate(notice.publish_date || notice.created_at)}</p>
-                    </div>
-                  </div>
+                  {/* Accent Bar */}
+                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-indigo-600"></div>
                   
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    {notice.content}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <Link
-                      href={`/notices/${notice.id}`}
-                      className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
-                    >
-                      Read More
-                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </Link>
+                  <div className="p-4 sm:p-5 pl-6 sm:pl-7">
+                    {/* Header with Icon and Title */}
+                    <div className="flex items-start gap-3 mb-2">
+                      {/* Icon Badge */}
+                      <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-md">
+                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                      </div>
+                      
+                      {/* Title and Date Container */}
+                      <div className="flex-1 min-w-0">
+                        <h2 className="text-base sm:text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors leading-tight mb-2">
+                          {notice.title}
+                        </h2>
+                        
+                        {/* Date - Clean and Minimal */}
+                        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <span className="font-medium">
+                            {new Date(notice.publish_date || notice.created_at).toLocaleDateString('en-US', { 
+                              month: 'short', 
+                              day: 'numeric', 
+                              year: 'numeric' 
+                            })}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                     
-                    <div className="flex items-center space-x-4 text-sm text-gray-500">
-                      <button className="hover:text-primary-600 transition-colors">
-                        <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                    {/* Content Preview */}
+                    <div className="mb-3 pl-0 sm:pl-13">
+                      <p className="text-gray-600 leading-relaxed text-sm line-clamp-2">
+                        {notice.content.length > 200 
+                          ? `${notice.content.substring(0, 200)}...` 
+                          : notice.content}
+                      </p>
+                    </div>
+                    
+                    {/* Actions Footer */}
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-gray-100">
+                      {/* Left Side - Read Full Notice Button */}
+                      <Link
+                        href={`/notices/${notice.id}`}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-md transition-all font-semibold text-sm shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 group/btn"
+                      >
+                        <span>Read Full Notice</span>
+                        <svg className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
-                        Share
-                      </button>
-                      <button className="hover:text-primary-600 transition-colors">
-                        <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                        </svg>
-                        Print
-                      </button>
+                      </Link>
+                      
+                      {/* Right Side Actions */}
+                      <div className="flex items-center gap-2 ml-auto">
+                        {/* File Attachment Download */}
+                        {notice.file_url && (
+                          <a
+                            href={notice.file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md transition-all border border-blue-200 font-medium text-sm"
+                            title="Download Attachment"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span className="hidden sm:inline">Download</span>
+                          </a>
+                        )}
+                        
+                        <button 
+                          onClick={() => {
+                            if (navigator.share) {
+                              navigator.share({
+                                title: notice.title,
+                                text: notice.content,
+                                url: `/notices/${notice.id}`
+                              }).catch(() => {});
+                            }
+                          }}
+                          className="inline-flex items-center justify-center w-9 h-9 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-md transition-all border border-gray-200 hover:border-blue-300"
+                          title="Share Notice"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                          </svg>
+                        </button>
+                        <button 
+                          onClick={() => window.print()}
+                          className="inline-flex items-center justify-center w-9 h-9 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-md transition-all border border-gray-200 hover:border-blue-300"
+                          title="Print Notice"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </motion.div>
+                </motion.article>
               ))}
             </div>
           )}
