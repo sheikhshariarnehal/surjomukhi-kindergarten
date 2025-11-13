@@ -269,12 +269,12 @@ export default function NoticesPage() {
                       </p>
                     </div>
                     
-                    {/* Actions Footer */}
-                    <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-gray-100">
-                      {/* Left Side - Read Full Notice Button */}
+                    {/* Actions Footer - Fully Responsive */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-3 border-t border-gray-100">
+                      {/* Main Action - Read Full Notice Button */}
                       <Link
                         href={`/notices/${notice.slug}`}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-md transition-all font-semibold text-sm shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 group/btn"
+                        className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-md transition-all font-semibold text-sm shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 group/btn w-full sm:w-auto"
                       >
                         <span>{t.readFullNotice}</span>
                         <svg className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -282,21 +282,22 @@ export default function NoticesPage() {
                         </svg>
                       </Link>
                       
-                      {/* Right Side Actions */}
-                      <div className="flex items-center gap-2 ml-auto">
+                      {/* Secondary Actions */}
+                      <div className="flex items-center gap-2 justify-between sm:justify-end">
                         {/* File Attachment Download */}
                         {notice.file_url && (
                           <a
                             href={notice.file_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md transition-all border border-blue-200 font-medium text-sm"
+                            className="inline-flex items-center gap-1.5 px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md transition-all border border-blue-200 font-medium text-sm flex-1 sm:flex-initial justify-center"
                             title={t.downloadAttachment}
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             <span className="hidden sm:inline">{t.download}</span>
+                            <span className="sm:hidden">File</span>
                           </a>
                         )}
                         
@@ -310,7 +311,7 @@ export default function NoticesPage() {
                               }).catch(() => {});
                             }
                           }}
-                          className="inline-flex items-center justify-center w-9 h-9 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-md transition-all border border-gray-200 hover:border-blue-300"
+                          className="inline-flex items-center justify-center w-10 h-10 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-md transition-all border border-gray-200 hover:border-blue-300"
                           title={t.shareNotice}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -319,7 +320,7 @@ export default function NoticesPage() {
                         </button>
                         <button 
                           onClick={() => window.print()}
-                          className="inline-flex items-center justify-center w-9 h-9 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-md transition-all border border-gray-200 hover:border-blue-300"
+                          className="inline-flex items-center justify-center w-10 h-10 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-md transition-all border border-gray-200 hover:border-blue-300"
                           title={t.printNotice}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
