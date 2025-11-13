@@ -28,20 +28,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    // Validate file type - Allow images, PDFs, and documents
+    const allowedTypes = [
+      'image/jpeg', 
+      'image/png', 
+      'image/gif', 
+      'image/webp',
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
-        { error: 'Invalid file type. Only images are allowed.' },
+        { error: 'Invalid file type. Only images, PDF, DOC, and DOCX files are allowed.' },
         { status: 400 }
       );
     }
 
-    // Validate file size (5MB max)
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    // Validate file size (10MB max for documents, 5MB for images)
+    const isDocument = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.type);
+    const maxSize = isDocument ? 10 * 1024 * 1024 : 5 * 1024 * 1024;
     if (file.size > maxSize) {
+      const maxSizeMB = isDocument ? '10MB' : '5MB';
       return NextResponse.json(
-        { error: 'File too large. Maximum size is 5MB.' },
+        { error: `File too large. Maximum size is ${maxSizeMB}.` },
         { status: 400 }
       );
     }
@@ -65,7 +75,15 @@ export async function POST(request: NextRequest) {
       const { error: createError } = await supabaseAdmin.storage.createBucket(bucket, {
         public: true,
         fileSizeLimit: 10485760, // 10MB
-        allowedMimeTypes: allowedTypes
+        allowedMimeTypes: [
+          'image/jpeg',
+          'image/png',
+          'image/gif',
+          'image/webp',
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        ]
       });
 
       if (createError) {

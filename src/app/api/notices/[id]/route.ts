@@ -4,14 +4,21 @@ import { AuthService } from '@/lib/auth';
 import { updateNoticeSchema, validateData } from '@/lib/validators';
 import { Notice } from '@/types/notice';
 
-// GET /api/notices/[id] - Get single notice
+// GET /api/notices/[id] - Get single notice (supports both UUID and slug)
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
-    const notice = await DatabaseService.getById<Notice>('notices', id);
+    
+    // Check if id is a UUID (contains hyphens and alphanumeric)
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    
+    // Fetch notice by UUID or slug
+    const notice = isUuid 
+      ? await DatabaseService.getById<Notice>('notices', id)
+      : await DatabaseService.getBySlug<Notice>('notices', id);
     
     if (!notice) {
       return NextResponse.json(

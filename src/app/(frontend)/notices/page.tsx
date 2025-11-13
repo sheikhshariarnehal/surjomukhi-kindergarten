@@ -273,7 +273,7 @@ export default function NoticesPage() {
                     <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-gray-100">
                       {/* Left Side - Read Full Notice Button */}
                       <Link
-                        href={`/notices/${notice.id}`}
+                        href={`/notices/${notice.slug}`}
                         className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-md transition-all font-semibold text-sm shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 group/btn"
                       >
                         <span>{t.readFullNotice}</span>
@@ -306,7 +306,7 @@ export default function NoticesPage() {
                               navigator.share({
                                 title: notice.title,
                                 text: notice.content,
-                                url: `/notices/${notice.id}`
+                                url: `/notices/${notice.slug}`
                               }).catch(() => {});
                             }
                           }}

@@ -218,11 +218,12 @@ export default function EditNoticePage() {
                   'application/msword': ['.doc'],
                   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
                 }}
+                maxSize={10 * 1024 * 1024}
                 bucket="uploads"
                 folder="notices"
                 currentFile={fileUrl}
                 label="Upload PDF or Document"
-                helperText="Supported formats: PDF, DOC, DOCX (Max 5MB)"
+                helperText="Supported formats: PDF, DOC, DOCX (Max 10MB)"
               />
             </Card>
           </div>

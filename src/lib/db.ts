@@ -60,6 +60,22 @@ export class DatabaseService {
     return data;
   }
 
+  static async getBySlug<T>(table: string, slug: string): Promise<T | null> {
+    const { data, error } = await supabaseAdmin
+      .from(table)
+      .select('*')
+      .eq('slug', slug)
+      .single();
+    
+    if (error) {
+      if (error.code === 'PGRST116') return null; // Not found
+      console.error(`Error fetching ${table} by slug:`, error);
+      throw new Error(error.message);
+    }
+    
+    return data;
+  }
+
   static async getAll<T>(
     table: string, 
     options?: {
