@@ -11,4 +11,5 @@ export { default as DashboardCard } from './DashboardCard';
 export { default as Table } from './Table';
 export { default as Form } from './Form';
 export { default as UploadWidget } from './UploadWidget';
-export { default as MultipleImageUpload } from './MultipleImageUpload';
+export { MultipleImageUpload } from './MultipleImageUpload';
+export type { MultipleImageUploadProps, UploadedImage } from './MultipleImageUpload';
