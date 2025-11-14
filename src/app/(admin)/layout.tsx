@@ -98,7 +98,7 @@ export default function AdminLayout({
         </div>
 
         {/* Page content */}
-        <main className="flex-1 p-4 lg:p-6 overflow-auto bg-gradient-to-br from-slate-50 via-slate-50 to-blue-50/30">
+        <main className="flex-1 p-3 lg:p-4 overflow-auto bg-gradient-to-br from-slate-50 via-slate-50 to-blue-50/30">
           <div className="w-full">
             {children}
           </div>

@@ -331,35 +331,9 @@ export default function EventsPage() {
   const ongoingEvents = events.filter(event => event && getEventStatus(event).status === 'ongoing').length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Page Header */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="h-12 w-12 rounded-xl bg-purple-100 flex items-center justify-center">
-                <Calendar className="h-6 w-6 text-purple-600" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">Events Management</h1>
-                <p className="text-gray-600 mt-1">
-                  Manage school events and activities
-                </p>
-              </div>
-            </div>
-            <div className="mt-4 sm:mt-0">
-              <Link href="/dashboard/events/create">
-                <Button className="w-full sm:w-auto">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create Event
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+    <div className="space-y-6">
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           <Card className="p-6 bg-white hover:shadow-md transition-shadow">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -414,8 +388,8 @@ export default function EventsPage() {
           </Card>
         </div>
 
-        {/* Search and Filters */}
-        <Card className="p-6 bg-white shadow-sm">
+      {/* Search and Filters */}
+      <Card className="p-6 bg-white shadow-sm">
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <div className="flex-1 w-full">
@@ -427,6 +401,12 @@ export default function EventsPage() {
                   className="text-base"
                 />
               </div>
+              <Link href="/dashboard/events/create">
+                <Button className="w-full sm:w-auto">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Event
+                </Button>
+              </Link>
               <Button variant="outline" onClick={fetchEvents} className="w-full sm:w-auto">
                 Refresh
               </Button>
@@ -506,8 +486,8 @@ export default function EventsPage() {
           </div>
         </Card>
 
-        {/* Events Table */}
-        <Card className="bg-white shadow-sm">
+      {/* Events Table */}
+      <Card className="bg-white shadow-sm">
           <Table
             data={events}
             columns={columns}
@@ -515,7 +495,6 @@ export default function EventsPage() {
             emptyMessage="No events found. Create your first event to get started!"
           />
         </Card>
-      </div>
     </div>
   );
 }
