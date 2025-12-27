@@ -264,16 +264,16 @@ const InstitutionalFooter: React.FC = React.memo(() => {
         delay: shouldReduceMotion ? 0 : 0.3,
         ease: [0.4, 0, 0.2, 1]
       }}
-      className="absolute bottom-0 left-0 right-0 z-40"
+      className="absolute bottom-0 left-0 right-0 z-30"
       role="contentinfo"
       aria-label={t('hero.institutional.ariaLabel', 'Institution information')}
     >
-      <div className="bg-gradient-to-r from-orange-500 via-blue-800 to-orange-500">
+      <div className="shadow-lg">
         <div className="grid grid-cols-2 lg:grid-cols-4">
           {institutionalData.map((item, index) => (
             <motion.div
               key={item.label}
-              className={`${item.bgColor} text-white text-center py-2 xs:py-2.5 sm:py-3 px-1 xs:px-1.5 sm:px-2 lg:px-4 transition-all duration-300 ease-out hover:brightness-110 cursor-default`}
+              className={`${item.bgColor} text-white text-center py-3 sm:py-3.5 px-3 lg:px-6 transition-all duration-200 hover:brightness-105`}
               title={t(item.descriptionKey, item.description)}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -282,19 +282,11 @@ const InstitutionalFooter: React.FC = React.memo(() => {
                 delay: shouldReduceMotion ? 0 : 0.4 + index * 0.1,
                 ease: [0.4, 0, 0.2, 1]
               }}
-              whileHover={
-                !shouldReduceMotion
-                  ? {
-                      scale: 1.02,
-                      transition: { duration: 0.2, ease: 'easeOut' }
-                    }
-                  : undefined
-              }
             >
-              <div className="text-xs xs:text-xs sm:text-xs font-semibold uppercase tracking-wider opacity-90 leading-tight">
+              <div className="text-xs sm:text-sm font-bold uppercase tracking-widest opacity-95 leading-tight mb-1">
                 {t(item.labelKey, item.label)}
               </div>
-              <div className="text-sm xs:text-sm sm:text-base font-bold mt-0.5 xs:mt-1 leading-tight">
+              <div className="text-base sm:text-lg font-bold leading-tight">
                 {item.value}
               </div>
             </motion.div>
@@ -307,71 +299,7 @@ const InstitutionalFooter: React.FC = React.memo(() => {
 
 InstitutionalFooter.displayName = 'InstitutionalFooter';
 
-/**
- * Loading state component with professional typography and animations
- * Displays while hero images are being preloaded
- */
-const LoadingState: React.FC = React.memo(() => {
-  const { t } = useTranslation();
-  const shouldReduceMotion = useReducedMotion();
-
-  return (
-    <section
-      className="relative h-screen min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] max-h-[900px] overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-green-600"
-      role="banner"
-      aria-label={t('hero.loading.ariaLabel', 'Hero section loading')}
-      aria-busy="true"
-      style={{
-        minHeight: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))',
-        height: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))'
-      }}
-    >
-      <div className="absolute inset-0 flex items-center justify-center px-4">
-        <motion.div
-          className="text-center text-white"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            duration: shouldReduceMotion ? 0.2 : 0.4,
-            ease: [0.4, 0, 0.2, 1]
-          }}
-        >
-          {/* Spinner with smooth animation */}
-          <motion.div
-            className="rounded-full h-10 w-10 xs:h-12 xs:w-12 sm:h-14 sm:w-14 border-3 xs:border-4 sm:border-4 border-b-transparent border-white mx-auto mb-4 xs:mb-5"
-            animate={
-              shouldReduceMotion
-                ? {}
-                : {
-                    rotate: 360
-                  }
-            }
-            transition={
-              shouldReduceMotion
-                ? {}
-                : {
-                    duration: 1,
-                    repeat: Infinity,
-                    ease: 'linear'
-                  }
-            }
-            style={{
-              // GPU acceleration
-              transform: 'translateZ(0)',
-              willChange: shouldReduceMotion ? 'auto' : 'transform'
-            }}
-          />
-          {/* Loading text with proper typography */}
-          <p className="text-sm xs:text-base sm:text-lg font-medium tracking-wide leading-relaxed">
-            {t('hero.loading.text', 'Loading...')}
-          </p>
-        </motion.div>
-      </div>
-    </section>
-  );
-});
-
-LoadingState.displayName = 'LoadingState';
+// Loading state removed for instant professional display
 
 /**
  * Performance and animation constants
@@ -411,6 +339,7 @@ const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
   const [imagesLoaded, setImagesLoaded] = useState<boolean>(false);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [imageQuality, setImageQuality] = useState<number>(HERO_CONSTANTS.IMAGE_QUALITY.FOUR_G_PLUS);
@@ -441,53 +370,46 @@ const Hero: React.FC = () => {
     }
   }, []);
 
-  // Enhanced image preloading with performance monitoring
+  // Immediate load with performance monitoring - no loading delay
   useEffect(() => {
-    const preloadCriticalImages = async () => {
-      try {
-        // Measure component mount time
-        heroPerformanceMonitor.measureComponentMount(() => {
-          console.log('Hero component mounting...');
-        });
+    // Set images as loaded immediately for instant display
+    setImagesLoaded(true);
 
-        // Preload first image with high priority and measure load time
-        const firstImageUrl = heroSlides[0].image;
-        const imageLoadTime = await heroPerformanceMonitor.measureImageLoad(firstImageUrl);
+    // Disable first load animation after mount
+    const timer = setTimeout(() => {
+      setIsFirstLoad(false);
+    }, 100);
 
-        console.log(`First image loaded in ${imageLoadTime.toFixed(2)}ms`);
-        setImagesLoaded(true);
+    // Background performance monitoring
+    heroPerformanceMonitor.measureComponentMount(() => {
+      console.log('Hero component mounted');
+    });
 
-        // Lazy load remaining images with lower priority using requestIdleCallback
-        const lazyLoadImages = () => {
-          heroSlides.slice(1).forEach((slide) => {
-            const lazyImg = new window.Image();
-            lazyImg.loading = 'lazy';
-            lazyImg.fetchPriority = 'low';
-            lazyImg.src = slide.image;
-          });
-        };
-
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(lazyLoadImages, { timeout: 2000 });
-        } else {
-          setTimeout(lazyLoadImages, 1500);
-        }
-
-        // Log performance metrics after a delay
-        setTimeout(() => {
-          heroPerformanceMonitor.logMetrics();
-          heroPerformanceMonitor.sendToAnalytics();
-        }, 3000);
-      } catch (error) {
-        console.warn('Image preloading failed:', error);
-        setImagesLoaded(true); // Continue anyway
-      }
+    // Lazy load remaining images with lower priority using requestIdleCallback
+    const lazyLoadImages = () => {
+      heroSlides.slice(1).forEach((slide) => {
+        const lazyImg = new window.Image();
+        lazyImg.loading = 'lazy';
+        lazyImg.fetchPriority = 'low';
+        lazyImg.src = slide.image;
+      });
     };
 
-    preloadCriticalImages();
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(lazyLoadImages, { timeout: 2000 });
+    } else {
+      setTimeout(lazyLoadImages, 1500);
+    }
+
+    // Log performance metrics after a delay
+    setTimeout(() => {
+      heroPerformanceMonitor.logMetrics();
+      heroPerformanceMonitor.sendToAnalytics();
+    }, 3000);
 
     // Cleanup on unmount
     return () => {
+      clearTimeout(timer);
       heroPerformanceMonitor.cleanup();
     };
   }, []);
@@ -631,34 +553,34 @@ const Hero: React.FC = () => {
   /**
    * Animation variants with reduced motion support
    * Professional easing curves for smooth, natural motion
+   * Disabled on first load to prevent flash
    */
   const motionVariants = useMemo(
     () => ({
-      initial: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.01 },
-      animate: shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 },
+      initial: isFirstLoad ? { opacity: 1 } : (shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.01 }),
+      animate: { opacity: 1, scale: 1 },
       exit: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.99 }
     }),
-    [shouldReduceMotion]
+    [shouldReduceMotion, isFirstLoad]
   );
 
   /**
    * Transition configuration for animations
    * Optimized for 60 FPS performance with proper easing
+   * Instant on first load
    */
   const transitionConfig = useMemo(
     () =>
-      shouldReduceMotion
-        ? { duration: 0.2 }
-        : {
-            duration: 0.5,
-            ease: [0.4, 0, 0.2, 1] as const // Custom cubic-bezier for smooth motion
-          },
-    [shouldReduceMotion]
+      isFirstLoad
+        ? { duration: 0 }
+        : (shouldReduceMotion
+          ? { duration: 0.2 }
+          : {
+              duration: 0.5,
+              ease: [0.4, 0, 0.2, 1] as const // Custom cubic-bezier for smooth motion
+            }),
+    [shouldReduceMotion, isFirstLoad]
   );
-
-  if (!imagesLoaded) {
-    return <LoadingState />;
-  }
 
   return (
     <section
@@ -767,8 +689,8 @@ const Hero: React.FC = () => {
         >
           {/* Optimized Background Image with GPU acceleration */}
           <div className="absolute inset-0">
-            {/* CSS gradient fallback */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-green-600 z-0" />
+            {/* Neutral fallback - prevents blue gradient flash */}
+            <div className="absolute inset-0 bg-gray-900 z-0" />
 
             {/* Performance-optimized Next.js image with responsive sizes and adaptive quality */}
             <div className="absolute inset-0 z-10">
@@ -777,26 +699,14 @@ const Hero: React.FC = () => {
                 alt={currentSlideData.imageAlt}
                 fill
                 sizes="100vw"
-                className="object-cover object-center transform-gpu"
+                className="object-cover object-center"
                 priority={currentSlide === 0}
                 quality={currentSlide === 0 ? imageQuality : Math.max(imageQuality - 10, 60)}
                 placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAhEQACAQIHAQAAAAAAAAAAAAABAgADBAUREiExUWGB/9oADAMBAAIRAxEAPwCdABmvSNnZA8U2K+ztmvSNnZA8U2K+ztmvSNnZA8U2K+ztmJzuYkOMPGr1zNP/Z"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAr/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8//9k="
                 loading={currentSlide === 0 ? "eager" : "lazy"}
                 fetchPriority={currentSlide === 0 ? "high" : "low"}
-                onLoadingComplete={() => {
-                  // Performance optimization: remove transform-gpu after animation completes
-                  if (typeof window !== 'undefined') {
-                    requestAnimationFrame(() => {
-                      const imgs = document.querySelectorAll('.transform-gpu');
-                      imgs.forEach((img) => {
-                        setTimeout(() => {
-                          img.classList.remove('transform-gpu');
-                        }, 1000);
-                      });
-                    });
-                  }
-                }}
+                unoptimized={false}
               />
             </div>
 

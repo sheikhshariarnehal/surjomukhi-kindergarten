@@ -438,6 +438,22 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* Prevent image loading flash by setting immediate background */
+img[src*="/hero/"] {
+  background-color: #1f2937; /* Neutral gray to prevent flash */
+  transition: none; /* No transition to prevent flash */
+}
+
+/* Optimize Next.js Image wrapper */
+img[src*="/hero/"] + div {
+  background-color: #1f2937;
+}
+
+/* Force immediate image display without fade-in */
+img[loading="eager"] {
+  opacity: 1 !important;
+}
+
 /* Mobile-first responsive utilities */
 @media (max-width: 640px) {
   .hero-content {

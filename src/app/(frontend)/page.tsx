@@ -1,17 +1,13 @@
 import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import HeroLoading from '@/components/frontend/HeroLoading';
 import StructuredData from '@/components/frontend/StructuredData';
 import ErrorBoundary from '@/components/frontend/ErrorBoundary';
 import { getHomePageData } from '@/lib/homepage-data';
 import type { HomePageData } from '@/types/homepage';
 
-// Dynamic import for Hero with lightweight loading state
-const Hero = dynamic(() => import('@/components/frontend/Hero'), {
-  loading: () => <HeroLoading />,
-  ssr: true
-});
+// Import Hero directly without dynamic import for instant rendering
+import Hero from '@/components/frontend/Hero';
 
 // Dynamic imports for heavy components - reduces initial bundle
 const StatsCounter = dynamic(() => import('@/components/frontend/StatsCounter'), {
@@ -193,18 +189,16 @@ export default async function HomePage() {
       />
 
       <main id="main-content" className="min-h-screen" role="main">
-        {/* Hero Section - Priority loading */}
+        {/* Hero Section - Optimized for instant loading */}
         <ErrorBoundary fallback={
-          <div className="h-screen bg-gradient-to-br from-blue-600 to-green-600 flex items-center justify-center">
+          <div className="h-screen bg-gray-900 flex items-center justify-center">
             <div className="text-center text-white">
               <h1 className="text-4xl font-bold mb-4">Welcome to Surjomukhi Kindergarten</h1>
               <p className="text-xl">Excellence in Early Childhood Education</p>
             </div>
           </div>
         }>
-          <Suspense fallback={<HeroLoading />}>
-            <Hero />
-          </Suspense>
+          <Hero />
         </ErrorBoundary>
 
         {/* Stats Counter - Deferred loading */}
