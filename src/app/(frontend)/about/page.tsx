@@ -23,9 +23,9 @@ const organizationStructuredData = {
   },
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+880-1819198965",
+    "telephone": "+880-1954113374",
     "contactType": "customer service",
-    "email": "surjamukhikindergarten@gmail.com"
+    "email": "info.surjamukhikindergarten@gmail.com"
   },
   "foundingDate": "2004-01-01",
   "numberOfStudents": 55,

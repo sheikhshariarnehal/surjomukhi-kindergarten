@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -139,30 +139,30 @@ export default function RootLayout({
     "url": baseUrl,
     "logo": `${baseUrl}/logo.webp`,
     "image": `${baseUrl}/og-home.jpg`,
-    "foundingDate": "YYYY", // Replace with actual founding year
-    "numberOfStudents": "XXX", // Replace with actual number
+    "foundingDate": "2004",
+    "numberOfStudents": "55+",
     "educationalCredentialAwarded": "Early Childhood Education Certificate",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Your Address", // Replace with actual address
-      "addressLocality": "Your City", // Replace with actual city
-      "addressRegion": "Your Division", // Replace with actual division
-      "postalCode": "XXXX", // Replace with actual postal code
+      "streetAddress": "Salauddin Complex, Aona Bazar",
+      "addressLocality": "Nawabganj",
+      "addressRegion": "Dhaka",
+      "postalCode": "1320",
       "addressCountry": "BD"
     },
     "contactPoint": [
       {
         "@type": "ContactPoint",
-        "telephone": "+880-XXX-XXXXXXX", // Replace with actual phone
+        "telephone": "01954113374",
         "contactType": "customer service",
-        "email": "info@surjomukhikg.edu.bd", // Replace with actual email
+        "email": "info.surjamukhikindergarten@gmail.com",
         "availableLanguage": ["English", "Bengali"]
       },
       {
         "@type": "ContactPoint",
-        "telephone": "+880-XXX-XXXXXXX", // Replace with actual phone
+        "telephone": "01954113374",
         "contactType": "admissions",
-        "email": "admission@surjomukhikg.edu.bd" // Replace with actual email
+        "email": "info.surjamukhikindergarten@gmail.com"
       }
     ],
     "sameAs": [

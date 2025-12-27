@@ -731,8 +731,8 @@ const Hero: React.FC = () => {
                 "latitude": "23.8859",
                 "longitude": "90.2934"
               },
-              "telephone": ["+880-1819198965", "+880-1711528045"],
-              "email": "surjamukhikindergarten@gmail.com",
+              "telephone": ["+880-1954113374"],
+              "email": "info.surjamukhikindergarten@gmail.com",
               "openingHours": "Mo-Th 08:00-16:00",
               "priceRange": "$$",
               "paymentAccepted": "Cash, Bank Transfer",

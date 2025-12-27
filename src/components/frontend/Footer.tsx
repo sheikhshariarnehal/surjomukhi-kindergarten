@@ -21,11 +21,11 @@ const SCHOOL_INFO = {
   name: 'Surjomukhi Kindergarten',
   tagline: 'Excellence in Early Childhood Education',
   description: 'Providing quality education and nurturing young minds for a brighter future. Our commitment to excellence in education has been our hallmark for decades.',
-  address: 'Dhaka, Bangladesh',
-  phone: '+880 1234-567890',
-  email: 'info@surjomukhikg.edu.bd',
-  officeHours: 'Sunday - Thursday: 8:00 AM - 4:00 PM',
-  website: 'https://www.surjomukhikg.edu.bd'
+  address: 'Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320',
+  phone: '01954113374',
+  email: 'info.surjamukhikindergarten@gmail.com',
+  officeHours: 'Saturday - Thursday: 8:00 AM - 4:00 PM',
+  website: 'https://www.surjamukhikindergarten.com'
 } as const;
 
 const FacebookIcon = memo(() => (

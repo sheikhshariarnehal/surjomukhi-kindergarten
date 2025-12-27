@@ -168,8 +168,8 @@ export default async function HomePage() {
             "url": "http://www.surjamukhikindergarten.com",
             "logo": "/logo.png",
             "image": "/og-home.jpg",
-            "telephone": ["+880-1819198965", "+880-1711528045"],
-            "email": "surjamukhikindergarten@gmail.com",
+            "telephone": ["+880-1954113374"],
+            "email": "info.surjamukhikindergarten@gmail.com",
             "address": {
               "@type": "PostalAddress",
               "addressCountry": "BD",

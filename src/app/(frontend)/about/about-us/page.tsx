@@ -16,13 +16,13 @@ export default function AboutUsPage() {
     },
     {
       label: language === 'bn' ? 'ফোন' : 'Phone',
-      value: '০১৮১৯১৯৮৯৬৫, ০১৭১১৫২৮০৪৫',
+      value: language === 'bn' ? '০১৯৫৪১১৩৩৭৪' : '01954113374',
       icon: '📞',
       color: 'from-green-500 to-green-600'
     },
     {
       label: language === 'bn' ? 'ইমেইল' : 'Email',
-      value: 'surjamukhikindergarten@gmail.com',
+      value: 'info.surjamukhikindergarten@gmail.com',
       icon: '✉️',
       color: 'from-purple-500 to-purple-600'
     },
@@ -226,8 +226,8 @@ export default function AboutUsPage() {
               "postalCode": "1320",
               "addressCountry": "BD"
             },
-            "telephone": ["01819198965", "01711528045"],
-            "email": "surjamukhikindergarten@gmail.com",
+            "telephone": ["01954113374"],
+            "email": "info.surjamukhikindergarten@gmail.com",
             "url": "https://www.surjamukhikindergarten.com",
             "numberOfStudents": 55,
             "educationalLevel": "Primary Education",

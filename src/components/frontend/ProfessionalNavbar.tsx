@@ -155,13 +155,13 @@ const NAVIGATION_ITEMS: readonly NavItem[] = [
 ] as const;
 
 const CONTACT_INFO = {
-  phone: '+880 1234-567890',
-  email: 'info@school.edu.bd',
+  phone: '01954113374',
+  email: 'info.surjamukhikindergarten@gmail.com',
   officeHours: 'Office Hours: 8:00 AM - 4:00 PM',
   socialLinks: {
-    facebook: 'https://facebook.com/schoolname',
-    twitter: 'https://twitter.com/schoolname',
-    linkedin: 'https://linkedin.com/company/schoolname'
+    facebook: 'https://facebook.com/surjamukhikindergarten',
+    twitter: 'https://twitter.com/surjamukhikindergarten',
+    linkedin: 'https://linkedin.com/company/surjamukhikindergarten'
   }
 } as const;
 

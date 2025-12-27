@@ -24,8 +24,8 @@ const contactStructuredData = {
       "postalCode": "1320",
       "addressCountry": "BD"
     },
-    "telephone": ["+880-1819198965", "+880-1711528045"],
-    "email": "surjamukhikindergarten@gmail.com",
+    "telephone": ["+880-1954113374"],
+    "email": "info.surjamukhikindergarten@gmail.com",
     "url": "http://www.surjamukhikindergarten.com",
     "openingHours": "Mo-Sa 08:00-16:00"
   }

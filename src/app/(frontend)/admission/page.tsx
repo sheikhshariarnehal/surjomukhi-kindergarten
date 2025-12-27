@@ -28,8 +28,8 @@ const SCHOOL_SCHEMA = {
     "latitude": "23.8103",
     "longitude": "90.4125"
   },
-  "telephone": ["+880-1819198965", "+880-1711528045"],
-  "email": "surjamukhikindergarten@gmail.com",
+  "telephone": ["+880-1954113374"],
+  "email": "info.surjamukhikindergarten@gmail.com",
   "sameAs": [
     "https://www.facebook.com/surjamukhikindergarten",
     "https://www.youtube.com/surjamukhikindergarten"
@@ -67,8 +67,8 @@ const SCHOOL_SCHEMA = {
 const SCHOOL_INFO = {
   established: '2004',
   address: 'Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320',
-  phones: ['01819198965', '01711528045'],
-  email: 'surjamukhikindergarten@gmail.com',
+  phones: ['01954113374'],
+  email: 'info.surjamukhikindergarten@gmail.com',
   website: 'https://surjamukhikindergarten.com',
   medium: 'Bangla',
   grades: 'Nursery to Grade 5',
