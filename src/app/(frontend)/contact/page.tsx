@@ -195,7 +195,7 @@ export default function ContactPage() {
                     </div>
                     <div className="ml-4">
                       <h3 className="text-lg font-semibold text-gray-900">{language === 'bn' ? 'ইমেইল' : 'Email'}</h3>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 break-words">
                         {t('schoolInfo.email')}<br />
                         {language === 'bn' ? 'ওয়েবসাইট: ' : 'Website: '}{t('schoolInfo.website')}
                       </p>

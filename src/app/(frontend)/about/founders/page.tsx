@@ -117,15 +117,15 @@ export default function FoundersPage() {
                     <div className="space-y-2">
                       <div className="flex items-center">
                         <span className="text-blue-600 mr-3">📱</span>
-                        <span className="text-gray-600">{t('about.pages.founders.founder.contact.mobile')}</span>
+                        <span className="text-gray-600 break-words">{t('about.pages.founders.founder.contact.mobile')}</span>
                       </div>
                       <div className="flex items-center">
                         <span className="text-blue-600 mr-3">✉️</span>
-                        <span className="text-gray-600">{t('about.pages.founders.founder.contact.email')}</span>
+                        <span className="text-gray-600 break-words">{t('about.pages.founders.founder.contact.email')}</span>
                       </div>
                       <div className="flex items-center">
                         <span className="text-blue-600 mr-3">🌐</span>
-                        <span className="text-gray-600">{t('about.pages.founders.founder.contact.website')}</span>
+                        <span className="text-gray-600 break-words">{t('about.pages.founders.founder.contact.website')}</span>
                       </div>
                     </div>
                   </div>

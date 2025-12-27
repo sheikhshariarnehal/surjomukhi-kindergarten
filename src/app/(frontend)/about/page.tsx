@@ -328,12 +328,12 @@ export default function AboutPage() {
               <div className="bg-gradient-to-br from-blue-50 to-green-50 p-6 rounded-lg text-center border border-blue-100">
                 <div className="text-3xl mb-3">✉️</div>
                 <h3 className="font-semibold text-gray-900 mb-2">{language === 'bn' ? 'ইমেইল' : 'Email'}</h3>
-                <p className="text-gray-600 text-sm">{t('about.contact.email')}</p>
+                <p className="text-gray-600 text-sm break-words">{t('about.contact.email')}</p>
               </div>
               <div className="bg-gradient-to-br from-blue-50 to-green-50 p-6 rounded-lg text-center border border-blue-100">
                 <div className="text-3xl mb-3">🌐</div>
                 <h3 className="font-semibold text-gray-900 mb-2">{language === 'bn' ? 'ওয়েবসাইট' : 'Website'}</h3>
-                <p className="text-gray-600 text-sm">{t('about.contact.website')}</p>
+                <p className="text-gray-600 text-sm break-words">{t('about.contact.website')}</p>
               </div>
             </div>
           </div>

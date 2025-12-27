@@ -22,7 +22,7 @@ const SCHOOL_INFO = {
   tagline: 'Excellence in Early Childhood Education',
   description: 'Providing quality education and nurturing young minds for a brighter future. Our commitment to excellence in education has been our hallmark for decades.',
   address: 'Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320',
-  phone: '01954113374',
+  phone: '+8801954113374',
   email: 'info.surjamukhikindergarten@gmail.com',
   officeHours: 'Saturday - Thursday: 8:00 AM - 4:00 PM',
   website: 'https://www.surjamukhikindergarten.com'
@@ -120,7 +120,7 @@ const Footer: React.FC<FooterProps> = ({
 
   const contactInfo: ContactInfo[] = useMemo(() => customContactInfo || [
     { icon: <MapPin className="w-4 h-4" />, text: SCHOOL_INFO.address, type: 'address', ariaLabel: 'School address' },
-    { icon: <Phone className="w-4 h-4" />, text: SCHOOL_INFO.phone, href: `tel:${SCHOOL_INFO.phone}`, type: 'phone', ariaLabel: 'Call us' },
+    { icon: <Phone className="w-4 h-4" />, text: '+880 1954 113374', href: `tel:${SCHOOL_INFO.phone}`, type: 'phone', ariaLabel: 'Call us' },
     { icon: <Mail className="w-4 h-4" />, text: SCHOOL_INFO.email, href: `mailto:${SCHOOL_INFO.email}`, type: 'email', ariaLabel: 'Email us' },
     { icon: <Clock className="w-4 h-4" />, text: SCHOOL_INFO.officeHours, type: 'hours', ariaLabel: 'Office hours' }
   ], [customContactInfo]);

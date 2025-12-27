@@ -619,7 +619,7 @@ export default function AboutUsPage() {
               <div key={index} className="bg-gradient-to-br from-blue-50 to-green-50 p-6 rounded-lg text-center border border-blue-100">
                 <div className="text-3xl mb-3">{contact.icon}</div>
                 <h3 className="font-semibold text-gray-900 mb-2">{contact.label}</h3>
-                <p className="text-gray-600 text-sm">{contact.value}</p>
+                <p className="text-gray-600 text-sm break-words">{contact.value}</p>
               </div>
             ))}
           </div>
@@ -699,7 +699,7 @@ export default function AboutUsPage() {
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
                   {info.label}
                 </h3>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-gray-700 leading-relaxed break-words">
                   {info.value}
                 </p>
               </div>

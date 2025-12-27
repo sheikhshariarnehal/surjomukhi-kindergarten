@@ -155,7 +155,7 @@ const NAVIGATION_ITEMS: readonly NavItem[] = [
 ] as const;
 
 const CONTACT_INFO = {
-  phone: '01954113374',
+  phone: '+8801954113374',
   email: 'info.surjamukhikindergarten@gmail.com',
   officeHours: 'Office Hours: 8:00 AM - 4:00 PM',
   socialLinks: {
@@ -392,7 +392,7 @@ function ProfessionalNavbar() {
                 <svg className="w-2.5 h-2.5 xs:w-3 xs:h-3 lg:w-3 lg:h-3 mr-0.5 xs:mr-1 lg:mr-1.5 transition-transform duration-200 group-hover:scale-110 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                <span className="font-medium text-[9px] xs:text-[10px] sm:text-[10px] lg:text-[11px] whitespace-nowrap tracking-tight">{CONTACT_INFO.phone}</span>
+                <span className="font-medium text-[9px] xs:text-[10px] sm:text-[10px] lg:text-[11px] whitespace-nowrap tracking-tight">+880 1954 113374</span>
               </a>
 
               <a
