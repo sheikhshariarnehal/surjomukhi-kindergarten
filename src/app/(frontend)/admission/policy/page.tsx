@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Admission Policy - Surjomukhi Kindergarten',
@@ -90,9 +91,9 @@ export default function AdmissionPolicyPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
-              <li><a href="/" className="text-gray-500 hover:text-gray-700">Home</a></li>
+              <li><Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link></li>
               <li><span className="text-gray-400">/</span></li>
-              <li><a href="/admission" className="text-gray-500 hover:text-gray-700">Admission</a></li>
+              <li><Link href="/admission" className="text-gray-500 hover:text-gray-700">Admission</Link></li>
               <li><span className="text-gray-400">/</span></li>
               <li><span className="text-gray-900 font-medium">Admission Policy</span></li>
             </ol>
@@ -120,7 +121,7 @@ export default function AdmissionPolicyPage() {
             <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
               At Surjomukhi Kindergarten, we believe every child deserves a quality education in a nurturing environment. 
               Our admission policy is designed to be fair, transparent, and inclusive while ensuring the best fit between 
-              our educational approach and each child's needs. We welcome families from all backgrounds and are committed 
+              our educational approach and each child&apos;s needs. We welcome families from all backgrounds and are committed 
               to creating a diverse and supportive learning community.
             </p>
           </div>
@@ -234,18 +235,18 @@ export default function AdmissionPolicyPage() {
             Now that you understand our admission policy, take the next step and begin your application.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+            <Link
               href="/admission/apply-online"
               className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
             >
               Apply Online
-            </a>
-            <a
+            </Link>
+            <Link
               href="/admission/how-to-apply"
               className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
             >
               Application Process
-            </a>
+            </Link>
           </div>
         </div>
       </section>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, Download as DownloadIcon, FileText, File, Image, Video, Archive, Loader2, Calendar, Eye } from 'lucide-react';
+import { Search, Filter, Download as DownloadIcon, FileText, File, Image, Video, Archive, Loader2, Calendar } from 'lucide-react';
 import { Download } from '@/types/gallery';
 
 interface DownloadsResponse {
@@ -48,7 +48,6 @@ export default function DownloadsPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [filteredDownloads, setFilteredDownloads] = useState<Download[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
@@ -80,7 +79,6 @@ export default function DownloadsPage() {
         }
         
         setHasMore(page < (data.pagination?.totalPages || 1));
-        setFilteredDownloads(data.downloads || []);
       } catch (err) {
         console.error('Error fetching downloads:', err);
         setError('Failed to load downloads. Please try again later.');
@@ -112,7 +110,7 @@ export default function DownloadsPage() {
     return IconComponent;
   };
 
-  const getFileSize = (url: string) => {
+  const getFileSize = () => {
     // This would typically come from the API, but for now we'll show a placeholder
     return 'Unknown size';
   };
@@ -342,7 +340,7 @@ export default function DownloadsPage() {
                 animate="visible"
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
               >
-                {downloads.map((download, index) => {
+                {downloads.map((download) => {
                   const IconComponent = getFileIcon(download.title);
                   const categoryInfo = categories.find(cat => cat.id === download.category) || categories[0];
 
@@ -374,7 +372,7 @@ export default function DownloadsPage() {
                             <Calendar className="h-4 w-4 mr-1" />
                             {new Date(download.uploaded_at).toLocaleDateString()}
                           </span>
-                          <span>{getFileSize(download.file_url)}</span>
+                          <span>{getFileSize()}</span>
                         </div>
 
                         <button

@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import Table, { TableColumn, commonActions } from '@/components/admin/Table';
 import { Card } from '@/components/ui/Card';
-import { Plus, Search, Users, Calendar, Eye, Edit, Trash2, Download, Filter } from 'lucide-react';
+import { Plus, Search, Download } from 'lucide-react';
 import { Student } from '@/types/student';
 
 interface StudentsPageData {
@@ -32,11 +32,7 @@ export default function StudentsPage() {
   const [shiftFilter, setShiftFilter] = useState('');
   const router = useRouter();
 
-  useEffect(() => {
-    fetchStudents();
-  }, [currentPage, searchTerm, classFilter, shiftFilter]);
-
-  const fetchStudents = async () => {
+  const fetchStudents = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -89,7 +85,11 @@ export default function StudentsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, searchTerm, classFilter, shiftFilter]);
+
+  useEffect(() => {
+    fetchStudents();
+  }, [fetchStudents]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);

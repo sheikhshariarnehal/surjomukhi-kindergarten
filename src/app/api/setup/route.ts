@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { AuthService } from '@/lib/auth';
 import { supabaseAdmin } from '@/lib/db';
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     // Check if users already exist
     const { data: existingUsers, error: checkError } = await supabaseAdmin
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Check setup status
     const { data: users, error } = await supabaseAdmin

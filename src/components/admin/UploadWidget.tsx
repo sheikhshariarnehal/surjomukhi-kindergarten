@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { Upload, X, File, Image } from 'lucide-react';
+import { Upload, X, File, Image as ImageIcon } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 export interface UploadWidgetProps {
@@ -42,7 +42,7 @@ export function UploadWidget({
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  const uploadFile = async (file: File): Promise<string> => {
+  const uploadFile = useCallback(async (file: File): Promise<string> => {
     try {
       // Use the upload API endpoint
       const formData = new FormData();
@@ -68,7 +68,7 @@ export function UploadWidget({
       console.error('Upload error:', error);
       throw error;
     }
-  };
+  }, [bucket, folder]);
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -102,7 +102,7 @@ export function UploadWidget({
         setUploadProgress(0);
       }
     },
-    [onUpload, onError, multiple, disabled, bucket, folder]
+    [onUpload, onError, multiple, disabled, uploadFile]
   );
 
   const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
@@ -120,7 +120,7 @@ export function UploadWidget({
   const getFileIcon = (fileName: string) => {
     const ext = fileName.split('.').pop()?.toLowerCase();
     if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext || '')) {
-      return <Image className="h-5 w-5" />;
+      return <ImageIcon className="h-5 w-5" />;
     }
     return <File className="h-5 w-5" />;
   };

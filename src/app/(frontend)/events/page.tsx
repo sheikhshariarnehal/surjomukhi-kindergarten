@@ -41,14 +41,6 @@ export default function EventsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
   const formatEventDate = (startDate: string, endDate?: string) => {
     const start = new Date(startDate);
     const end = endDate ? new Date(endDate) : null;

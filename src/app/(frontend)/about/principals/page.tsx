@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Head from 'next/head';
+import Link from 'next/link';
 import { useTranslation } from '@/contexts/LanguageContext';
 
 export default function PrincipalsPage() {
@@ -64,29 +64,6 @@ export default function PrincipalsPage() {
     }
   ];
 
-  const managingCommittee = [
-    {
-      position: language === 'bn' ? 'সভাপতি' : 'President',
-      role: language === 'bn' ? 'প্রতিষ্ঠাতা/পৃষ্ঠপোষক থেকে' : 'From founders/patrons',
-      responsibilities: language === 'bn' ? 'কমিটির নেতৃত্ব, ভাউচার সহ-স্বাক্ষর' : 'Committee leadership, voucher co-signing'
-    },
-    {
-      position: language === 'bn' ? 'প্রধান শিক্ষক' : 'Head Teacher',
-      role: language === 'bn' ? 'সদস্য-সচিব' : 'Member-secretary',
-      responsibilities: language === 'bn' ? 'প্রধান কমিটির সদস্য-সচিব' : 'Member-secretary of key committees'
-    },
-    {
-      position: language === 'bn' ? 'শিক্ষক প্রতিনিধি' : 'Teacher Representative',
-      role: language === 'bn' ? 'নির্বাচিত (১ জন)' : 'Elected (1 member)',
-      responsibilities: language === 'bn' ? 'শিক্ষকদের প্রতিনিধিত্ব' : 'Teacher representation'
-    },
-    {
-      position: language === 'bn' ? 'অভিভাবক প্রতিনিধি' : 'Guardian Representatives',
-      role: language === 'bn' ? '২ জন (১ পুরুষ, ১ মহিলা)' : '2 members (1 male, 1 female)',
-      responsibilities: language === 'bn' ? 'অভিভাবকদের প্রতিনিধিত্ব' : 'Guardian representation'
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
@@ -95,13 +72,13 @@ export default function PrincipalsPage() {
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
-                <a href="/" className="text-gray-500 hover:text-gray-700">Home</a>
+                <Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
               </li>
               <li>
-                <a href="/about" className="text-gray-500 hover:text-gray-700">About</a>
+                <Link href="/about" className="text-gray-500 hover:text-gray-700">About</Link>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
@@ -207,7 +184,7 @@ export default function PrincipalsPage() {
                     {/* Philosophy */}
                     <div className="bg-indigo-50 p-4 rounded-lg mb-4">
                       <h4 className="font-semibold text-indigo-800 mb-2">Educational Philosophy:</h4>
-                      <p className="text-indigo-700 italic">"{principal.philosophy}"</p>
+                      <p className="text-indigo-700 italic">&ldquo;{principal.philosophy}&rdquo;</p>
                     </div>
                     
                     {/* Contact */}
@@ -256,7 +233,7 @@ export default function PrincipalsPage() {
             <div className="text-center p-6 bg-green-50 rounded-lg">
               <div className="text-4xl mb-4">❤️</div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">Care</h3>
-              <p className="text-gray-600 text-sm">Genuine concern for every child's wellbeing and success</p>
+              <p className="text-gray-600 text-sm">Genuine concern for every child&apos;s wellbeing and success</p>
             </div>
           </div>
         </div>
@@ -269,15 +246,15 @@ export default function PrincipalsPage() {
             Connect with Our Leadership
           </h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
-            Have questions or want to discuss your child's education? Our principals are always available 
+            Have questions or want to discuss your child&apos;s education? Our principals are always available 
             to meet with parents and address any concerns.
           </p>
-          <a
+          <Link
             href="/contact"
             className="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
           >
             Schedule a Meeting
-          </a>
+          </Link>
         </div>
       </section>
     </div>

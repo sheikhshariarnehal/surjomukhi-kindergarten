@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -14,13 +14,7 @@ export default function ViewNoticePage() {
   const params = useParams();
   const noticeId = params.id as string;
 
-  useEffect(() => {
-    if (noticeId) {
-      fetchNotice();
-    }
-  }, [noticeId]);
-
-  const fetchNotice = async () => {
+  const fetchNotice = useCallback(async () => {
     try {
       const response = await fetch(`/api/notices/${noticeId}`);
       if (!response.ok) {
@@ -36,7 +30,13 @@ export default function ViewNoticePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [noticeId, router]);
+
+  useEffect(() => {
+    if (noticeId) {
+      fetchNotice();
+    }
+  }, [noticeId, fetchNotice]);
 
   const handleEdit = () => {
     router.push(`/dashboard/notices/${noticeId}/edit`);

@@ -15,7 +15,6 @@ import { z } from 'zod';
 type CreateNoticeFormData = z.infer<typeof createNoticeSchema>;
 
 export default function CreateNoticePage() {
-  const [uploading, setUploading] = useState(false);
   const [fileUrl, setFileUrl] = useState('');
   const router = useRouter();
 
@@ -70,7 +69,6 @@ export default function CreateNoticePage() {
         throw new Error(error.error || 'Failed to create notice');
       }
 
-      const result = await response.json();
       router.push('/dashboard/notices');
     } catch (error) {
       console.error('Error creating notice:', error);
@@ -180,7 +178,7 @@ export default function CreateNoticePage() {
                   <Button
                     type="submit"
                     loading={isSubmitting}
-                    disabled={isSubmitting || uploading}
+                    disabled={isSubmitting}
                     className="flex-1"
                   >
                     <Save className="h-4 w-4 mr-2" />

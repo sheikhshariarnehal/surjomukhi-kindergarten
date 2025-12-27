@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Class Two (Ages 5-6) - Surjomukhi Kindergarten',
@@ -14,11 +15,11 @@ export default function ClassTwoPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
-              <li><a href="/" className="text-gray-500 hover:text-gray-700">Home</a></li>
+              <li><Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link></li>
               <li><span className="text-gray-400">/</span></li>
-              <li><a href="/academic" className="text-gray-500 hover:text-gray-700">Academic</a></li>
+              <li><Link href="/academic" className="text-gray-500 hover:text-gray-700">Academic</Link></li>
               <li><span className="text-gray-400">/</span></li>
-              <li><a href="/academic/classes" className="text-gray-500 hover:text-gray-700">Classes</a></li>
+              <li><Link href="/academic/classes" className="text-gray-500 hover:text-gray-700">Classes</Link></li>
               <li><span className="text-gray-400">/</span></li>
               <li><span className="text-gray-900 font-medium">Class Two</span></li>
             </ol>
@@ -72,9 +73,9 @@ export default function ClassTwoPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-6">Expand Learning Horizons</h2>
           <p className="text-xl mb-8">Help your child explore new concepts and develop advanced skills.</p>
-          <a href="/admission" className="bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+          <Link href="/admission" className="bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
             Apply Now
-          </a>
+          </Link>
         </div>
       </section>
     </div>

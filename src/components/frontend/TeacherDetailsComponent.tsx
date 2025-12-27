@@ -4,11 +4,9 @@ import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { 
-  User, 
   Mail, 
   Phone, 
   MapPin, 
-  Calendar, 
   BookOpen, 
   Award, 
   GraduationCap,
@@ -220,7 +218,7 @@ export default function TeacherDetailsComponent({ slug }: TeacherDetailsComponen
                   শিক্ষাদর্শন
                 </h2>
                 <p className="text-gray-700 leading-relaxed text-base italic">
-                  "{teacher.teaching_philosophy}"
+                  &quot;{teacher.teaching_philosophy}&quot;
                 </p>
               </motion.section>
 

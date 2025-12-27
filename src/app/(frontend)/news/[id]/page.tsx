@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -9,7 +9,6 @@ import { News } from '@/types';
 
 export default function NewsDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const [news, setNews] = useState<News | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);

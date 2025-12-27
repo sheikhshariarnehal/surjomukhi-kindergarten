@@ -2,7 +2,14 @@
 
 import React from 'react';
 import { useTranslation } from '@/contexts/LanguageContext';
-import Head from 'next/head';
+import Link from 'next/link';
+
+// Types
+interface Facility {
+  icon: string;
+  title: string;
+  description: string;
+}
 
 // Structured data for Organization
 const organizationStructuredData = {
@@ -41,30 +48,6 @@ export default function AboutPage() {
 
   return (
     <>
-      {/* SEO Meta Tags */}
-      <Head>
-        <title>{language === 'bn' ? 'সূর্যমুখী কিন্ডারগার্টেন সম্পর্কে' : 'About Surjomukhi Kindergarten'}</title>
-        <meta
-          name="description"
-          content={language === 'bn'
-            ? 'সূর্যমুখী কিন্ডারগার্টেন - ২০০৪ সালে প্রতিষ্ঠিত একটি বেসরকারি প্রাথমিক শিক্ষা প্রতিষ্ঠান। বাংলা মাধ্যমে নার্সারি থেকে ৫ম শ্রেণী পর্যন্ত মানসম্পন্ন শিক্ষা প্রদান।'
-            : 'Surjomukhi Kindergarten - A private primary educational institution established in 2004. Quality Bangla medium education from nursery to Grade 5 in Nawabganj, Dhaka.'
-          }
-        />
-        <meta
-          name="keywords"
-          content={language === 'bn'
-            ? 'সূর্যমুখী কিন্ডারগার্টেন, প্রাথমিক শিক্ষা, বাংলা মাধ্যম, নবাবগঞ্জ, ঢাকা, কিন্ডারগার্টেন'
-            : 'Surjomukhi Kindergarten, primary education, Bangla medium, Nawabganj, Dhaka, kindergarten, early childhood education'
-          }
-        />
-        <meta property="og:title" content={language === 'bn' ? 'সূর্যমুখী কিন্ডারগার্টেন সম্পর্কে' : 'About Surjomukhi Kindergarten'} />
-        <meta property="og:description" content={t('about.description')} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/about`} />
-        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/about`} />
-      </Head>
-
       {/* Structured Data */}
       <script
         type="application/ld+json"
@@ -291,7 +274,7 @@ export default function AboutPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {t('about.facilities.items', []).map((facility: any, index: number) => (
+              {t('about.facilities.items', []).map((facility: Facility, index: number) => (
                 <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-shadow">
                   <div className="text-4xl mb-4">{facility.icon}</div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{facility.title}</h3>
@@ -352,7 +335,7 @@ export default function AboutPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <a
+              <Link
                 href="/about/about-us"
                 className="group bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-lg border border-blue-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
               >
@@ -362,9 +345,9 @@ export default function AboutPage() {
                   Learn about our history, mission, vision, and the values that guide our educational approach.
                 </p>
                 <span className="text-blue-600 font-medium group-hover:text-blue-800">Learn More →</span>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/about/history"
                 className="group bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-lg border border-green-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
               >
@@ -374,9 +357,9 @@ export default function AboutPage() {
                   Discover our journey since establishment and the milestones that shaped our institution.
                 </p>
                 <span className="text-green-600 font-medium group-hover:text-green-800">Explore →</span>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/about/founders"
                 className="group bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-lg border border-purple-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
               >
@@ -386,9 +369,9 @@ export default function AboutPage() {
                   Meet the visionaries who established our institution and their inspiring story.
                 </p>
                 <span className="text-purple-600 font-medium group-hover:text-purple-800">Meet Them →</span>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/about/principals"
                 className="group bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-lg border border-orange-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
               >
@@ -398,9 +381,9 @@ export default function AboutPage() {
                   Learn about our educational leaders and their commitment to excellence.
                 </p>
                 <span className="text-orange-600 font-medium group-hover:text-orange-800">View Leadership →</span>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/about/administrator"
                 className="group bg-gradient-to-br from-teal-50 to-teal-100 p-8 rounded-lg border border-teal-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
               >
@@ -410,9 +393,9 @@ export default function AboutPage() {
                   Meet our administrative team that ensures smooth operations and student support.
                 </p>
                 <span className="text-teal-600 font-medium group-hover:text-teal-800">View Team →</span>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/about/campus-tour"
                 className="group bg-gradient-to-br from-pink-50 to-pink-100 p-8 rounded-lg border border-pink-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
               >
@@ -422,7 +405,7 @@ export default function AboutPage() {
                   Take a virtual tour of our facilities and see where learning comes to life.
                 </p>
                 <span className="text-pink-600 font-medium group-hover:text-pink-800">Take Tour →</span>
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -440,18 +423,18 @@ export default function AboutPage() {
               }
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              <Link
                 href="/admission"
                 className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
               >
                 {language === 'bn' ? 'ভর্তির জন্য আবেদন করুন' : 'Apply for Admission'}
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/contact"
                 className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
               >
                 {language === 'bn' ? 'আমাদের সাথে যোগাযোগ করুন' : 'Contact Us'}
-              </a>
+              </Link>
             </div>
           </div>
         </section>

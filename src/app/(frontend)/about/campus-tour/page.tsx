@@ -3,12 +3,13 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from '@/contexts/LanguageContext';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // SEO metadata (moved to layout.tsx or metadata.ts for App Router)
 // This component uses client-side rendering for language switching
 
 export default function CampusTourPage() {
-  const { t, language } = useTranslation();
+  const { language } = useTranslation();
 
   // Memoized content for better performance
   const content = useMemo(() => ({
@@ -217,26 +218,26 @@ export default function CampusTourPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
             <ol className="flex items-center space-x-2 sm:space-x-4 text-sm sm:text-base" itemScope itemType="https://schema.org/BreadcrumbList">
               <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-                <a 
+                <Link 
                   href="/" 
                   className="text-gray-500 hover:text-gray-700 transition-colors"
                   itemProp="item"
                 >
                   <span itemProp="name">{content.breadcrumb.home}</span>
-                </a>
+                </Link>
                 <meta itemProp="position" content="1" />
               </li>
               <li>
                 <span className="text-gray-400" aria-hidden="true">/</span>
               </li>
               <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-                <a 
+                <Link 
                   href="/about" 
                   className="text-gray-500 hover:text-gray-700 transition-colors"
                   itemProp="item"
                 >
                   <span itemProp="name">{content.breadcrumb.about}</span>
-                </a>
+                </Link>
                 <meta itemProp="position" content="2" />
               </li>
               <li>
@@ -285,11 +286,12 @@ export default function CampusTourPage() {
                   key={index}
                   className="relative h-48 sm:h-56 md:h-64 lg:h-72 rounded-lg overflow-hidden shadow-lg group"
                 >
-                  <img 
+                  <Image 
                     src={image.src}
                     alt={image.alt}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
-                    loading={index === 0 ? 'eager' : 'lazy'}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+                    priority={index === 0}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>

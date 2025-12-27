@@ -151,7 +151,7 @@ export function announceToScreenReader(message: string, priority: 'polite' | 'as
 /**
  * Check color contrast ratio (simplified version)
  */
-export function hasGoodContrast(foreground: string, background: string): boolean {
+export function hasGoodContrast(_foreground: string, _background: string): boolean {
   // This is a simplified check - in production, you'd want a more robust solution
   // For now, we'll assume our design system colors have good contrast
   return true;

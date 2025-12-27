@@ -1,13 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { UploadWidget } from '@/components/admin/UploadWidget';
-import { Search, Plus, Trash2, Download, Upload, FileText, Edit, Eye } from 'lucide-react';
+import { Search, Plus, Trash2, Download, FileText } from 'lucide-react';
 import { Download as DownloadType } from '@/types/gallery';
 
 interface DownloadsResponse {
@@ -41,7 +39,7 @@ export default function DownloadsAdminPage() {
     'resources',
   ];
 
-  const fetchDownloads = async () => {
+  const fetchDownloads = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -63,11 +61,11 @@ export default function DownloadsAdminPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchTerm, selectedCategory]);
 
   useEffect(() => {
     fetchDownloads();
-  }, [searchTerm, selectedCategory]);
+  }, [fetchDownloads]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);

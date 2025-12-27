@@ -390,9 +390,9 @@ export default function TeacherDetailsPage({ params }: TeacherDetailsProps) {
               {teacher.teaching_philosophy && (
                 <Section title="Teaching Philosophy">
                   <blockquote className="text-slate-700 leading-relaxed italic border-l-4 border-slate-300 pl-4 sm:pl-6 text-justify hyphens-auto text-sm sm:text-base">
-                    <span className="text-slate-500 text-lg">"</span>
+                    <span className="text-slate-500 text-lg">&ldquo;</span>
                     {teacher.teaching_philosophy}
-                    <span className="text-slate-500 text-lg">"</span>
+                    <span className="text-slate-500 text-lg">&rdquo;</span>
                   </blockquote>
                 </Section>
               )}

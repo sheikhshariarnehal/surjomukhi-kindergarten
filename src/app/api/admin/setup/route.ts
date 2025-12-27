@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { AuthService } from '@/lib/auth';
 import { supabaseAdmin } from '@/lib/db';
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     // Check if this is a development environment
     if (process.env.NODE_ENV === 'production') {

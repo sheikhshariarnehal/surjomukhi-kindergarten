@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Metadata } from 'next';
+import Link from 'next/link';
 
 // Note: Metadata for client components needs to be handled differently
 // This will be handled in the layout or through dynamic imports
@@ -28,9 +28,9 @@ export default function TuitionFeesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
-              <li><a href="/" className="text-gray-500 hover:text-gray-700">{t('common.home')}</a></li>
+              <li><Link href="/" className="text-gray-500 hover:text-gray-700">{t('common.home')}</Link></li>
               <li><span className="text-gray-400">/</span></li>
-              <li><a href="/student" className="text-gray-500 hover:text-gray-700">{t('common.students')}</a></li>
+              <li><Link href="/student" className="text-gray-500 hover:text-gray-700">{t('common.students')}</Link></li>
               <li><span className="text-gray-400">/</span></li>
               <li><span className="text-gray-900 font-medium">{t('students.fees.title')}</span></li>
             </ol>
@@ -68,7 +68,7 @@ export default function TuitionFeesPage() {
                 {t('students.fees.monthlyFees')}
               </h3>
               <div className="space-y-4">
-                {classNames.map((className, index) => (
+                {classNames.map((className) => (
                   <div key={className} className="bg-white rounded-lg shadow-md border border-gray-200 p-4">
                     <div className="flex justify-between items-center">
                       <span className="font-semibold text-gray-800">
@@ -89,7 +89,7 @@ export default function TuitionFeesPage() {
                 {t('students.fees.admissionFees')}
               </h3>
               <div className="space-y-4">
-                {classNames.map((className, index) => (
+                {classNames.map((className) => (
                   <div key={className} className="bg-white rounded-lg shadow-md border border-gray-200 p-4">
                     <div className="flex justify-between items-center">
                       <span className="font-semibold text-gray-800">

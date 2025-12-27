@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,7 +18,6 @@ type UpdateNoticeFormData = z.infer<typeof updateNoticeSchema>;
 export default function EditNoticePage() {
   const [notice, setNotice] = useState<Notice | null>(null);
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false);
   const [fileUrl, setFileUrl] = useState('');
   const router = useRouter();
   const params = useParams();
@@ -29,19 +28,12 @@ export default function EditNoticePage() {
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-    watch,
     reset,
   } = useForm<UpdateNoticeFormData>({
     resolver: zodResolver(updateNoticeSchema),
   });
 
-  useEffect(() => {
-    if (noticeId) {
-      fetchNotice();
-    }
-  }, [noticeId]);
-
-  const fetchNotice = async () => {
+  const fetchNotice = useCallback(async () => {
     try {
       const response = await fetch(`/api/notices/${noticeId}`);
       if (!response.ok) {
@@ -70,7 +62,13 @@ export default function EditNoticePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [noticeId, reset, router]);
+
+  useEffect(() => {
+    if (noticeId) {
+      fetchNotice();
+    }
+  }, [noticeId, fetchNotice]);
 
   const generateSlug = (title: string) => {
     return title
@@ -246,7 +244,7 @@ export default function EditNoticePage() {
                   <Button
                     type="submit"
                     loading={isSubmitting}
-                    disabled={isSubmitting || uploading}
+                    disabled={isSubmitting}
                     className="flex-1"
                   >
                     <Save className="h-4 w-4 mr-2" />

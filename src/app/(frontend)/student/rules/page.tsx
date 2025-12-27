@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Head from 'next/head';
+import Link from 'next/link';
 import { useTranslation } from '@/contexts/LanguageContext';
 
 export default function StudentRulesPage() {
@@ -77,37 +77,21 @@ export default function StudentRulesPage() {
   ];
 
   return (
-    <>
-      {/* SEO Meta Tags */}
-      <Head>
-        <title>{language === 'bn' ? 'শিক্ষার্থী নিয়মাবলী - সূর্যমুখী কিন্ডারগার্টেন' : 'Student Rules & Regulations - Surjomukhi Kindergarten'}</title>
-        <meta
-          name="description"
-          content={language === 'bn'
-            ? 'সূর্যমুখী কিন্ডারগার্টেনের শিক্ষার্থীদের জন্য নিয়মাবলী ও বিধিবিধান। শিশু সুরক্ষা, মেধাবৃত্তি এবং নিরাপদ শিক্ষা পরিবেশের তথ্য।'
-            : 'Student rules and regulations for Surjomukhi Kindergarten. Information about child protection, scholarships, and safe learning environment.'
-          }
-        />
-        <meta property="og:title" content={language === 'bn' ? 'শিক্ষার্থী নিয়মাবলী - সূর্যমুখী কিন্ডারগার্টেন' : 'Student Rules - Surjomukhi Kindergarten'} />
-        <meta property="og:description" content={language === 'bn' ? 'শিক্ষার্থীদের নিয়মাবলী ও নিরাপত্তা বিধান' : 'Student rules and safety guidelines'} />
-        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/student/rules`} />
-      </Head>
-
-      <div className="min-h-screen bg-gray-50">
-        {/* Breadcrumb */}
-        <div className="bg-white border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <nav className="flex" aria-label="Breadcrumb">
-              <ol className="flex items-center space-x-4">
-                <li><a href="/" className="text-gray-500 hover:text-gray-700 transition-colors">{language === 'bn' ? 'হোম' : 'Home'}</a></li>
-                <li><span className="text-gray-400">/</span></li>
-                <li><a href="/student" className="text-gray-500 hover:text-gray-700 transition-colors">{language === 'bn' ? 'শিক্ষার্থী' : 'Student'}</a></li>
-                <li><span className="text-gray-400">/</span></li>
-                <li><span className="text-gray-900 font-medium">{language === 'bn' ? 'নিয়মাবলী' : 'Rules & Regulations'}</span></li>
-              </ol>
-            </nav>
-          </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Breadcrumb */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <nav className="flex" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-4">
+              <li><Link href="/" className="text-gray-500 hover:text-gray-700 transition-colors">{language === 'bn' ? 'হোম' : 'Home'}</Link></li>
+              <li><span className="text-gray-400">/</span></li>
+              <li><Link href="/student" className="text-gray-500 hover:text-gray-700 transition-colors">{language === 'bn' ? 'শিক্ষার্থী' : 'Student'}</Link></li>
+              <li><span className="text-gray-400">/</span></li>
+              <li><span className="text-gray-900 font-medium">{language === 'bn' ? 'নিয়মাবলী' : 'Rules & Regulations'}</span></li>
+            </ol>
+          </nav>
         </div>
+      </div>
 
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-amber-600 to-orange-600 text-white py-16">
@@ -228,7 +212,7 @@ export default function StudentRulesPage() {
                 </li>
                 <li className="flex items-start">
                   <span className="text-orange-500 mr-3 mt-1">•</span>
-                  <span className="text-orange-700">You'll get help to make better choices</span>
+                  <span className="text-orange-700">You&apos;ll get help to make better choices</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-orange-500 mr-3 mt-1">•</span>
@@ -264,7 +248,7 @@ export default function StudentRulesPage() {
             <div className="text-center p-6 bg-amber-50 rounded-lg">
               <div className="text-3xl mb-4">🙋</div>
               <h4 className="font-bold text-amber-800 mb-2">Ask Questions</h4>
-              <p className="text-amber-700 text-sm">Ask your teacher if you don't understand a rule</p>
+              <p className="text-amber-700 text-sm">Ask your teacher if you don&apos;t understand a rule</p>
             </div>
             <div className="text-center p-6 bg-amber-50 rounded-lg">
               <div className="text-3xl mb-4">👥</div>
@@ -279,20 +263,19 @@ export default function StudentRulesPage() {
       <section className="py-16 bg-amber-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Let's Follow the Rules Together!
+            Let&apos;s Follow the Rules Together!
           </h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
             When we all follow the rules, our school becomes a wonderful place to learn and grow.
           </p>
-          <a
+          <Link
             href="/contact"
             className="bg-white text-amber-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
           >
             Questions? Contact Us
-          </a>
+          </Link>
         </div>
       </section>
       </div>
-    </>
   );
 }

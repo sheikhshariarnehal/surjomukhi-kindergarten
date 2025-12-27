@@ -88,13 +88,13 @@ export default function ClassesPage() {
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
-                <a href="/" className="text-gray-500 hover:text-gray-700">Home</a>
+                <Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
               </li>
               <li>
-                <a href="/academic" className="text-gray-500 hover:text-gray-700">Academic</a>
+                <Link href="/academic" className="text-gray-500 hover:text-gray-700">Academic</Link>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
@@ -115,7 +115,7 @@ export default function ClassesPage() {
               Our Classes
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-              Discover our age-appropriate class levels designed to nurture your child's development at every stage.
+              Discover our age-appropriate class levels designed to nurture your child&apos;s development at every stage.
             </p>
           </div>
         </div>
@@ -188,7 +188,7 @@ export default function ClassesPage() {
               What Makes Our Classes Special
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Every class at Surjomukhi Kindergarten is designed with your child's development in mind.
+              Every class at Surjomukhi Kindergarten is designed with your child&apos;s development in mind.
             </p>
           </div>
 

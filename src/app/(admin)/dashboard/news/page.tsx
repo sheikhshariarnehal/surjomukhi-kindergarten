@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Table } from '@/components/admin/Table';
-import { Search, Plus, Edit, Trash2, Eye, Newspaper, Image } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, Eye, Newspaper, Image as ImageIcon } from 'lucide-react';
 import { News } from '@/types/news';
 
 interface NewsResponse {
@@ -25,15 +25,9 @@ export default function NewsPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const router = useRouter();
 
-  useEffect(() => {
-    fetchNews();
-  }, [currentPage, searchTerm]);
-
-  const fetchNews = async () => {
+  const fetchNews = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -49,7 +43,6 @@ export default function NewsPage() {
 
       const data: NewsResponse = await response.json();
       setNews(data.news);
-      setTotalPages(data.pagination.totalPages);
       setTotalCount(data.pagination.total);
     } catch (error) {
       console.error('Error fetching news:', error);
@@ -57,7 +50,11 @@ export default function NewsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, searchTerm]);
+
+  useEffect(() => {
+    fetchNews();
+  }, [fetchNews]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
@@ -98,14 +95,17 @@ export default function NewsPage() {
       render: (newsItem: News) => (
         <div className="flex items-center justify-center">
           {newsItem?.image_url ? (
-            <img
-              src={newsItem.image_url}
-              alt={newsItem?.title || 'News'}
-              className="w-12 h-12 rounded-lg object-cover border-2 border-gray-200"
-            />
+            <div className="relative w-12 h-12 rounded-lg overflow-hidden border-2 border-gray-200">
+              <Image
+                src={newsItem.image_url}
+                alt={newsItem?.title || 'News'}
+                fill
+                className="object-cover"
+              />
+            </div>
           ) : (
             <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
-              <Image className="h-6 w-6 text-white" />
+              <ImageIcon className="h-6 w-6 text-white" />
             </div>
           )}
         </div>

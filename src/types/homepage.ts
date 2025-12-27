@@ -1,44 +1,14 @@
 // Homepage-specific types for better type safety and performance
 
+import { Event } from './event';
+import { Notice } from './notice';
+import { News } from './news';
+
 export interface HomePageData {
   news: News[];
   events: Event[];
   notices: Notice[];
   teachers: Teacher[];
-}
-
-export interface Notice {
-  id: string;
-  title: string;
-  slug: string;
-  content: string;
-  publish_date?: string;
-  file_url?: string;
-  created_at?: string;
-  updated_at?: string;
-}
-
-export interface News {
-  id: string;
-  title: string;
-  excerpt?: string;
-  content: string;
-  publish_date?: string;
-  image_url?: string;
-  created_at?: string;
-  updated_at?: string;
-}
-
-export interface Event {
-  id: string;
-  title: string;
-  description?: string;
-  start_date: string;
-  end_date?: string;
-  location?: string;
-  image_url?: string;
-  created_at?: string;
-  updated_at?: string;
 }
 
 export interface Teacher {

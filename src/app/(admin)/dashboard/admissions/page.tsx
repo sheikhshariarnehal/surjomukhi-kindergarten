@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import Table, { TableColumn, commonActions } from '@/components/admin/Table';
 import { Card } from '@/components/ui/Card';
-import { Search, ClipboardList, Calendar, Eye, Check, X, Clock, Download, Filter } from 'lucide-react';
+import { Search, Calendar, Check, X, Clock, Download } from 'lucide-react';
 
 interface AdmissionApplication {
   id: string;
@@ -48,11 +48,7 @@ export default function AdmissionsPage() {
   const [classFilter, setClassFilter] = useState('');
   const router = useRouter();
 
-  useEffect(() => {
-    fetchApplications();
-  }, [currentPage, searchTerm, statusFilter, classFilter]);
-
-  const fetchApplications = async () => {
+  const fetchApplications = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -127,7 +123,11 @@ export default function AdmissionsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, searchTerm, statusFilter, classFilter]);
+
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);

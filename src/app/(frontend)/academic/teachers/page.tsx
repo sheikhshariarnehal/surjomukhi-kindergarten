@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Loader2, AlertCircle, Users, GraduationCap, Award, BookOpen, Globe } from 'lucide-react';
+import { Loader2, AlertCircle, Users, GraduationCap, Award, BookOpen } from 'lucide-react';
 import SimpleTeacherCard from '@/components/frontend/SimpleTeacherCard';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -39,7 +39,7 @@ interface TeachersData {
 }
 
 // Loading component
-const LoadingSpinner = ({ t }: { t: any }) => (
+const LoadingSpinner = ({ t }: { t: (key: string, fallback: string) => string }) => (
   <div className="flex items-center justify-center py-16">
     <div className="text-center">
       <Loader2 className="h-8 w-8 animate-spin text-teal-600 mx-auto mb-4" />
@@ -49,7 +49,7 @@ const LoadingSpinner = ({ t }: { t: any }) => (
 );
 
 // Error component
-const ErrorMessage = ({ message, onRetry, t }: { message: string; onRetry: () => void; t: any }) => (
+const ErrorMessage = ({ message, onRetry, t }: { message: string; onRetry: () => void; t: (key: string, fallback: string) => string }) => (
   <div className="flex items-center justify-center py-16">
     <div className="text-center max-w-md">
       <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
@@ -73,7 +73,7 @@ export default function TeachersPage() {
   const [teachers, setTeachers] = useState<TeacherData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { language, setLanguage, t } = useLanguage();
+  const { t } = useLanguage();
 
   // Load teacher data
   const loadTeachers = async () => {
@@ -155,64 +155,18 @@ export default function TeachersPage() {
     };
   };
 
-  // Custom SEO Head component
-  const TeachersSEO = () => (
-    <Head>
-      <title>শিক্ষকমণ্ডলী | সুর্যমুখী কিন্ডারগার্টেন - অভিজ্ঞ ও যোগ্য শিক্ষকবৃন্দ</title>
-      <meta
-        name="description"
-        content="সুর্যমুখী কিন্ডারগার্টেনের অভিজ্ঞ ও যোগ্য শিক্ষকমণ্ডলীর সাথে পরিচিত হন। আমাদের শিক্ষকরা শিশুদের সার্বিক বিকাশে নিবেদিত এবং প্রাথমিক শিক্ষায় বিশেষজ্ঞ।"
-      />
-      <meta
-        name="keywords"
-        content="সুর্যমুখী কিন্ডারগার্টেন শিক্ষক, কিন্ডারগার্টেন শিক্ষকমণ্ডলী, অভিজ্ঞ শিক্ষক, যোগ্য শিক্ষক, প্রাথমিক শিক্ষা, শিশু শিক্ষা বিশেষজ্ঞ, teachers, faculty, qualified educators, early childhood specialists"
-      />
-
-      {/* Open Graph */}
-      <meta property="og:title" content="শিক্ষকমণ্ডলী - সুর্যমুখী কিন্ডারগার্টেন" />
-      <meta property="og:description" content="সুর্যমুখী কিন্ডারগার্টেনের অভিজ্ঞ ও যোগ্য শিক্ষকমণ্ডলীর সাথে পরিচিত হন। আমাদের শিক্ষকরা শিশুদের সার্বিক বিকাশে নিবেদিত।" />
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content="/academic/teachers" />
-      <meta property="og:image" content="/og-teachers.jpg" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
-      <meta property="og:image:alt" content="সুর্যমুখী কিন্ডারগার্টেন শিক্ষকমণ্ডলী" />
-      <meta property="og:locale" content="bn_BD" />
-      <meta property="og:locale:alternate" content="en_US" />
-
-      {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="শিক্ষকমণ্ডলী - সুর্যমুখী কিন্ডারগার্টেন" />
-      <meta name="twitter:description" content="আমাদের অভিজ্ঞ ও যোগ্য শিক্ষকমণ্ডলীর সাথে পরিচিত হন।" />
-      <meta name="twitter:image" content="/twitter-teachers.jpg" />
-
-      {/* Canonical URL */}
-      <link rel="canonical" href="/academic/teachers" />
-
-      {/* Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(generateStructuredData(), null, 2)
-        }}
-      />
-    </Head>
-  );
-
   // Show loading state
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <TeachersSEO />
-
         {/* Breadcrumb */}
         <div className="bg-white border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <nav className="flex" aria-label="Breadcrumb">
               <ol className="flex items-center space-x-4">
-                <li><a href="/" className="text-gray-500 hover:text-gray-700 transition-colors">Home</a></li>
+                <li><Link href="/" className="text-gray-500 hover:text-gray-700 transition-colors">Home</Link></li>
                 <li><span className="text-gray-400">/</span></li>
-                <li><a href="/academic" className="text-gray-500 hover:text-gray-700 transition-colors">Academic</a></li>
+                <li><Link href="/academic" className="text-gray-500 hover:text-gray-700 transition-colors">Academic</Link></li>
                 <li><span className="text-gray-400">/</span></li>
                 <li><span className="text-gray-900 font-medium">Our Teachers</span></li>
               </ol>
@@ -231,7 +185,7 @@ export default function TeachersPage() {
                 Our Dedicated Teachers
               </h1>
               <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-                Meet our qualified and passionate educators who are committed to nurturing your child's growth and development.
+                Meet our qualified and passionate educators who are committed to nurturing your child&apos;s growth and development.
               </p>
             </div>
           </div>
@@ -246,16 +200,14 @@ export default function TeachersPage() {
   if (error) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <TeachersSEO />
-
         {/* Breadcrumb */}
         <div className="bg-white border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <nav className="flex" aria-label="Breadcrumb">
               <ol className="flex items-center space-x-4">
-                <li><a href="/" className="text-gray-500 hover:text-gray-700 transition-colors">Home</a></li>
+                <li><Link href="/" className="text-gray-500 hover:text-gray-700 transition-colors">Home</Link></li>
                 <li><span className="text-gray-400">/</span></li>
-                <li><a href="/academic" className="text-gray-500 hover:text-gray-700 transition-colors">Academic</a></li>
+                <li><Link href="/academic" className="text-gray-500 hover:text-gray-700 transition-colors">Academic</Link></li>
                 <li><span className="text-gray-400">/</span></li>
                 <li><span className="text-gray-900 font-medium">Our Teachers</span></li>
               </ol>
@@ -269,7 +221,7 @@ export default function TeachersPage() {
             <div className="text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Dedicated Teachers</h1>
               <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-                Meet our qualified and passionate educators who are committed to nurturing your child's growth and development.
+                Meet our qualified and passionate educators who are committed to nurturing your child&apos;s growth and development.
               </p>
             </div>
           </div>
@@ -282,8 +234,13 @@ export default function TeachersPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <TeachersSEO />
-
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateStructuredData(), null, 2)
+        }}
+      />
       {/* Skip to main content link for accessibility */}
       <a
         href="#main-content"
@@ -299,25 +256,25 @@ export default function TeachersPage() {
             <nav aria-label="Breadcrumb navigation">
               <ol className="flex items-center space-x-4" role="list">
                 <li role="listitem">
-                  <a
+                  <Link
                     href="/"
                     className="text-gray-500 hover:text-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
                     aria-label="Go to homepage"
                   >
                     {t('navigation.home', 'Home')}
-                  </a>
+                  </Link>
                 </li>
                 <li role="listitem" aria-hidden="true">
                   <span className="text-gray-400">/</span>
                 </li>
                 <li role="listitem">
-                  <a
+                  <Link
                     href="/academic"
                     className="text-gray-500 hover:text-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
                     aria-label="Go to academic section"
                   >
                     {t('navigation.academic', 'Academic')}
-                  </a>
+                  </Link>
                 </li>
                 <li role="listitem" aria-hidden="true">
                   <span className="text-gray-400">/</span>

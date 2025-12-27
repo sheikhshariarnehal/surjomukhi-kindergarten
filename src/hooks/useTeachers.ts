@@ -154,7 +154,7 @@ export function useTeacher(options: UseTeacherOptions = {}): UseTeacherReturn {
     if (autoFetch && (id || slug)) {
       fetchTeacher();
     }
-  }, [fetchTeacher, autoFetch]);
+  }, [fetchTeacher, autoFetch, id, slug]);
 
   return {
     teacher,

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { DatabaseService, supabaseAdmin } from '@/lib/db';
+import { DatabaseService } from '@/lib/db';
 import { AuthService } from '@/lib/auth';
 import { updateNewsSchema, validateData } from '@/lib/validators';
 import { News } from '@/types/news';

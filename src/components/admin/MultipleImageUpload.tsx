@@ -2,9 +2,10 @@
 
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { Upload, X, Image as ImageIcon, Star, StarOff } from 'lucide-react';
+import { Upload, X, Star, StarOff } from 'lucide-react';
 import { supabaseAdmin } from '@/lib/db';
 
 export interface UploadedImage {
@@ -61,7 +62,7 @@ export function MultipleImageUpload({
 
     // Convert unsupported formats (like AVIF) to JPEG
     return new Promise((resolve, reject) => {
-      const img = new Image();
+      const img = new window.Image();
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
 
@@ -88,14 +89,14 @@ export function MultipleImageUpload({
     });
   };
 
-  const uploadFile = async (file: File): Promise<string> => {
+  const uploadFile = useCallback(async (file: File): Promise<string> => {
     // Convert file to supported format if needed
     const processedFile = await convertToSupportedFormat(file);
     const fileExt = processedFile.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
     const filePath = folder ? `${folder}/${fileName}` : fileName;
 
-    const { data, error } = await supabaseAdmin.storage
+    const { error } = await supabaseAdmin.storage
       .from(bucket)
       .upload(filePath, processedFile, {
         contentType: processedFile.type,
@@ -111,7 +112,7 @@ export function MultipleImageUpload({
       .getPublicUrl(filePath);
 
     return publicUrl;
-  };
+  }, [bucket, folder]);
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -149,7 +150,7 @@ export function MultipleImageUpload({
         setUploading(false);
       }
     },
-    [images, onImagesChange, onError, disabled, uploading, maxImages, bucket, folder]
+    [images, onImagesChange, onError, disabled, uploading, maxImages, uploadFile]
   );
 
   const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
@@ -419,11 +420,12 @@ export function MultipleImageUpload({
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {images.map((image) => (
             <div key={image.id} className="relative group">
-              <div className="aspect-square rounded-lg overflow-hidden bg-gray-100">
-                <img
+              <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 relative">
+                <Image
                   src={image.url}
                   alt={image.caption || 'Event image'}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               </div>
               

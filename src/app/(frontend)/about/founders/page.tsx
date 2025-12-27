@@ -4,6 +4,7 @@ import React from 'react';
 import { useTranslation } from '@/contexts/LanguageContext';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function FoundersPage() {
   const { t, language } = useTranslation();
@@ -32,13 +33,13 @@ export default function FoundersPage() {
             <nav className="flex" aria-label="Breadcrumb">
               <ol className="flex items-center space-x-4">
                 <li>
-                  <a href="/" className="text-gray-500 hover:text-gray-700 transition-colors">{t('common.home')}</a>
+                  <Link href="/" className="text-gray-500 hover:text-gray-700 transition-colors">{t('common.home')}</Link>
                 </li>
                 <li>
                   <span className="text-gray-400">/</span>
                 </li>
                 <li>
-                  <a href="/about" className="text-gray-500 hover:text-gray-700 transition-colors">{t('common.about')}</a>
+                  <Link href="/about" className="text-gray-500 hover:text-gray-700 transition-colors">{t('common.about')}</Link>
                 </li>
                 <li>
                   <span className="text-gray-400">/</span>
@@ -106,7 +107,7 @@ export default function FoundersPage() {
                       {language === 'bn' ? 'দৃষ্টিভঙ্গি' : 'Vision'}
                     </h4>
                     <p className="text-gray-600 leading-relaxed italic">
-                      "{t('about.pages.founders.founder.vision')}"
+                      &quot;{t('about.pages.founders.founder.vision')}&quot;
                     </p>
                   </div>
 

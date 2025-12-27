@@ -23,7 +23,7 @@ export interface FormFieldProps<T extends FieldValues> {
 }
 
 export interface FormProps<T extends FieldValues> {
-  schema: z.ZodSchema<T>;
+  schema: z.ZodType<T, any, any>;
   onSubmit: (data: T) => void | Promise<void>;
   defaultValues?: Partial<T>;
   fields: FormFieldProps<T>[];
@@ -43,10 +43,10 @@ export function Form<T extends FieldValues>({
   className,
   children,
 }: FormProps<T>) {
-  const form = useForm({
-    resolver: zodResolver(schema as any),
+  const form = useForm<T>({
+    resolver: zodResolver(schema),
     defaultValues: defaultValues as any,
-  }) as UseFormReturn<T>;
+  });
 
   const {
     register,
@@ -54,7 +54,6 @@ export function Form<T extends FieldValues>({
     formState: { errors, isSubmitting },
     watch,
     setValue,
-    getValues,
   } = form;
 
   const handleFormSubmit = async (data: T) => {

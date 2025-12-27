@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,7 +10,7 @@ import { Input, Textarea } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 import UploadWidget from '@/components/admin/UploadWidget';
 import { MultipleImageUpload, UploadedImage } from '@/components/admin/MultipleImageUpload';
-import { ArrowLeft, Save, Calendar } from 'lucide-react';
+import { ArrowLeft, Save } from 'lucide-react';
 import { z } from 'zod';
 import { Event } from '@/types/event';
 
@@ -18,7 +18,6 @@ type UpdateEventFormData = z.infer<typeof updateEventSchema>;
 
 export default function EditEventPage() {
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [eventImages, setEventImages] = useState<UploadedImage[]>([]);
   const [event, setEvent] = useState<Event | null>(null);
@@ -31,7 +30,6 @@ export default function EditEventPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-    watch,
     reset,
   } = useForm<UpdateEventFormData>({
     resolver: zodResolver(updateEventSchema),
@@ -46,13 +44,7 @@ export default function EditEventPage() {
       .trim();
   };
 
-  useEffect(() => {
-    if (eventId) {
-      fetchEvent();
-    }
-  }, [eventId]);
-
-  const fetchEvent = async () => {
+  const fetchEvent = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/events/${eventId}`);
@@ -67,7 +59,7 @@ export default function EditEventPage() {
 
       // Convert existing images to UploadedImage format
       if (eventData.images && eventData.images.length > 0) {
-        const existingImages: UploadedImage[] = eventData.images.map((img: any) => ({
+        const existingImages: UploadedImage[] = eventData.images.map((img: { id: string; url: string; caption?: string; is_primary?: boolean }) => ({
           id: img.id,
           url: img.url,
           caption: img.caption || '',
@@ -95,7 +87,13 @@ export default function EditEventPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [eventId, reset, router]);
+
+  useEffect(() => {
+    if (eventId) {
+      fetchEvent();
+    }
+  }, [eventId, fetchEvent]);
 
   const handleImageUpload = (url: string) => {
     setImageUrl(url);
@@ -171,7 +169,7 @@ export default function EditEventPage() {
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-bold text-gray-900">Event not found</h2>
-        <p className="text-gray-600 mt-2">The event you're looking for doesn't exist.</p>
+        <p className="text-gray-600 mt-2">The event you&apos;re looking for doesn&apos;t exist.</p>
         <Button onClick={() => router.push('/dashboard/events')} className="mt-4">
           Back to Events
         </Button>
@@ -289,7 +287,7 @@ export default function EditEventPage() {
                   <Button
                     type="submit"
                     loading={isSubmitting}
-                    disabled={isSubmitting || uploading}
+                    disabled={isSubmitting}
                     className="flex-1"
                   >
                     <Save className="h-4 w-4 mr-2" />

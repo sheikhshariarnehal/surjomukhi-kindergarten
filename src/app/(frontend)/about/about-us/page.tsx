@@ -2,10 +2,11 @@
 
 import React from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useTranslation } from '@/contexts/LanguageContext';
 
 export default function AboutUsPage() {
-  const { t, language } = useTranslation();
+  const { language } = useTranslation();
 
   const contactInfo = [
     {
@@ -244,13 +245,13 @@ export default function AboutUsPage() {
             <nav className="flex" aria-label="Breadcrumb">
               <ol className="flex items-center space-x-4">
                 <li>
-                  <a href="/" className="text-gray-500 hover:text-gray-700 transition-colors">{language === 'bn' ? 'হোম' : 'Home'}</a>
+                  <Link href="/" className="text-gray-500 hover:text-gray-700 transition-colors">{language === 'bn' ? 'হোম' : 'Home'}</Link>
                 </li>
                 <li>
                   <span className="text-gray-400">/</span>
                 </li>
                 <li>
-                  <a href="/about" className="text-gray-500 hover:text-gray-700 transition-colors">{language === 'bn' ? 'আমাদের সম্পর্কে' : 'About'}</a>
+                  <Link href="/about" className="text-gray-500 hover:text-gray-700 transition-colors">{language === 'bn' ? 'আমাদের সম্পর্কে' : 'About'}</Link>
                 </li>
                 <li>
                   <span className="text-gray-400">/</span>

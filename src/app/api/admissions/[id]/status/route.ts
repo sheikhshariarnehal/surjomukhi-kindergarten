@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { DatabaseService, supabaseAdmin } from '@/lib/db';
+import { supabaseAdmin } from '@/lib/db';
 import { AuthService } from '@/lib/auth';
 
 // PATCH /api/admissions/[id]/status - Update admission application status

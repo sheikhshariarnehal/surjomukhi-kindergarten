@@ -1,24 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { DatabaseService, supabaseAdmin } from '@/lib/db';
+import { supabaseAdmin } from '@/lib/db';
 import { AuthService } from '@/lib/auth';
-
-interface AdmissionApplication {
-  id: string;
-  student_name: string;
-  parent_name: string;
-  parent_email: string;
-  parent_phone: string;
-  class_applying: string;
-  date_of_birth: string;
-  gender: string;
-  address: string;
-  status: 'pending' | 'approved' | 'rejected' | 'interview_scheduled';
-  application_date: string;
-  interview_date?: string;
-  notes?: string;
-  created_at: string;
-  updated_at: string;
-}
 
 // GET /api/admissions - List all admission applications with pagination and filters
 export async function GET(request: NextRequest) {

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { DatabaseService, supabaseAdmin } from '@/lib/db';
+import { supabaseAdmin, DatabaseService } from '@/lib/db';
 import { AuthService } from '@/lib/auth';
-import { createDownloadSchema, updateDownloadSchema, validateData } from '@/lib/validators';
+import { createDownloadSchema, validateData } from '@/lib/validators';
 import { Download } from '@/types/gallery';
 
 // GET /api/downloads - List all downloads with pagination and filtering

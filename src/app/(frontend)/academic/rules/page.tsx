@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Head from 'next/head';
+import Link from 'next/link';
 import { useTranslation } from '@/contexts/LanguageContext';
 
 export default function AcademicRulesPage() {
@@ -89,9 +89,9 @@ export default function AcademicRulesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
-              <li><a href="/" className="text-gray-500 hover:text-gray-700">Home</a></li>
+              <li><Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link></li>
               <li><span className="text-gray-400">/</span></li>
-              <li><a href="/academic" className="text-gray-500 hover:text-gray-700">Academic</a></li>
+              <li><Link href="/academic" className="text-gray-500 hover:text-gray-700">Academic</Link></li>
               <li><span className="text-gray-400">/</span></li>
               <li><span className="text-gray-900 font-medium">Academic Rules</span></li>
             </ol>
@@ -231,7 +231,7 @@ export default function AcademicRulesPage() {
               <div>
                 <h4 className="font-semibold text-gray-900 mb-3">For Students:</h4>
                 <ul className="space-y-2 text-sm text-gray-600">
-                  <li>• Ask questions if you don't understand a rule</li>
+                  <li>• Ask questions if you don&apos;t understand a rule</li>
                   <li>• Help your classmates follow the rules</li>
                   <li>• Talk to teachers about any problems</li>
                   <li>• Be proud of following school rules</li>
@@ -249,14 +249,14 @@ export default function AcademicRulesPage() {
             Questions About Our Rules?
           </h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
-            We're here to help you understand our policies and create the best learning environment for your child.
+            We&apos;re here to help you understand our policies and create the best learning environment for your child.
           </p>
-          <a
+          <Link
             href="/contact"
             className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
           >
             Contact Us
-          </a>
+          </Link>
         </div>
       </section>
     </div>

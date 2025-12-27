@@ -8,9 +8,6 @@ import Image from 'next/image';
 import { Event } from '@/types';
 import {
   Calendar,
-  Clock,
-  MapPin,
-  User,
   Share2,
   Printer,
   ArrowLeft,
@@ -71,27 +68,6 @@ export default function EventDetailPage() {
       hour: '2-digit',
       minute: '2-digit'
     });
-  };
-
-  const formatEventDate = (startDate: string, endDate?: string) => {
-    if (!startDate) return 'Date not available';
-
-    try {
-      const start = new Date(startDate);
-      const end = endDate ? new Date(endDate) : null;
-
-      if (end && start.toDateString() !== end.toDateString()) {
-        return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
-      }
-
-      return start.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    } catch {
-      return 'Invalid date';
-    }
   };
 
   const getEventStatus = (startDate: string, endDate?: string) => {

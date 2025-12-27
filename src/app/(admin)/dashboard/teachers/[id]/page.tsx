@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { ArrowLeft, Edit, Trash2, User, GraduationCap, Calendar, Mail, Phone } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, User, GraduationCap, Calendar } from 'lucide-react';
 import { Teacher } from '@/types/teacher';
 
 export default function TeacherViewPage() {
@@ -15,13 +16,7 @@ export default function TeacherViewPage() {
   const params = useParams();
   const teacherId = params.id as string;
 
-  useEffect(() => {
-    if (teacherId) {
-      fetchTeacher();
-    }
-  }, [teacherId]);
-
-  const fetchTeacher = async () => {
+  const fetchTeacher = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/teachers/${teacherId}`);
@@ -37,7 +32,13 @@ export default function TeacherViewPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [teacherId, router]);
+
+  useEffect(() => {
+    if (teacherId) {
+      fetchTeacher();
+    }
+  }, [teacherId, fetchTeacher]);
 
   const handleDelete = async () => {
     if (!teacher) return;
@@ -85,7 +86,7 @@ export default function TeacherViewPage() {
       <div className="text-center py-12">
         <User className="h-12 w-12 text-gray-400 mx-auto mb-4" />
         <h3 className="text-lg font-medium text-gray-900 mb-2">Teacher not found</h3>
-        <p className="text-gray-500 mb-4">The teacher you're looking for doesn't exist.</p>
+        <p className="text-gray-500 mb-4">The teacher you&apos;re looking for doesn&apos;t exist.</p>
         <Link href="/dashboard/teachers">
           <Button>
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -188,11 +189,14 @@ export default function TeacherViewPage() {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Photo</h2>
             <div className="flex justify-center">
               {teacher.photo_url ? (
-                <img
-                  src={teacher.photo_url}
-                  alt={teacher.name}
-                  className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
-                />
+                <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200">
+                  <Image
+                    src={teacher.photo_url}
+                    alt={teacher.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
               ) : (
                 <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
                   <User className="h-16 w-16 text-white" />

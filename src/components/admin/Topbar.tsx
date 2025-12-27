@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
@@ -178,11 +179,14 @@ export function Topbar({ user, onMenuToggle, onLogout, className }: TopbarProps)
             >
               <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                 {user?.avatar ? (
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
+                  <div className="relative w-8 h-8">
+                    <Image
+                      src={user.avatar}
+                      alt={user.name}
+                      fill
+                      className="rounded-full object-cover"
+                    />
+                  </div>
                 ) : (
                   <User className="h-4 w-4 text-gray-600" />
                 )}

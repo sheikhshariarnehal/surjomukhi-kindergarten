@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Verify Certificate - Surjomukhi Kindergarten',
@@ -15,9 +16,9 @@ export default function VerifyCertificatePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
-              <li><a href="/" className="text-gray-500 hover:text-gray-700">Home</a></li>
+              <li><Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link></li>
               <li><span className="text-gray-400">/</span></li>
-              <li><a href="/student" className="text-gray-500 hover:text-gray-700">Student</a></li>
+              <li><Link href="/student" className="text-gray-500 hover:text-gray-700">Student</Link></li>
               <li><span className="text-gray-400">/</span></li>
               <li><span className="text-gray-900 font-medium">Verify Certificate</span></li>
             </ol>
@@ -186,7 +187,7 @@ export default function VerifyCertificatePage() {
             <div className="bg-green-50 p-6 rounded-lg text-center">
               <div className="text-3xl mb-4">⭐</div>
               <h3 className="font-bold text-green-800 mb-2">Character Certificate</h3>
-              <p className="text-green-700 text-sm">Certifies the student's character and conduct</p>
+              <p className="text-green-700 text-sm">Certifies the student&apos;s character and conduct</p>
             </div>
             <div className="bg-purple-50 p-6 rounded-lg text-center">
               <div className="text-3xl mb-4">🏆</div>
@@ -231,7 +232,7 @@ export default function VerifyCertificatePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Need Help with Verification?</h2>
           <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-            If you're having trouble with the verification process or need additional assistance, please contact our office.
+            If you&apos;re having trouble with the verification process or need additional assistance, please contact our office.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="text-center">

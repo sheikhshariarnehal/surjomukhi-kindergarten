@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import dynamic from 'next/dynamic';
 import StructuredData from '@/components/frontend/StructuredData';
 import ErrorBoundary from '@/components/frontend/ErrorBoundary';
@@ -36,6 +36,11 @@ const QuickLinks = dynamic(() => import('@/components/frontend/QuickLinks'), {
 });
 
 // Enhanced metadata with comprehensive SEO optimization
+export const viewport: Viewport = {
+  themeColor: '#2563eb',
+  colorScheme: 'light',
+};
+
 export const metadata: Metadata = {
   title: 'Surjomukhi Kindergarten | Bangla Medium Primary Education | Established 2004',
   description: 'Surjomukhi Kindergarten is a private primary educational institution established in 2004, located in Nawabganj, Dhaka. We provide quality Bangla medium education from nursery to Grade 5 with focus on creative, ethical, and holistic development.',
@@ -120,8 +125,6 @@ export const metadata: Metadata = {
     images: ['/og-home.jpg'],
   },
   other: {
-    'theme-color': '#2563eb',
-    'color-scheme': 'light',
     'mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-status-bar-style': 'default',
@@ -211,7 +214,7 @@ export default async function HomePage() {
         {/* Events & Notices Section - Below fold, can be deferred */}
         <ErrorBoundary>
           <Suspense fallback={<div className="h-96 bg-white animate-pulse" />}>
-            <EventsNoticesSection initialEvents={events as any} initialNotices={notices as any} />
+            <EventsNoticesSection initialEvents={events} initialNotices={notices} />
           </Suspense>
         </ErrorBoundary>
 
@@ -225,7 +228,7 @@ export default async function HomePage() {
         {/* Latest News & Upcoming Events - Lower priority */}
         <ErrorBoundary>
           <Suspense fallback={<div className="h-96 bg-white animate-pulse" />}>
-            <NewsEventsPreview initialNews={news as any} initialEvents={events as any} />
+            <NewsEventsPreview initialNews={news} initialEvents={events} />
           </Suspense>
         </ErrorBoundary>
 

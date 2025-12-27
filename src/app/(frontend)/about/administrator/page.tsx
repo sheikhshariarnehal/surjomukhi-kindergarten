@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Administrator - Surjomukhi Kindergarten',
@@ -107,13 +108,13 @@ export default function AdministratorPage() {
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
-                <a href="/" className="text-gray-500 hover:text-gray-700">Home</a>
+                <Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
               </li>
               <li>
-                <a href="/about" className="text-gray-500 hover:text-gray-700">About</a>
+                <Link href="/about" className="text-gray-500 hover:text-gray-700">About</Link>
               </li>
               <li>
                 <span className="text-gray-400">/</span>

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
@@ -27,13 +27,8 @@ export default function TeachersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const router = useRouter();
 
-  useEffect(() => {
-    fetchTeachers();
-  }, [currentPage, searchTerm]);
-
-  const fetchTeachers = async () => {
+  const fetchTeachers = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -57,7 +52,11 @@ export default function TeachersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, searchTerm]);
+
+  useEffect(() => {
+    fetchTeachers();
+  }, [fetchTeachers]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
@@ -235,11 +234,14 @@ export default function TeachersPage() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center justify-center">
                           {teacher?.photo_url ? (
-                            <img
-                              src={teacher.photo_url}
-                              alt={teacher?.name || 'Teacher'}
-                              className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
-                            />
+                            <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200">
+                              <Image
+                                src={teacher.photo_url}
+                                alt={teacher?.name || 'Teacher'}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
                           ) : (
                             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
                               <User className="h-5 w-5 text-white" />

@@ -3,6 +3,7 @@
 import React from 'react';
 import { useTranslation } from '@/contexts/LanguageContext';
 import Head from 'next/head';
+import Link from 'next/link';
 
 export default function HistoryPage() {
   const { t, language } = useTranslation();
@@ -31,13 +32,13 @@ export default function HistoryPage() {
             <nav className="flex" aria-label="Breadcrumb">
               <ol className="flex items-center space-x-4">
                 <li>
-                  <a href="/" className="text-gray-500 hover:text-gray-700 transition-colors">{t('common.home')}</a>
+                  <Link href="/" className="text-gray-500 hover:text-gray-700 transition-colors">{t('common.home')}</Link>
                 </li>
                 <li>
                   <span className="text-gray-400">/</span>
                 </li>
                 <li>
-                  <a href="/about" className="text-gray-500 hover:text-gray-700 transition-colors">{t('common.about')}</a>
+                  <Link href="/about" className="text-gray-500 hover:text-gray-700 transition-colors">{t('common.about')}</Link>
                 </li>
                 <li>
                   <span className="text-gray-400">/</span>
@@ -98,7 +99,7 @@ export default function HistoryPage() {
                     {language === 'bn' ? 'প্রাথমিক আদর্শ' : 'Primary Ideal'}
                   </h3>
                   <p className="text-lg font-semibold text-gray-800 mb-3">
-                    "{language === 'bn' ? 'শিক্ষাই জাতির মেরুদণ্ড' : 'Education is the backbone of the nation'}"
+                    &quot;{language === 'bn' ? 'শিক্ষাই জাতির মেরুদণ্ড' : 'Education is the backbone of the nation'}&quot;
                   </p>
                   <p className="text-gray-600">
                     {language === 'bn'
@@ -116,7 +117,7 @@ export default function HistoryPage() {
                     {language === 'bn' ? 'গৌণ আদর্শ' : 'Secondary Ideal'}
                   </h3>
                   <p className="text-lg font-semibold text-gray-800 mb-3">
-                    "{language === 'bn' ? 'শান্তিই পরম ধর্ম' : 'Peace is the supreme virtue'}"
+                    &quot;{language === 'bn' ? 'শান্তিই পরম ধর্ম' : 'Peace is the supreme virtue'}&quot;
                   </p>
                   <p className="text-gray-600">
                     {language === 'bn'

@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Head from 'next/head';
 import { useTranslation } from '@/contexts/LanguageContext';
 
 // Enhanced SEO and Schema Data

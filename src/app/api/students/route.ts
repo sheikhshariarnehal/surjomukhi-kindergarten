@@ -139,7 +139,7 @@ export async function POST(request: NextRequest) {
 }
 
 // GET /api/students/count - Get total count of students
-export async function HEAD(request: NextRequest) {
+export async function HEAD() {
   try {
     const { count, error } = await supabaseAdmin
       .from('students')

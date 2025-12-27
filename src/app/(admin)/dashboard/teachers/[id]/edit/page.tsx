@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -54,13 +54,7 @@ export default function EditTeacherPage() {
     },
   });
 
-  useEffect(() => {
-    if (teacherId) {
-      fetchTeacher();
-    }
-  }, [teacherId]);
-
-  const fetchTeacher = async () => {
+  const fetchTeacher = useCallback(async () => {
     try {
       setFetchLoading(true);
       const response = await fetch(`/api/teachers/${teacherId}`);
@@ -101,7 +95,13 @@ export default function EditTeacherPage() {
     } finally {
       setFetchLoading(false);
     }
-  };
+  }, [teacherId, form, router]);
+
+  useEffect(() => {
+    if (teacherId) {
+      fetchTeacher();
+    }
+  }, [teacherId, fetchTeacher]);
 
   const onSubmit = async (data: UpdateTeacherForm) => {
     try {
@@ -292,7 +292,7 @@ export default function EditTeacherPage() {
                   </label>
                   <Input
                     {...form.register('name')}
-                    placeholder="Enter teacher's full name"
+                    placeholder="Enter teacher&apos;s full name"
                     error={form.formState.errors.name?.message}
                   />
                 </div>

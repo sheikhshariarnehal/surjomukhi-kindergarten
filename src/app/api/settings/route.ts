@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { DatabaseService, supabaseAdmin } from '@/lib/db';
+import { supabaseAdmin } from '@/lib/db';
 import { AuthService } from '@/lib/auth';
 import { settingsSchema, validateData } from '@/lib/validators';
 
 // GET /api/settings - Get school settings
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const { data: settings, error } = await supabaseAdmin
       .from('settings')

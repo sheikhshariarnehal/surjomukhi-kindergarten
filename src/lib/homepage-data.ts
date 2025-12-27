@@ -1,5 +1,8 @@
-import { newsApi, teachersApi, eventsApi, noticesApi } from '@/lib/supabase';
+import { newsApi, eventsApi, noticesApi } from '@/lib/supabase';
 import type { HomePageData } from '@/types/homepage';
+import { News } from '@/types/news';
+import { Event } from '@/types/event';
+import { Notice } from '@/types/notice';
 
 // Retry mechanism for failed requests
 async function withRetry<T>(
@@ -41,9 +44,9 @@ export async function getHomePageData(): Promise<HomePageData> {
     ]);
 
     // Extract data with fallbacks
-    const news = newsResult.status === 'fulfilled' ? newsResult.value : [];
-    const events = eventsResult.status === 'fulfilled' ? eventsResult.value : [];
-    const notices = noticesResult.status === 'fulfilled' ? noticesResult.value : [];
+    const news = (newsResult.status === 'fulfilled' ? newsResult.value : []) as News[];
+    const events = (eventsResult.status === 'fulfilled' ? eventsResult.value : []) as Event[];
+    const notices = (noticesResult.status === 'fulfilled' ? noticesResult.value : []) as Notice[];
 
     // Log any errors for monitoring with more context
     const dataTypes = ['news', 'events', 'notices'];

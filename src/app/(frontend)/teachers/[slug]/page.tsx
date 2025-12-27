@@ -14,7 +14,6 @@ import {
   Mail, 
   Phone,
   Award,
-  Clock,
   Loader2,
   AlertCircle,
   Star,
@@ -121,10 +120,6 @@ const formatJoinDate = (dateString: string): string => {
   } catch {
     return 'Unknown';
   }
-};
-
-const truncateText = (text: string, maxLength: number): string => {
-  return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
 };
 
 // Component for error and loading states
@@ -545,11 +540,11 @@ export default function TeacherDetailPage() {
                     iconColor="from-indigo-500 to-indigo-600"
                   >
                     <div className="relative bg-gradient-to-br from-blue-50/60 via-indigo-50/60 to-purple-50/60 border-l-[3px] border-indigo-500 px-5 py-4 rounded-r-lg">
-                      <div className="absolute top-1 left-2 text-5xl text-indigo-300 opacity-40 font-serif leading-none">"</div>
+                      <div className="absolute top-1 left-2 text-5xl text-indigo-300 opacity-40 font-serif leading-none">&quot;</div>
                       <blockquote className="text-gray-800 text-[15px] leading-relaxed italic relative z-10 pt-3 pr-4">
                         {teacher.teaching_philosophy}
                       </blockquote>
-                      <div className="absolute bottom-0 right-3 text-5xl text-indigo-300 opacity-40 font-serif leading-none">"</div>
+                      <div className="absolute bottom-0 right-3 text-5xl text-indigo-300 opacity-40 font-serif leading-none">&quot;</div>
                     </div>
                   </ContentSection>
                 )}

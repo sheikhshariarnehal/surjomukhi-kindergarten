@@ -6,10 +6,16 @@ import { Card } from '@/components/ui/Card';
 import { Settings, User, CheckCircle, AlertCircle } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
+interface AdminUser {
+  email: string;
+  role: string;
+  password?: string;
+}
+
 export default function SetupPage() {
   const [loading, setLoading] = useState(false);
   const [setupComplete, setSetupComplete] = useState(false);
-  const [adminUsers, setAdminUsers] = useState<any[]>([]);
+  const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
 
   const handleSetup = async () => {
     setLoading(true);

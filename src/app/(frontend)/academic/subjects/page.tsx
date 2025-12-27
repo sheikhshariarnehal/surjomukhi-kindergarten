@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Subjects - Surjomukhi Kindergarten',
@@ -60,9 +61,9 @@ export default function SubjectsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
-              <li><a href="/" className="text-gray-500 hover:text-gray-700">Home</a></li>
+              <li><Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link></li>
               <li><span className="text-gray-400">/</span></li>
-              <li><a href="/academic" className="text-gray-500 hover:text-gray-700">Academic</a></li>
+              <li><Link href="/academic" className="text-gray-500 hover:text-gray-700">Academic</Link></li>
               <li><span className="text-gray-400">/</span></li>
               <li><span className="text-gray-900 font-medium">Subjects</span></li>
             </ol>
@@ -75,7 +76,7 @@ export default function SubjectsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Subjects</h1>
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            A comprehensive curriculum designed to nurture all aspects of your child's development.
+            A comprehensive curriculum designed to nurture all aspects of your child&apos;s development.
           </p>
         </div>
       </section>
@@ -88,7 +89,7 @@ export default function SubjectsPage() {
               Comprehensive Learning Areas
             </h2>
             <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Our curriculum covers all essential subjects to ensure holistic development of your child's 
+              Our curriculum covers all essential subjects to ensure holistic development of your child&apos;s 
               cognitive, physical, social, and emotional skills.
             </p>
           </div>

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/db';
 import { AuthService } from '@/lib/auth';
-import { EventImage } from '@/types/event';
 
 // GET /api/events/[id]/images - Get all images for an event
 export async function GET(

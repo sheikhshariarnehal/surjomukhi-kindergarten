@@ -7,87 +7,7 @@ import Image from 'next/image';
 import { News } from '@/types/news';
 
 // Mock data for news
-const mockNews: any[] = [
-  {
-    id: '1',
-    title: 'Students Excel in National Science Competition',
-    content: 'Our school students have achieved remarkable success in the National Science Competition, with three students securing top positions in their respective categories.',
-    excerpt: 'Our school students have achieved remarkable success in the National Science Competition...',
-    featured_image: '/news/science-competition.jpg',
-    category: 'achievement',
-    is_published: true,
-    published_at: '2024-01-15T10:00:00Z',
-    created_at: '2024-01-15T10:00:00Z',
-    updated_at: '2024-01-15T10:00:00Z',
-    author_id: 'admin-1',
-    views: 245
-  },
-  {
-    id: '2',
-    title: 'New Computer Lab Inaugurated',
-    content: 'The school has inaugurated a state-of-the-art computer lab equipped with the latest technology to enhance digital learning for our students.',
-    excerpt: 'The school has inaugurated a state-of-the-art computer lab equipped with the latest technology...',
-    featured_image: '/news/computer-lab.jpg',
-    category: 'facility',
-    is_published: true,
-    published_at: '2024-01-12T14:30:00Z',
-    created_at: '2024-01-12T14:30:00Z',
-    updated_at: '2024-01-12T14:30:00Z',
-    author_id: 'admin-1',
-    views: 189
-  },
-  {
-    id: '3',
-    title: 'Annual Cultural Festival Celebrates Diversity',
-    content: 'The annual cultural festival showcased the rich diversity of our school community with performances, exhibitions, and cultural displays from various traditions.',
-    excerpt: 'The annual cultural festival showcased the rich diversity of our school community...',
-    featured_image: '/news/cultural-festival.jpg',
-    category: 'event',
-    is_published: true,
-    published_at: '2024-01-10T09:15:00Z',
-    created_at: '2024-01-10T09:15:00Z',
-    updated_at: '2024-01-10T09:15:00Z',
-    author_id: 'admin-1',
-    views: 312
-  },
-  {
-    id: '4',
-    title: 'Environmental Club Launches Green Initiative',
-    content: 'Our Environmental Club has launched a comprehensive green initiative to promote sustainability and environmental awareness throughout the school.',
-    excerpt: 'Our Environmental Club has launched a comprehensive green initiative to promote sustainability...',
-    featured_image: '/news/green-initiative.jpg',
-    category: 'activity',
-    is_published: true,
-    published_at: '2024-01-08T11:45:00Z',
-    created_at: '2024-01-08T11:45:00Z',
-    updated_at: '2024-01-08T11:45:00Z',
-    author_id: 'admin-1',
-    views: 156
-  },
-  {
-    id: '5',
-    title: 'Teacher Recognition Awards Ceremony',
-    content: 'The school held its annual Teacher Recognition Awards ceremony to honor the dedication and excellence of our teaching staff.',
-    excerpt: 'The school held its annual Teacher Recognition Awards ceremony to honor the dedication...',
-    featured_image: '/news/teacher-awards.jpg',
-    category: 'recognition',
-    is_published: true,
-    published_at: '2024-01-05T16:20:00Z',
-    created_at: '2024-01-05T16:20:00Z',
-    updated_at: '2024-01-05T16:20:00Z',
-    author_id: 'admin-1',
-    views: 203
-  }
-];
-
-const categoryColors = {
-  achievement: 'bg-green-100 text-green-800',
-  facility: 'bg-blue-100 text-blue-800',
-  event: 'bg-purple-100 text-purple-800',
-  activity: 'bg-orange-100 text-orange-800',
-  recognition: 'bg-yellow-100 text-yellow-800',
-  announcement: 'bg-red-100 text-red-800'
-};
+// Removed unused mockNews and categoryColors
 
 export default function NewsPage() {
   const [news, setNews] = useState<News[]>([]);
@@ -254,10 +174,12 @@ export default function NewsPage() {
                 <div className="md:w-1/2">
                   <div className="h-64 md:h-full bg-gradient-to-br from-blue-400 to-indigo-600 relative overflow-hidden">
                     {filteredNews[0].image_url ? (
-                      <img
+                      <Image
                         src={filteredNews[0].image_url}
                         alt={filteredNews[0].title}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        priority
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
@@ -322,10 +244,11 @@ export default function NewsPage() {
                   >
                     <div className="h-48 bg-gradient-to-br from-blue-400 to-indigo-600 relative overflow-hidden">
                       {item.image_url ? (
-                        <img
+                        <Image
                           src={item.image_url}
                           alt={item.title}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                          fill
+                          className="object-cover hover:scale-105 transition-transform duration-300"
                         />
                       ) : (
                         <div className="flex items-center justify-center h-full">

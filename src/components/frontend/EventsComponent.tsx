@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Event } from '@/types/event';
-import { formatDate } from '@/lib/utils';
 import { DataLoadingErrorFallback } from '@/components/frontend/ErrorFallback';
 
 const createSlug = (title: string): string => {

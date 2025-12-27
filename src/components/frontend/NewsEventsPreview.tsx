@@ -3,8 +3,8 @@
 import React, { useState, useEffect, memo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { News, Event } from '@/types';
-import { useTranslation } from '@/contexts/LanguageContext';
 
 // Types
 interface NewsEventsPreviewProps {
@@ -167,7 +167,7 @@ const EmptyState = memo(({
 EmptyState.displayName = 'EmptyState';
 
 // News Card Component
-const NewsCard = memo(({ item, index }: { item: News; index: number }) => (
+const NewsCard = memo(({ item }: { item: News }) => (
   <motion.article
     variants={itemVariants}
     className="group bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-blue-200 transition-all duration-300"
@@ -175,11 +175,11 @@ const NewsCard = memo(({ item, index }: { item: News; index: number }) => (
     {/* Thumbnail Image */}
     {item.image_url && (
       <div className="relative w-full h-48 bg-gray-100 overflow-hidden">
-        <img
+        <Image
           src={item.image_url}
           alt={item.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          loading="lazy"
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
       </div>
     )}
@@ -222,7 +222,7 @@ const NewsCard = memo(({ item, index }: { item: News; index: number }) => (
 NewsCard.displayName = 'NewsCard';
 
 // Event Card Component
-const EventCard = memo(({ item, index }: { item: Event; index: number }) => (
+const EventCard = memo(({ item }: { item: Event }) => (
   <motion.article
     variants={itemVariants}
     className="group bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-emerald-200 transition-all duration-300"
@@ -230,11 +230,11 @@ const EventCard = memo(({ item, index }: { item: Event; index: number }) => (
     {/* Thumbnail Image */}
     <div className="relative w-full h-32 sm:h-36 bg-gradient-to-br from-emerald-50 to-emerald-100 overflow-hidden">
       {item.image_url ? (
-        <img
+        <Image
           src={item.image_url}
           alt={item.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          loading="lazy"
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
       ) : (
         <div className="w-full h-full flex items-center justify-center">
@@ -292,7 +292,7 @@ const ErrorState = memo(({ onRetry }: { onRetry: () => void }) => (
     </div>
     <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">Unable to Load Content</h3>
     <p className="text-sm text-gray-600 mb-4 sm:mb-5 max-w-md mx-auto px-4">
-      We're having trouble loading the latest news and events. Please try again.
+      We&apos;re having trouble loading the latest news and events. Please try again.
     </p>
     <button
       onClick={onRetry}
@@ -390,7 +390,6 @@ export default function NewsEventsPreview({
   initialNews = [], 
   initialEvents = [] 
 }: NewsEventsPreviewProps) {
-  const { t } = useTranslation();
   const [news, setNews] = useState<News[]>(initialNews);
   const [events, setEvents] = useState<Event[]>(initialEvents);
   const [loading, setLoading] = useState(!initialNews.length && !initialEvents.length);
@@ -559,7 +558,7 @@ export default function NewsEventsPreview({
                 >
                   {newsItems.length > 0 ? (
                     newsItems.map((item) => (
-                      <NewsCard key={item.id} item={item} index={0} />
+                      <NewsCard key={item.id} item={item} />
                     ))
                   ) : (
                     <EmptyState
@@ -601,7 +600,7 @@ export default function NewsEventsPreview({
                 >
                   {eventItems.length > 0 ? (
                     eventItems.map((item) => (
-                      <EventCard key={item.id} item={item} index={0} />
+                      <EventCard key={item.id} item={item} />
                     ))
                   ) : (
                     <EmptyState

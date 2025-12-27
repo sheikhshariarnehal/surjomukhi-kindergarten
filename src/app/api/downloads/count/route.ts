@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/db';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const { data, error, count } = await supabaseAdmin
+    const { error, count } = await supabaseAdmin
       .from('downloads')
       .select('*', { count: 'exact', head: true });
 

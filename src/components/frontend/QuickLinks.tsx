@@ -209,7 +209,7 @@ export default function QuickLinks() {
               Need Help?
             </h3>
             <p className="text-gray-600 mb-4">
-              Can't find what you're looking for? Contact our support team for assistance.
+              Can&apos;t find what you&apos;re looking for? Contact our support team for assistance.
             </p>
             <Link
               href="/contact"

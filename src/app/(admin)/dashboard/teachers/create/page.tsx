@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/Button';
@@ -28,8 +29,8 @@ export default function CreateTeacherPage() {
   const [certifications, setCertifications] = useState<string[]>([]);
   const router = useRouter();
 
-  const form = useForm<any>({
-    resolver: zodResolver(createTeacherSchema) as any,
+  const form = useForm<CreateTeacherForm>({
+    resolver: zodResolver(createTeacherSchema),
     defaultValues: {
       name: '',
       designation: '',
@@ -212,7 +213,7 @@ export default function CreateTeacherPage() {
                   </label>
                   <Input
                     {...form.register('name')}
-                    placeholder="Enter teacher's full name"
+                    placeholder="Enter teacher&apos;s full name"
                     error={form.formState.errors.name?.message as string}
                   />
                 </div>
@@ -525,18 +526,19 @@ export default function CreateTeacherPage() {
               </h2>
               <div className="space-y-4">
                 {photoUrl ? (
-                  <div className="relative">
-                    <img
+                  <div className="relative w-full h-48">
+                    <Image
                       src={photoUrl}
                       alt="Teacher photo"
-                      className="w-full h-48 object-cover rounded-lg border-2 border-gray-200"
+                      fill
+                      className="object-cover rounded-lg border-2 border-gray-200"
                     />
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
                       onClick={() => setPhotoUrl('')}
-                      className="absolute top-2 right-2"
+                      className="absolute top-2 right-2 z-10"
                     >
                       Remove
                     </Button>

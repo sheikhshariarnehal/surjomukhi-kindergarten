@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Nursery (Ages 3-4) - Surjomukhi Kindergarten',
@@ -24,11 +25,11 @@ export default function NurseryPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
-              <li><a href="/" className="text-gray-500 hover:text-gray-700">Home</a></li>
+              <li><Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link></li>
               <li><span className="text-gray-400">/</span></li>
-              <li><a href="/academic" className="text-gray-500 hover:text-gray-700">Academic</a></li>
+              <li><Link href="/academic" className="text-gray-500 hover:text-gray-700">Academic</Link></li>
               <li><span className="text-gray-400">/</span></li>
-              <li><a href="/academic/classes" className="text-gray-500 hover:text-gray-700">Classes</a></li>
+              <li><Link href="/academic/classes" className="text-gray-500 hover:text-gray-700">Classes</Link></li>
               <li><span className="text-gray-400">/</span></li>
               <li><span className="text-gray-900 font-medium">Nursery</span></li>
             </ol>
@@ -122,17 +123,17 @@ export default function NurseryPage() {
       {/* CTA */}
       <section className="py-16 bg-purple-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-6">Nurture Your Child's Growth</h2>
+          <h2 className="text-3xl font-bold mb-6">Nurture Your Child&apos;s Growth</h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
             Help your child build strong foundations for future learning success.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/admission" className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            <Link href="/admission" className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
               Apply Now
-            </a>
-            <a href="/contact" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors">
+            </Link>
+            <Link href="/contact" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors">
               Learn More
-            </a>
+            </Link>
           </div>
         </div>
       </section>

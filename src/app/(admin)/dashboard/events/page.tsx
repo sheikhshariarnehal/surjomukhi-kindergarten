@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Table } from '@/components/admin/Table';
-import { Search, Plus, Edit, Trash2, Eye, Calendar, Clock, MapPin, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, Eye, Calendar, Clock, ArrowUp, ArrowDown } from 'lucide-react';
 import { Event } from '@/types/event';
 
 interface EventsResponse {
@@ -25,18 +25,12 @@ export default function EventsPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [sortBy, setSortBy] = useState<'start_date' | 'title'>('start_date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [statusFilter, setStatusFilter] = useState<'all' | 'upcoming' | 'ongoing' | 'completed'>('all');
-  const router = useRouter();
 
-  useEffect(() => {
-    fetchEvents();
-  }, [currentPage, searchTerm, sortBy, sortOrder, statusFilter]);
-
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -84,7 +78,6 @@ export default function EventsPage() {
       });
 
       setEvents(sortedEvents);
-      setTotalPages(data.pagination.totalPages);
       setTotalCount(data.pagination.total);
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -92,7 +85,11 @@ export default function EventsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, searchTerm, sortBy, sortOrder, statusFilter]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
@@ -150,7 +147,7 @@ export default function EventsPage() {
     {
       key: 'image_column',
       label: 'Image',
-      render: (value: any, event: Event) => {
+      render: (_: unknown, event: Event) => {
         if (!event) {
           return (
             <div className="flex items-center justify-center">
@@ -170,9 +167,11 @@ export default function EventsPage() {
           <div className="flex items-center justify-center">
             {primaryImage ? (
               <div className="relative group">
-                <img
+                <Image
                   src={primaryImage}
                   alt={event.title || 'Event image'}
+                  width={64}
+                  height={64}
                   className="w-16 h-16 rounded-xl object-cover border-2 border-gray-200 group-hover:border-primary-400 transition-all"
                 />
                 {/* Show count if multiple images */}
@@ -194,7 +193,7 @@ export default function EventsPage() {
     {
       key: 'title',
       label: 'Event Details',
-      render: (value: any, event: Event) => {
+      render: (_: unknown, event: Event) => {
         if (!event) {
           return (
             <div className="py-2">
@@ -217,7 +216,7 @@ export default function EventsPage() {
     {
       key: 'start_date',
       label: 'Schedule',
-      render: (value: any, event: Event) => {
+      render: (_: unknown, event: Event) => {
         if (!event || !event.start_date) {
           return (
             <div className="text-sm text-gray-400 py-2">
@@ -260,7 +259,7 @@ export default function EventsPage() {
               )}
             </div>
           );
-        } catch (error) {
+        } catch {
           return (
             <div className="text-sm text-red-500 py-2">
               <div className="flex items-center">
@@ -275,9 +274,9 @@ export default function EventsPage() {
     {
       key: 'status_column',
       label: 'Status',
-      render: (value: any, event: Event) => {
+      render: (_: unknown, event: Event) => {
         if (!event) return <span className="text-gray-400">N/A</span>;
-        const { status, color, text } = getEventStatus(event);
+        const { color, text } = getEventStatus(event);
         return (
           <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold
             ${color === 'blue' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
@@ -296,7 +295,7 @@ export default function EventsPage() {
     {
       key: 'actions_column',
       label: 'Actions',
-      render: (value: any, event: Event) => (
+      render: (_: unknown, event: Event) => (
         <div className="flex items-center justify-end space-x-1">
           {event?.id ? (
             <>

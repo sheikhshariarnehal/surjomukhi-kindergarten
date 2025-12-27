@@ -17,14 +17,20 @@ import { Input, Textarea } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
 import toast from 'react-hot-toast';
-import { CheckCircle, AlertCircle } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
+
+// Types
+interface Step {
+  icon: string;
+  title: string;
+  description: string;
+}
 
 export default function ApplyOnlinePage() {
   const { t, language } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [studentAge, setStudentAge] = useState<number | null>(null);
-  const [selectedClass, setSelectedClass] = useState<string>('');
   const [feeInfo, setFeeInfo] = useState<{ monthlyFee: number; admissionFee: number } | null>(null);
 
   const {
@@ -55,7 +61,6 @@ export default function ApplyOnlinePage() {
       if (classOptions.length > 0) {
         const defaultClass = classOptions[0].className;
         setValue('class_applying', defaultClass);
-        setSelectedClass(defaultClass);
       }
     }
   }, [dateOfBirth, setValue]);
@@ -491,7 +496,7 @@ export default function ApplyOnlinePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-            {t('admission.applyOnline.nextSteps.steps', []).map((step: any, index: number) => (
+            {t('admission.applyOnline.nextSteps.steps', []).map((step: Step, index: number) => (
               <div key={index} className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
                 <div className="text-4xl mb-4">{step.icon}</div>
                 <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2">{step.title}</h3>

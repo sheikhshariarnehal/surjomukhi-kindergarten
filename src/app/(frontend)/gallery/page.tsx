@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { Search, Filter, Grid, List, X, ChevronLeft, ChevronRight, Download, Eye, Calendar, Loader2 } from 'lucide-react';
+import { Search, Filter, Grid, List, X, ChevronLeft, ChevronRight, Eye, Calendar, Loader2 } from 'lucide-react';
 import { GalleryImage } from '@/types/gallery';
 
 interface GalleryResponse {
@@ -93,18 +93,18 @@ export default function GalleryPage() {
     setCurrentImageIndex(index);
   };
 
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
     setSelectedImage(null);
-  };
+  }, []);
 
-  const navigateLightbox = (direction: 'prev' | 'next') => {
+  const navigateLightbox = useCallback((direction: 'prev' | 'next') => {
     const newIndex = direction === 'prev'
       ? (currentImageIndex - 1 + images.length) % images.length
       : (currentImageIndex + 1) % images.length;
 
     setCurrentImageIndex(newIndex);
     setSelectedImage(images[newIndex]);
-  };
+  }, [currentImageIndex, images]);
 
   // Keyboard navigation for lightbox
   useEffect(() => {
@@ -133,7 +133,7 @@ export default function GalleryPage() {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'unset';
     };
-  }, [selectedImage, currentImageIndex]);
+  }, [selectedImage, closeLightbox, navigateLightbox]);
 
   const loadMore = () => {
     if (hasMore && !loading) {

@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import Table, { TableColumn, commonActions } from '@/components/admin/Table';
 import { Card } from '@/components/ui/Card';
-import { Plus, Search, FileText, Calendar, Eye, Edit, Trash2 } from 'lucide-react';
+import { Plus, Search, FileText, Calendar } from 'lucide-react';
 import { Notice } from '@/types/notice';
 // import { format } from 'date-fns';
 
@@ -31,11 +31,7 @@ export default function NoticesPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
 
-  useEffect(() => {
-    fetchNotices();
-  }, [currentPage, searchTerm]);
-
-  const fetchNotices = async () => {
+  const fetchNotices = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -56,7 +52,11 @@ export default function NoticesPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, searchTerm]);
+
+  useEffect(() => {
+    fetchNotices();
+  }, [fetchNotices]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);

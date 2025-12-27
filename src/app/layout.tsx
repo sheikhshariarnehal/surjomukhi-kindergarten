@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
@@ -8,6 +8,14 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: '#2563eb',
+};
 
 export const metadata: Metadata = {
   title: {
@@ -37,12 +45,6 @@ export const metadata: Metadata = {
   publisher: "Surjomukhi Kindergarten",
   category: "Education",
   classification: "Early Childhood Education",
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-  },
   formatDetection: {
     email: false,
     address: false,
@@ -207,7 +209,7 @@ export default function RootLayout({
           rel="preload"
           as="image"
           href="/hero/school-tour.webp"
-          fetchpriority="high"
+          fetchPriority="high"
           type="image/webp"
         />
         <script

@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
@@ -11,33 +12,13 @@ import {
   Settings as SettingsIcon, 
   School, 
   Phone, 
-  Mail, 
-  MapPin, 
-  Globe, 
   Save,
-  Image,
-  Calendar
+  Image as ImageIcon
 } from 'lucide-react';
 import { settingsSchema } from '@/lib/validators';
 import { z } from 'zod';
 
 type SettingsForm = z.infer<typeof settingsSchema>;
-
-interface SchoolSettings {
-  id?: string;
-  school_name: string;
-  eiin: string;
-  established_year: number;
-  address: string;
-  phone: string;
-  email: string;
-  website?: string;
-  logo_url?: string;
-  description?: string;
-  principal_name?: string;
-  principal_message?: string;
-  updated_at?: string;
-}
 
 export default function SettingsPage() {
   const [loading, setLoading] = useState(false);
@@ -61,11 +42,7 @@ export default function SettingsPage() {
     },
   });
 
-  useEffect(() => {
-    fetchSettings();
-  }, []);
-
-  const fetchSettings = async () => {
+  const fetchSettings = useCallback(async () => {
     try {
       const response = await fetch('/api/settings');
       if (response.ok) {
@@ -81,7 +58,11 @@ export default function SettingsPage() {
     } finally {
       setInitialLoading(false);
     }
-  };
+  }, [form]);
+
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
 
   const onSubmit = async (data: SettingsForm) => {
     try {
@@ -278,20 +259,20 @@ export default function SettingsPage() {
                   </label>
                   <Input
                     {...form.register('principal_name')}
-                    placeholder="Enter principal's name"
+                    placeholder="Enter principal&apos;s name"
                     error={form.formState.errors.principal_name?.message}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Principal's Message
+                    Principal&apos;s Message
                   </label>
                   <textarea
                     {...form.register('principal_message')}
                     rows={6}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Principal's message to students and parents..."
+                    placeholder="Principal&apos;s message to students and parents..."
                   />
                   {form.formState.errors.principal_message && (
                     <p className="mt-1 text-sm text-red-600">
@@ -312,18 +293,19 @@ export default function SettingsPage() {
               </h2>
               <div className="space-y-4">
                 {logoUrl ? (
-                  <div className="relative">
-                    <img
+                  <div className="relative w-full h-48 border-2 border-gray-200 rounded-lg overflow-hidden bg-white">
+                    <Image
                       src={logoUrl}
                       alt="School logo"
-                      className="w-full h-48 object-contain rounded-lg border-2 border-gray-200 bg-white"
+                      fill
+                      className="object-contain"
                     />
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
                       onClick={() => setLogoUrl('')}
-                      className="absolute top-2 right-2"
+                      className="absolute top-2 right-2 z-10"
                     >
                       Remove
                     </Button>
@@ -331,7 +313,7 @@ export default function SettingsPage() {
                 ) : (
                   <div className="w-full h-48 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
                     <div className="text-center">
-                      <Image className="h-12 w-12 text-gray-400 mx-auto mb-2" />
+                      <ImageIcon className="h-12 w-12 text-gray-400 mx-auto mb-2" />
                       <p className="text-sm text-gray-500">No logo uploaded</p>
                     </div>
                   </div>

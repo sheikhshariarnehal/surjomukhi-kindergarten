@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Exam Schedule - Surjomukhi Kindergarten',
@@ -39,9 +40,9 @@ export default function ExamSchedulePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
-              <li><a href="/" className="text-gray-500 hover:text-gray-700">Home</a></li>
+              <li><Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link></li>
               <li><span className="text-gray-400">/</span></li>
-              <li><a href="/student" className="text-gray-500 hover:text-gray-700">Student</a></li>
+              <li><Link href="/student" className="text-gray-500 hover:text-gray-700">Student</Link></li>
               <li><span className="text-gray-400">/</span></li>
               <li><span className="text-gray-900 font-medium">Exam Schedule</span></li>
             </ol>
@@ -68,8 +69,8 @@ export default function ExamSchedulePage() {
             </h2>
             <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
               At Surjomukhi Kindergarten, we believe in age-appropriate assessment methods that focus on 
-              celebrating each child's growth and development rather than creating stress. Our evaluations 
-              are designed to be fun, engaging, and supportive of each child's learning journey.
+              celebrating each child&apos;s growth and development rather than creating stress. Our evaluations 
+              are designed to be fun, engaging, and supportive of each child&apos;s learning journey.
             </p>
           </div>
         </div>

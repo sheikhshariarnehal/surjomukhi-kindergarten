@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import React, { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { UploadWidget } from '@/components/admin/UploadWidget';
-import { Search, Plus, Trash2, Image, Video, Upload, Grid, List } from 'lucide-react';
+import { Search, Trash2, Image as ImageIcon, Video, Upload, Grid, List } from 'lucide-react';
 
 interface GalleryItem {
   id: string;
@@ -25,13 +24,8 @@ export default function GalleryPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [uploading, setUploading] = useState(false);
-  const router = useRouter();
 
-  useEffect(() => {
-    fetchGalleryItems();
-  }, [searchTerm]);
-
-  const fetchGalleryItems = async () => {
+  const fetchGalleryItems = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -51,7 +45,11 @@ export default function GalleryPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchTerm]);
+
+  useEffect(() => {
+    fetchGalleryItems();
+  }, [fetchGalleryItems]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
@@ -118,10 +116,11 @@ export default function GalleryPage() {
         <Card key={item.id} className="overflow-hidden group hover:shadow-lg transition-shadow">
           <div className="aspect-square relative">
             {item.file_type === 'image' ? (
-              <img
+              <Image
                 src={item.file_url}
                 alt={item.title}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
             ) : (
               <video
@@ -153,7 +152,7 @@ export default function GalleryPage() {
               </span>
               <div className="flex items-center space-x-1">
                 {item.file_type === 'image' ? (
-                  <Image className="h-4 w-4 text-blue-500" />
+                  <ImageIcon className="h-4 w-4 text-blue-500" />
                 ) : (
                   <Video className="h-4 w-4 text-red-500" />
                 )}
@@ -172,10 +171,12 @@ export default function GalleryPage() {
           <div key={item.id} className="p-4 flex items-center space-x-4">
             <div className="flex-shrink-0">
               {item.file_type === 'image' ? (
-                <img
+                <Image
                   src={item.file_url}
                   alt={item.title}
-                  className="w-16 h-16 rounded-lg object-cover"
+                  width={64}
+                  height={64}
+                  className="rounded-lg object-cover"
                 />
               ) : (
                 <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center">
@@ -199,7 +200,7 @@ export default function GalleryPage() {
                   : 'bg-red-100 text-red-800'
               }`}>
                 {item.file_type === 'image' ? (
-                  <Image className="h-3 w-3 mr-1" />
+                  <ImageIcon className="h-3 w-3 mr-1" />
                 ) : (
                   <Video className="h-3 w-3 mr-1" />
                 )}
@@ -246,7 +247,7 @@ export default function GalleryPage() {
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Image className="h-5 w-5 text-blue-600" />
+                <ImageIcon className="h-5 w-5 text-blue-600" />
               </div>
             </div>
             <div className="ml-4">
@@ -332,7 +333,7 @@ export default function GalleryPage() {
         </div>
       ) : items.length === 0 ? (
         <Card className="p-12 text-center">
-          <Image className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          <ImageIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">No gallery items</h3>
           <p className="text-gray-500 mb-4">Upload your first image or video to get started.</p>
           <UploadWidget

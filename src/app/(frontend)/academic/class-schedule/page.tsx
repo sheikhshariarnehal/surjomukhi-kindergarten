@@ -1,13 +1,41 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
+
+// Types
+interface Period {
+  subject: string;
+  subjectEn: string;
+  teacher: string;
+  teacherEn: string;
+}
+
+interface TimeSlot {
+  time: string;
+  timeEn: string;
+  period: string;
+  periodEn: string;
+}
+
+interface ClassSchedule {
+  className: string;
+  classNameEn: string;
+  schedule: Period[];
+}
+
+interface ScheduleData {
+  title: string;
+  timeSlots: TimeSlot[];
+  classes: ClassSchedule[];
+}
 
 export default function ClassSchedulePage() {
   const { language, t } = useLanguage();
   const [selectedClass, setSelectedClass] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
-  const [scheduleData, setScheduleData] = useState<any>(null);
+  const [scheduleData, setScheduleData] = useState<ScheduleData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -52,7 +80,7 @@ export default function ClassSchedulePage() {
 
   const classOptions = [
     { value: 'all', label: t('classSchedule.allClasses', 'All Classes') },
-    ...scheduleData.classes.map((cls: any) => ({
+    ...scheduleData.classes.map((cls: ClassSchedule) => ({
       value: cls.className,
       label: language === 'bn' ? cls.className : cls.classNameEn
     }))
@@ -62,7 +90,7 @@ export default function ClassSchedulePage() {
     if (selectedClass === 'all') {
       return scheduleData.classes;
     }
-    return scheduleData.classes.filter((cls: any) => cls.className === selectedClass);
+    return scheduleData.classes.filter((cls: ClassSchedule) => cls.className === selectedClass);
   };
 
   const getSubjectColors = (index: number) => {
@@ -98,17 +126,17 @@ export default function ClassSchedulePage() {
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-2 sm:space-x-4 text-sm sm:text-base">
               <li>
-                <a href="/" className="text-gray-500 hover:text-gray-700 transition-colors">
+                <Link href="/" className="text-gray-500 hover:text-gray-700 transition-colors">
                   {t('common.home', 'Home')}
-                </a>
+                </Link>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
               </li>
               <li>
-                <a href="/academic" className="text-gray-500 hover:text-gray-700 transition-colors">
+                <Link href="/academic" className="text-gray-500 hover:text-gray-700 transition-colors">
                   {t('common.academic', 'Academic')}
-                </a>
+                </Link>
               </li>
               <li>
                 <span className="text-gray-400">/</span>
@@ -204,7 +232,7 @@ export default function ClassSchedulePage() {
                       <th className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
                         {t('classSchedule.class', 'Class')}
                       </th>
-                      {scheduleData.timeSlots.map((slot: any, index: number) => (
+                      {scheduleData.timeSlots.map((slot: TimeSlot, index: number) => (
                         <th key={index} className="px-2 sm:px-3 lg:px-4 py-3 sm:py-4 text-center text-xs sm:text-sm font-semibold min-w-[100px] sm:min-w-[120px]">
                           <div>
                             <div className="font-bold text-xs sm:text-sm">
@@ -219,14 +247,14 @@ export default function ClassSchedulePage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {getFilteredSchedule().map((classItem: any, classIndex: number) => (
+                    {getFilteredSchedule().map((classItem: ClassSchedule, classIndex: number) => (
                       <tr key={classIndex} className={classIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
                         <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
                           <div className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium border ${getClassColors(classItem.className)}`}>
                             {language === 'bn' ? classItem.className : classItem.classNameEn}
                           </div>
                         </td>
-                        {classItem.schedule.map((subject: any, subjectIndex: number) => (
+                        {classItem.schedule.map((subject: Period, subjectIndex: number) => (
                           <td key={subjectIndex} className="px-2 sm:px-3 lg:px-4 py-3 sm:py-4 text-center">
                             {subject.subject !== '—' ? (
                               <div className={`p-2 sm:p-3 rounded-lg border ${getSubjectColors(subjectIndex)}`}>
@@ -255,7 +283,7 @@ export default function ClassSchedulePage() {
           ) : (
             // Cards View
             <div className="grid gap-4 sm:gap-6 lg:gap-8">
-              {getFilteredSchedule().map((classItem: any, classIndex: number) => (
+              {getFilteredSchedule().map((classItem: ClassSchedule, classIndex: number) => (
                 <div key={classIndex} className="bg-white rounded-lg shadow-lg overflow-hidden">
                   <div className={`px-4 sm:px-6 py-3 sm:py-4 border-b ${getClassColors(classItem.className)} border`}>
                     <h3 className="text-lg sm:text-xl font-bold">
@@ -264,7 +292,7 @@ export default function ClassSchedulePage() {
                   </div>
                   <div className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                      {classItem.schedule.map((subject: any, subjectIndex: number) => (
+                      {classItem.schedule.map((subject: Period, subjectIndex: number) => (
                         <div key={subjectIndex} className={`p-3 sm:p-4 rounded-lg border ${getSubjectColors(subjectIndex)}`}>
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-1">
                             <span className="text-xs sm:text-sm font-medium opacity-70 order-2 sm:order-1">
@@ -346,12 +374,12 @@ export default function ClassSchedulePage() {
           <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2">
             {t('classSchedule.contactSection.subtitle', 'Contact us to learn more about our daily routine and how it benefits your child\'s development.')}
           </p>
-          <a
+          <Link
             href="/contact"
             className="inline-block bg-white text-indigo-600 px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm sm:text-base"
           >
             {t('common.contactUs', 'Contact Us')}
-          </a>
+          </Link>
         </div>
       </section>
     </div>

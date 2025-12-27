@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from '@/lib';
 import { formatDate } from '@/lib/utils';
 import { noticesApi, type Notice } from '@/lib/supabase';
@@ -74,14 +74,7 @@ const NoticeBoard: React.FC<NoticeBoardProps> = ({
 
   const displayedNotices = notices.slice(0, limit);
 
-  // Fetch notices from Supabase if not provided as props
-  useEffect(() => {
-    if (!propNotices) {
-      fetchNotices();
-    }
-  }, [propNotices]);
-
-  const fetchNotices = async () => {
+  const fetchNotices = useCallback(async () => {
     try {
       setLoading(true);
       const data = await noticesApi.getRecent(limit);
@@ -93,7 +86,14 @@ const NoticeBoard: React.FC<NoticeBoardProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [limit]);
+
+  // Fetch notices from Supabase if not provided as props
+  useEffect(() => {
+    if (!propNotices) {
+      fetchNotices();
+    }
+  }, [propNotices, fetchNotices]);
 
   useEffect(() => {
     if (!isScrolling || displayedNotices.length <= 1) return;

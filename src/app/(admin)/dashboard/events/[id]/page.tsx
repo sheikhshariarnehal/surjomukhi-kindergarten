@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { ArrowLeft, Edit, Trash2, Calendar, Clock, MapPin, Users } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, Calendar, Clock } from 'lucide-react';
 import { Event } from '@/types/event';
 
 export default function EventDetailPage() {
@@ -15,13 +16,7 @@ export default function EventDetailPage() {
   const params = useParams();
   const eventId = params.id as string;
 
-  useEffect(() => {
-    if (eventId) {
-      fetchEvent();
-    }
-  }, [eventId]);
-
-  const fetchEvent = async () => {
+  const fetchEvent = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/events/${eventId}`);
@@ -39,7 +34,13 @@ export default function EventDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [eventId, router]);
+
+  useEffect(() => {
+    if (eventId) {
+      fetchEvent();
+    }
+  }, [eventId, fetchEvent]);
 
   const handleDelete = async () => {
     if (!event) return;
@@ -121,7 +122,7 @@ export default function EventDetailPage() {
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-bold text-gray-900">Event not found</h2>
-        <p className="text-gray-600 mt-2">The event you're looking for doesn't exist.</p>
+        <p className="text-gray-600 mt-2">The event you&apos;re looking for doesn&apos;t exist.</p>
         <Button onClick={() => router.push('/dashboard/events')} className="mt-4">
           Back to Events
         </Button>
@@ -183,9 +184,11 @@ export default function EventDetailPage() {
           {/* Event Image */}
           {event.image_url && (
             <Card className="overflow-hidden">
-              <img
+              <Image
                 src={event.image_url}
                 alt={event.title}
+                width={800}
+                height={400}
                 className="w-full h-64 object-cover"
               />
             </Card>

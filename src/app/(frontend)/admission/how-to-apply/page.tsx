@@ -1,5 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'How to Apply - Surjomukhi Kindergarten',
@@ -97,9 +98,9 @@ export default function HowToApplyPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
-              <li><a href="/" className="text-gray-500 hover:text-gray-700">Home</a></li>
+              <li><Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link></li>
               <li><span className="text-gray-400">/</span></li>
-              <li><a href="/admission" className="text-gray-500 hover:text-gray-700">Admission</a></li>
+              <li><Link href="/admission" className="text-gray-500 hover:text-gray-700">Admission</Link></li>
               <li><span className="text-gray-400">/</span></li>
               <li><span className="text-gray-900 font-medium">How to Apply</span></li>
             </ol>
@@ -112,7 +113,7 @@ export default function HowToApplyPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">How to Apply</h1>
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            Follow our simple step-by-step process to secure your child's place at Surjomukhi Kindergarten.
+            Follow our simple step-by-step process to secure your child&apos;s place at Surjomukhi Kindergarten.
           </p>
         </div>
       </section>
@@ -229,21 +230,21 @@ export default function HowToApplyPage() {
             Ready to Start the Application Process?
           </h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
-            Take the first step towards your child's bright future at Surjomukhi Kindergarten.
+            Take the first step towards your child&apos;s bright future at Surjomukhi Kindergarten.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+            <Link
               href="/admission/apply-online"
               className="bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
             >
               Apply Online
-            </a>
-            <a
+            </Link>
+            <Link
               href="/contact"
               className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-green-600 transition-colors"
             >
               Schedule Visit
-            </a>
+            </Link>
           </div>
         </div>
       </section>

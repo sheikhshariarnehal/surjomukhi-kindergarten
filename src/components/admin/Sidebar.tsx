@@ -19,9 +19,6 @@ import {
   ChevronRight,
   ClipboardList,
   School,
-  Layers,
-  Shield,
-  Database,
 } from 'lucide-react';
 
 export interface SidebarProps {
@@ -159,32 +156,6 @@ export function Sidebar({ collapsed = false, onToggle, userRole = 'admin' }: Sid
     const requiredLevel = roleHierarchy[requiredRole as keyof typeof roleHierarchy] || 0;
 
     return userLevel >= requiredLevel;
-  };
-
-  const getRoleBadgeColor = (role: string) => {
-    switch (role) {
-      case 'superadmin':
-        return 'bg-gradient-to-r from-purple-500 to-pink-500';
-      case 'admin':
-        return 'bg-gradient-to-r from-blue-500 to-cyan-500';
-      case 'editor':
-        return 'bg-gradient-to-r from-green-500 to-emerald-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
-
-  const getRoleIcon = (role: string) => {
-    switch (role) {
-      case 'superadmin':
-        return <Shield className="h-3 w-3" />;
-      case 'admin':
-        return <Database className="h-3 w-3" />;
-      case 'editor':
-        return <Layers className="h-3 w-3" />;
-      default:
-        return null;
-    }
   };
 
   const filteredSections = menuSections.map(section => ({

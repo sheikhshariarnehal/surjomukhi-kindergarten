@@ -16,7 +16,6 @@ import { z } from 'zod';
 type CreateEventFormData = z.infer<typeof createEventSchema>;
 
 export default function CreateEventPage() {
-  const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [eventImages, setEventImages] = useState<UploadedImage[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -314,7 +313,7 @@ export default function CreateEventPage() {
                   <Button
                     type="submit"
                     loading={isSubmitting}
-                    disabled={isSubmitting || uploading}
+                    disabled={isSubmitting}
                     className="w-full justify-center text-base py-3"
                   >
                     <Save className="h-5 w-5 mr-2" />
@@ -332,10 +331,10 @@ export default function CreateEventPage() {
                   </Button>
                 </div>
 
-                {(uploading || isSubmitting) && (
+                {isSubmitting && (
                   <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
                     <p className="text-sm text-blue-800 text-center">
-                      {uploading ? 'Uploading images...' : 'Creating event...'}
+                      Creating event...
                     </p>
                   </div>
                 )}
