@@ -190,7 +190,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/academic/rules`,
       lastModified: currentDate,
-      changeFrequency: 'yearl',
+      changeFrequency: 'yearly',
       priority: 0.7,
     },
     // Admission Subpages
