@@ -193,7 +193,7 @@ export default function DownloadsPage() {
     "@type": "WebPage",
     "name": "Downloads - Surjomukhi Kindergarten",
     "description": "Download important school documents, forms, applications, syllabus, policies, and educational resources",
-    "url": `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/downloads`,
+    "url": `${process.env.NEXT_PUBLIC_APP_URL || "https://www.surjamukhikindergarten.com"}/downloads`,
     "publisher": {
       "@type": "EducationalOrganization",
       "name": "Surjomukhi Kindergarten"

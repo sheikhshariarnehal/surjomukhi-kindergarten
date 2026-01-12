@@ -18,8 +18,8 @@ const organizationStructuredData = {
   "name": "Surjomukhi Kindergarten",
   "alternateName": "সূর্যমুখী কিন্ডারগার্টেন",
   "description": "A private primary educational institution established in 2004, fostering holistic development through creative and ethical education in Bangla medium from play group to Grade 5.",
-  "url": process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
-  "logo": `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/logo.png`,
+  "url": process.env.NEXT_PUBLIC_APP_URL || "https://www.surjamukhikindergarten.com",
+  "logo": `${process.env.NEXT_PUBLIC_APP_URL || "https://www.surjamukhikindergarten.com"}/logo.png`,
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Salauddin Complex, Aona Bazar",
@@ -39,7 +39,7 @@ const organizationStructuredData = {
   "educationalLevel": "Primary Education",
   "languageOfInstruction": "Bengali",
   "sameAs": [
-    "http://www.surjamukhikindergarten.com"
+    "https://www.surjamukhikindergarten.com"
   ]
 };
 

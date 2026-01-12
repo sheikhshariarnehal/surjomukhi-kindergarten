@@ -22,7 +22,7 @@ export default function HistoryPage() {
         />
         <meta property="og:title" content={language === 'bn' ? 'আমাদের ইতিহাস' : 'Our History'} />
         <meta property="og:description" content={t('about.pages.history.description')} />
-        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/about/history`} />
+        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/about/history`} />
       </Head>
 
       <div className="min-h-screen bg-gray-50">

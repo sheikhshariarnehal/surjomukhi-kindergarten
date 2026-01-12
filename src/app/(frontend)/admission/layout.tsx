@@ -26,11 +26,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Admission 2024 - Surjomukhi Kindergarten | Apply Online',
     description: 'Apply for admission to Surjomukhi Kindergarten 2024. Quality Bangla medium education for ages 5-11. Affordable fees starting from ৳300/month. Online application available. Admission open now!',
-    url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/admission`,
+    url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/admission`,
     siteName: 'Surjomukhi Kindergarten',
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/og-logo.png`,
+        url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/og-logo.png`,
         width: 1200,
         height: 630,
         alt: 'Surjomukhi Kindergarten - Admission 2024 - Apply Online for Quality Education',
@@ -43,13 +43,13 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Admission 2024 - Surjomukhi Kindergarten',
     description: 'Apply for admission to Surjomukhi Kindergarten 2024. Quality Bangla medium education for ages 5-11. Affordable fees. Apply online now!',
-    images: [`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/twitter-card.jpg`],
+    images: [`${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/twitter-card.jpg`],
   },
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/admission`,
+    canonical: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/admission`,
     languages: {
-      'en-US': `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/admission`,
-      'bn-BD': `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/admission`,
+      'en-US': `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/admission`,
+      'bn-BD': `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/admission`,
     },
   },
   robots: {
@@ -81,8 +81,8 @@ export default function AdmissionLayout({
             '@type': 'EducationalOrganization',
             name: 'Surjomukhi Kindergarten',
             description: 'A private primary educational institution providing quality Bangla medium education from nursery to Grade 5 with focus on creative, ethical, and holistic development.',
-            url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/admission`,
-            logo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/logo.webp`,
+            url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/admission`,
+            logo: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/logo.webp`,
             address: {
               '@type': 'PostalAddress',
               addressCountry: 'BD',
@@ -203,13 +203,13 @@ export default function AdmissionLayout({
                 '@type': 'ListItem',
                 position: 1,
                 name: 'Home',
-                item: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}`,
+                item: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}`,
               },
               {
                 '@type': 'ListItem',
                 position: 2,
                 name: 'Admission',
-                item: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/admission`,
+                item: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/admission`,
               },
             ],
           }),

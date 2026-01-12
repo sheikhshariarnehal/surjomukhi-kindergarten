@@ -197,7 +197,7 @@ export default function GalleryPage() {
     "@type": "ImageGallery",
     "name": "Surjomukhi Kindergarten Gallery",
     "description": "Photo gallery showcasing school activities, events, and memorable moments at Surjomukhi Kindergarten",
-    "url": `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/gallery`,
+    "url": `${process.env.NEXT_PUBLIC_APP_URL || "https://www.surjamukhikindergarten.com"}/gallery`,
     "publisher": {
       "@type": "EducationalOrganization",
       "name": "Surjomukhi Kindergarten"

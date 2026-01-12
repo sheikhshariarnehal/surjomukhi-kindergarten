@@ -57,7 +57,7 @@ export default function AcademicPage() {
         />
         <meta property="og:title" content={t('academic.title')} />
         <meta property="og:description" content={t('academic.description')} />
-        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/academic`} />
+        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/academic`} />
       </Head>
 
       <div className="min-h-screen bg-gray-50">

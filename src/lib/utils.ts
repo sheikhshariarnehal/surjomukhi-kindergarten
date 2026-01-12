@@ -91,11 +91,12 @@ export function getBaseUrl(): string {
     return window.location.origin;
   }
   
-  if (process.env.NEXT_PUBLIC_APP_URL) {
-    return process.env.NEXT_PUBLIC_APP_URL;
+  const envUrl = process.env.NEXT_PUBLIC_APP_URL;
+  if (envUrl && !envUrl.includes('localhost')) {
+    return envUrl;
   }
   
-  return 'http://localhost:3000';
+  return 'https://www.surjamukhikindergarten.com';
 }
 
 // Array utilities

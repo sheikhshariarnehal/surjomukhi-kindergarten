@@ -11,7 +11,7 @@ const contactStructuredData = {
   "@type": "ContactPage",
   "name": "Contact Us - Surjomukhi Kindergarten",
   "description": "Get in touch with Surjomukhi Kindergarten for admissions, inquiries, or any questions you may have.",
-  "url": `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/contact`,
+  "url": `${process.env.NEXT_PUBLIC_APP_URL || "https://www.surjamukhikindergarten.com"}/contact`,
   "mainEntity": {
     "@type": "EducationalOrganization",
     "name": "Surjomukhi Kindergarten",
@@ -26,7 +26,7 @@ const contactStructuredData = {
     },
     "telephone": ["+880-1954113374"],
     "email": "info.surjamukhikindergarten@gmail.com",
-    "url": "http://www.surjamukhikindergarten.com",
+    "url": "https://www.surjamukhikindergarten.com",
     "openingHours": "Mo-Sa 08:00-16:00"
   }
 };
@@ -110,7 +110,7 @@ export default function ContactPage() {
         />
         <meta property="og:title" content={t('contact.title')} />
         <meta property="og:description" content={t('contact.description')} />
-        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/contact`} />
+        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/contact`} />
       </Head>
 
       {/* Structured Data */}

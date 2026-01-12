@@ -23,7 +23,7 @@ export default function FoundersPage() {
         />
         <meta property="og:title" content={language === 'bn' ? 'আমাদের প্রতিষ্ঠাতা' : 'Our Founder'} />
         <meta property="og:description" content={t('about.pages.founders.description')} />
-        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/about/founders`} />
+        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/about/founders`} />
       </Head>
 
       <div className="min-h-screen bg-gray-50">
