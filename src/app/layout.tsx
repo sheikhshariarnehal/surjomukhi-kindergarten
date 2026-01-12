@@ -136,6 +136,7 @@ export default function RootLayout({
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
+    "@id": `${baseUrl}/#organization`,
     "name": "Surjomukhi Kindergarten",
     "alternateName": "Surjomukhi KG",
     "description": "Premier early childhood education institution providing quality education and holistic child development programs in Bangladesh.",

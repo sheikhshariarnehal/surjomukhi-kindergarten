@@ -347,29 +347,8 @@ function ProfessionalNavbar() {
     };
   }, [isMobileMenuOpen]);
 
-  // SEO structured data - Server-safe (no window references to prevent hydration mismatch)
-  const structuredData = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@type": "EducationalOrganization",
-    "name": t('common.schoolName', 'Surjamukhi Kindergarten'),
-    "description": t('common.tagline', 'Excellence in Early Childhood Education'),
-    "telephone": CONTACT_INFO.phone,
-    "email": CONTACT_INFO.email,
-    "sameAs": Object.values(CONTACT_INFO.socialLinks),
-    "logo": "/logo.webp",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "BD"
-    }
-  }), [t]);
-
   return (
     <>
-      {/* SEO Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

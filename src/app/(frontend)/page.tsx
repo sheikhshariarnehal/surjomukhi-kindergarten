@@ -153,43 +153,8 @@ export default async function HomePage() {
       </a>
 
       {/* Enhanced Structured Data for SEO */}
-      <StructuredData type="organization" />
       <StructuredData type="website" />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "EducationalOrganization",
-            "name": "Surjomukhi Kindergarten",
-            "alternateName": "সূর্যমুখী কিন্ডারগার্টেন",
-            "description": "Private primary educational institution established in 2004, providing quality Bangla medium education from nursery to Grade 5 with focus on creative, ethical, and holistic development.",
-            "url": "http://www.surjamukhikindergarten.com",
-            "logo": "/logo.png",
-            "image": "/og-home.jpg",
-            "telephone": ["+880-1954113374"],
-            "email": "info.surjamukhikindergarten@gmail.com",
-            "address": {
-              "@type": "PostalAddress",
-              "addressCountry": "BD",
-              "addressLocality": "Nawabganj",
-              "addressRegion": "Dhaka",
-              "postalCode": "1320",
-              "streetAddress": "Salauddin Complex, Aona Bazar"
-            },
-            "foundingDate": "2004-01-01",
-            "numberOfStudents": 55,
-            "educationalCredentialAwarded": "Primary Education Certificate",
-            "hasCredential": "Bangla Medium Primary Education",
-            "educationalLevel": "Primary Education",
-            "audience": {
-              "@type": "EducationalAudience",
-              "educationalRole": "student",
-              "audienceType": "children aged 3-11"
-            }
-          })
-        }}
-      />
+
 
       <main id="main-content" className="min-h-screen" role="main">
         {/* Hero Section - Optimized for instant loading */}
