@@ -7,7 +7,8 @@ interface StructuredDataProps {
 
 const StructuredData: React.FC<StructuredDataProps> = ({ type, data = {} }) => {
   const getStructuredData = () => {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com';
+    const envUrl = process.env.NEXT_PUBLIC_APP_URL;
+    const baseUrl = (envUrl && !envUrl.includes('localhost')) ? envUrl : 'https://www.surjamukhikindergarten.com';
     
     switch (type) {
       case 'organization':

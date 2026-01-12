@@ -51,7 +51,11 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL && !process.env.NEXT_PUBLIC_APP_URL.includes('localhost') 
+      ? process.env.NEXT_PUBLIC_APP_URL 
+      : 'https://www.surjamukhikindergarten.com'
+  ),
   manifest: '/site.webmanifest',
   appleWebApp: {
     capable: true,
@@ -67,7 +71,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com',
+    url: process.env.NEXT_PUBLIC_APP_URL && !process.env.NEXT_PUBLIC_APP_URL.includes('localhost') 
+      ? process.env.NEXT_PUBLIC_APP_URL 
+      : 'https://www.surjamukhikindergarten.com',
     siteName: "Surjamukhi Kindergarten",
     title: "Surjamukhi Kindergarten - Excellence in Early Childhood Education",
     description: "Premier early childhood education institution providing quality education and holistic child development programs in Bangladesh. Experienced teachers, modern facilities, and comprehensive development programs for your child's bright future.",
@@ -131,7 +137,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const envUrl = process.env.NEXT_PUBLIC_APP_URL;
+  const baseUrl = (envUrl && !envUrl.includes('localhost')) ? envUrl : 'https://www.surjamukhikindergarten.com';
 
   const organizationSchema = {
     "@context": "https://schema.org",
