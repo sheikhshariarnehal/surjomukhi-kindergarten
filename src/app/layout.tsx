@@ -137,8 +137,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const envUrl = process.env.NEXT_PUBLIC_APP_URL;
-  const baseUrl = (envUrl && !envUrl.includes('localhost')) ? envUrl : 'https://www.surjamukhikindergarten.com';
+  const baseUrl = 'https://www.surjamukhikindergarten.com';
 
   const organizationSchema = {
     "@context": "https://schema.org",

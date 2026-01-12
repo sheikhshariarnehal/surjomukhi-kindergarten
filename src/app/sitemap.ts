@@ -1,8 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const envUrl = process.env.NEXT_PUBLIC_APP_URL;
-  const baseUrl = (envUrl && !envUrl.includes('localhost')) ? envUrl : 'https://www.surjamukhikindergarten.com';
+  const baseUrl = 'https://www.surjamukhikindergarten.com';
   const currentDate = new Date();
 
   return [
