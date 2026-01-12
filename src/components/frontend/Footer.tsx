@@ -129,10 +129,24 @@ const Footer: React.FC<FooterProps> = ({
 
   const structuredData = useMemo(() => ({
     "@context": "https://schema.org",
-    "@type": "WPFooter",
-    "copyrightYear": currentYear,
-    "copyrightHolder": { "@type": "EducationalOrganization", "name": SCHOOL_INFO.name, "url": SCHOOL_INFO.website }
-  }), [currentYear]);
+    "@graph": [
+      {
+        "@type": "WPFooter",
+        "copyrightYear": currentYear,
+        "copyrightHolder": { "@type": "EducationalOrganization", "name": SCHOOL_INFO.name, "url": SCHOOL_INFO.website }
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "name": "Footer Quick Links",
+        "hasPart": navigationData.quickLinks.map((link, index) => ({
+          "@type": "SiteNavigationElement",
+          "position": index + 1,
+          "name": t(link.labelKey),
+          "url": `${SCHOOL_INFO.website}${link.href}`
+        }))
+      }
+    ]
+  }), [currentYear, navigationData, t]);
 
   return (
     <>

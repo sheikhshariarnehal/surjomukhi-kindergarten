@@ -15,12 +15,13 @@ const StructuredData: React.FC<StructuredDataProps> = ({ type, data = {} }) => {
       case 'educationalOrganization':
         return {
           "@context": "https://schema.org",
-          "@type": "EducationalOrganization",
+          "@type": ["EducationalOrganization", "School"],
           "@id": `${baseUrl}/#organization`,
           "name": "Surjamukhi Kindergarten",
           "alternateName": "Surjamukhi KG",
-          "description": "A premier kindergarten providing quality early childhood education with experienced teachers and modern facilities for holistic child development.",
+          "description": "Established in 2004, Surjamukhi Kindergarten is a premier Bangla medium school in Nawabganj, Dhaka, providing quality education from Nursery to Grade 5.",
           "url": baseUrl,
+          "telephone": "+8801954113374",
           "logo": {
             "@type": "ImageObject",
             "url": `${baseUrl}/logo.webp`,
@@ -38,23 +39,30 @@ const StructuredData: React.FC<StructuredDataProps> = ({ type, data = {} }) => {
           ],
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": data.address?.street || "123 Education Street",
-            "addressLocality": data.address?.city || "Dhaka",
-            "addressRegion": data.address?.region || "Dhaka Division",
-            "postalCode": data.address?.postalCode || "1000",
+            "streetAddress": "Salauddin Complex, Aona Bazar",
+            "addressLocality": "Nawabganj",
+            "addressRegion": "Dhaka",
+            "postalCode": "1320",
             "addressCountry": "BD"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "23.666", // Approximate latitude for Nawabganj
+            "longitude": "90.166" // Approximate longitude for Nawabganj
           },
           "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": data.phone || "+880-1234-567890",
+            "telephone": "+8801954113374",
             "contactType": "customer service",
+            "email": "info.surjamukhikindergarten@gmail.com",
             "availableLanguage": ["Bengali", "English"]
           },
           "sameAs": [
-            data.facebook || "https://facebook.com/surjomukhikindergarten",
-            data.youtube || "https://youtube.com/@surjomukhikindergarten"
+            "https://facebook.com/surjomukhikg",
+            "https://youtube.com/surjomukhikg",
+            "https://instagram.com/surjomukhikg"
           ],
-          "foundingDate": data.foundingDate || "2010",
+          "foundingDate": "2004",
           "numberOfEmployees": {
             "@type": "QuantitativeValue",
             "value": data.employeeCount || 40

@@ -8,6 +8,7 @@ import type { HomePageData } from '@/types/homepage';
 
 // Import Hero directly without dynamic import for instant rendering
 import Hero from '@/components/frontend/Hero';
+import HomeInternalLinks from '@/components/frontend/HomeInternalLinks';
 
 // Dynamic imports for heavy components - reduces initial bundle
 const StatsCounter = dynamic(() => import('@/components/frontend/StatsCounter'), {
@@ -167,6 +168,11 @@ export default async function HomePage() {
           </div>
         }>
           <Hero />
+        </ErrorBoundary>
+
+        {/* Home Internal Links for SEO and Sitelinks Optimization */}
+        <ErrorBoundary>
+          <HomeInternalLinks />
         </ErrorBoundary>
 
         {/* Stats Counter - Deferred loading */}

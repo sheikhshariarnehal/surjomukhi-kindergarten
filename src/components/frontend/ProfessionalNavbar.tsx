@@ -288,6 +288,20 @@ function ProfessionalNavbar() {
   const { t } = useTranslation();
   const isScrolled = useScrolled(10);
 
+  // Schema calculation for SEO
+  const envUrl = process.env.NEXT_PUBLIC_APP_URL;
+  const baseUrl = (envUrl && !envUrl.includes('localhost')) ? envUrl : 'https://www.surjamukhikindergarten.com';
+
+  const siteNavigationSchema = useMemo(() => ({
+    "@context": "https://schema.org",
+    "@graph": NAVIGATION_ITEMS.map((item, index) => ({
+      "@type": "SiteNavigationElement",
+      "@id": `${baseUrl}/#nav-${index}`,
+      "name": t(item.labelKey),
+      "url": `${baseUrl}${item.href}`
+    }))
+  }), [t, baseUrl]);
+
   // State
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -354,12 +368,10 @@ function ProfessionalNavbar() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "ItemList",
-            "itemListElement": NAVIGATION_ITEMS.map((item, index) => ({
+            "@graph": NAVIGATION_ITEMS.map((item, index) => ({
               "@type": "SiteNavigationElement",
-              "position": index + 1,
+              "@id": `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}${item.href}`,
               "name": t(item.labelKey, item.labelKey),
-              "description": item.description,
               "url": `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}${item.href}`
             }))
           })
