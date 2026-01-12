@@ -1,6 +1,7 @@
 import React from 'react';
 import ProfessionalNavbar from '@/components/frontend/ProfessionalNavbar';
 import Footer from '@/components/frontend/Footer';
+import Breadcrumbs from '@/components/seo/Breadcrumbs';
 
 export default function FrontendLayout({
   children,
@@ -11,6 +12,7 @@ export default function FrontendLayout({
     <div className="min-h-screen flex flex-col">
       <ProfessionalNavbar />
       <main className="flex-1" role="main">
+        <Breadcrumbs className="container mx-auto px-4 py-4" />
         {children}
       </main>
       <Footer />

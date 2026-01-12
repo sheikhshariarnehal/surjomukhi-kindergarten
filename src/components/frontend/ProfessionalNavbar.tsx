@@ -370,6 +370,22 @@ function ProfessionalNavbar() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": NAVIGATION_ITEMS.map((item, index) => ({
+              "@type": "SiteNavigationElement",
+              "position": index + 1,
+              "name": t(item.labelKey, item.labelKey),
+              "description": item.description,
+              "url": `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}${item.href}`
+            }))
+          })
+        }}
+      />
 
       {/* Blue Top Utility Bar - Semantic header element */}
       <header
