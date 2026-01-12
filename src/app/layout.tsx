@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
@@ -107,7 +108,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'your-google-verification-code', // Replace with actual verification code
+    google: "v_20p_W292dUZ7Ee670yu6okOI0AUeEOL8oaYQVFUAI",
     yandex: 'your-yandex-verification-code', // Replace with actual verification code
     yahoo: 'your-yahoo-verification-code', // Replace with actual verification code
   },
@@ -224,6 +225,20 @@ export default function RootLayout({
           {children}
         </LanguageProvider>
         <Analytics />
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-23C8S27HQF"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-23C8S27HQF');
+          `}
+        </Script>
       </body>
     </html>
   );
