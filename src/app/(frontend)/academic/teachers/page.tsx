@@ -159,21 +159,6 @@ export default function TeachersPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        {/* Breadcrumb */}
-        <div className="bg-white border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <nav className="flex" aria-label="Breadcrumb">
-              <ol className="flex items-center space-x-4">
-                <li><Link href="/" className="text-gray-500 hover:text-gray-700 transition-colors">Home</Link></li>
-                <li><span className="text-gray-400">/</span></li>
-                <li><Link href="/academic" className="text-gray-500 hover:text-gray-700 transition-colors">Academic</Link></li>
-                <li><span className="text-gray-400">/</span></li>
-                <li><span className="text-gray-900 font-medium">Our Teachers</span></li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-
         {/* Hero Section */}
         <section
           className="bg-gradient-to-r from-teal-600 to-blue-600 text-white py-16"
@@ -200,21 +185,6 @@ export default function TeachersPage() {
   if (error) {
     return (
       <div className="min-h-screen bg-gray-50">
-        {/* Breadcrumb */}
-        <div className="bg-white border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <nav className="flex" aria-label="Breadcrumb">
-              <ol className="flex items-center space-x-4">
-                <li><Link href="/" className="text-gray-500 hover:text-gray-700 transition-colors">Home</Link></li>
-                <li><span className="text-gray-400">/</span></li>
-                <li><Link href="/academic" className="text-gray-500 hover:text-gray-700 transition-colors">Academic</Link></li>
-                <li><span className="text-gray-400">/</span></li>
-                <li><span className="text-gray-900 font-medium">Our Teachers</span></li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-teal-600 to-blue-600 text-white py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -248,47 +218,6 @@ export default function TeachersPage() {
       >
         Skip to main content
       </a>
-
-      {/* Breadcrumb */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <nav aria-label="Breadcrumb navigation">
-              <ol className="flex items-center space-x-4" role="list">
-                <li role="listitem">
-                  <Link
-                    href="/"
-                    className="text-gray-500 hover:text-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
-                    aria-label="Go to homepage"
-                  >
-                    {t('navigation.home', 'Home')}
-                  </Link>
-                </li>
-                <li role="listitem" aria-hidden="true">
-                  <span className="text-gray-400">/</span>
-                </li>
-                <li role="listitem">
-                  <Link
-                    href="/academic"
-                    className="text-gray-500 hover:text-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
-                    aria-label="Go to academic section"
-                  >
-                    {t('navigation.academic', 'Academic')}
-                  </Link>
-                </li>
-                <li role="listitem" aria-hidden="true">
-                  <span className="text-gray-400">/</span>
-                </li>
-                <li role="listitem">
-                  <span className="text-gray-900 font-medium" aria-current="page">
-                    {t('navigation.teachers', 'Our Teachers')}
-                  </span>
-                </li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-      </div>
 
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-teal-600 to-blue-600 text-white py-12 sm:py-16 lg:py-20">

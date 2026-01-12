@@ -11,22 +11,6 @@ export const metadata: Metadata = {
 export default function ClassThreePage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="flex items-center space-x-4">
-              <li><Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link></li>
-              <li><span className="text-gray-400">/</span></li>
-              <li><Link href="/academic" className="text-gray-500 hover:text-gray-700">Academic</Link></li>
-              <li><span className="text-gray-400">/</span></li>
-              <li><Link href="/academic/classes" className="text-gray-500 hover:text-gray-700">Classes</Link></li>
-              <li><span className="text-gray-400">/</span></li>
-              <li><span className="text-gray-900 font-medium">Class Three</span></li>
-            </ol>
-          </nav>
-        </div>
-      </div>
-
       <section className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="text-6xl mb-6">🎯</div>

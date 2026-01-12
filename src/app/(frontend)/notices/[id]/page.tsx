@@ -110,27 +110,6 @@ export default function NoticeDetailPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Clean Breadcrumb */}
-      <section className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex items-center gap-2 text-sm">
-            <Link href="/" className="text-gray-500 hover:text-blue-600 transition-colors">
-              Home
-            </Link>
-            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-            <Link href="/notices" className="text-gray-500 hover:text-blue-600 transition-colors">
-              Notices
-            </Link>
-            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-            <span className="text-gray-900 font-medium">Detail</span>
-          </nav>
-        </div>
-      </section>
-
       {/* Notice Content */}
       <section className="py-6 sm:py-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

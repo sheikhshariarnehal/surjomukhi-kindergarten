@@ -361,27 +361,6 @@ const AdmissionPage = () => {
         </div>
         
         <div className="relative max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8 py-4 xs:py-5 sm:py-8 lg:py-12">
-          {/* Enhanced Breadcrumb Navigation */}
-          <nav aria-label="Breadcrumb" className="mb-3 xs:mb-4 sm:mb-6">
-            <ol className="flex items-center space-x-1 xs:space-x-2 text-blue-100 text-xs xs:text-sm font-medium">
-              <li>
-                <Link 
-                  href="/" 
-                  className="hover:text-white transition-colors duration-200 flex items-center space-x-1" 
-                  aria-label="Go to homepage"
-                >
-                  <span>🏠</span>
-                  <span className="hidden xs:inline">{language === 'en' ? 'Home' : 'হোম'}</span>
-                </Link>
-              </li>
-              <li aria-hidden="true" className="text-blue-300">/</li>
-              <li aria-current="page" className="text-white font-semibold flex items-center space-x-1">
-                <span>🎓</span>
-                <span>{language === 'en' ? 'Admission' : 'ভর্তি'}</span>
-              </li>
-            </ol>
-          </nav>
-
           <div className="text-center max-w-5xl mx-auto">
             <div className="mb-2 xs:mb-3 sm:mb-4">
               <span className="inline-flex items-center px-2 xs:px-3 py-1 rounded-full text-xs font-medium bg-white/20 text-white border border-white/30">

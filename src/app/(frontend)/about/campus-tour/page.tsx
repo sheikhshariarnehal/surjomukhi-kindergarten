@@ -213,46 +213,6 @@ export default function CampusTourPage() {
       />
 
       <div className="min-h-screen bg-gray-50">
-        {/* Breadcrumb - SEO Optimized */}
-        <nav className="bg-white border-b" aria-label="Breadcrumb">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
-            <ol className="flex items-center space-x-2 sm:space-x-4 text-sm sm:text-base" itemScope itemType="https://schema.org/BreadcrumbList">
-              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-                <Link 
-                  href="/" 
-                  className="text-gray-500 hover:text-gray-700 transition-colors"
-                  itemProp="item"
-                >
-                  <span itemProp="name">{content.breadcrumb.home}</span>
-                </Link>
-                <meta itemProp="position" content="1" />
-              </li>
-              <li>
-                <span className="text-gray-400" aria-hidden="true">/</span>
-              </li>
-              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-                <Link 
-                  href="/about" 
-                  className="text-gray-500 hover:text-gray-700 transition-colors"
-                  itemProp="item"
-                >
-                  <span itemProp="name">{content.breadcrumb.about}</span>
-                </Link>
-                <meta itemProp="position" content="2" />
-              </li>
-              <li>
-                <span className="text-gray-400" aria-hidden="true">/</span>
-              </li>
-              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-                <span className="text-gray-900 font-medium" itemProp="name">
-                  {content.breadcrumb.campusTour}
-                </span>
-                <meta itemProp="position" content="3" />
-              </li>
-            </ol>
-          </div>
-        </nav>
-
         {/* Hero Section - Optimized for Mobile */}
         <section className="bg-gradient-to-r from-green-600 to-teal-600 text-white py-12 sm:py-16 lg:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

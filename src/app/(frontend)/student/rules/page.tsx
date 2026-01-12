@@ -78,21 +78,6 @@ export default function StudentRulesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Breadcrumb */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="flex items-center space-x-4">
-              <li><Link href="/" className="text-gray-500 hover:text-gray-700 transition-colors">{language === 'bn' ? 'হোম' : 'Home'}</Link></li>
-              <li><span className="text-gray-400">/</span></li>
-              <li><Link href="/student" className="text-gray-500 hover:text-gray-700 transition-colors">{language === 'bn' ? 'শিক্ষার্থী' : 'Student'}</Link></li>
-              <li><span className="text-gray-400">/</span></li>
-              <li><span className="text-gray-900 font-medium">{language === 'bn' ? 'নিয়মাবলী' : 'Rules & Regulations'}</span></li>
-            </ol>
-          </nav>
-        </div>
-      </div>
-
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-amber-600 to-orange-600 text-white py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

@@ -322,20 +322,6 @@ export default function TeacherDetailPage() {
               <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-0.5 transition-transform" />
               <span className="text-sm font-medium">Back</span>
             </button>
-            
-            <nav className="hidden sm:flex items-center space-x-1 text-xs" aria-label="Breadcrumb">
-              <Link href="/" className="text-gray-500 hover:text-blue-600 transition-colors focus:outline-none focus:underline">
-                Home
-              </Link>
-              <span className="text-gray-300" aria-hidden="true">/</span>
-              <Link href="/teachers" className="text-gray-500 hover:text-blue-600 transition-colors focus:outline-none focus:underline">
-                Teachers
-              </Link>
-              <span className="text-gray-300" aria-hidden="true">/</span>
-              <span className="text-gray-900 font-medium truncate max-w-32" title={teacher.name}>
-                {teacher.name}
-              </span>
-            </nav>
           </div>
         </div>
       </header>

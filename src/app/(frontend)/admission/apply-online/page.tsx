@@ -154,29 +154,6 @@ export default function ApplyOnlinePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Breadcrumb */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="flex items-center space-x-2 text-sm">
-              <li>
-                <Link href="/" className="text-gray-500 hover:text-gray-700">
-                  {t('admission.applyOnline.breadcrumb.home')}
-                </Link>
-              </li>
-              <li><span className="text-gray-400">/</span></li>
-              <li>
-                <Link href="/admission" className="text-gray-500 hover:text-gray-700">
-                  {t('admission.applyOnline.breadcrumb.admission')}
-                </Link>
-              </li>
-              <li><span className="text-gray-400">/</span></li>
-              <li><span className="text-gray-900 font-medium">{t('admission.applyOnline.breadcrumb.applyOnline')}</span></li>
-            </ol>
-          </nav>
-        </div>
-      </div>
-
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
