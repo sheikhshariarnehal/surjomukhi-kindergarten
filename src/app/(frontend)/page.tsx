@@ -3,12 +3,14 @@ import type { Metadata, Viewport } from 'next';
 import dynamic from 'next/dynamic';
 import StructuredData from '@/components/frontend/StructuredData';
 import ErrorBoundary from '@/components/frontend/ErrorBoundary';
-import { getHomePageData } from '@/lib/homepage-data';
-import type { HomePageData } from '@/types/homepage';
 
 // Import Hero directly without dynamic import for instant rendering
 import Hero from '@/components/frontend/Hero';
 import HomeInternalLinks from '@/components/frontend/HomeInternalLinks';
+
+// Import wrappers for data-fetching sections
+import EventsNoticesWrapper from '@/components/frontend/EventsNoticesWrapper';
+import NewsEventsWrapper from '@/components/frontend/NewsEventsWrapper';
 
 // Dynamic imports for heavy components - reduces initial bundle
 const StatsCounter = dynamic(() => import('@/components/frontend/StatsCounter'), {
@@ -16,23 +18,8 @@ const StatsCounter = dynamic(() => import('@/components/frontend/StatsCounter'),
   ssr: true
 });
 
-const EventsNoticesSection = dynamic(() => import('@/components/frontend/EventsNoticesSection'), {
-  loading: () => <div className="h-96 bg-white animate-pulse" />,
-  ssr: true
-});
-
 const TeacherPreview = dynamic(() => import('@/components/frontend/TeacherPreview'), {
   loading: () => <div className="h-96 bg-gray-50 animate-pulse" />,
-  ssr: true
-});
-
-const NewsEventsPreview = dynamic(() => import('@/components/frontend/NewsEventsPreview'), {
-  loading: () => <div className="h-96 bg-white animate-pulse" />,
-  ssr: true
-});
-
-const QuickLinks = dynamic(() => import('@/components/frontend/QuickLinks'), {
-  loading: () => <div className="h-64 bg-gray-50 animate-pulse" />,
   ssr: true
 });
 
@@ -139,10 +126,7 @@ export const metadata: Metadata = {
 // Enable ISR (Incremental Static Regeneration) for better performance
 export const revalidate = 300; // Revalidate every 5 minutes
 
-export default async function HomePage() {
-  // Fetch only critical initial data - defer non-critical data
-  const { news, events, notices }: HomePageData = await getHomePageData();
-
+export default function HomePage() {
   return (
     <>
       {/* Skip Link for Accessibility */}
@@ -170,11 +154,6 @@ export default async function HomePage() {
           <Hero />
         </ErrorBoundary>
 
-        {/* Home Internal Links for SEO and Sitelinks Optimization */}
-        <ErrorBoundary>
-          <HomeInternalLinks />
-        </ErrorBoundary>
-
         {/* Stats Counter - Deferred loading */}
         <ErrorBoundary>
           <Suspense fallback={<div className="h-32 bg-gray-50 animate-pulse" />}>
@@ -185,7 +164,7 @@ export default async function HomePage() {
         {/* Events & Notices Section - Below fold, can be deferred */}
         <ErrorBoundary>
           <Suspense fallback={<div className="h-96 bg-white animate-pulse" />}>
-            <EventsNoticesSection initialEvents={events} initialNotices={notices} />
+            <EventsNoticesWrapper />
           </Suspense>
         </ErrorBoundary>
 
@@ -199,15 +178,13 @@ export default async function HomePage() {
         {/* Latest News & Upcoming Events - Lower priority */}
         <ErrorBoundary>
           <Suspense fallback={<div className="h-96 bg-white animate-pulse" />}>
-            <NewsEventsPreview initialNews={news} initialEvents={events} />
+            <NewsEventsWrapper />
           </Suspense>
         </ErrorBoundary>
 
-        {/* Quick Links Section - Lowest priority */}
+        {/* Home Internal Links for SEO and Sitelinks Optimization - Moved to bottom */}
         <ErrorBoundary>
-          <Suspense fallback={<div className="h-64 bg-gray-50 animate-pulse" />}>
-            <QuickLinks />
-          </Suspense>
+          <HomeInternalLinks />
         </ErrorBoundary>
       </main>
     </>
