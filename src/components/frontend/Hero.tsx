@@ -37,7 +37,7 @@ const heroSlides: HeroSlide[] = [
     titleKey: "hero.slide1.title",
     subtitleKey: "hero.slide1.subtitle",
     descriptionKey: "hero.slide1.description",
-    image: "/hero/school-tour.webp",
+    image: "/hero/campus3.webp",
     imageAlt: "Surjomukhi Kindergarten - Bangla medium primary school in Aona, Nawabganj, Dhaka since 2004",
     imageAltKey: "hero.slide1.imageAlt",
     cta: {
@@ -58,7 +58,7 @@ const heroSlides: HeroSlide[] = [
     titleKey: "hero.slide2.title",
     subtitleKey: "hero.slide2.subtitle",
     descriptionKey: "hero.slide2.description",
-    image: "/hero/school-playground2.webp",
+    image: "/hero/school-playground.webp",
     imageAlt: "Bangla medium education from Nursery to Grade 5 at Surjomukhi Kindergarten",
     imageAltKey: "hero.slide2.imageAlt",
     cta: {
@@ -79,7 +79,7 @@ const heroSlides: HeroSlide[] = [
     titleKey: "hero.slide3.title",
     subtitleKey: "hero.slide3.subtitle",
     descriptionKey: "hero.slide3.description",
-    image: "/hero/school-playground.webp",
+    image: "/hero/campus6.webp",
     imageAlt: "Creative education, sports, and cultural programs at Surjomukhi Kindergarten Dhaka",
     imageAltKey: "hero.slide3.imageAlt",
     cta: {
@@ -557,9 +557,9 @@ const Hero: React.FC = () => {
    */
   const motionVariants = useMemo(
     () => ({
-      initial: isFirstLoad ? { opacity: 1 } : (shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.01 }),
-      animate: { opacity: 1, scale: 1 },
-      exit: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.99 }
+      initial: isFirstLoad ? { opacity: 1 } : (shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.1 }),
+      animate: { opacity: 1, scale: 1, zIndex: 1 },
+      exit: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, zIndex: 0 }
     }),
     [shouldReduceMotion, isFirstLoad]
   );
@@ -576,7 +576,7 @@ const Hero: React.FC = () => {
         : (shouldReduceMotion
           ? { duration: 0.2 }
           : {
-              duration: 0.5,
+              duration: 0.7, // Slightly longer for smoother crossfade
               ease: [0.4, 0, 0.2, 1] as const // Custom cubic-bezier for smooth motion
             }),
     [shouldReduceMotion, isFirstLoad]
@@ -584,7 +584,7 @@ const Hero: React.FC = () => {
 
   return (
     <section
-      className="relative h-screen min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] max-h-[900px] overflow-hidden"
+      className="relative h-screen min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] max-h-[900px] overflow-hidden bg-gray-900"
       role="banner"
       aria-label="Surjomukhi Kindergarten hero slideshow"
       aria-live="polite"
@@ -678,7 +678,7 @@ const Hero: React.FC = () => {
           }}
         />
       
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         <motion.div
           key={currentSlide}
           initial={motionVariants.initial}
