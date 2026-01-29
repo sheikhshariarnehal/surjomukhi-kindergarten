@@ -301,9 +301,10 @@ export default function EventsPage() {
                           <Link
                             href={`/events/${createSlug(event.title)}/${event.id}`}
                             className="inline-flex items-center text-indigo-600 hover:text-indigo-700 font-semibold text-sm transition-colors duration-200"
+                            aria-label={`Learn more about ${event.title} event`}
                           >
-                            Learn More
-                            <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            View Event Details
+                            <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                             </svg>
                           </Link>

@@ -142,9 +142,10 @@ export default function ClassesPage() {
                   <Link
                     href={`/academic/classes/${classInfo.slug}`}
                     className={`inline-flex items-center justify-center w-full bg-gradient-to-r ${classInfo.color} text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity`}
+                    aria-label={`Learn more about ${classInfo.name} class - ${classInfo.description}`}
                   >
-                    Learn More
-                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    View {classInfo.name} Details
+                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </Link>

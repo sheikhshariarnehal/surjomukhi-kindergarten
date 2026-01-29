@@ -117,14 +117,15 @@ export default function AcademicPage() {
                 key={index}
                 href={link.href}
                 className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group"
+                aria-label={`Learn more about ${link.title}`}
               >
                 <div className="flex items-center mb-4">
-                  <span className="text-3xl mr-4">{link.icon}</span>
+                  <span className="text-3xl mr-4" aria-hidden="true">{link.icon}</span>
                   <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
                     {link.title}
                   </h3>
                 </div>
-                <div className="flex items-center text-blue-600 group-hover:text-blue-700">
+                <div className="flex items-center text-blue-600 group-hover:text-blue-700" aria-hidden="true">
                   <span className="text-sm font-medium">Learn More</span>
                   <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

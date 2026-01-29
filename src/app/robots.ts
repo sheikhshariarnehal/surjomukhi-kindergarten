@@ -1,5 +1,9 @@
 import { MetadataRoute } from 'next';
 
+/**
+ * Robots.txt configuration for Surjomukhi Kindergarten
+ * @see https://nextjs.org/docs/app/api-reference/file-conventions/metadata/robots
+ */
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = 'https://www.surjamukhikindergarten.com';
 
@@ -14,11 +18,10 @@ export default function robots(): MetadataRoute.Robots {
           '/private/',
           '/_next/',
           '/static/',
-          '*.json',
+          '/*.json$',
           '/test*',
           '/demo*'
         ],
-        crawlDelay: 1,
       },
       {
         userAgent: 'Googlebot',
@@ -32,6 +35,5 @@ export default function robots(): MetadataRoute.Robots {
       }
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
   };
 }

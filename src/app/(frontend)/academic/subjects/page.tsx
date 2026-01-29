@@ -155,14 +155,16 @@ export default function SubjectsPage() {
             <a
               href="/admission"
               className="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              aria-label="Enroll your child at Surjomukhi Kindergarten"
             >
               Enroll Your Child
             </a>
             <a
               href="/contact"
               className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-indigo-600 transition-colors"
+              aria-label="Contact us to learn more about our academic subjects"
             >
-              Learn More
+              Contact Us
             </a>
           </div>
         </div>

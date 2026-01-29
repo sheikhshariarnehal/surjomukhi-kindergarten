@@ -338,13 +338,14 @@ export default function AboutPage() {
               <Link
                 href="/about/about-us"
                 className="group bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-lg border border-blue-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                aria-label="Learn more about Surjomukhi Kindergarten - our history, mission, vision, and values"
               >
                 <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">🏫</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">About Us</h3>
                 <p className="text-gray-600 mb-4">
                   Learn about our history, mission, vision, and the values that guide our educational approach.
                 </p>
-                <span className="text-blue-600 font-medium group-hover:text-blue-800">Learn More →</span>
+                <span className="text-blue-600 font-medium group-hover:text-blue-800" aria-hidden="true">Learn More →</span>
               </Link>
 
               <Link

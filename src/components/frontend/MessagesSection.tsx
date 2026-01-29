@@ -129,15 +129,17 @@ export default function MessagesSection() {
               <a
                 href="/admission"
                 className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors"
+                aria-label="Apply for admission to Surjomukhi Kindergarten"
               >
                 Apply for Admission
-                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </a>
               <a
                 href="/about"
                 className="inline-flex items-center px-6 py-3 border-2 border-primary-600 text-primary-600 rounded-lg font-semibold hover:bg-primary-600 hover:text-white transition-colors"
+                aria-label="Learn more about Surjomukhi Kindergarten's mission, vision, and values"
               >
                 Learn More About Us
               </a>

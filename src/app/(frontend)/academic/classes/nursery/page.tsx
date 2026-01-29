@@ -111,11 +111,11 @@ export default function NurseryPage() {
             Help your child build strong foundations for future learning success.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/admission" className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            <Link href="/admission" className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors" aria-label="Apply now for Nursery admission">
               Apply Now
             </Link>
-            <Link href="/contact" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors">
-              Learn More
+            <Link href="/contact" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors" aria-label="Contact us to learn more about Nursery program">
+              Contact Us
             </Link>
           </div>
         </div>
