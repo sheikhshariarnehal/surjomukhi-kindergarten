@@ -87,30 +87,49 @@ const StatCard: React.FC<{ stat: StatItem; delay: number }> = ({ stat, delay }) 
       className="group"
     >
       <article 
-        className="bg-white rounded-2xl shadow-sm p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100 h-full text-center"
+        className="relative bg-white rounded-2xl shadow-sm p-6 sm:p-8 hover:shadow-xl active:shadow-lg transition-all duration-300 hover:-translate-y-2 active:-translate-y-1 border border-gray-100/80 h-full text-center overflow-hidden touch-manipulation select-none"
         itemScope
         itemType="https://schema.org/QuantitativeValue"
+        style={{
+          // Professional glass morphism effect
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(249,250,251,0.9) 100%)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+        }}
       >
-        {/* Centered Icon */}
-        <div className={`inline-flex items-center justify-center w-14 h-14 rounded-xl ${stat.bgColor} mb-4 group-hover:scale-110 transition-transform duration-300 mx-auto`}>
-          <div className={stat.color} aria-hidden="true">
+        {/* Subtle gradient overlay on hover */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-blue-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          aria-hidden="true"
+        />
+        
+        {/* Clean, minimal icon container */}
+        <div className={`relative inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-xl ${stat.bgColor} mb-5 group-hover:scale-105 transition-all duration-300 mx-auto`}>
+          <div className={`${stat.color}`} aria-hidden="true">
             {stat.icon}
           </div>
         </div>
         
-        {/* Centered Number */}
+        {/* Centered Number with professional typography */}
         <div 
-          className={`text-3xl sm:text-4xl font-bold mb-2 ${stat.color} tabular-nums`}
+          className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 ${stat.color} tabular-nums tracking-tight`}
           itemProp="value"
           aria-label={`${stat.value}${stat.suffix || ''} ${stat.label}`}
+          style={{
+            letterSpacing: '-0.02em',
+            fontWeight: 700,
+          }}
         >
           {isInView ? count : 0}{stat.suffix || ''}
         </div>
         
-        {/* Centered Title */}
+        {/* Centered Title with better typography */}
         <h3 
-          className="text-gray-700 font-semibold text-sm sm:text-base leading-tight"
+          className="text-gray-700 font-semibold text-sm sm:text-base lg:text-lg leading-tight tracking-wide"
           itemProp="name"
+          style={{
+            letterSpacing: '0.02em',
+          }}
         >
           {stat.label}
         </h3>
@@ -143,11 +162,11 @@ const StatsCounter: React.FC<StatsCounterProps> = ({
       value: 450,
       suffix: '+',
       color: 'text-blue-600',
-      bgColor: 'bg-blue-100',
+      bgColor: 'bg-blue-50',
       description: 'Active students enrolled in our kindergarten',
       icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
         </svg>
       ),
     },
@@ -157,11 +176,11 @@ const StatsCounter: React.FC<StatsCounterProps> = ({
       value: 25,
       suffix: '+',
       color: 'text-emerald-600',
-      bgColor: 'bg-emerald-100',
+      bgColor: 'bg-emerald-50',
       description: 'Qualified and experienced educators',
       icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
         </svg>
       ),
     },
@@ -170,12 +189,12 @@ const StatsCounter: React.FC<StatsCounterProps> = ({
       label: t('stats.experience'),
       value: 15,
       suffix: '+',
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-100',
+      color: 'text-orange-500',
+      bgColor: 'bg-orange-50',
       description: 'Years of educational excellence',
       icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
     },
@@ -184,11 +203,11 @@ const StatsCounter: React.FC<StatsCounterProps> = ({
       label: t('stats.classes'),
       value: 12,
       color: 'text-purple-600',
-      bgColor: 'bg-purple-100',
+      bgColor: 'bg-purple-50',
       description: 'Well-structured classroom environments',
       icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
         </svg>
       ),
     }
@@ -197,46 +216,55 @@ const StatsCounter: React.FC<StatsCounterProps> = ({
   const displayStats = stats || defaultStatsWithTranslations;
   return (
     <section 
-      className={`py-12 sm:py-16 ${className}`}
-      style={{ backgroundColor: '#FAFCFD' }}
+      className={`py-14 sm:py-20 lg:py-24 ${className}`}
+      style={{ 
+        background: 'linear-gradient(180deg, #FAFCFD 0%, #F0F7FF 50%, #FAFCFD 100%)',
+      }}
       aria-labelledby="stats-heading"
       itemScope
       itemType="https://schema.org/EducationalOrganization"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* SEO optimized header */}
+        {/* SEO optimized header with enhanced visual hierarchy */}
         <motion.header
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-10 sm:mb-12"
+          className="text-center mb-12 sm:mb-16"
         >
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
+          <div className="relative inline-block">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 rounded-2xl sm:rounded-3xl flex items-center justify-center mx-auto mb-6 sm:mb-8 shadow-xl shadow-blue-500/25 transform hover:scale-105 transition-transform duration-300">
+              <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            {/* Decorative glow effect */}
+            <div className="absolute inset-0 w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-blue-500/20 rounded-2xl sm:rounded-3xl blur-xl -z-10" />
           </div>
           
           <h2
             id="stats-heading"
-            className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight"
+            className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight tracking-tight"
             itemProp="name"
+            style={{
+              letterSpacing: '-0.02em',
+            }}
           >
             {displayTitle}
           </h2>
 
           <p
-            className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed"
+            className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed"
             itemProp="description"
           >
             {displaySubtitle}
           </p>
         </motion.header>
 
-        {/* Stats Grid with proper semantic markup */}
+        {/* Stats Grid with enhanced spacing and visual rhythm */}
         <div 
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
           role="list"
           aria-label="Kindergarten statistics"
         >

@@ -343,6 +343,8 @@ const Hero: React.FC = () => {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [imageQuality, setImageQuality] = useState<number>(HERO_CONSTANTS.IMAGE_QUALITY.FOUR_G_PLUS);
+  const [isSwiping, setIsSwiping] = useState<boolean>(false);
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
 
   // Refs for cleanup and performance
   const autoPlayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -455,23 +457,31 @@ const Hero: React.FC = () => {
 
   /**
    * Touch gesture handlers for mobile swipe navigation
-   * Provides smooth, responsive swipe interactions
+   * Provides smooth, responsive swipe interactions with visual feedback
    */
   const handleTouchStart = useCallback((e: React.TouchEvent<HTMLElement>) => {
     if (e.touches.length === 1) {
       setTouchEnd(null);
       setTouchStart(e.targetTouches[0].clientX);
+      setIsSwiping(true);
+      setSwipeDirection(null);
     }
   }, []);
 
   const handleTouchMove = useCallback(
     (e: React.TouchEvent<HTMLElement>) => {
       if (e.touches.length === 1 && touchStart !== null) {
-        setTouchEnd(e.targetTouches[0].clientX);
+        const currentX = e.targetTouches[0].clientX;
+        setTouchEnd(currentX);
+
+        // Determine swipe direction for visual feedback
+        const distance = touchStart - currentX;
+        if (Math.abs(distance) > 20) {
+          setSwipeDirection(distance > 0 ? 'left' : 'right');
+        }
 
         // Prevent vertical scrolling during horizontal swipe
-        const distance = Math.abs(touchStart - e.targetTouches[0].clientX);
-        if (distance > 10) {
+        if (Math.abs(distance) > 10) {
           e.preventDefault();
         }
       }
@@ -480,6 +490,9 @@ const Hero: React.FC = () => {
   );
 
   const handleTouchEnd = useCallback(() => {
+    setIsSwiping(false);
+    setSwipeDirection(null);
+
     if (!touchStart || !touchEnd) return;
 
     const distance = touchStart - touchEnd;
@@ -846,6 +859,19 @@ const Hero: React.FC = () => {
             </div>
           </div>
         </m.div>
+      </AnimatePresence>
+
+      {/* Swipe Direction Indicators - Visual feedback for touch gestures */}
+      <AnimatePresence>
+        {isSwiping && swipeDirection && (
+          <m.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className={`absolute inset-y-0 z-40 w-16 pointer-events-none ${swipeDirection === 'left' ? 'right-0 bg-gradient-to-l' : 'left-0 bg-gradient-to-r'} from-white/20 to-transparent`}
+          />
+        )}
       </AnimatePresence>
 
       {/* Institutional Information Footer */}
