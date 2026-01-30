@@ -73,7 +73,59 @@ const nextConfig: NextConfig = {
         ? [process.env.NEXT_PUBLIC_APP_URL || 'https://your-app.vercel.app']
         : ['localhost:3000'],
     },
+    // Optimize CSS
+    optimizeCss: true,
+    // Enable lazy compilation for faster dev builds
+    webpackBuildWorker: true,
   },
+
+  // Webpack optimizations for better code splitting
+  webpack: (config, { isServer }) => {
+    // Optimize bundle size
+    if (!isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            default: false,
+            vendors: false,
+            // Framework bundle (React, Next.js)
+            framework: {
+              name: 'framework',
+              chunks: 'all',
+              test: /[\\/]node_modules[\\/](react|react-dom|scheduler|next)[\\/]/,
+              priority: 40,
+              enforce: true,
+            },
+            // Framer Motion - large animation library
+            framerMotion: {
+              name: 'framer-motion',
+              test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+              chunks: 'all',
+              priority: 30,
+              enforce: true,
+            },
+            // Common libraries
+            lib: {
+              name: 'lib',
+              test: /[\\/]node_modules[\\/]/,
+              priority: 20,
+              minChunks: 1,
+              reuseExistingChunk: true,
+            },
+            // Shared code
+            commons: {
+              name: 'commons',
+              minChunks: 2,
+              priority: 10,
+              reuseExistingChunk: true,
+            },
+          },
+        },
+      };
+    }
+    return config;
 };
 
 export default nextConfig;

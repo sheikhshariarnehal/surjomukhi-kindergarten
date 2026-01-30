@@ -8,6 +8,9 @@ import { Analytics } from "@vercel/analytics/react";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap", // Prevents invisible text during font load (FOIT)
+  preload: true,   // Preload for faster initial render
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
 });
 
 export const viewport: Viewport = {
@@ -199,6 +202,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        {/* DNS Prefetch & Preconnect for external resources */}
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://pqrcyfcfzvoqtulssxdi.supabase.co" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://pqrcyfcfzvoqtulssxdi.supabase.co" crossOrigin="anonymous" />
+        
         <meta name="theme-color" content="#2563eb" />
         <meta name="color-scheme" content="light" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -220,6 +231,10 @@ export default function RootLayout({
           fetchPriority="high"
           type="image/webp"
         />
+        {/* Inline critical CSS for instant render */}
+        <style dangerouslySetInnerHTML={{
+          __html: `*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{-webkit-text-size-adjust:100%;tab-size:4;font-family:var(--font-inter),system-ui,-apple-system,sans-serif}body{line-height:inherit;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.hero-section{position:relative;height:100vh;min-height:500px;max-height:900px;overflow:hidden;background-color:#111827}.header-nav{position:fixed;top:0;left:0;right:0;z-index:50;background-color:rgba(255,255,255,.95);backdrop-filter:blur(10px)}`
+        }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
