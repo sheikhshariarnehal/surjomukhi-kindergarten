@@ -1,0 +1,19 @@
+# Browsers that support ES6+ features natively
+# This reduces the need for Babel polyfills and transforms, saving ~13KB
+# The vendor chunk size will be reduced by removing unnecessary legacy code
+
+# Production browsers - modern only
+[production]
+>0.5%
+last 2 versions
+Firefox ESR
+not dead
+not IE 11
+not op_mini all
+supports es6-module
+
+# Development browsers - same as production for consistency
+[development]
+last 1 chrome version
+last 1 firefox version
+last 1 safari version

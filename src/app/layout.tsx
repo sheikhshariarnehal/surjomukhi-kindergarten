@@ -212,11 +212,20 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#2563eb" />
-        {/* Preload critical hero image for instant display */}
+        
+        {/* Preconnect to critical third-party origins for faster resource loading */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="preconnect" href="https://static.cloudflareinsights.com" />
+        <link rel="dns-prefetch" href="https://static.cloudflareinsights.com" />
+        
+        {/* Preload critical hero image for instant display - optimized quality */}
         <link
           rel="preload"
           as="image"
-          href="/hero/school-tour.webp"
+          href="/hero/campus3.webp"
           fetchPriority="high"
           type="image/webp"
         />
@@ -232,18 +241,22 @@ export default function RootLayout({
           {children}
         </LanguageProvider>
         <Analytics />
-        {/* Google Analytics */}
+        {/* Google Analytics - deferred loading to reduce main thread blocking */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-23C8S27HQF"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', 'G-23C8S27HQF');
+            gtag('config', 'G-23C8S27HQF', {
+              page_path: window.location.pathname,
+              send_page_view: true,
+              transport_type: 'beacon'
+            });
           `}
         </Script>
       </body>
