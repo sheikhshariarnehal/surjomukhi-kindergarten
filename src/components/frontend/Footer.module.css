@@ -4,11 +4,6 @@
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   position: relative;
   overflow: hidden;
-  /* CLS Prevention: Fixed minimum height to prevent layout shift */
-  min-height: 400px;
-  contain: layout style;
-  content-visibility: auto;
-  contain-intrinsic-size: 0 400px;
 }
 
 .footer::before {
