@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { motion, AnimatePresence, useReducedMotion, LazyMotion, domAnimation } from 'framer-motion';
+import { m, AnimatePresence, useReducedMotion, LazyMotion, domAnimation } from 'framer-motion';
 import { Button } from '@/lib';
 import { useTranslation } from '@/contexts/LanguageContext';
 import Image from 'next/image';
@@ -113,7 +113,7 @@ const ProgressBar: React.FC<ProgressBarProps> = React.memo(({ isPlaying, duratio
   if (!isPlaying || shouldReduceMotion) return null;
 
   return (
-    <motion.div
+    <m.div
       className="absolute bottom-0 left-0 h-1 bg-white/90 shadow-lg rounded-full"
       initial={{ width: '0%' }}
       animate={{ width: '100%' }}
@@ -156,7 +156,7 @@ const SlideIndicators: React.FC<SlideIndicatorsProps> = React.memo(
         aria-label="Hero slideshow navigation"
         role="tablist"
       >
-        <motion.div
+        <m.div
           className="flex space-x-2 xs:space-x-2.5 sm:space-x-3 bg-black/40 backdrop-blur-md rounded-full px-3 xs:px-4 sm:px-4 py-2 xs:py-2.5 sm:py-2 shadow-xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -166,7 +166,7 @@ const SlideIndicators: React.FC<SlideIndicatorsProps> = React.memo(
           }}
         >
           {Array.from({ length: totalSlides }, (_, index) => (
-            <motion.button
+            <m.button
               key={index}
               onClick={() => onSlideChange(index)}
               className={`relative overflow-hidden w-8 h-8 xs:w-10 xs:h-10 sm:w-8 sm:h-8 rounded-full transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-white/70 focus:ring-offset-2 focus:ring-offset-transparent ${
@@ -193,9 +193,9 @@ const SlideIndicators: React.FC<SlideIndicatorsProps> = React.memo(
                   duration={autoPlayDuration}
                 />
               )}
-            </motion.button>
+            </m.button>
           ))}
-        </motion.div>
+        </m.div>
       </nav>
     );
   }
@@ -256,7 +256,7 @@ const InstitutionalFooter: React.FC = React.memo(() => {
   ];
 
   return (
-    <motion.footer
+    <m.footer
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
@@ -271,7 +271,7 @@ const InstitutionalFooter: React.FC = React.memo(() => {
       <div className="shadow-lg">
         <div className="grid grid-cols-2 lg:grid-cols-4">
           {institutionalData.map((item, index) => (
-            <motion.div
+            <m.div
               key={item.label}
               className={`${item.bgColor} text-white text-center py-3 sm:py-3.5 px-3 lg:px-6 transition-all duration-200 hover:brightness-105`}
               title={t(item.descriptionKey, item.description)}
@@ -289,11 +289,11 @@ const InstitutionalFooter: React.FC = React.memo(() => {
               <div className="text-base sm:text-lg font-bold leading-tight">
                 {item.value}
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>
-    </motion.footer>
+    </m.footer>
   );
 });
 
@@ -680,7 +680,7 @@ const Hero: React.FC = () => {
         />
       
       <AnimatePresence>
-        <motion.div
+        <m.div
           key={currentSlide}
           initial={motionVariants.initial}
           animate={motionVariants.animate}
@@ -720,7 +720,7 @@ const Hero: React.FC = () => {
               <div className="space-y-3 xs:space-y-4 sm:space-y-6 lg:space-y-8">
                 <header className="space-y-2 xs:space-y-3 sm:space-y-4 lg:space-y-6">
                   {/* Subtitle with stagger animation */}
-                  <motion.p
+                  <m.p
                     initial={shouldReduceMotion ? { opacity: 0 } : { y: 20, opacity: 0 }}
                     animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
                     transition={{
@@ -738,10 +738,10 @@ const Hero: React.FC = () => {
                     }}
                   >
                     {t(currentSlideData.subtitleKey, currentSlideData.subtitleKey)}
-                  </motion.p>
+                  </m.p>
 
                   {/* Main title with stagger animation and professional typography */}
-                  <motion.h1
+                  <m.h1
                     initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }}
                     animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
                     transition={{
@@ -761,10 +761,10 @@ const Hero: React.FC = () => {
                     }}
                   >
                     {t(currentSlideData.titleKey, currentSlideData.titleKey)}
-                  </motion.h1>
+                  </m.h1>
 
                   {/* Description with stagger animation */}
-                  <motion.p
+                  <m.p
                     initial={shouldReduceMotion ? { opacity: 0 } : { y: 20, opacity: 0 }}
                     animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
                     transition={{
@@ -785,11 +785,11 @@ const Hero: React.FC = () => {
                     }}
                   >
                     {t(currentSlideData.descriptionKey, currentSlideData.descriptionKey)}
-                  </motion.p>
+                  </m.p>
                 </header>
 
                 {/* CTA Buttons with professional hover effects and stagger animation */}
-                <motion.div
+                <m.div
                   initial={shouldReduceMotion ? { opacity: 0 } : { y: 20, opacity: 0 }}
                   animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
                   transition={{
@@ -799,7 +799,7 @@ const Hero: React.FC = () => {
                   }}
                   className="flex flex-col xs:flex-col sm:flex-row gap-3 xs:gap-4 sm:gap-4 lg:gap-6 justify-center items-center pt-3 xs:pt-4 sm:pt-6 px-3 xs:px-4 sm:px-0"
                 >
-                  <motion.a
+                  <m.a
                     href={currentSlideData.cta.primary.href}
                     className="w-full xs:w-full sm:w-auto max-w-xs xs:max-w-sm sm:max-w-none"
                     aria-label={t(currentSlideData.cta.primary.ariaLabelKey, currentSlideData.cta.primary.ariaLabelKey)}
@@ -818,9 +818,9 @@ const Hero: React.FC = () => {
                     >
                       {t(currentSlideData.cta.primary.textKey, currentSlideData.cta.primary.textKey)}
                     </Button>
-                  </motion.a>
+                  </m.a>
 
-                  <motion.a
+                  <m.a
                     href={currentSlideData.cta.secondary.href}
                     className="w-full xs:w-full sm:w-auto max-w-xs xs:max-w-sm sm:max-w-none"
                     aria-label={t(currentSlideData.cta.secondary.ariaLabelKey, currentSlideData.cta.secondary.ariaLabelKey)}
@@ -840,12 +840,12 @@ const Hero: React.FC = () => {
                     >
                       {t(currentSlideData.cta.secondary.textKey, currentSlideData.cta.secondary.textKey)}
                     </Button>
-                  </motion.a>
-                </motion.div>
+                  </m.a>
+                </m.div>
               </div>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </AnimatePresence>
 
       {/* Institutional Information Footer */}
