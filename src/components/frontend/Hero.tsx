@@ -267,6 +267,11 @@ const InstitutionalFooter: React.FC = React.memo(() => {
       className="absolute bottom-0 left-0 right-0 z-30"
       role="contentinfo"
       aria-label={t('hero.institutional.ariaLabel', 'Institution information')}
+      style={{
+        // CLS Prevention: Reserve space for institutional footer
+        minHeight: '56px',
+        contain: 'layout'
+      }}
     >
       <div className="shadow-lg">
         <div className="grid grid-cols-2 lg:grid-cols-4">
@@ -313,11 +318,11 @@ const HERO_CONSTANTS = {
   METRICS_DELAY: 3000, // Delay before logging performance metrics
   MIN_SWIPE_DISTANCE: 50, // Minimum distance for swipe gesture
   SWIPE_RESUME_DELAY: 6000, // Resume auto-play after swipe
-  // Image quality thresholds based on network speed
+  // Image quality thresholds based on network speed - optimized for smaller file sizes
   IMAGE_QUALITY: {
-    SLOW_2G: 60,
-    THREE_G: 75,
-    FOUR_G_PLUS: 85
+    SLOW_2G: 50,
+    THREE_G: 60,
+    FOUR_G_PLUS: 70  // Reduced from 85 for ~50KB savings per image
   }
 } as const;
 
@@ -698,10 +703,10 @@ const Hero: React.FC = () => {
                 src={currentSlideData.image}
                 alt={currentSlideData.imageAlt}
                 fill
-                sizes="100vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
                 className="object-cover object-center"
                 priority={currentSlide === 0}
-                quality={currentSlide === 0 ? imageQuality : Math.max(imageQuality - 10, 60)}
+                quality={currentSlide === 0 ? imageQuality : Math.max(imageQuality - 15, 45)}
                 placeholder="blur"
                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAr/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8//9k="
                 loading={currentSlide === 0 ? "eager" : "lazy"}

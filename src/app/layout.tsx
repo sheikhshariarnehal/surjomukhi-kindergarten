@@ -223,11 +223,11 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#2563eb" />
-        {/* Preload critical hero image for instant display */}
+        {/* Preload critical LCP hero image for instant display */}
         <link
           rel="preload"
           as="image"
-          href="/hero/school-tour.webp"
+          href="/hero/campus3.webp"
           fetchPriority="high"
           type="image/webp"
         />
@@ -247,18 +247,20 @@ export default function RootLayout({
           {children}
         </LanguageProvider>
         <Analytics />
-        {/* Google Analytics */}
+        {/* Google Analytics - defer loading for better LCP */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-23C8S27HQF"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-
-            gtag('config', 'G-23C8S27HQF');
+            gtag('config', 'G-23C8S27HQF', {
+              page_path: window.location.pathname,
+              send_page_view: true
+            });
           `}
         </Script>
       </body>

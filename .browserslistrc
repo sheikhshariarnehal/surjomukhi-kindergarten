@@ -1,0 +1,18 @@
+# Browsers that we support - targeting modern browsers to reduce polyfills
+# This reduces ~13KB of legacy JavaScript
+
+# Production targets (ES2020+ features supported)
+[production]
+last 2 Chrome versions
+last 2 Firefox versions
+last 2 Safari versions
+last 2 Edge versions
+not dead
+not op_mini all
+not IE 11
+
+# Development targets
+[development]
+last 1 Chrome version
+last 1 Firefox version
+last 1 Safari version

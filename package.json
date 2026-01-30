@@ -13,7 +13,8 @@
     "fix-deployment": "node scripts/fix-deployment-issues.js",
     "generate-favicons": "node scripts/generate-favicons.js",
     "generate-seo-assets": "node scripts/generate-seo-assets.js",
-    "generate-all-assets": "npm run generate-favicons && npm run generate-seo-assets"
+    "generate-all-assets": "npm run generate-favicons && npm run generate-seo-assets",
+    "optimize-images": "node scripts/optimize-images.js"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

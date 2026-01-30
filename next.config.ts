@@ -58,12 +58,11 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-    // Optimize image loading
-    formats: ['image/webp', 'image/avif'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    qualities: [75, 80, 85, 90, 95, 100],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+    // Optimize image loading - prioritize AVIF for better compression
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 1080, 1200, 1920], // Reduced sizes for faster builds
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    minimumCacheTTL: 60 * 60 * 24 * 365, // 1 year cache for better performance
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
@@ -73,11 +72,28 @@ const nextConfig: NextConfig = {
         ? [process.env.NEXT_PUBLIC_APP_URL || 'https://your-app.vercel.app']
         : ['localhost:3000'],
     },
-    // Optimize CSS
+    // Optimize CSS - inline critical CSS for faster FCP
     optimizeCss: true,
     // Enable lazy compilation for faster dev builds
     webpackBuildWorker: true,
   },
+
+  // Modularize imports to reduce bundle size
+  modularizeImports: {
+    'lucide-react': {
+      transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
+      skipDefaultConversion: true,
+    },
+    '@heroicons/react/24/outline': {
+      transform: '@heroicons/react/24/outline/{{member}}',
+    },
+    '@heroicons/react/24/solid': {
+      transform: '@heroicons/react/24/solid/{{member}}',
+    },
+  },
+
+  // Target modern browsers only - reduces polyfills by ~13KB
+  transpilePackages: [],
 
   // Webpack optimizations for better code splitting
   webpack: (config, { isServer }) => {
@@ -126,6 +142,7 @@ const nextConfig: NextConfig = {
       };
     }
     return config;
+  },
 };
 
 export default nextConfig;
