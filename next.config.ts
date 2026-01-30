@@ -64,8 +64,11 @@ const nextConfig: NextConfig = {
     // Optimized device sizes for better caching
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // Lower default quality for better compression (saves ~46KB on hero)
-    minimumCacheTTL: 60 * 60 * 24 * 365, // 1 year for immutable assets
+    // All quality values used throughout the app
+    // Hero: 50, 55, 60, 70 | Other components: 75, 85, 90, 100
+    qualities: [50, 55, 60, 70, 75, 85, 90, 100],
+    // Cache images for 1 year (immutable assets)
+    minimumCacheTTL: 60 * 60 * 24 * 365,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
