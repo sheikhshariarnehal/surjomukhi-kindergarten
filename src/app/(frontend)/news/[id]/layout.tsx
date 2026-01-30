@@ -2,6 +2,9 @@ import { Metadata } from 'next';
 import { DatabaseService } from '@/lib/db';
 import { News } from '@/types';
 
+// File extensions that should not be treated as news IDs
+const STATIC_FILE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|svg|ico|pdf|mp4|mp3|wav|webm|avif)$/i;
+
 interface Props {
   params: Promise<{ id: string }>;
 }
@@ -9,6 +12,15 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const { id } = await params;
+    
+    // Skip metadata generation for static file requests
+    if (STATIC_FILE_EXTENSIONS.test(id)) {
+      return {
+        title: 'Resource Not Found',
+        description: 'The requested resource could not be found.',
+      };
+    }
+
     const news = await DatabaseService.getById<News>('news', id);
 
     if (!news) {

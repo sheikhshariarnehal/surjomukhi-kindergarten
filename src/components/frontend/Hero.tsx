@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion, LazyMotion, domAnimation } from 'framer-motion';
 import { Button } from '@/lib';
 import { useTranslation } from '@/contexts/LanguageContext';
 import Image from 'next/image';
@@ -583,6 +583,7 @@ const Hero: React.FC = () => {
   );
 
   return (
+    <LazyMotion features={domAnimation} strict>
     <section
       className="relative h-screen min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] max-h-[900px] overflow-hidden bg-gray-900"
       role="banner"
@@ -850,6 +851,7 @@ const Hero: React.FC = () => {
       {/* Institutional Information Footer */}
       <InstitutionalFooter />
     </section>
+    </LazyMotion>
   );
 };
 

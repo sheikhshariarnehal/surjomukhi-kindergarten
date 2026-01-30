@@ -7,6 +7,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { News } from '@/types';
 
+// File extensions that should not be treated as news IDs
+const STATIC_FILE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|svg|ico|pdf|mp4|mp3|wav|webm|avif)$/i;
+
 export default function NewsDetailPage() {
   const params = useParams();
   const [news, setNews] = useState<News | null>(null);
@@ -17,13 +20,21 @@ export default function NewsDetailPage() {
     const fetchNews = async () => {
       setLoading(true);
       
+      // Skip fetch for static file requests
+      const id = params.id as string;
+      if (STATIC_FILE_EXTENSIONS.test(id)) {
+        setNotFound(true);
+        setLoading(false);
+        return;
+      }
+      
       try {
         const response = await fetch(`/api/news/${params.id}`);
         
         if (response.ok) {
           const data = await response.json();
           setNews(data);
-        } else if (response.status === 404) {
+        } else if (response.status === 404 || response.status === 400) {
           setNotFound(true);
         } else {
           throw new Error('Failed to fetch news');

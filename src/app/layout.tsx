@@ -213,21 +213,18 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#2563eb" />
         
-        {/* Preconnect to critical third-party origins for faster resource loading */}
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        {/* DNS prefetch for analytics - only prefetch since they load lazily */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        <link rel="preconnect" href="https://static.cloudflareinsights.com" />
-        <link rel="dns-prefetch" href="https://static.cloudflareinsights.com" />
         
-        {/* Preload critical hero image for instant display - optimized quality */}
+        {/* Preload critical hero image with responsive srcset for optimal loading */}
         <link
           rel="preload"
           as="image"
-          href="/hero/campus3.webp"
+          href="/_next/image?url=%2Fhero%2Fcampus3.webp&w=1920&q=70"
           fetchPriority="high"
-          type="image/webp"
+          imageSrcSet="/_next/image?url=%2Fhero%2Fcampus3.webp&w=640&q=70 640w, /_next/image?url=%2Fhero%2Fcampus3.webp&w=1080&q=70 1080w, /_next/image?url=%2Fhero%2Fcampus3.webp&w=1920&q=70 1920w"
+          imageSizes="100vw"
         />
         <script
           type="application/ld+json"

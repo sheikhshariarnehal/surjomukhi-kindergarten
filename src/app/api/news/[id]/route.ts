@@ -4,6 +4,9 @@ import { AuthService } from '@/lib/auth';
 import { updateNewsSchema, validateData } from '@/lib/validators';
 import { News } from '@/types/news';
 
+// File extensions that should not be treated as news IDs
+const STATIC_FILE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|svg|ico|pdf|mp4|mp3|wav|webm|avif)$/i;
+
 // GET /api/news/[id] - Get single news item
 export async function GET(
   request: NextRequest,
@@ -11,6 +14,15 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
+    
+    // Skip processing for static file requests
+    if (STATIC_FILE_EXTENSIONS.test(id)) {
+      return NextResponse.json(
+        { error: 'Invalid news ID format' },
+        { status: 400 }
+      );
+    }
+
     const news = await DatabaseService.getById<News>('news', id);
 
     if (!news) {
