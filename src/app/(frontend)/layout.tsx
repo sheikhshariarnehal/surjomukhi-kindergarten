@@ -12,7 +12,7 @@ export default function FrontendLayout({
     <div className="min-h-screen flex flex-col">
       <ProfessionalNavbar />
       <main className="flex-1" role="main">
-        <Breadcrumbs className="container mx-auto px-4 py-4" />
+        <Breadcrumbs className="max-w-7xl mx-auto px-2 xs:px-3 sm:px-4 lg:px-6 py-4" />
         {children}
       </main>
       <Footer />
