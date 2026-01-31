@@ -78,10 +78,18 @@ export const createNewsSchema = z.object({
 export const updateNewsSchema = createNewsSchema.partial();
 
 // Event validation schemas
+const eventCategories = ['academic', 'sports', 'cultural', 'social', 'competition', 'meeting', 'ceremony', 'general'] as const;
+const eventStatuses = ['upcoming', 'ongoing', 'completed', 'cancelled'] as const;
+
 export const createEventSchema = z.object({
+  // Basic fields
   title: z.string().min(1, 'Title is required'),
+  title_bn: z.string().optional(),
   slug: z.string().optional(),
   description: z.string().min(1, 'Description is required'),
+  description_bn: z.string().optional(),
+  
+  // Date fields
   start_date: z.string()
     .refine((val) => {
       // Accept both datetime-local format (YYYY-MM-DDTHH:MM) and ISO format
@@ -115,6 +123,44 @@ export const createEventSchema = z.object({
       // If it's already a valid date string, ensure it's ISO format
       return new Date(val).toISOString();
     }),
+    
+  // Location fields
+  location: z.string().optional(),
+  location_bn: z.string().optional(),
+  venue: z.string().optional(),
+  venue_bn: z.string().optional(),
+  
+  // Organizer fields
+  organizer: z.string().optional(),
+  organizer_bn: z.string().optional(),
+  contact_email: z.string().email().optional().or(z.literal('')).transform(val => val === '' ? undefined : val),
+  contact_phone: z.string().optional(),
+  
+  // Registration fields
+  registration_url: z.string().url().optional().or(z.literal('')).transform(val => val === '' ? undefined : val),
+  max_attendees: z.preprocess(
+    (val) => {
+      if (val === '' || val === null || val === undefined) return undefined;
+      if (typeof val === 'string') return parseInt(val, 10) || undefined;
+      return val;
+    },
+    z.number().int().positive().optional()
+  ),
+  
+  // Categorization
+  category: z.enum(eventCategories).optional(),
+  status: z.enum(eventStatuses).optional(),
+  featured: z.boolean().optional(),
+  tags: z.array(z.string()).optional(),
+  
+  // SEO fields
+  meta_title: z.string().max(70).optional(),
+  meta_title_bn: z.string().max(70).optional(),
+  meta_description: z.string().max(160).optional(),
+  meta_description_bn: z.string().max(160).optional(),
+  keywords: z.string().optional(),
+  
+  // Image
   image_url: z.string().optional().or(z.literal('')).transform(val => {
     if (!val || val === '') return undefined;
     return val;

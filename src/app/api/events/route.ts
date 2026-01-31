@@ -113,12 +113,14 @@ export async function POST(request: NextRequest) {
 
     const eventData = {
       ...validation.data,
+      // Ensure max_attendees is properly typed
+      max_attendees: validation.data.max_attendees as number | undefined,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
 
     // Create event
-    const event = await DatabaseService.create<Event>('events', eventData);
+    const event = await DatabaseService.create<Event>('events', eventData as Partial<Event>);
 
     return NextResponse.json({
       success: true,

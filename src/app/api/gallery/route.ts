@@ -118,9 +118,9 @@ export async function GET(request: NextRequest) {
         const { data: eventImageItems } = await eventImagesQuery;
         
         if (eventImageItems) {
-          eventImageItems.forEach((item: { id: string; url: string; caption?: string; created_at: string; events?: { id: string; title: string } }) => {
+          eventImageItems.forEach((item: any) => {
             if (item.url) {
-              const eventTitle = item.events?.title || 'Event';
+              const eventTitle = item.events?.title || item.events?.[0]?.title || 'Event';
               allImages.push({
                 id: `event-img-${item.id}`,
                 title: item.caption || eventTitle,

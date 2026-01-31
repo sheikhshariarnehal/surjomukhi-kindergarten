@@ -95,11 +95,13 @@ export async function PUT(
 
     const updateData = {
       ...validation.data,
+      // Ensure max_attendees is properly typed
+      max_attendees: validation.data.max_attendees as number | undefined,
       updated_at: new Date().toISOString(),
     };
 
     // Update event
-    const event = await DatabaseService.update<Event>('events', id, updateData);
+    const event = await DatabaseService.update<Event>('events', id, updateData as Partial<Event>);
 
     return NextResponse.json({
       success: true,

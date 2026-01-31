@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Event } from '@/types';
+import EventStructuredData from '@/components/seo/EventStructuredData';
 import {
   Calendar,
   Share2,
@@ -196,17 +197,21 @@ export default function EventDetailPage() {
   const eventStatus = getEventStatus(event.start_date, event.end_date);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Event Content */}
-      <section className="py-4 sm:py-6 lg:py-8">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="lg:col-span-2"
+    <>
+      {/* Add structured data for SEO */}
+      <EventStructuredData event={event} />
+      
+      <div className="min-h-screen bg-gray-50">
+        {/* Event Content */}
+        <section className="py-4 sm:py-6 lg:py-8">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Main Content */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="lg:col-span-2"
             >
               <article className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden border border-gray-200">
                 {/* Hero Image Section */}
@@ -583,6 +588,7 @@ export default function EventDetailPage() {
           onClick={() => setShareMenuOpen(false)}
         />
       )}
-    </div>
+      </div>
+    </>
   );
 }
