@@ -1,356 +1,341 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
-import { Input } from '@/components/ui/Input';
-import { UploadWidget } from '@/components/admin/UploadWidget';
-import { Search, Trash2, Image as ImageIcon, Video, Upload, Grid, List } from 'lucide-react';
+import { ImageUploader } from '@/components/admin/ImageUploader';
+import { Search, Trash2, Image as ImageIcon, Calendar, Newspaper, Camera, RefreshCw, X, ZoomIn, ExternalLink } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface GalleryItem {
   id: string;
   title: string;
-  description?: string;
-  file_url: string;
-  file_type: 'image' | 'video';
+  caption?: string;
+  image_url: string;
+  album: string;
+  source: 'gallery' | 'event' | 'event_image' | 'news';
   created_at: string;
-  updated_at: string;
 }
+
+type SourceFilter = 'all' | 'gallery' | 'event' | 'news';
+
+const sourceConfig = {
+  gallery: { label: 'Gallery', icon: Camera, gradient: 'from-emerald-500 to-teal-500', badge: 'bg-emerald-100 text-emerald-700' },
+  event: { label: 'Event', icon: Calendar, gradient: 'from-violet-500 to-purple-500', badge: 'bg-violet-100 text-violet-700' },
+  event_image: { label: 'Event', icon: Calendar, gradient: 'from-violet-500 to-purple-500', badge: 'bg-violet-100 text-violet-700' },
+  news: { label: 'News', icon: Newspaper, gradient: 'from-blue-500 to-cyan-500', badge: 'bg-blue-100 text-blue-700' },
+};
 
 export default function GalleryPage() {
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [uploading, setUploading] = useState(false);
+  const [sourceFilter, setSourceFilter] = useState<SourceFilter>('all');
+  const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
 
   const fetchGalleryItems = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
+        limit: '100',
         ...(searchTerm && { search: searchTerm }),
+        ...(sourceFilter !== 'all' && { source: sourceFilter }),
       });
-
       const response = await fetch(`/api/gallery?${params}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch gallery items');
-      }
-
+      if (!response.ok) throw new Error('Failed to fetch');
       const data = await response.json();
-      setItems(data.items || []);
+      setItems(data.images || []);
     } catch (error) {
-      console.error('Error fetching gallery items:', error);
-      alert('Failed to load gallery items. Please try again.');
+      console.error('Error:', error);
     } finally {
       setLoading(false);
     }
-  }, [searchTerm]);
+  }, [searchTerm, sourceFilter]);
 
   useEffect(() => {
     fetchGalleryItems();
   }, [fetchGalleryItems]);
 
-  const handleSearch = (value: string) => {
-    setSearchTerm(value);
-  };
+  const stats = useMemo(() => ({
+    gallery: items.filter(item => item.source === 'gallery').length,
+    events: items.filter(item => item.source === 'event' || item.source === 'event_image').length,
+    news: items.filter(item => item.source === 'news').length,
+    total: items.length,
+  }), [items]);
 
-  const handleUpload = async (url: string) => {
+  const handleUpload = async (urls: string[]) => {
     try {
       setUploading(true);
-      
-      // Determine file type from URL
-      const fileType = url.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? 'image' : 'video';
-      
-      const response = await fetch('/api/gallery', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: `Gallery ${fileType}`,
-          file_url: url,
-          file_type: fileType,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to add to gallery');
+      // Upload all images to gallery
+      for (const url of urls) {
+        const response = await fetch('/api/gallery', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: 'Gallery Image', image_url: url, album: 'Gallery' }),
+        });
+        if (!response.ok) throw new Error('Failed');
       }
-
       await fetchGalleryItems();
-      alert('File added to gallery successfully!');
     } catch (error) {
-      console.error('Error adding to gallery:', error);
-      alert('Failed to add file to gallery. Please try again.');
+      console.error('Error:', error);
     } finally {
       setUploading(false);
     }
   };
 
   const handleDelete = async (item: GalleryItem) => {
-    if (!confirm(`Are you sure you want to delete "${item.title}"?`)) {
+    if (item.source !== 'gallery') {
+      alert('Please delete from the ' + (item.source === 'event' || item.source === 'event_image' ? 'Events' : 'News') + ' section.');
       return;
     }
-
+    if (!confirm('Delete "' + item.title + '"?')) return;
     try {
-      const response = await fetch(`/api/gallery/${item.id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete gallery item');
-      }
-
+      const response = await fetch('/api/gallery/' + item.id, { method: 'DELETE' });
+      if (!response.ok) throw new Error('Failed');
       await fetchGalleryItems();
-      alert('Gallery item deleted successfully');
+      setSelectedImage(null);
     } catch (error) {
-      console.error('Error deleting gallery item:', error);
-      alert('Failed to delete gallery item. Please try again.');
+      console.error('Error:', error);
     }
   };
 
-  const renderGridView = () => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {items.map((item) => (
-        <Card key={item.id} className="overflow-hidden group hover:shadow-lg transition-shadow">
-          <div className="aspect-square relative">
-            {item.file_type === 'image' ? (
-              <Image
-                src={item.file_url}
-                alt={item.title}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <video
-                src={item.file_url}
-                className="w-full h-full object-cover"
-                controls
-              />
-            )}
-            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
-              <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleDelete(item)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-          <div className="p-4">
-            <h3 className="font-semibold text-gray-900 truncate">{item.title}</h3>
-            {item.description && (
-              <p className="text-sm text-gray-500 mt-1 line-clamp-2">{item.description}</p>
-            )}
-            <div className="flex items-center justify-between mt-2">
-              <span className="text-xs text-gray-400">
-                {new Date(item.created_at).toLocaleDateString()}
-              </span>
-              <div className="flex items-center space-x-1">
-                {item.file_type === 'image' ? (
-                  <ImageIcon className="h-4 w-4 text-blue-500" />
-                ) : (
-                  <Video className="h-4 w-4 text-red-500" />
-                )}
-              </div>
-            </div>
-          </div>
-        </Card>
-      ))}
-    </div>
-  );
-
-  const renderListView = () => (
-    <Card>
-      <div className="divide-y divide-gray-200">
-        {items.map((item) => (
-          <div key={item.id} className="p-4 flex items-center space-x-4">
-            <div className="flex-shrink-0">
-              {item.file_type === 'image' ? (
-                <Image
-                  src={item.file_url}
-                  alt={item.title}
-                  width={64}
-                  height={64}
-                  className="rounded-lg object-cover"
-                />
-              ) : (
-                <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center">
-                  <Video className="h-8 w-8 text-gray-400" />
-                </div>
-              )}
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-gray-900 truncate">{item.title}</h3>
-              {item.description && (
-                <p className="text-sm text-gray-500 truncate">{item.description}</p>
-              )}
-              <p className="text-xs text-gray-400 mt-1">
-                {new Date(item.created_at).toLocaleDateString()}
-              </p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                item.file_type === 'image' 
-                  ? 'bg-blue-100 text-blue-800' 
-                  : 'bg-red-100 text-red-800'
-              }`}>
-                {item.file_type === 'image' ? (
-                  <ImageIcon className="h-3 w-3 mr-1" />
-                ) : (
-                  <Video className="h-3 w-3 mr-1" />
-                )}
-                {item.file_type}
-              </span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleDelete(item)}
-                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedImage(null);
+    };
+    if (selectedImage) {
+      document.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedImage]);
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Gallery</h1>
-          <p className="text-gray-600 mt-1">
-            Manage school photos and videos
-          </p>
-        </div>
-        <div className="mt-4 sm:mt-0 flex items-center space-x-2">
-          <Button
-            variant="outline"
-            onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
-          >
-            {viewMode === 'grid' ? <List className="h-4 w-4" /> : <Grid className="h-4 w-4" />}
-          </Button>
-        </div>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="p-6">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                <ImageIcon className="h-5 w-5 text-blue-600" />
-              </div>
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total Images</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {items.filter(item => item.file_type === 'image').length}
-              </p>
-            </div>
+    <div className="min-h-screen">
+      {/* Header */}
+      <div className="mb-8">
+        <div className="flex flex-col gap-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Media Gallery</h1>
+            <p className="text-gray-500 text-sm mt-1">Manage and organize all your images in one place</p>
           </div>
-        </Card>
-        <Card className="p-6">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                <Video className="h-5 w-5 text-red-600" />
-              </div>
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total Videos</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {items.filter(item => item.file_type === 'video').length}
-              </p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-6">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                <Upload className="h-5 w-5 text-green-600" />
-              </div>
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total Items</p>
-              <p className="text-2xl font-bold text-gray-900">{items.length}</p>
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      {/* Upload and Search */}
-      <Card className="p-6">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
-          <div className="flex-1">
-            <Input
-              placeholder="Search gallery items..."
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              leftIcon={<Search className="h-4 w-4" />}
-            />
-          </div>
-          <div className="flex items-center space-x-4">
-            <UploadWidget
+          
+          {/* Image Uploader */}
+          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <ImageUploader
               onUpload={handleUpload}
-              accept={{
-                'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
-                'video/*': ['.mp4', '.webm', '.ogg'],
-              }}
-              maxSize={50 * 1024 * 1024} // 50MB
+              maxSize={10 * 1024 * 1024}
               bucket="uploads"
               folder="gallery"
               disabled={uploading}
+              multiple={true}
+              maxFiles={20}
             />
-            <Button variant="outline" onClick={fetchGalleryItems}>
-              Refresh
-            </Button>
           </div>
         </div>
-      </Card>
+      </div>
 
-      {/* Gallery Content */}
-      {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {[...Array(8)].map((_, i) => (
-            <Card key={i} className="overflow-hidden">
-              <div className="aspect-square bg-gray-200 animate-pulse"></div>
-              <div className="p-4">
-                <div className="h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
-                <div className="h-3 bg-gray-200 rounded animate-pulse w-2/3"></div>
+      {/* Stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {[
+          { key: 'gallery', value: stats.gallery, label: 'Gallery', icon: Camera, gradient: 'from-emerald-500 to-teal-500' },
+          { key: 'events', value: stats.events, label: 'Events', icon: Calendar, gradient: 'from-violet-500 to-purple-500' },
+          { key: 'news', value: stats.news, label: 'News', icon: Newspaper, gradient: 'from-blue-500 to-cyan-500' },
+          { key: 'total', value: stats.total, label: 'Total', icon: ImageIcon, gradient: 'from-amber-500 to-orange-500' },
+        ].map((stat) => (
+          <motion.div
+            key={stat.key}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{stat.label}</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
               </div>
-            </Card>
+              <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${stat.gradient} flex items-center justify-center shadow-lg`}>
+                <stat.icon className="w-5 h-5 text-white" />
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Filters */}
+      <div className="bg-white rounded-xl border border-gray-100 p-4 mb-6 shadow-sm">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search images..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border-0 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all"
+            />
+            {searchTerm && (
+              <button onClick={() => setSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+          <div className="flex items-center bg-gray-50 rounded-lg p-1">
+            {[
+              { value: 'all', label: 'All' },
+              { value: 'gallery', label: 'Gallery' },
+              { value: 'event', label: 'Events' },
+              { value: 'news', label: 'News' },
+            ].map((filter) => (
+              <button
+                key={filter.value}
+                onClick={() => setSourceFilter(filter.value as SourceFilter)}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+                  sourceFilter === filter.value ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                {filter.label}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={fetchGalleryItems}
+            disabled={loading}
+            className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all"
+          >
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">Refresh</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Gallery Grid */}
+      {loading ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          {[...Array(12)].map((_, i) => (
+            <div key={i} className="aspect-square bg-gray-100 rounded-xl animate-pulse" />
           ))}
         </div>
       ) : items.length === 0 ? (
-        <Card className="p-12 text-center">
-          <ImageIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No gallery items</h3>
-          <p className="text-gray-500 mb-4">Upload your first image or video to get started.</p>
-          <UploadWidget
-            onUpload={handleUpload}
-            accept={{
-              'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'],
-              'video/*': ['.mp4', '.webm', '.ogg'],
-            }}
-            maxSize={50 * 1024 * 1024}
-            bucket="uploads"
-            folder="gallery"
-            disabled={uploading}
-          />
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-gray-100"
+        >
+          <div className="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center mb-4">
+            <ImageIcon className="w-10 h-10 text-gray-300" />
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-1">No images found</h3>
+          <p className="text-gray-500 text-sm mb-6 text-center max-w-sm">
+            {searchTerm || sourceFilter !== 'all' ? 'Try adjusting your search or filter.' : 'Upload images using the uploader above or add events with photos.'}
+          </p>
+        </motion.div>
       ) : (
-        viewMode === 'grid' ? renderGridView() : renderListView()
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          {items.map((item, index) => {
+            const config = sourceConfig[item.source];
+            const Icon = config.icon;
+            return (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.02 }}
+                className="group relative aspect-square bg-gray-100 rounded-xl overflow-hidden cursor-pointer"
+                onClick={() => setSelectedImage(item)}
+              >
+                <Image src={item.image_url} alt={item.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                <div className="absolute top-2 left-2">
+                  <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium backdrop-blur-sm ${config.badge} bg-opacity-90`}>
+                    <Icon className="w-3 h-3" />
+                    {config.label}
+                  </span>
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center gap-2">
+                    <button className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 hover:bg-white transition-colors shadow-lg">
+                      <ZoomIn className="w-5 h-5" />
+                    </button>
+                    {item.source === 'gallery' && (
+                      <button
+                        onClick={(e: React.MouseEvent) => { e.stopPropagation(); handleDelete(item); }}
+                        className="w-10 h-10 bg-red-500/90 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-red-600 transition-colors shadow-lg"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <p className="text-white text-sm font-medium truncate">{item.title}</p>
+                  <p className="text-white/70 text-xs">{new Date(item.created_at).toLocaleDateString()}</p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
       )}
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+            onClick={() => setSelectedImage(null)}
+          >
+            <button onClick={() => setSelectedImage(null)} className="absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors z-10">
+              <X className="w-5 h-5" />
+            </button>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-5xl max-h-[85vh] w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative w-full h-full flex items-center justify-center">
+                <Image src={selectedImage.image_url} alt={selectedImage.title} width={1200} height={800} className="max-w-full max-h-[75vh] object-contain rounded-lg" />
+              </div>
+              <div className="mt-4 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-white font-semibold text-lg">{selectedImage.title}</h3>
+                    {selectedImage.caption && <p className="text-white/70 text-sm mt-1">{selectedImage.caption}</p>}
+                    <div className="flex items-center gap-3 mt-3">
+                      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${sourceConfig[selectedImage.source].badge}`}>
+                        {React.createElement(sourceConfig[selectedImage.source].icon, { className: 'w-3 h-3' })}
+                        {sourceConfig[selectedImage.source].label}
+                      </span>
+                      <span className="text-white/60 text-sm">
+                        {new Date(selectedImage.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a href={selectedImage.image_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm font-medium transition-colors">
+                      <ExternalLink className="w-4 h-4" />
+                      Open
+                    </a>
+                    {selectedImage.source === 'gallery' && (
+                      <button onClick={() => handleDelete(selectedImage)} className="flex items-center gap-2 px-4 py-2 bg-red-500/80 hover:bg-red-500 rounded-lg text-white text-sm font-medium transition-colors">
+                        <Trash2 className="w-4 h-4" />
+                        Delete
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

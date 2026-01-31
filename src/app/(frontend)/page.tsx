@@ -13,6 +13,11 @@ import EventsNoticesWrapper from '@/components/frontend/EventsNoticesWrapper';
 import NewsEventsWrapper from '@/components/frontend/NewsEventsWrapper';
 
 // Dynamic imports for heavy components - reduces initial bundle
+const GalleryMarquee = dynamic(() => import('@/components/frontend/GalleryMarquee'), {
+  loading: () => <div className="h-96 bg-gray-900 animate-pulse" />,
+  ssr: true
+});
+
 const StatsCounter = dynamic(() => import('@/components/frontend/StatsCounter'), {
   loading: () => <div className="h-32 bg-gray-50 animate-pulse" />,
   ssr: true
@@ -172,6 +177,13 @@ export default function HomePage() {
         <ErrorBoundary>
           <Suspense fallback={<div className="h-96 bg-gray-50 animate-pulse" />}>
             <TeacherPreview />
+          </Suspense>
+        </ErrorBoundary>
+
+        {/* Gallery Marquee Section - Infinite horizontal slider */}
+        <ErrorBoundary>
+          <Suspense fallback={<div className="h-96 bg-gray-900 animate-pulse" />}>
+            <GalleryMarquee />
           </Suspense>
         </ErrorBoundary>
 

@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file type - Allow images, PDFs, and documents
+    // Validate file type - Allow images (including webp), PDFs, and documents
     const allowedTypes = [
       'image/jpeg', 
       'image/png', 
@@ -38,20 +38,25 @@ export async function POST(request: NextRequest) {
       'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     ];
-    if (!allowedTypes.includes(file.type)) {
+    
+    // Also check file extension for webp (some browsers report different mime)
+    const fileExt = file.name.split('.').pop()?.toLowerCase();
+    const isWebP = fileExt === 'webp' || file.type === 'image/webp';
+    const isImage = file.type.startsWith('image/') || ['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(fileExt || '');
+    
+    if (!allowedTypes.includes(file.type) && !isImage) {
       return NextResponse.json(
         { error: 'Invalid file type. Only images, PDF, DOC, and DOCX files are allowed.' },
         { status: 400 }
       );
     }
 
-    // Validate file size (10MB max for documents, 5MB for images)
+    // Validate file size (10MB max for documents, 10MB for images - to support high-res before optimization)
     const isDocument = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.type);
-    const maxSize = isDocument ? 10 * 1024 * 1024 : 5 * 1024 * 1024;
+    const maxSize = 10 * 1024 * 1024; // 10MB for all files
     if (file.size > maxSize) {
-      const maxSizeMB = isDocument ? '10MB' : '5MB';
       return NextResponse.json(
-        { error: `File too large. Maximum size is ${maxSizeMB}.` },
+        { error: `File too large. Maximum size is 10MB.` },
         { status: 400 }
       );
     }
