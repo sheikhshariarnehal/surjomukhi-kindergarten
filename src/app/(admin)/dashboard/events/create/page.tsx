@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -73,14 +73,14 @@ export default function CreateEventPage() {
       .trim();
   };
 
-  const handleImagesChange = (images: OptimizedImage[]) => {
+  const handleImagesChange = useCallback((images: OptimizedImage[]) => {
     setEventImages(images);
     // Set primary image URL for form
     const primaryImage = images.find(img => img.is_primary) || images[0];
     if (primaryImage) {
       setValue('image_url', primaryImage.url);
     }
-  };
+  }, [setValue]);
 
   const handleTagToggle = (tag: string) => {
     const newTags = selectedTags.includes(tag)
@@ -188,62 +188,62 @@ export default function CreateEventPage() {
           </div>
         )}
 
-        {/* Page Header */}
-        <div className="mb-8">
-          <Button
-            variant="ghost"
-            onClick={() => router.back()}
-            className="mb-4 text-gray-600 hover:text-gray-900 hover:bg-white transition-all"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Events
-          </Button>
-          
-          <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 lg:p-8">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
-              <div className="flex items-center space-x-4">
-                <div className="h-12 w-12 rounded-xl bg-primary-100 flex items-center justify-center">
-                  <Calendar className="h-6 w-6 text-primary-600" />
-                </div>
-                <div>
-                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Create New Event</h1>
-                  <p className="text-sm sm:text-base text-gray-600 mt-1">Add bilingual event with SEO optimization</p>
-                </div>
-              </div>
-              {watchedFeatured && (
-                <span className="flex items-center px-3 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium">
-                  <Star className="h-4 w-4 mr-1.5 fill-yellow-500" />
-                  Featured Event
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
+        {/* Back Button */}
+        <Button
+          variant="ghost"
+          onClick={() => router.back()}
+          className="mb-6 text-gray-600 hover:text-gray-900 hover:bg-white transition-all"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Events
+        </Button>
 
-        {/* Tab Navigation */}
-        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-1.5 sm:p-2 mb-4 sm:mb-6 overflow-x-auto">
-          <nav className="flex gap-1.5 sm:gap-2 min-w-max sm:min-w-0">
-            {[
-              { id: 'basic', label: 'Basic Info', icon: FileText },
-              { id: 'bilingual', label: 'বাংলা Content', icon: Globe },
-              { id: 'location', label: 'Location & Contact', icon: MapPin },
-              { id: 'seo', label: 'SEO Settings', icon: Sparkles },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                className={`flex items-center px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-medium text-xs sm:text-sm whitespace-nowrap transition-all ${
-                  activeTab === tab.id
-                    ? 'bg-primary-50 text-primary-700 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                }`}
-              >
-                <tab.icon className="h-4 w-4 mr-2" />
-                {tab.label}
-              </button>
-            ))}
-          </nav>
+        {/* Combined Header & Navigation */}
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 mb-6">
+          {/* Header Section */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 p-4 sm:p-6 border-b border-gray-100">
+            <div className="flex items-center space-x-4">
+              <div className="h-12 w-12 rounded-xl bg-primary-100 flex items-center justify-center">
+                <Calendar className="h-6 w-6 text-primary-600" />
+              </div>
+              <div>
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Create New Event</h1>
+                <p className="text-sm sm:text-base text-gray-600 mt-1">Add bilingual event with SEO optimization</p>
+              </div>
+            </div>
+            {watchedFeatured && (
+              <span className="flex items-center px-3 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium">
+                <Star className="h-4 w-4 mr-1.5 fill-yellow-500" />
+                Featured Event
+              </span>
+            )}
+          </div>
+
+          {/* Tab Navigation */}
+          <div className="p-2 overflow-x-auto">
+            <nav className="flex gap-2 min-w-max sm:min-w-0">
+              {[
+                { id: 'basic', label: 'Basic Info', icon: FileText },
+                { id: 'bilingual', label: 'বাংলা Content', icon: Globe },
+                { id: 'location', label: 'Location & Contact', icon: MapPin },
+                { id: 'seo', label: 'SEO Settings', icon: Sparkles },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                  className={`flex items-center px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-medium text-xs sm:text-sm whitespace-nowrap transition-all ${
+                    activeTab === tab.id
+                      ? 'bg-primary-50 text-primary-700 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+                >
+                  <tab.icon className="h-4 w-4 mr-2" />
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
@@ -373,47 +373,6 @@ export default function CreateEventPage() {
                     </label>
                   </div>
                 </div>
-              </Card>
-
-              {/* Image Upload Card - Optimized for SEO & Performance */}
-              <Card className="p-4 sm:p-6 lg:p-8 bg-white shadow-sm border border-gray-200 hover:shadow-md transition-shadow overflow-hidden">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-3">
-                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center">
-                      <ImageIcon className="h-5 w-5 text-emerald-600" />
-                    </div>
-                    <div>
-                      <h2 className="text-xl font-semibold text-gray-900">
-                        Event Images
-                      </h2>
-                      <p className="text-sm text-gray-500">Auto-optimized for web performance</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-xs font-medium">
-                    <ZapIcon className="h-3.5 w-3.5" />
-                    SEO Optimized
-                  </div>
-                </div>
-
-                {/* Error Display */}
-                {uploadError && (
-                  <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
-                    {uploadError}
-                  </div>
-                )}
-
-                {/* Optimized Image Upload Component */}
-                <OptimizedImageUpload
-                  onImagesChange={handleImagesChange}
-                  onError={(error) => setUploadError(error)}
-                  maxImages={10}
-                  bucket="uploads"
-                  folder="events"
-                  currentImages={eventImages}
-                  label="Upload Event Images"
-                  helperText="The primary image will be used as the event cover and in search results"
-                  optimizationMode="seo"
-                />
               </Card>
               </>
               )}
@@ -676,6 +635,41 @@ export default function CreateEventPage() {
                     <p className="mt-1.5 text-xs text-gray-500">Optional - Leave blank for single-time events</p>
                   </div>
                 </div>
+              </Card>
+
+              {/* Image Upload Card - Optimized for SEO & Performance */}
+              <Card className="p-4 sm:p-6 bg-white shadow-sm border border-gray-200 hover:shadow-md transition-shadow overflow-hidden">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center">
+                    <ImageIcon className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+                      Event Images
+                    </h2>
+                    <p className="text-xs text-gray-500">SEO Optimized</p>
+                  </div>
+                </div>
+
+                {/* Error Display */}
+                {uploadError && (
+                  <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                    {uploadError}
+                  </div>
+                )}
+
+                {/* Optimized Image Upload Component */}
+                <OptimizedImageUpload
+                  onImagesChange={handleImagesChange}
+                  onError={(error) => setUploadError(error)}
+                  maxImages={10}
+                  bucket="uploads"
+                  folder="events"
+                  currentImages={eventImages}
+                  label="Upload Event Images"
+                  helperText="Primary image used for cover"
+                  optimizationMode="seo"
+                />
               </Card>
 
               {/* Action Card */}

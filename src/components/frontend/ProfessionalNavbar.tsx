@@ -243,7 +243,7 @@ const useKeyboardNavigation = (callbacks: Record<string, () => void>): void => {
 const NavbarSkeleton: React.FC = () => (
   <div className="animate-pulse">
     <div className="bg-blue-900 py-1">
-      <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
+      <div className="w-full px-4 flex justify-between items-center">
         <div className="flex space-x-4">
           <div className="h-4 w-32 bg-blue-700 rounded"></div>
           <div className="h-4 w-40 bg-blue-700 rounded"></div>
@@ -387,7 +387,7 @@ function ProfessionalNavbar() {
         {/* Subtle background pattern */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-700/10 via-transparent to-blue-700/10 opacity-30"></div>
         
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
+        <div className="w-full px-3 sm:px-4 lg:px-4 relative z-10">
           <div className="flex justify-between items-center min-h-[26px] sm:min-h-[24px] lg:min-h-[24px]">
             {/* Contact Information - Compact design across all devices */}
             <div className="flex items-center space-x-1.5 xs:space-x-2 lg:space-x-3 flex-1 min-w-0">
