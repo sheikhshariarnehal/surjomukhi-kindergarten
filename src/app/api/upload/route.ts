@@ -40,9 +40,9 @@ export async function POST(request: NextRequest) {
     ];
     
     // Also check file extension for webp (some browsers report different mime)
-    const fileExt = file.name.split('.').pop()?.toLowerCase();
-    const isWebP = fileExt === 'webp' || file.type === 'image/webp';
-    const isImage = file.type.startsWith('image/') || ['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(fileExt || '');
+    const ext = file.name.split('.').pop()?.toLowerCase();
+    const isWebP = ext === 'webp' || file.type === 'image/webp';
+    const isImage = file.type.startsWith('image/') || ['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext || '');
     
     if (!allowedTypes.includes(file.type) && !isImage) {
       return NextResponse.json(
@@ -61,9 +61,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate unique filename
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+    // Generate unique filename (reuse ext variable from above)
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${ext}`;
     const filePath = folder ? `${folder}/${fileName}` : fileName;
 
     // Ensure bucket exists

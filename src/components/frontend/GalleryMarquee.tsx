@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Camera, ArrowRight } from 'lucide-react';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 interface GalleryImage {
   id: string;
@@ -16,6 +17,7 @@ interface GalleryImage {
 }
 
 export default function GalleryMarquee() {
+  const { t } = useTranslation();
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -89,23 +91,24 @@ export default function GalleryMarquee() {
         >
           <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-50 rounded-full mb-3 sm:mb-4">
             <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
-            <span className="text-amber-600 font-medium text-xs sm:text-sm">Photo Gallery</span>
+            <span className="text-amber-600 font-medium text-xs sm:text-sm">{t('gallery.badge')}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
-            Capturing <span className="text-amber-600">Precious Moments</span>
+            {t('gallery.headingPart1')}{' '}
+            <span className="text-amber-600">{t('gallery.headingPart2')}</span>
           </h2>
           <p className="text-gray-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-2">
-            Glimpses of joy, learning, and growth at Surjomukhi Kindergarten
+            {t('gallery.description')}
           </p>
         </motion.div>
       </div>
 
       {/* First Row - Moving Left - Full Width */}
       <div className="relative w-full mb-3 sm:mb-4 md:mb-6">
-        <div className="marquee-container overflow-hidden">
+        <div className="marquee-container overflow-hidden will-change-transform">
           <div className="marquee-track flex gap-3 sm:gap-4 md:gap-6 animate-marquee-left">
             {duplicatedImages.map((image, index) => (
-              <GalleryCard key={`left-${image.id}-${index}`} image={image} />
+              <GalleryCard key={`left-${image.id}-${index}`} image={image} priority={index < 6} />
             ))}
           </div>
         </div>
@@ -113,10 +116,10 @@ export default function GalleryMarquee() {
 
       {/* Second Row - Moving Right - Full Width */}
       <div className="relative w-full">
-        <div className="marquee-container overflow-hidden">
+        <div className="marquee-container overflow-hidden will-change-transform">
           <div className="marquee-track flex gap-3 sm:gap-4 md:gap-6 animate-marquee-right">
             {[...duplicatedImages].reverse().map((image, index) => (
-              <GalleryCard key={`right-${image.id}-${index}`} image={image} />
+              <GalleryCard key={`right-${image.id}-${index}`} image={image} priority={false} />
             ))}
           </div>
         </div>
@@ -135,7 +138,7 @@ export default function GalleryMarquee() {
             href="/gallery"
             className="inline-flex items-center gap-2 px-5 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm sm:text-base font-semibold rounded-full hover:from-amber-600 hover:to-orange-600 transition-all duration-300 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 active:scale-95 sm:hover:scale-105"
           >
-            <span>View Full Gallery</span>
+            <span>{t('gallery.viewFullGallery')}</span>
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </Link>
         </motion.div>
@@ -145,75 +148,84 @@ export default function GalleryMarquee() {
       <style jsx>{`
         .marquee-container {
           width: 100%;
+          -webkit-overflow-scrolling: touch;
         }
         
         .marquee-track {
           width: max-content;
+          will-change: transform;
         }
 
         @keyframes marquee-left {
           0% {
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
           }
           100% {
-            transform: translateX(-33.333%);
+            transform: translate3d(-33.333%, 0, 0);
           }
         }
 
         @keyframes marquee-right {
           0% {
-            transform: translateX(-33.333%);
+            transform: translate3d(-33.333%, 0, 0);
           }
           100% {
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
           }
         }
 
-        /* Faster animation on mobile for smaller cards */
+        /* Optimized animation speeds with GPU acceleration - Very smooth and slow */
         .animate-marquee-left {
-          animation: marquee-left 30s linear infinite;
+          animation: marquee-left 60s linear infinite;
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
+          perspective: 1000px;
         }
 
         .animate-marquee-right {
-          animation: marquee-right 30s linear infinite;
+          animation: marquee-right 60s linear infinite;
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
+          perspective: 1000px;
         }
 
-        /* Slower animation on larger screens */
+        /* Even slower on larger screens for smooth viewing */
         @media (min-width: 640px) {
           .animate-marquee-left {
-            animation: marquee-left 40s linear infinite;
+            animation: marquee-left 80s linear infinite;
           }
           .animate-marquee-right {
-            animation: marquee-right 40s linear infinite;
+            animation: marquee-right 80s linear infinite;
           }
         }
 
         @media (min-width: 1024px) {
           .animate-marquee-left {
-            animation: marquee-left 50s linear infinite;
+            animation: marquee-left 100s linear infinite;
           }
           .animate-marquee-right {
-            animation: marquee-right 50s linear infinite;
+            animation: marquee-right 100s linear infinite;
           }
         }
 
-        .marquee-container:hover .animate-marquee-left,
-        .marquee-container:hover .animate-marquee-right {
-          animation-play-state: paused;
-        }
-
-        /* Touch devices - pause on touch */
-        @media (hover: none) {
-          .marquee-container:active .animate-marquee-left,
-          .marquee-container:active .animate-marquee-right {
+        /* Pause on hover - desktop only */
+        @media (hover: hover) {
+          .marquee-container:hover .animate-marquee-left,
+          .marquee-container:hover .animate-marquee-right {
             animation-play-state: paused;
           }
         }
 
+        /* Reduced motion accessibility */
         @media (prefers-reduced-motion: reduce) {
           .animate-marquee-left,
           .animate-marquee-right {
             animation: none;
+            transform: translate3d(0, 0, 0);
+          }
+          
+          .marquee-track {
+            justify-content: center;
           }
         }
       `}</style>
@@ -221,23 +233,25 @@ export default function GalleryMarquee() {
   );
 }
 
-function GalleryCard({ image }: { image: GalleryImage }) {
+function GalleryCard({ image, priority }: { image: GalleryImage; priority?: boolean }) {
   return (
-    <div className="flex-shrink-0 group relative w-52 h-36 xs:w-60 xs:h-44 sm:w-72 sm:h-52 md:w-80 md:h-56 lg:w-96 lg:h-64 rounded-lg sm:rounded-xl overflow-hidden shadow-md sm:shadow-xl touch-manipulation">
-      {/* Image */}
+    <div className="flex-shrink-0 group relative w-52 h-36 xs:w-60 xs:h-44 sm:w-72 sm:h-52 md:w-80 md:h-56 lg:w-96 lg:h-64 rounded-lg sm:rounded-xl overflow-hidden shadow-md sm:shadow-xl touch-manipulation transform-gpu">
+      {/* Image with optimized loading */}
       <Image
         src={image.image_url}
         alt={image.title || 'Gallery image'}
         fill
-        className="object-cover transition-transform duration-500 group-hover:scale-110"
+        className="object-cover transition-transform duration-500 group-hover:scale-110 will-change-transform"
         sizes="(max-width: 480px) 208px, (max-width: 640px) 240px, (max-width: 768px) 288px, (max-width: 1024px) 320px, 384px"
+        loading={priority ? "eager" : "lazy"}
+        quality={85}
       />
       
       {/* Overlay - Hidden by default, shown on hover */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       
       {/* Content - Hidden by default, shown on hover */}
-      <div className="absolute inset-0 p-2.5 sm:p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-300">
+      <div className="absolute inset-0 p-2.5 sm:p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
         <h3 className="text-white font-semibold text-sm sm:text-lg line-clamp-1">
           {image.title}
         </h3>
@@ -249,7 +263,7 @@ function GalleryCard({ image }: { image: GalleryImage }) {
       </div>
 
       {/* Border Glow Effect */}
-      <div className="absolute inset-0 rounded-lg sm:rounded-xl border-2 border-transparent group-hover:border-amber-400/50 group-active:border-amber-400/50 transition-colors duration-300" />
+      <div className="absolute inset-0 rounded-lg sm:rounded-xl border-2 border-transparent group-hover:border-amber-400/50 transition-colors duration-300 pointer-events-none" />
     </div>
   );
 }

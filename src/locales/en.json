@@ -892,6 +892,11 @@
   },
   "gallery": {
     "title": "Photo Gallery",
+    "badge": "Photo Gallery",
+    "headingPart1": "Capturing",
+    "headingPart2": "Precious Moments",
+    "description": "Glimpses of joy, learning, and growth at Surjomukhi Kindergarten",
+    "viewFullGallery": "View Full Gallery",
     "subtitle": "Glimpses of life at Surjamukhi Kindergarten",
     "noImages": "No images available at the moment"
   },
