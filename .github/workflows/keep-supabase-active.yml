@@ -12,31 +12,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Ping Supabase REST API
+      - name: Ping Supabase API
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         run: |
           if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
             echo "::error::Missing repository secrets! Please set SUPABASE_URL and SUPABASE_ANON_KEY in GitHub Repository Secrets."
             exit 1
           fi
 
-          # Strip trailing slash if present
           CLEAN_URL="${SUPABASE_URL%/}"
 
-          echo "Pinging Supabase project REST API at: $CLEAN_URL/rest/v1/"
+          echo "Pinging Supabase Auth Health at: $CLEAN_URL/auth/v1/health"
           
           RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
             -H "apikey: $SUPABASE_ANON_KEY" \
-            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
-            "$CLEAN_URL/rest/v1/")
+            "$CLEAN_URL/auth/v1/health")
 
-          echo "Supabase REST API Response Status Code: $RESPONSE_CODE"
+          echo "Supabase Auth Health Response Code: $RESPONSE_CODE"
 
-          if [ "$RESPONSE_CODE" -ge 200 ] && [ "$RESPONSE_CODE" -lt 400 ]; then
+          if [ "$RESPONSE_CODE" -eq 200 ]; then
             echo "✅ Supabase project pinged successfully! Project will remain active."
           else
-            echo "::error::Failed to ping Supabase REST API. Returned HTTP status: $RESPONSE_CODE"
+            echo "::error::Failed to ping Supabase API. Returned HTTP status: $RESPONSE_CODE"
             exit 1
           fi
