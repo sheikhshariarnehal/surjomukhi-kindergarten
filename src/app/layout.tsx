@@ -197,7 +197,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="bn" className={inter.variable}>
       <head>
         <meta name="theme-color" content="#2563eb" />
         <meta name="color-scheme" content="light" />

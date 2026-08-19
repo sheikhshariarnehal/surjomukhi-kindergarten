@@ -25,9 +25,9 @@ const translations = {
 // Create context
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-// Language provider component
+// Language provider component (Defaults to Bengali 'bn')
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('en');
+  const [language, setLanguageState] = useState<Language>('bn');
   const [isClient, setIsClient] = useState(false);
 
   // Initialize client-side state
@@ -38,12 +38,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const savedLanguage = localStorage.getItem('preferred-language') as Language;
     if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'bn')) {
       setLanguageState(savedLanguage);
+      document.documentElement.lang = savedLanguage === 'bn' ? 'bn-BD' : 'en-US';
     } else {
-      // Detect browser language preference
-      const browserLang = navigator.language.toLowerCase();
-      if (browserLang.startsWith('bn') || browserLang.includes('bangladesh')) {
-        setLanguageState('bn');
-      }
+      // Default to Bengali ('bn')
+      setLanguageState('bn');
+      document.documentElement.lang = 'bn-BD';
     }
   }, []);
 
@@ -55,7 +54,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       
       // Update document language and direction
       document.documentElement.lang = lang === 'bn' ? 'bn-BD' : 'en-US';
-      document.documentElement.dir = lang === 'bn' ? 'ltr' : 'ltr'; // Bengali is LTR
+      document.documentElement.dir = 'ltr'; // Both Bengali and English are LTR
     }
   };
 
@@ -69,20 +68,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         if (value && typeof value === 'object' && k in value) {
           value = value[k];
         } else {
-          // Key not found, try English as fallback
-          if (language !== 'en') {
-            let englishValue: any = translations.en;
-            for (const k of keys) {
-              if (englishValue && typeof englishValue === 'object' && k in englishValue) {
-                englishValue = englishValue[k];
-              } else {
-                englishValue = null;
-                break;
-              }
+          // Key not found, try English/Bengali as fallback
+          const fallbackSource = language === 'bn' ? translations.en : translations.bn;
+          let fallbackValue: any = fallbackSource;
+          for (const fbKey of keys) {
+            if (fallbackValue && typeof fallbackValue === 'object' && fbKey in fallbackValue) {
+              fallbackValue = fallbackValue[fbKey];
+            } else {
+              fallbackValue = null;
+              break;
             }
-            if (englishValue !== null) {
-              return englishValue;
-            }
+          }
+          if (fallbackValue !== null) {
+            return fallbackValue;
           }
           
           // Return fallback or key if no translation found
@@ -97,8 +95,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Check if current language is RTL (Bengali is LTR, but keeping for future languages)
-  const isRTL = false; // Currently no RTL languages supported
+  // Both Bengali and English are LTR
+  const isRTL = false;
 
   const value: LanguageContextType = {
     language,
@@ -139,9 +137,9 @@ export function withLanguage<P extends object>(
   };
 }
 
-// Language detection utility
+// Language detection utility (Defaults to 'bn')
 export function detectLanguage(): Language {
-  if (typeof window === 'undefined') return 'en';
+  if (typeof window === 'undefined') return 'bn';
   
   // Check localStorage first
   const saved = localStorage.getItem('preferred-language') as Language;
@@ -149,25 +147,11 @@ export function detectLanguage(): Language {
     return saved;
   }
   
-  // Check browser language
-  const browserLang = navigator.language.toLowerCase();
-  if (browserLang.startsWith('bn') || browserLang.includes('bangladesh')) {
-    return 'bn';
-  }
-  
-  return 'en';
+  return 'bn';
 }
 
 // Language metadata for SEO and accessibility
 export const languageMetadata = {
-  en: {
-    code: 'en',
-    name: 'English',
-    nativeName: 'English',
-    flag: '',
-    dir: 'ltr',
-    locale: 'en-US',
-  },
   bn: {
     code: 'bn',
     name: 'Bengali',
@@ -175,5 +159,13 @@ export const languageMetadata = {
     flag: '',
     dir: 'ltr',
     locale: 'bn-BD',
+  },
+  en: {
+    code: 'en',
+    name: 'English',
+    nativeName: 'English',
+    flag: '',
+    dir: 'ltr',
+    locale: 'en-US',
   },
 } as const;
