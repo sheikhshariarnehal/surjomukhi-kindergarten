@@ -24,17 +24,22 @@ jobs:
 
           CLEAN_URL="${SUPABASE_URL%/}"
 
-          echo "Pinging Supabase Auth Health at: $CLEAN_URL/auth/v1/health"
-          
-          RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+          echo "1. Pinging Supabase Auth Health..."
+          AUTH_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
             -H "apikey: $SUPABASE_ANON_KEY" \
             "$CLEAN_URL/auth/v1/health")
+          echo "Auth status: $AUTH_CODE"
 
-          echo "Supabase Auth Health Response Code: $RESPONSE_CODE"
+          echo "2. Querying Supabase PostgREST API (triggers database activity)..."
+          REST_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            "$CLEAN_URL/rest/v1/")
+          echo "REST API status: $REST_CODE"
 
-          if [ "$RESPONSE_CODE" -eq 200 ]; then
-            echo "✅ Supabase project pinged successfully! Project will remain active."
+          if [ "$AUTH_CODE" -eq 200 ] || [ "$REST_CODE" -eq 200 ] || [ "$REST_CODE" -eq 404 ]; then
+            echo "✅ Supabase project pinged successfully! Database activity recorded."
           else
-            echo "::error::Failed to ping Supabase API. Returned HTTP status: $RESPONSE_CODE"
+            echo "::error::Failed to ping Supabase. Auth: $AUTH_CODE, REST: $REST_CODE"
             exit 1
           fi

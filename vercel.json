@@ -8,6 +8,12 @@
     }
   },
   "regions": ["iad1"],
+  "crons": [
+    {
+      "path": "/api/test",
+      "schedule": "0 0 */3 * *"
+    }
+  ],
 
   "headers": [
     {
