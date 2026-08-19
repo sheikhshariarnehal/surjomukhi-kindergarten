@@ -1,67 +1,20 @@
 import React from 'react';
 import { Metadata } from 'next';
-import Link from 'next/link';
+import ClassDetailView from '@/components/academic/ClassDetailView';
+import { classesDataMap } from '@/lib/classDetails';
 
 export const metadata: Metadata = {
-  title: 'Class Five (Ages 8-9) - Surjomukhi Kindergarten',
-  description: 'Final preparation for primary education with comprehensive skill development.',
-  keywords: ['class five', 'ages 8-9', 'primary education', 'comprehensive skills', 'leadership'],
+  title: 'Class Five (৫ম শ্রেণি) - Surjomukhi Kindergarten',
+  description: 'Graduating senior primary tier, comprehensive syllabus completion, merit scholarship exam mentoring, and secondary school readiness for ages 9-10.',
+  keywords: ['class five', 'grade 5', 'scholarship examination', 'primary completion', 'surjomukhi kindergarten'],
+  openGraph: {
+    title: 'Class Five (৫ম শ্রেণি) - Surjomukhi Kindergarten',
+    description: 'Premier Class Five graduation program, scholarship mentorship, and leadership excellence.',
+    type: 'website',
+  },
 };
 
 export default function ClassFivePage() {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <section className="bg-gradient-to-r from-red-500 to-red-600 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="text-6xl mb-6">🏆</div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Class Five</h1>
-          <p className="text-xl md:text-2xl mb-4">Ages 8-9 Years</p>
-          <p className="text-lg max-w-3xl mx-auto">
-            Final preparation for primary education with comprehensive skill development.
-          </p>
-        </div>
-      </section>
-
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Leadership & Excellence</h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
-            Our highest level prepares students for primary school with leadership skills and academic excellence.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-6 bg-red-50 rounded-lg">
-              <div className="text-3xl mb-4">👑</div>
-              <h3 className="font-bold text-gray-900 mb-2">Leadership Skills</h3>
-              <p className="text-gray-600 text-sm">Student leadership and responsibility</p>
-            </div>
-            <div className="p-6 bg-red-50 rounded-lg">
-              <div className="text-3xl mb-4">🎓</div>
-              <h3 className="font-bold text-gray-900 mb-2">Independent Learning</h3>
-              <p className="text-gray-600 text-sm">Self-directed study skills</p>
-            </div>
-            <div className="p-6 bg-red-50 rounded-lg">
-              <div className="text-3xl mb-4">📚</div>
-              <h3 className="font-bold text-gray-900 mb-2">Complex Projects</h3>
-              <p className="text-gray-600 text-sm">Multi-disciplinary assignments</p>
-            </div>
-            <div className="p-6 bg-red-50 rounded-lg">
-              <div className="text-3xl mb-4">🤝</div>
-              <h3 className="font-bold text-gray-900 mb-2">Peer Mentoring</h3>
-              <p className="text-gray-600 text-sm">Helping younger students</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-red-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-6">Achieve Excellence</h2>
-          <p className="text-xl mb-8">Complete your child&apos;s kindergarten journey with our premier Class Five program.</p>
-          <Link href="/admission" className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-            Apply Now
-          </Link>
-        </div>
-      </section>
-    </div>
-  );
+  const data = classesDataMap['five'];
+  return <ClassDetailView data={data} />;
 }

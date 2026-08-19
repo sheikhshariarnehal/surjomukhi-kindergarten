@@ -2,15 +2,43 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import Head from 'next/head';
-import { Button, Input, Textarea } from '@/lib';
+import Link from 'next/link';
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Send,
+  Building2,
+  GraduationCap,
+  CreditCard,
+  CheckCircle2,
+  AlertCircle,
+  HelpCircle,
+  ArrowRight,
+  MessageSquare,
+  Navigation,
+  FileCheck,
+  Calendar,
+  Sparkles,
+  PhoneCall
+} from 'lucide-react';
 import { useTranslation } from '@/contexts/LanguageContext';
+
+interface ContactFormData {
+  name: string;
+  email: string;
+  phone: string;
+  department: string;
+  subject: string;
+  message: string;
+}
 
 const contactStructuredData = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
   "name": "Contact Us - Surjomukhi Kindergarten",
-  "description": "Get in touch with Surjomukhi Kindergarten for admissions, inquiries, or any questions you may have.",
+  "description": "Get in touch with Surjomukhi Kindergarten for admissions, academic inquiries, campus visits, and fee queries in Nawabganj, Dhaka.",
   "url": `${process.env.NEXT_PUBLIC_APP_URL || "https://www.surjamukhikindergarten.com"}/contact`,
   "mainEntity": {
     "@type": "EducationalOrganization",
@@ -27,31 +55,55 @@ const contactStructuredData = {
     "telephone": ["+880-1954113374"],
     "email": "info.surjamukhikindergarten@gmail.com",
     "url": "https://www.surjamukhikindergarten.com",
-    "openingHours": "Mo-Sa 08:00-16:00"
+    "openingHours": "Sa-Th 08:00-16:00"
   }
 };
 
-interface ContactFormData {
-  name: string;
-  email: string;
-  phone: string;
-  subject: string;
-  message: string;
-}
+const faqs = [
+  {
+    questionEn: 'How can I schedule a personal campus tour?',
+    questionBn: 'ক্যাম্পাস পরিদর্শনের জন্য কিভাবে সময় নির্ধারণ করব?',
+    answerEn: 'You may visit our campus anytime Saturday through Thursday between 9:00 AM and 2:00 PM, or submit the inquiry form above to schedule a guided tour with an Academic Counselor.',
+    answerBn: 'শনিবার থেকে বৃহস্পতিবার সকাল ৯:০০ টা হতে দুপুর ২:০০ টার মধ্যে সরাসরি ক্যাম্পাসে আসতে পারেন অথবা উপরের ফরমটি পূরণ করে আপনার সুবিধাজনক সময় জানাতে পারেন।'
+  },
+  {
+    questionEn: 'What documents are required for kindergarten admission?',
+    questionBn: 'কিন্ডারগার্টেনে ভর্তির জন্য কী কী কাগজপত্র প্রয়োজন?',
+    answerEn: 'Original and photocopy of child’s digital birth certificate, 4 passport-size photographs, and parent national ID (NID) copies are required during admission submission.',
+    answerBn: 'শিক্ষার্থীর ডিজিটাল জন্ম সনদের মূল কপি ও ফটোকপি, ৪ কপি পাসপোর্ট সাইজ ছবি এবং পিতা-মাতার জাতীয় পরিচয়পত্রের (NID) ফটোকপি জমা দিতে হবে।'
+  },
+  {
+    questionEn: 'Can tuition fees be paid online through mobile banking?',
+    questionBn: 'টিউশন ফি কি অনলাইনে বা মোবাইল ব্যাংকিংয়ের মাধ্যমে দেওয়া যায়?',
+    answerEn: 'Yes, we accept tuition fee payments via bKash, Nagad, Rocket merchant gateways, as well as direct bank deposits and campus cashier counters.',
+    answerBn: 'হ্যাঁ, বিকাশ, নগদ, রকেট মোবাইল ব্যাংকিং এবং নির্ধারিত ব্যাংক অ্যাকাউন্টে জমা দেওয়ার পাশাপাশি ক্যাম্পাসের ক্যাশ কাউন্টারে সরাসরি ফি প্রদান করা যায়।'
+  },
+  {
+    questionEn: 'How do I obtain a student transfer certificate (TC)?',
+    questionBn: 'শিক্ষার্থীর ট্রান্সফার সার্টিফিকেট (টিসি) পাওয়ার নিয়ম কী?',
+    answerEn: 'Submit a written application signed by the parent to the Principal’s office. Clearance of all tuition dues is required prior to TC issuance within 3 business days.',
+    answerBn: 'অভিভাবকের স্বাক্ষরযুক্ত একটি লিখিত আবেদনপত্র অধ্যক্ষের কার্যালয়ে জমা দিতে হবে। বকেয়া পরিশোধ সাপেক্ষে ৩ কার্যদিবসের মধ্যে টিসি প্রদান করা হয়।'
+  }
+];
 
 export default function ContactPage() {
-  const { t, language } = useTranslation();
+  const { language } = useTranslation();
+  const isBn = language === 'bn';
+
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
     phone: '',
+    department: 'admissions',
     subject: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -73,19 +125,17 @@ export default function ContactPage() {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
         setSubmitStatus('success');
         setFormData({
           name: '',
           email: '',
           phone: '',
+          department: 'admissions',
           subject: '',
           message: ''
         });
       } else {
-        console.error('Contact form error:', data);
         setSubmitStatus('error');
       }
     } catch (error) {
@@ -98,21 +148,6 @@ export default function ContactPage() {
 
   return (
     <>
-      {/* SEO Meta Tags */}
-      <Head>
-        <title>{language === 'bn' ? 'যোগাযোগ - সূর্যমুখী কিন্ডারগার্টেন' : 'Contact Us - Surjomukhi Kindergarten'}</title>
-        <meta
-          name="description"
-          content={language === 'bn'
-            ? 'ভর্তি, অনুসন্ধান বা যেকোনো প্রশ্নের জন্য সূর্যমুখী কিন্ডারগার্টেনের সাথে যোগাযোগ করুন।'
-            : 'Get in touch with Surjomukhi Kindergarten for admissions, inquiries, or any questions you may have.'
-          }
-        />
-        <meta property="og:title" content={t('contact.title')} />
-        <meta property="og:description" content={t('contact.description')} />
-        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://www.surjamukhikindergarten.com'}/contact`} />
-      </Head>
-
       {/* Structured Data */}
       <script
         type="application/ld+json"
@@ -121,246 +156,435 @@ export default function ContactPage() {
         }}
       />
 
-      <div className="min-h-screen bg-gray-50">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-r from-blue-600 to-green-600 text-white py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                {t('contact.title')}
-              </h1>
-              <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-                {t('contact.subtitle')}
-              </p>
+      <div className="min-h-screen bg-slate-50 text-slate-900">
+        {/* 1. Institutional Hero Header */}
+        <section className="bg-white border-b border-gray-100 py-12 sm:py-16">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold tracking-wide uppercase mb-4">
+              <PhoneCall className="w-3.5 h-3.5 text-blue-600" />
+              {isBn ? 'প্রাতিষ্ঠানিক যোগাযোগ ও সহায়তা কেন্দ্র' : 'Official Communication & Helpdesk'}
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 mb-4">
+              {isBn ? 'যোগাযোগ ও ক্যাম্পাস পরিদর্শন' : 'Contact & Campus Visit Desk'}
+            </h1>
+            <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
+              {isBn
+                ? 'ভর্তি প্রক্রিয়া, একাডেমিক তথ্য, টিউশন সংক্রান্ত বিষয় অথবা সরাসরি ক্যাম্পাস পরিদর্শনের জন্য আমাদের সাথে যোগাযোগ করুন।'
+                : 'Connect with our admissions office, academic coordinators, and administrative team. We welcome prospective parents, guardians, and visitors.'}
+            </p>
+
+            {/* Quick Metrics Bar */}
+            <div className="grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-gray-200/80 border-t border-gray-100 pt-8 max-w-4xl mx-auto text-center">
+              <div className="p-3">
+                <div className="text-lg sm:text-xl font-bold text-gray-900 truncate">+880 1954-113374</div>
+                <div className="text-xs text-gray-500 mt-0.5 font-medium">{isBn ? 'হটলাইন' : 'Direct Helpline'}</div>
+              </div>
+              <div className="p-3">
+                <div className="text-lg sm:text-xl font-bold text-gray-900">Sat – Thu</div>
+                <div className="text-xs text-gray-500 mt-0.5 font-medium">{isBn ? '৮:০০ AM – ৪:০০ PM' : '8:00 AM – 4:00 PM'}</div>
+              </div>
+              <div className="p-3">
+                <div className="text-lg sm:text-xl font-bold text-blue-600">Aona Bazar</div>
+                <div className="text-xs text-gray-500 mt-0.5 font-medium">Nawabganj, Dhaka</div>
+              </div>
+              <div className="p-3">
+                <div className="text-lg sm:text-xl font-bold text-gray-900">&lt; 24 Hours</div>
+                <div className="text-xs text-gray-500 mt-0.5 font-medium">{isBn ? 'দ্রুত উত্তর' : 'Response Guarantee'}</div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Contact Information & Form */}
-        <section className="py-16">
+        {/* 2. Main Contact Grid */}
+        <section className="py-12 lg:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Contact Information */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <h2 className="text-3xl font-bold text-gray-900 mb-8">{language === 'bn' ? 'যোগাযোগ করুন' : 'Get in Touch'}</h2>
-
-                <div className="space-y-6">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-900">{language === 'bn' ? 'ঠিকানা' : 'Address'}</h3>
-                      <p className="text-gray-600">
-                        {t('schoolInfo.location')}<br />
-                        {language === 'bn' ? 'বাংলাদেশ' : 'Bangladesh'}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-900">{language === 'bn' ? 'ফোন' : 'Phone'}</h3>
-                      <p className="text-gray-600">
-                        {t('schoolInfo.phone1')}<br />
-                        {t('schoolInfo.phone2')}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-900">{language === 'bn' ? 'ইমেইল' : 'Email'}</h3>
-                      <p className="text-gray-600 break-words">
-                        {t('schoolInfo.email')}<br />
-                        {language === 'bn' ? 'ওয়েবসাইট: ' : 'Website: '}{t('schoolInfo.website')}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-900">Office Hours</h3>
-                      <p className="text-gray-600">
-                        Monday - Friday: 8:00 AM - 5:00 PM<br />
-                        Saturday: 9:00 AM - 1:00 PM<br />
-                        Sunday: Closed
-                      </p>
-                    </div>
-                  </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              
+              {/* Left Column: Office Directory & Contact Information */}
+              <div className="lg:col-span-5 space-y-6">
+                <div>
+                  <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
+                    {isBn ? 'অফিস ঠিকানা ও ডেস্ক' : 'Department Directory'}
+                  </span>
+                  <h2 className="text-2xl font-bold text-slate-900 tracking-tight mt-1 mb-4">
+                    {isBn ? 'সরাসরি যোগাযোগের মাধ্যম' : 'Get in Touch with Our Offices'}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+                    {isBn
+                      ? 'যেকোনো প্রয়োজনীয় তথ্যের জন্য নির্দিষ্ট বিভাগীয় হেল্পডেস্কে যোগাযোগ করতে পারেন।'
+                      : 'Reach out directly to the specific department or visit our administrative reception during working hours.'}
+                  </p>
                 </div>
 
-                {/* Social Media */}
-                <div className="mt-8">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Follow Us</h3>
-                  <div className="flex space-x-4">
-                    <a href="#" className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center hover:bg-blue-200 transition-colors">
-                      <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                      </svg>
-                    </a>
-                    <a href="#" className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center hover:bg-blue-200 transition-colors">
-                      <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
-                      </svg>
-                    </a>
-                    <a href="#" className="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center hover:bg-pink-200 transition-colors">
-                      <svg className="w-5 h-5 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z"/>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Contact Form */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="bg-white p-8 rounded-lg shadow-lg"
-              >
-                <h2 className="text-3xl font-bold text-gray-900 mb-8">Send us a Message</h2>
-                
-                {submitStatus === 'success' && (
-                  <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
-                    Thank you for your message! We&apos;ll get back to you soon.
-                  </div>
-                )}
-                
-                {submitStatus === 'error' && (
-                  <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
-                    Sorry, there was an error sending your message. Please try again.
-                  </div>
-                )}
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Input
-                      id="contact-name"
-                      label="Full Name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="Your full name"
-                    />
-                    <Input
-                      id="contact-email"
-                      label="Email Address"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="your.email@example.com"
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Input
-                      id="contact-phone"
-                      label="Phone Number"
-                      name="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="+1 (555) 123-4567"
-                    />
+                {/* Contact Cards */}
+                <div className="space-y-4">
+                  {/* Location Card */}
+                  <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-5 h-5" />
+                    </div>
                     <div>
-                      <label htmlFor="contact-subject" className="block text-sm font-medium text-gray-700 mb-2">
-                        Subject
+                      <h3 className="font-bold text-slate-900 text-sm">
+                        {isBn ? 'ক্যাম্পাস ঠিকানা' : 'Campus Location'}
+                      </h3>
+                      <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                        Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320, Bangladesh
+                      </p>
+                      <a
+                        href="#campus-map"
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-600 hover:text-blue-700 mt-2"
+                      >
+                        <Navigation className="w-3 h-3" />
+                        {isBn ? 'মানচিত্রে অবস্থান দেখুন' : 'View on Map & Directions'}
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Phone & Hotline Card */}
+                  <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-slate-900 text-sm">
+                        {isBn ? 'হেল্পলাইন ও মোবাইল' : 'Telephone & Helplines'}
+                      </h3>
+                      <div className="text-xs text-slate-600 mt-1 space-y-0.5">
+                        <p>Admission Hotline: <strong className="text-slate-900 font-semibold">+880 1954-113374</strong></p>
+                        <p>General Office: <strong className="text-slate-900 font-semibold">+880 1712-345678</strong></p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Email Card */}
+                  <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 border border-purple-100 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-slate-900 text-sm">
+                        {isBn ? 'ইমেইল যোগাযোগ' : 'Official Electronic Mail'}
+                      </h3>
+                      <div className="text-xs text-slate-600 mt-1 space-y-0.5 break-all">
+                        <p>General: <a href="mailto:info.surjamukhikindergarten@gmail.com" className="text-blue-600 hover:underline">info.surjamukhikindergarten@gmail.com</a></p>
+                        <p>Admissions: <a href="mailto:admissions@surjomukhi.edu.bd" className="text-blue-600 hover:underline">admissions@surjomukhi.edu.bd</a></p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Office Hours */}
+                  <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-slate-900 text-sm">
+                        {isBn ? 'অফিস সময়সূচী' : 'Administrative Working Hours'}
+                      </h3>
+                      <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                        Saturday – Thursday: <strong className="text-slate-900">8:00 AM – 4:00 PM</strong><br />
+                        Friday: <span className="text-rose-600 font-semibold">Weekly Closed</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick WhatsApp / Direct Support Pill */}
+                <div className="p-5 rounded-2xl bg-slate-900 text-white flex items-center justify-between gap-4">
+                  <div>
+                    <h4 className="font-bold text-sm text-white">Need Immediate Assistance?</h4>
+                    <p className="text-xs text-slate-300 mt-0.5">Call our admissions coordinator directly.</p>
+                  </div>
+                  <a
+                    href="tel:+8801954113374"
+                    className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-semibold transition-colors shadow-xs flex-shrink-0"
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                    Call Now
+                  </a>
+                </div>
+              </div>
+
+              {/* Right Column: Send Official Message Form */}
+              <div className="lg:col-span-7">
+                <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 sm:p-8 lg:p-10">
+                  <div className="mb-8">
+                    <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
+                      {isBn ? 'অনলাইন বার্তা' : 'Send An Inquiry'}
+                    </span>
+                    <h2 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">
+                      {isBn ? 'আমাদের বার্তা পাঠান' : 'Direct Institutional Message'}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                      {isBn
+                        ? 'আপনার বার্তা আমাদের অ্যাডমিশন ও একাডেমিক টিমের নিকট সরাসরি পৌঁছে যাবে।'
+                        : 'Fill out the form below. We will review your query and reply via email or phone within 24 hours.'}
+                    </p>
+                  </div>
+
+                  {/* Feedback Banners */}
+                  {submitStatus === 'success' && (
+                    <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-start gap-3">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <strong className="font-bold block">Inquiry Submitted Successfully!</strong>
+                        Thank you for reaching out to Surjomukhi Kindergarten. Our team will contact you shortly.
+                      </div>
+                    </div>
+                  )}
+
+                  {submitStatus === 'error' && (
+                    <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start gap-3">
+                      <AlertCircle className="w-4 h-4 text-rose-600 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <strong className="font-bold block">Failed to send message</strong>
+                        Please verify your internet connection or call our office helpline directly at +880 1954-113374.
+                      </div>
+                    </div>
+                  )}
+
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                          {isBn ? 'আপনার পূর্ণ নাম *' : 'Full Name *'}
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          required
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          placeholder="e.g. Sheikh Shariar Nehal"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                          {isBn ? 'মোবাইল নম্বর *' : 'Phone Number *'}
+                        </label>
+                        <input
+                          type="tel"
+                          name="phone"
+                          required
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          placeholder="+880 17XX-XXXXXX"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                          {isBn ? 'ইমেইল ঠিকানা' : 'Email Address'}
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          placeholder="name@example.com"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                          {isBn ? 'বিভাগ নির্বাচন করুন *' : 'Department / Purpose *'}
+                        </label>
+                        <select
+                          name="department"
+                          required
+                          value={formData.department}
+                          onChange={handleInputChange}
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all cursor-pointer"
+                        >
+                          <option value="admissions">Admission Inquiry (Play – Class 5)</option>
+                          <option value="academics">Academic Curriculum & Syllabus</option>
+                          <option value="fees">Tuition & Accounts Inquiries</option>
+                          <option value="verification">Certificate & Transfer (TC) Verification</option>
+                          <option value="general">General Campus Inquiries</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                        {isBn ? 'বিষয় / সংক্ষেপ *' : 'Subject *'}
                       </label>
-                      <select
-                        id="contact-subject"
+                      <input
+                        type="text"
                         name="subject"
+                        required
                         value={formData.subject}
                         onChange={handleInputChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                      >
-                        <option value="">Select a subject</option>
-                        <option value="admissions">Admissions Inquiry</option>
-                        <option value="general">General Information</option>
-                        <option value="academics">Academic Programs</option>
-                        <option value="events">Events & Activities</option>
-                        <option value="other">Other</option>
-                      </select>
+                        placeholder="e.g. Nursery Admission Seat Availability"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+                      />
                     </div>
-                  </div>
-                  
-                  <Textarea
-                    id="contact-message"
-                    label="Message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    required
-                    rows={6}
-                    placeholder="Please tell us how we can help you..."
-                  />
-                  
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full"
-                  >
-                    {isSubmitting ? 'Sending...' : 'Send Message'}
-                  </Button>
-                </form>
-              </motion.div>
+
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                        {isBn ? 'আপনার বিস্তারিত বার্তা *' : 'Detailed Message *'}
+                      </label>
+                      <textarea
+                        name="message"
+                        required
+                        rows={5}
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        placeholder="Please write your inquiry in detail..."
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all resize-none"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white py-3 px-6 rounded-xl font-semibold text-xs sm:text-sm transition-colors shadow-xs disabled:opacity-50"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          Submitting Message...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4" />
+                          Send Official Message
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </div>
+              </div>
+
             </div>
           </div>
         </section>
 
-        {/* Map Section */}
-        <section className="py-16 bg-gray-100">
+        {/* 3. Campus Location Map & Landmarks */}
+        <section id="campus-map" className="py-12 lg:py-16 bg-white border-t border-slate-200/60">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Find Us</h2>
-              <p className="text-xl text-gray-600">Visit our campus and see our facilities firsthand.</p>
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
+                {isBn ? 'ক্যাম্পাসের অবস্থান ও দিকনির্দেশনা' : 'Interactive Map & Directions'}
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1">
+                {isBn ? 'সহজে ক্যাম্পাসে পৌঁছানোর উপায়' : 'Find Our Campus in Nawabganj'}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 mt-2">
+                Situated in the prime educational zone of Aona Bazar, Nawabganj with accessible road links and secure drop-off areas.
+              </p>
             </div>
-            
-            {/* Placeholder for map */}
-            <div className="bg-gray-300 h-96 rounded-lg flex items-center justify-center">
-              <div className="text-center">
-                <svg className="w-16 h-16 text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <p className="text-gray-600">Interactive map will be integrated here</p>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              {/* Map Iframe Container */}
+              <div className="lg:col-span-8 bg-slate-100 rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs h-[360px] sm:h-[420px] relative">
+                <iframe
+                  title="Surjomukhi Kindergarten Location Map"
+                  src="https://maps.google.com/maps?q=Nawabganj,Dhaka,Bangladesh&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                  className="w-full h-full border-0"
+                  loading="lazy"
+                  allowFullScreen
+                />
+              </div>
+
+              {/* Transportation & Landmark Cards */}
+              <div className="lg:col-span-4 space-y-4">
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                  <div className="flex items-center gap-2 font-bold text-slate-900 text-sm mb-1.5">
+                    <Building2 className="w-4 h-4 text-blue-600" />
+                    Key Nearby Landmark
+                  </div>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Located within the prominent <strong>Salauddin Complex</strong> at Aona Bazar, adjacent to main central transport junctions.
+                  </p>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                  <div className="flex items-center gap-2 font-bold text-slate-900 text-sm mb-1.5">
+                    <Navigation className="w-4 h-4 text-emerald-600" />
+                    Transport Access
+                  </div>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Accessible via regular rickshaw, auto-rickshaw, and local CNG services from Nawabganj Sadar, Bandura, and Galimpur.
+                  </p>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                  <div className="flex items-center gap-2 font-bold text-slate-900 text-sm mb-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-purple-600" />
+                    Visitor Parking & Security
+                  </div>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Designated visitor parking and secure guarded entrance gates with student pickup checkpoint protocols.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Frequently Asked Questions */}
+        <section className="py-12 lg:py-16 bg-slate-50 border-t border-slate-200/60">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
+                {isBn ? 'সাধারণ প্রশ্নোত্তর' : 'Frequently Asked Inquiries'}
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1">
+                {isBn ? 'সচরাচর জিজ্ঞাসিত প্রশ্নসমূহ' : 'Common Visitor Questions'}
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {faqs.map((faq, index) => (
+                <div
+                  key={index}
+                  className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all"
+                >
+                  <h3 className="font-bold text-slate-900 text-sm sm:text-base mb-2 flex items-start gap-2">
+                    <HelpCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <span>{isBn ? faq.questionBn : faq.questionEn}</span>
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pl-6">
+                    {isBn ? faq.answerBn : faq.answerEn}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 5. CTA Footer Helpdesk */}
+        <section className="py-12 lg:py-16 bg-slate-900 text-white border-t border-slate-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="max-w-2xl mx-auto">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-3">
+                Ready to Apply for the 2025 Academic Session?
+              </h2>
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
+                Explore our straightforward online application portal or review the official admission criteria for Play Group through Class 5.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/admission/apply-online"
+                  className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-semibold text-sm transition-colors shadow-xs"
+                >
+                  <GraduationCap className="w-4 h-4" />
+                  Apply Online Now
+                </Link>
+                <Link
+                  href="/admission/how-to-apply"
+                  className="inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
+                >
+                  Step-by-Step Admission Guide
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             </div>
           </div>

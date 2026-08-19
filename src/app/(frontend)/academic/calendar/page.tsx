@@ -36,7 +36,7 @@ export default function AcademicCalendarPage() {
   const isBn = language === 'bn';
 
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [viewMode, setViewMode] = useState<'timeline' | 'table'>('timeline');
+  const [viewMode, setViewMode] = useState<'timeline' | 'table'>('table');
 
   const events: CalendarEvent[] = [
     {
