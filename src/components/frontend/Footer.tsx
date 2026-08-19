@@ -77,14 +77,17 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
 
   return (
     <>
-      <footer className={`bg-slate-950 text-slate-300 border-t border-slate-850 relative z-20 ${className}`} role="contentinfo">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10">
+      <footer className={`bg-slate-950 text-slate-300 border-t border-slate-800/80 relative z-20 ${className}`} role="contentinfo">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
           {/* Main 4-Column Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-12 border-b border-slate-800/70">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-12 border-b border-slate-800/80">
             
             {/* 1. School Identity & Accreditation (4 columns on lg) */}
             <div className="lg:col-span-4 space-y-4">
-              <Link href="/" className="inline-flex items-center gap-3 group">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 rounded-lg"
+              >
                 <div className="w-10 h-10 rounded-xl bg-white p-1 border border-slate-700/50 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
                   <Image
                     src="/logo.webp"
@@ -122,7 +125,7 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
 
             {/* 2. Quick Links (2.5 columns on lg) */}
             <div className="lg:col-span-2 sm:pl-2">
-              <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-4">
+              <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-4">
                 {isBn ? 'দ্রুত লিংক' : 'Quick Links'}
               </h3>
               <ul className="space-y-2.5 text-xs text-slate-400">
@@ -130,7 +133,7 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="hover:text-white transition-colors duration-150 block py-0.5"
+                      className="hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-400 rounded transition-colors duration-150 block py-0.5"
                     >
                       {isBn ? link.titleBn : link.titleEn}
                     </Link>
@@ -141,7 +144,7 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
 
             {/* 3. Academic Resources (2.5 columns on lg) */}
             <div className="lg:col-span-3">
-              <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-4">
+              <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-4">
                 {isBn ? 'শিক্ষার্থী সম্পদ' : 'Student Resources'}
               </h3>
               <ul className="space-y-2.5 text-xs text-slate-400">
@@ -149,7 +152,7 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="hover:text-white transition-colors duration-150 block py-0.5"
+                      className="hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-400 rounded transition-colors duration-150 block py-0.5"
                     >
                       {isBn ? link.titleBn : link.titleEn}
                     </Link>
@@ -160,7 +163,7 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
 
             {/* 4. Campus Contact & Office Hours (3 columns on lg) */}
             <div className="lg:col-span-3 space-y-3 text-xs text-slate-400">
-              <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-4">
+              <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-4">
                 {isBn ? 'যোগাযোগ ও তথ্য' : 'Campus Information'}
               </h3>
 
@@ -177,7 +180,7 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
                 <Phone className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                 <a
                   href="tel:+8801954113374"
-                  className="hover:text-white transition-colors font-medium"
+                  className="hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-400 rounded transition-colors font-medium"
                 >
                   {isBn ? '+৮৮০ ১৯৫৪-১১৩৩৭৪' : '+880 1954-113374'}
                 </a>
@@ -187,7 +190,7 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
                 <Mail className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                 <a
                   href="mailto:info.surjamukhikindergarten@gmail.com"
-                  className="hover:text-white transition-colors truncate"
+                  className="hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-400 rounded transition-colors truncate"
                 >
                   info.surjamukhikindergarten@gmail.com
                 </a>
@@ -202,11 +205,11 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
                 </span>
               </div>
 
-              {/* Distilled, quiet admission pathway */}
+              {/* Polished, quiet admission pathway */}
               <div className="pt-2">
                 <Link
                   href="/admission/apply-online"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors group"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-400 rounded transition-colors group"
                 >
                   <span>{isBn ? 'অনলাইনে ভর্তি আবেদন করুন' : 'Apply Online for Admission'}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -230,7 +233,7 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="hover:text-slate-200 transition-colors"
+                  className="hover:text-slate-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-400 rounded transition-colors"
                 >
                   {isBn ? item.titleBn : item.titleEn}
                 </Link>
@@ -245,7 +248,7 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 rounded-md hover:text-white hover:bg-slate-800/80 transition-colors"
+                  className="p-1.5 rounded-md hover:text-white hover:bg-slate-800/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-colors"
                   aria-label={social.ariaLabel}
                 >
                   {social.icon}
