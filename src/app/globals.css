@@ -678,3 +678,27 @@ img[loading="eager"] {
     max-width: 280px;
   }
 }
+
+/* Performance & Rendering Optimizations */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 400px;
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.subpixel-antialiased {
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+}
+
+/* Prevent layout shift on images */
+img, svg, video {
+  max-width: 100%;
+  height: auto;
+}
+

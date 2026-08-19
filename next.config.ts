@@ -59,14 +59,11 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-    // Optimize image loading - prefer AVIF for better compression
+    // Optimize image loading - prefer AVIF and WebP for optimal compression
     formats: ['image/avif', 'image/webp'],
     // Optimized device sizes for better caching
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // All quality values used throughout the app
-    // Hero: 50, 55, 60, 70 | Other components: 75, 80, 85, 90, 95, 100
-    qualities: [50, 55, 60, 70, 75, 80, 85, 90, 95, 100],
     // Cache images for 1 year (immutable assets)
     minimumCacheTTL: 60 * 60 * 24 * 365,
     dangerouslyAllowSVG: true,
@@ -75,7 +72,7 @@ const nextConfig: NextConfig = {
 
   // Modern browser targeting to reduce bundle size
   compiler: {
-    // Remove console logs in production
+    // Remove console logs in production except error/warn
     removeConsole: process.env.NODE_ENV === 'production' ? {
       exclude: ['error', 'warn'],
     } : false,
@@ -85,7 +82,15 @@ const nextConfig: NextConfig = {
     // Optimize CSS loading
     optimizeCss: true,
     // Optimize package imports for tree-shaking large libraries
-    optimizePackageImports: ['framer-motion', 'lucide-react', '@heroicons/react'],
+    optimizePackageImports: [
+      'framer-motion',
+      'lucide-react',
+      '@heroicons/react',
+      'date-fns',
+      'recharts',
+      'clsx',
+      'tailwind-merge'
+    ],
     serverActions: {
       allowedOrigins: process.env.NODE_ENV === 'production'
         ? [process.env.NEXT_PUBLIC_APP_URL || 'https://your-app.vercel.app']
@@ -93,8 +98,7 @@ const nextConfig: NextConfig = {
     },
   },
 
-  // Modern JavaScript output (removes polyfills for modern browsers)
-  // This reduces vendor chunk size significantly
+  // Modern JavaScript output
   transpilePackages: [],
 };
 
