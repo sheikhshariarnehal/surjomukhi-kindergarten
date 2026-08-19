@@ -167,57 +167,62 @@ const EmptyState = memo(({
 EmptyState.displayName = 'EmptyState';
 
 // News Card Component
-const NewsCard = memo(({ item }: { item: News }) => (
-  <motion.article
-    variants={itemVariants}
-    className="group bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-blue-200 transition-all duration-300"
-  >
-    {/* Thumbnail Image */}
-    {item.image_url && (
-      <div className="relative w-full h-48 bg-gray-100 overflow-hidden">
-        <Image
-          src={item.image_url}
-          alt={item.title}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-      </div>
-    )}
-    
-    <div className="p-4">
-      <div className="flex items-center justify-between mb-2.5">
-        <span className="px-2 py-0.5 text-[10px] sm:text-xs font-medium bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full">
-          News
-        </span>
-        <time 
-          className="text-[10px] sm:text-xs text-gray-500 bg-gray-50 px-2 py-0.5 rounded-full"
-          dateTime={item.publish_date || item.created_at}
-        >
-          {formatRelativeTime(item.publish_date || item.created_at || '')}
-        </time>
-      </div>
+const NewsCard = memo(({ item }: { item: News }) => {
+  const [imageError, setImageError] = useState(false);
+  const hasImage = item.image_url && !imageError;
 
-      <h3 className="font-semibold text-gray-900 mb-1.5 line-clamp-1 group-hover:text-blue-600 transition-colors text-sm sm:text-base leading-snug">
-        {item.title}
-      </h3>
-
-      <p className="text-gray-600 text-xs sm:text-sm line-clamp-2 mb-3 leading-relaxed">
-        {truncateText(item.excerpt || item.content || '', 150)}
-      </p>
-
+  return (
+    <motion.div variants={itemVariants} className="h-full">
       <Link
         href={`/news/${item.id}`}
-        className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-xs sm:text-sm transition-colors group"
-        aria-label={`Read full article: ${item.title}`}
+        className="group bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-md border border-gray-100 hover:border-gray-200 transition-all duration-300 flex flex-col h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+        aria-label={`Read article: ${item.title}`}
       >
-        Read Article
-        <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
+        {/* Thumbnail Image with refined editorial fallback */}
+        <div className="relative aspect-[16/10] w-full bg-slate-900 overflow-hidden flex items-center justify-center">
+          {hasImage ? (
+            <Image
+              src={item.image_url!}
+              alt={item.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <div className="w-full h-full bg-slate-900 flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
+              <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-xs border border-white/20 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+                <svg className="w-5 h-5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+              </div>
+              <span className="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Campus Story</span>
+            </div>
+          )}
+        </div>
+        
+        <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+          <div>
+            <time 
+              dateTime={item.publish_date || item.created_at}
+              className="text-xs font-semibold text-slate-400 mb-2 block"
+            >
+              {formatRelativeTime(item.publish_date || item.created_at || '')}
+            </time>
+
+            <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors text-base sm:text-lg leading-snug line-clamp-2 mb-2 tracking-tight">
+              {item.title}
+            </h3>
+
+            <p className="text-slate-600 text-xs sm:text-sm line-clamp-2 leading-relaxed">
+              {truncateText(item.excerpt || item.content || '', 130)}
+            </p>
+          </div>
+        </div>
       </Link>
-    </div>
-  </motion.article>
-));
+    </motion.div>
+  );
+});
 
 NewsCard.displayName = 'NewsCard';
 
@@ -225,10 +230,10 @@ NewsCard.displayName = 'NewsCard';
 const EventCard = memo(({ item }: { item: Event }) => (
   <motion.article
     variants={itemVariants}
-    className="group bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-emerald-200 transition-all duration-300"
+    className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-emerald-200 transition-all duration-300 flex flex-col h-full"
   >
     {/* Thumbnail Image */}
-    <div className="relative w-full h-32 sm:h-36 bg-gradient-to-br from-emerald-50 to-emerald-100 overflow-hidden">
+    <div className="relative w-full h-36 bg-gradient-to-br from-emerald-50 to-emerald-100 overflow-hidden">
       {item.image_url ? (
         <Image
           src={item.image_url}
@@ -238,44 +243,46 @@ const EventCard = memo(({ item }: { item: Event }) => (
         />
       ) : (
         <div className="w-full h-full flex items-center justify-center">
-          <svg className="w-12 h-12 sm:w-16 sm:h-16 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-12 h-12 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         </div>
       )}
     </div>
     
-    <div className="p-3 sm:p-4">
-      <div className="flex items-center justify-between mb-2.5">
-        <span className="px-2 py-0.5 text-[10px] sm:text-xs font-medium bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-full">
+    <div className="p-5 flex-1 flex flex-col">
+      <div className="flex items-center justify-between mb-3">
+        <span className="px-2.5 py-0.5 text-xs font-medium bg-emerald-50 text-emerald-700 rounded-md">
           Event
         </span>
         <time 
-          className="text-[10px] sm:text-xs text-gray-500 bg-gray-50 px-2 py-0.5 rounded-full" 
+          className="text-xs text-gray-500" 
           dateTime={item.start_date}
         >
           {formatEventDate(item.start_date, item.end_date)}
         </time>
       </div>
 
-      <h3 className="font-semibold text-gray-900 mb-1.5 line-clamp-1 group-hover:text-emerald-600 transition-colors text-sm sm:text-base leading-snug">
+      <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors text-base leading-snug">
         {item.title}
       </h3>
 
-      <p className="text-gray-600 text-xs sm:text-sm line-clamp-2 mb-3 leading-relaxed">
+      <p className="text-gray-600 text-sm line-clamp-2 mb-4 leading-relaxed flex-1">
         {truncateText(item.description || '', 150)}
       </p>
 
-      <Link
-        href={`/events/${createSlug(item.title)}/${item.id}`}
-        className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium text-xs sm:text-sm transition-colors group"
-        aria-label={`View event details: ${item.title}`}
-      >
-        View Event
-        <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </Link>
+      <div className="pt-2">
+        <Link
+          href={`/events/${createSlug(item.title)}/${item.id}`}
+          className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-semibold text-sm transition-colors group"
+          aria-label={`View event details: ${item.title}`}
+        >
+          View Event
+          <svg className="w-4 h-4 ml-1.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </Link>
+      </div>
     </div>
   </motion.article>
 ));
@@ -476,7 +483,7 @@ export default function NewsEventsPreview({
 
   return (
     <section 
-      className="py-8 sm:py-10 lg:py-12 bg-gray-50"
+      className="py-16 sm:py-20 lg:py-24 bg-slate-50/60"
       aria-labelledby="news-events-section"
     >
       <script
@@ -485,139 +492,63 @@ export default function NewsEventsPreview({
       />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Tab Navigation */}
-        {hasContent && (
-          <motion.nav
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="flex justify-center mb-6"
-            role="tablist"
-            aria-label="Content type selection"
+        {/* Section Header */}
+        <div className="text-center mb-10 sm:mb-14">
+          <h2 
+            id="news-events-section"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 tracking-tight"
           >
-            <div className="bg-white rounded-lg p-1.5 shadow-sm border border-gray-200">
-              <div className="flex space-x-2">
-                <TabButton
-                  active={activeTab === 'news'}
-                  onClick={() => setActiveTab('news')}
-                  icon={
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                    </svg>
-                  }
-                  label="News"
-                  count={newsItems.length}
-                  colorScheme="blue"
-                />
-                <TabButton
-                  active={activeTab === 'events'}
-                  onClick={() => setActiveTab('events')}
-                  icon={
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  }
-                  label="Events"
-                  count={eventItems.length}
-                  colorScheme="emerald"
-                />
-              </div>
-            </div>
-          </motion.nav>
-        )}
+            Campus News & Stories
+          </h2>
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Highlights, student achievements, and stories from the Surjomukhi Kindergarten community.
+          </p>
+        </div>
 
         {/* Content */}
         {loading ? (
           <LoadingSkeleton />
         ) : (
-          <AnimatePresence mode="wait">
-            {activeTab === 'news' ? (
-              <motion.div
-                key="news"
-                variants={tabVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{ duration: 0.3 }}
-                role="tabpanel"
-                id="news-panel"
-              >
-                {/* View All News Button - Now positioned above content */}
-                {newsItems.length > 0 && (
-                  <ViewAllButton href="/news" colorScheme="blue">
-                    View All News
-                  </ViewAllButton>
-                )}
+          <div>
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+            >
+              {newsItems.length > 0 ? (
+                newsItems.map((item) => (
+                  <NewsCard key={item.id} item={item} />
+                ))
+              ) : (
+                <EmptyState
+                  type="news"
+                  icon={
+                    <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                    </svg>
+                  }
+                  title="No News Available"
+                  description="Check back soon for the latest updates and announcements from our school."
+                />
+              )}
+            </motion.div>
 
-                <motion.div
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+            {newsItems.length > 0 && (
+              <div className="text-center mt-10 sm:mt-12">
+                <Link
+                  href="/news"
+                  className="group inline-flex items-center bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-7 sm:px-9 py-3.5 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-200 touch-manipulation"
                 >
-                  {newsItems.length > 0 ? (
-                    newsItems.map((item) => (
-                      <NewsCard key={item.id} item={item} />
-                    ))
-                  ) : (
-                    <EmptyState
-                      type="news"
-                      icon={
-                        <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                        </svg>
-                      }
-                      title="No News Available"
-                      description="Check back soon for the latest updates and announcements from our team."
-                    />
-                  )}
-                </motion.div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="events"
-                variants={tabVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{ duration: 0.3 }}
-                role="tabpanel"
-                id="events-panel"
-              >
-                {/* View All Events Button - Now positioned above content */}
-                {eventItems.length > 0 && (
-                  <ViewAllButton href="/events" colorScheme="emerald">
-                    View All Events
-                  </ViewAllButton>
-                )}
-
-                <motion.div
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-                >
-                  {eventItems.length > 0 ? (
-                    eventItems.map((item) => (
-                      <EventCard key={item.id} item={item} />
-                    ))
-                  ) : (
-                    <EmptyState
-                      type="events"
-                      icon={
-                        <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                      }
-                      title="No Events Scheduled"
-                      description="Stay tuned for exciting upcoming events and activities from our community."
-                    />
-                  )}
-                </motion.div>
-              </motion.div>
+                  <span>View All News & Stories</span>
+                  <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
             )}
-          </AnimatePresence>
+          </div>
         )}
       </div>
     </section>

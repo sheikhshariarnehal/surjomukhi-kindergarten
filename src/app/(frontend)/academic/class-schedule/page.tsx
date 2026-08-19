@@ -2,9 +2,20 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { motion } from 'framer-motion';
+import { 
+  Calendar, 
+  Clock, 
+  BookOpen, 
+  Users, 
+  Printer, 
+  Table as TableIcon, 
+  Grid, 
+  ArrowRight,
+  Sparkles
+} from 'lucide-react';
+import { useTranslation } from '@/contexts/LanguageContext';
 
-// Types
 interface Period {
   subject: string;
   subjectEn: string;
@@ -32,7 +43,9 @@ interface ScheduleData {
 }
 
 export default function ClassSchedulePage() {
-  const { language, t } = useLanguage();
+  const { language } = useTranslation();
+  const isBn = language === 'bn';
+
   const [selectedClass, setSelectedClass] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
   const [scheduleData, setScheduleData] = useState<ScheduleData | null>(null);
@@ -57,12 +70,26 @@ export default function ClassSchedulePage() {
     loadScheduleData();
   }, []);
 
+  const getFilteredSchedule = () => {
+    if (!scheduleData) return [];
+    if (selectedClass === 'all') {
+      return scheduleData.classes;
+    }
+    return scheduleData.classes.filter((cls: ClassSchedule) => cls.className === selectedClass);
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('common.loading', 'Loading class schedule...')}</p>
+      <div className="min-h-screen bg-slate-50/60 flex items-center justify-center">
+        <div className="text-center p-8">
+          <div className="w-10 h-10 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-sm font-medium text-slate-600">
+            {isBn ? 'ক্লাস রুটিন লোড হচ্ছে...' : 'Loading class schedule...'}
+          </p>
         </div>
       </div>
     );
@@ -70,285 +97,261 @@ export default function ClassSchedulePage() {
 
   if (!scheduleData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-600">{t('common.error', 'Failed to load class schedule data.')}</p>
+      <div className="min-h-screen bg-slate-50/60 flex items-center justify-center">
+        <div className="text-center p-8 bg-white rounded-2xl border border-gray-100 max-w-md">
+          <p className="text-sm font-semibold text-rose-600 mb-4">
+            {isBn ? 'ক্লাস রুটিন তথ্য লোড করা যায়নি।' : 'Failed to load class schedule data.'}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-xs hover:bg-blue-700 transition-colors"
+          >
+            {isBn ? 'পুনরায় চেষ্টা করুন' : 'Retry'}
+          </button>
         </div>
       </div>
     );
   }
 
-  const classOptions = [
-    { value: 'all', label: t('classSchedule.allClasses', 'All Classes') },
-    ...scheduleData.classes.map((cls: ClassSchedule) => ({
-      value: cls.className,
-      label: language === 'bn' ? cls.className : cls.classNameEn
-    }))
-  ];
-
-  const getFilteredSchedule = () => {
-    if (selectedClass === 'all') {
-      return scheduleData.classes;
-    }
-    return scheduleData.classes.filter((cls: ClassSchedule) => cls.className === selectedClass);
-  };
-
-  const getSubjectColors = (index: number) => {
-    const colors = [
-      'bg-blue-50 border-blue-200 text-blue-800',
-      'bg-green-50 border-green-200 text-green-800', 
-      'bg-purple-50 border-purple-200 text-purple-800',
-      'bg-orange-50 border-orange-200 text-orange-800',
-      'bg-pink-50 border-pink-200 text-pink-800',
-      'bg-indigo-50 border-indigo-200 text-indigo-800'
-    ];
-    return colors[index % colors.length];
-  };
-
-  const getClassColors = (className: string) => {
-    const colorMap: { [key: string]: string } = {
-      'প্লে': 'bg-pink-100 text-pink-800 border-pink-200',
-      'নার্সারি': 'bg-purple-100 text-purple-800 border-purple-200',
-      'প্রথম': 'bg-blue-100 text-blue-800 border-blue-200',
-      'দ্বিতীয়': 'bg-green-100 text-green-800 border-green-200',
-      'তৃতীয়': 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      'চতুর্থ': 'bg-orange-100 text-orange-800 border-orange-200',
-      'পঞ্চম': 'bg-red-100 text-red-800 border-red-200'
-    };
-    return colorMap[className] || 'bg-gray-100 text-gray-800 border-gray-200';
-  };
+  const filteredClasses = getFilteredSchedule();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-8 sm:py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight">
-              {language === 'bn' ? scheduleData.title : t('classSchedule.title', 'Class Schedule')}
+    <div className="min-h-screen bg-slate-50/60">
+      {/* 1. Header Section */}
+      <section className="bg-white border-b border-gray-100 py-12 sm:py-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+          >
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 mb-4">
+              {isBn ? 'দৈনন্দিন ক্লাস রুটিন ২০২৫' : 'Class Schedule & Routine 2025'}
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2">
-              {t('classSchedule.subtitle', 'Our structured daily class routine designed for optimal learning and development')}
+            <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
+              {isBn
+                ? 'প্লে গ্রুপ হতে ৫ম শ্রেণী পর্যন্ত প্রতিটি শাখার সাপ্তাহিক সময়সূচী, বিষয় বণ্টন ও দায়িত্বপ্রাপ্ত শিক্ষক তালিকা।'
+                : 'Complete daily timetable, period durations, subject allocations, and faculty assignments from Play through Grade 5.'}
             </p>
-          </div>
-        </div>
-      </section>
 
-      {/* Controls Section */}
-      <section className="py-4 sm:py-6 lg:py-8 bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 items-stretch sm:items-center justify-between">
-            {/* Class Filter */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
-              <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
-                {t('classSchedule.selectClass', 'Select Class:')}
-              </label>
-              <select
-                value={selectedClass}
-                onChange={(e) => setSelectedClass(e.target.value)}
-                className="w-full sm:w-auto border border-gray-300 rounded-lg px-3 sm:px-4 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              >
-                {classOptions.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* View Mode Toggle */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
-              <span className="text-sm font-medium text-gray-700 whitespace-nowrap">
-                {t('classSchedule.viewMode', 'View Mode:')}
-              </span>
-              <div className="flex border border-gray-300 rounded-lg w-full sm:w-auto">
-                <button
-                  onClick={() => setViewMode('table')}
-                  className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-l-lg text-sm font-medium transition-colors ${
-                    viewMode === 'table'
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  {t('classSchedule.table', 'Table')}
-                </button>
-                <button
-                  onClick={() => setViewMode('cards')}
-                  className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-r-lg text-sm font-medium transition-colors ${
-                    viewMode === 'cards'
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  {t('classSchedule.cards', 'Cards')}
-                </button>
+            {/* Metrics Row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-gray-200/80 border-t border-gray-100 pt-8 max-w-4xl mx-auto text-center">
+              <div className="p-3">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tabular-nums">9:00 AM</div>
+                <div className="text-xs sm:text-sm text-gray-500 mt-1 font-medium">
+                  {isBn ? 'প্রথম পিরিয়ড শুরু' : 'First Period'}
+                </div>
+              </div>
+              <div className="p-3">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tabular-nums">6</div>
+                <div className="text-xs sm:text-sm text-gray-500 mt-1 font-medium">
+                  {isBn ? 'দৈনিক পিরিয়ড' : 'Daily Periods'}
+                </div>
+              </div>
+              <div className="p-3">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tabular-nums">30 min</div>
+                <div className="text-xs sm:text-sm text-gray-500 mt-1 font-medium">
+                  {isBn ? 'পিরিয়ড ব্যপ্তিকাল' : 'Period Duration'}
+                </div>
+              </div>
+              <div className="p-3">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">Sun – Thu</div>
+                <div className="text-xs sm:text-sm text-gray-500 mt-1 font-medium">
+                  {isBn ? 'রবি – বৃহস্পতি' : 'Academic Days'}
+                </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Schedule Content */}
-      <section className="py-6 sm:py-8 lg:py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {viewMode === 'table' ? (
-            // Table View
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[800px]">
-                  <thead className="bg-indigo-600 text-white">
-                    <tr>
-                      <th className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
-                        {t('classSchedule.class', 'Class')}
+      {/* 2. Controls & Schedule Content */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        {/* Filter Bar */}
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-xs mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Class Filter Pills */}
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setSelectedClass('all')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                selectedClass === 'all'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              }`}
+            >
+              {isBn ? 'সকল শ্রেণী' : 'All Classes'}
+            </button>
+            {scheduleData.classes.map((cls) => (
+              <button
+                key={cls.className}
+                onClick={() => setSelectedClass(cls.className)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                  selectedClass === cls.className
+                    ? 'bg-blue-600 text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                {isBn ? cls.className : cls.classNameEn}
+              </button>
+            ))}
+          </div>
+
+          {/* View Toggle & Print */}
+          <div className="flex items-center gap-2">
+            <div className="bg-slate-100 p-1 rounded-xl flex items-center">
+              <button
+                onClick={() => setViewMode('table')}
+                className={`p-2 rounded-lg text-xs font-semibold flex items-center transition-all ${
+                  viewMode === 'table' ? 'bg-white text-blue-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                }`}
+                title={isBn ? 'টেবিল ভিউ' : 'Table View'}
+              >
+                <TableIcon className="w-4 h-4 mr-1" />
+                <span className="hidden sm:inline">{isBn ? 'টেবিল' : 'Table'}</span>
+              </button>
+              <button
+                onClick={() => setViewMode('cards')}
+                className={`p-2 rounded-lg text-xs font-semibold flex items-center transition-all ${
+                  viewMode === 'cards' ? 'bg-white text-blue-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                }`}
+                title={isBn ? 'কার্ড ভিউ' : 'Cards View'}
+              >
+                <Grid className="w-4 h-4 mr-1" />
+                <span className="hidden sm:inline">{isBn ? 'কার্ড' : 'Cards'}</span>
+              </button>
+            </div>
+
+            <button
+              onClick={handlePrint}
+              className="p-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl transition-colors"
+              title={isBn ? 'প্রিন্ট করুন' : 'Print Routine'}
+            >
+              <Printer className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Schedule Display */}
+        {viewMode === 'table' ? (
+          <div className="bg-white rounded-3xl border border-gray-100 shadow-xs overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-50/80 border-b border-gray-200/80 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <th className="py-4 px-5 sm:px-6 min-w-[120px]">{isBn ? 'শ্রেণী' : 'Class'}</th>
+                    {scheduleData.timeSlots.map((slot, idx) => (
+                      <th key={idx} className="py-4 px-4 min-w-[140px]">
+                        <div className="text-gray-900 font-bold text-xs">{isBn ? slot.period : slot.periodEn}</div>
+                        <div className="text-[11px] text-slate-500 font-normal">{isBn ? slot.time : slot.timeEn}</div>
                       </th>
-                      {scheduleData.timeSlots.map((slot: TimeSlot, index: number) => (
-                        <th key={index} className="px-2 sm:px-3 lg:px-4 py-3 sm:py-4 text-center text-xs sm:text-sm font-semibold min-w-[100px] sm:min-w-[120px]">
-                          <div>
-                            <div className="font-bold text-xs sm:text-sm">
-                              {language === 'bn' ? slot.period : slot.periodEn}
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 text-sm">
+                  {filteredClasses.map((cls, cIdx) => (
+                    <tr key={cIdx} className="hover:bg-slate-50/50 transition-colors">
+                      <td className="py-4 px-5 sm:px-6 font-bold text-gray-900 bg-slate-50/30">
+                        {isBn ? cls.className : cls.classNameEn}
+                      </td>
+                      {cls.schedule.map((period, pIdx) => (
+                        <td key={pIdx} className="py-4 px-4">
+                          {period.subject && period.subject !== '—' ? (
+                            <div className="p-2 rounded-xl bg-slate-50 border border-gray-100">
+                              <div className="font-semibold text-gray-900 text-xs">
+                                {isBn ? period.subject : period.subjectEn}
+                              </div>
+                              {period.teacher && (
+                                <div className="text-[11px] text-slate-500 font-medium mt-0.5">
+                                  {isBn ? period.teacher : period.teacherEn}
+                                </div>
+                              )}
                             </div>
-                            <div className="text-[10px] sm:text-xs font-normal opacity-90 mt-1">
-                              {language === 'bn' ? slot.time : slot.timeEn}
-                            </div>
-                          </div>
-                        </th>
+                          ) : (
+                            <span className="text-slate-300 font-light text-xs">—</span>
+                          )}
+                        </td>
                       ))}
                     </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {getFilteredSchedule().map((classItem: ClassSchedule, classIndex: number) => (
-                      <tr key={classIndex} className={classIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                        <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
-                          <div className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium border ${getClassColors(classItem.className)}`}>
-                            {language === 'bn' ? classItem.className : classItem.classNameEn}
-                          </div>
-                        </td>
-                        {classItem.schedule.map((subject: Period, subjectIndex: number) => (
-                          <td key={subjectIndex} className="px-2 sm:px-3 lg:px-4 py-3 sm:py-4 text-center">
-                            {subject.subject !== '—' ? (
-                              <div className={`p-2 sm:p-3 rounded-lg border ${getSubjectColors(subjectIndex)}`}>
-                                <div className="font-semibold text-xs sm:text-sm mb-1 leading-tight">
-                                  {language === 'bn' ? subject.subject : subject.subjectEn}
-                                </div>
-                                {subject.teacher && (
-                                  <div className="text-[10px] sm:text-xs opacity-80 leading-tight">
-                                    {language === 'bn' ? subject.teacher : subject.teacherEn}
-                                  </div>
-                                )}
-                              </div>
-                            ) : (
-                              <div className="text-gray-400 text-xs sm:text-sm">
-                                {t('classSchedule.freePeriod', 'Free Period')}
-                              </div>
-                            )}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          ) : (
-            // Cards View
-            <div className="grid gap-4 sm:gap-6 lg:gap-8">
-              {getFilteredSchedule().map((classItem: ClassSchedule, classIndex: number) => (
-                <div key={classIndex} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                  <div className={`px-4 sm:px-6 py-3 sm:py-4 border-b ${getClassColors(classItem.className)} border`}>
-                    <h3 className="text-lg sm:text-xl font-bold">
-                      {language === 'bn' ? classItem.className : classItem.classNameEn}
-                    </h3>
-                  </div>
-                  <div className="p-4 sm:p-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                      {classItem.schedule.map((subject: Period, subjectIndex: number) => (
-                        <div key={subjectIndex} className={`p-3 sm:p-4 rounded-lg border ${getSubjectColors(subjectIndex)}`}>
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-1">
-                            <span className="text-xs sm:text-sm font-medium opacity-70 order-2 sm:order-1">
-                              {language === 'bn' 
-                                ? scheduleData.timeSlots[subjectIndex]?.period 
-                                : scheduleData.timeSlots[subjectIndex]?.periodEn
-                              }
-                            </span>
-                            <span className="text-xs opacity-70 order-1 sm:order-2">
-                              {language === 'bn' 
-                                ? scheduleData.timeSlots[subjectIndex]?.time 
-                                : scheduleData.timeSlots[subjectIndex]?.timeEn
-                              }
-                            </span>
-                          </div>
-                          <div className="font-semibold mb-2 text-sm sm:text-base leading-tight">
-                            {subject.subject !== '—' 
-                              ? (language === 'bn' ? subject.subject : subject.subjectEn)
-                              : t('classSchedule.freePeriod', 'Free Period')
-                            }
-                          </div>
-                          {subject.teacher && subject.subject !== '—' && (
-                            <div className="text-xs sm:text-sm opacity-80 leading-tight">
-                              {language === 'bn' ? `${t('classSchedule.teacher', 'Teacher')}: ${subject.teacher}` : `${t('classSchedule.teacher', 'Teacher')}: ${subject.teacherEn}`}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Schedule Information */}
-      <section className="py-8 sm:py-12 lg:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
-              <div className="text-2xl sm:text-3xl mb-3 sm:mb-4">📅</div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 sm:mb-3">
-                {t('classSchedule.scheduleInfo.weeklySchedule.title', 'Weekly Schedule')}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                {t('classSchedule.scheduleInfo.weeklySchedule.description', 'Sunday to Thursday: Regular classes\nFriday: Special activities\nSaturday: Holiday')}
-              </p>
-            </div>
-            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
-              <div className="text-2xl sm:text-3xl mb-3 sm:mb-4">🕘</div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 sm:mb-3">
-                {t('classSchedule.scheduleInfo.schoolHours.title', 'School Hours')}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                {t('classSchedule.scheduleInfo.schoolHours.description', '9:00 AM - 12:00 PM\nTotal 6 classes daily\nEach class 30 minutes')}
-              </p>
-            </div>
-            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm sm:col-span-2 lg:col-span-1">
-              <div className="text-2xl sm:text-3xl mb-3 sm:mb-4">👨‍🏫</div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 sm:mb-3">
-                {t('classSchedule.scheduleInfo.teacherInfo.title', 'Teacher Information')}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                {t('classSchedule.scheduleInfo.teacherInfo.description', 'Experienced and qualified teachers\nSubject specialists\nRegularly trained staff')}
-              </p>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredClasses.map((cls, cIdx) => (
+              <motion.div
+                key={cIdx}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: cIdx * 0.05 }}
+                className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs hover:border-gray-200 transition-all"
+              >
+                <div className="flex items-center justify-between pb-4 mb-4 border-b border-gray-100">
+                  <h3 className="text-xl font-bold text-gray-900 tracking-tight">
+                    {isBn ? `শ্রেণী: ${cls.className}` : `Class: ${cls.classNameEn}`}
+                  </h3>
+                  <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">
+                    {isBn ? 'রুটিন' : 'Routine'}
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  {cls.schedule.map((period, pIdx) => {
+                    const slot = scheduleData.timeSlots[pIdx];
+                    return (
+                      <div key={pIdx} className="p-3 rounded-xl bg-slate-50/80 border border-gray-100/80 flex items-center justify-between">
+                        <div>
+                          <div className="text-[11px] font-semibold text-slate-500">
+                            {slot ? (isBn ? slot.period : slot.periodEn) : `Period ${pIdx + 1}`} ({slot ? (isBn ? slot.time : slot.timeEn) : ''})
+                          </div>
+                          <div className="font-bold text-gray-900 text-xs sm:text-sm mt-0.5">
+                            {isBn ? period.subject : period.subjectEn}
+                          </div>
+                        </div>
+                        {period.teacher && (
+                          <div className="text-xs text-slate-600 font-medium text-right">
+                            {isBn ? period.teacher : period.teacherEn}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </section>
 
-      {/* Contact Section */}
-      <section className="py-8 sm:py-12 lg:py-16 bg-indigo-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 leading-tight">
-            {t('classSchedule.contactSection.title', 'Have Questions About Our Class Schedule?')}
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2">
-            {t('classSchedule.contactSection.subtitle', 'Contact us to learn more about our daily routine and how it benefits your child\'s development.')}
-          </p>
-          <Link
-            href="/contact"
-            className="inline-block bg-white text-indigo-600 px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm sm:text-base"
-          >
-            {t('common.contactUs', 'Contact Us')}
-          </Link>
+      {/* 3. Related Links & CTA */}
+      <section className="bg-white border-t border-gray-100 py-16 sm:py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 shadow-md">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 tracking-tight">
+              {isBn ? 'শ্রেণী কাঠামো ও বিষয়সমূহ দেখুন' : 'Explore Classes & Academic Curriculum'}
+            </h2>
+            <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-8 leading-relaxed">
+              {isBn
+                ? 'আমাদের প্রাক-প্রাথমিক ও প্রাথমিক পাঠ্যক্রমের বিষয়ভিত্তিক কাঠামো এবং শিক্ষক বিবরণী জানতে ভিজিট করুন।'
+                : 'Browse our complete class curriculum, developmental milestones, and subject syllabi.'}
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Link
+                href="/academic/classes"
+                className="inline-flex items-center px-7 py-3.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm rounded-xl shadow-xs hover:shadow-md transition-all touch-manipulation"
+              >
+                <span>{isBn ? 'শ্রেণীসমূহ দেখুন' : 'View Classes'}</span>
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+              <Link
+                href="/academic/subjects"
+                className="inline-flex items-center px-7 py-3.5 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-white font-semibold text-sm rounded-xl border border-slate-700 transition-all touch-manipulation"
+              >
+                <span>{isBn ? 'বিষয়সমূহ দেখুন' : 'View Subjects'}</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </div>

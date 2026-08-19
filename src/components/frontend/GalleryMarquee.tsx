@@ -73,7 +73,7 @@ export default function GalleryMarquee() {
   const duplicatedImages = [...images, ...images, ...images];
 
   return (
-    <section className="py-10 sm:py-14 md:py-20 relative overflow-hidden w-full" style={{ background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 50%, #F8FAFC 100%)' }}>
+    <section className="py-16 sm:py-20 lg:py-24 relative overflow-hidden w-full" style={{ background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 50%, #F8FAFC 100%)' }}>
       {/* Decorative background elements - Hidden on mobile for performance */}
       <div className="absolute inset-0 pointer-events-none hidden sm:block" aria-hidden="true">
         <div className="absolute top-0 right-0 w-48 sm:w-72 md:w-96 h-48 sm:h-72 md:h-96 bg-amber-100/20 rounded-full blur-3xl" />
@@ -86,14 +86,10 @@ export default function GalleryMarquee() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-8 sm:mb-10 md:mb-12"
         >
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-50 rounded-full mb-3 sm:mb-4">
-            <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
-            <span className="text-amber-600 font-medium text-xs sm:text-sm">{t('gallery.badge')}</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 tracking-tight">
             {t('gallery.headingPart1')}{' '}
             <span className="text-amber-600">{t('gallery.headingPart2')}</span>
           </h2>
@@ -131,12 +127,12 @@ export default function GalleryMarquee() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
           className="text-center mt-8 sm:mt-10 md:mt-12"
         >
           <Link
             href="/gallery"
-            className="inline-flex items-center gap-2 px-5 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm sm:text-base font-semibold rounded-full hover:from-amber-600 hover:to-orange-600 transition-all duration-300 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 active:scale-95 sm:hover:scale-105"
+            className="inline-flex items-center gap-2 px-6 sm:px-8 py-3.5 bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white text-sm sm:text-base font-semibold rounded-xl transition-all duration-200 shadow-sm hover:shadow-md touch-manipulation"
           >
             <span>{t('gallery.viewFullGallery')}</span>
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -235,13 +231,13 @@ export default function GalleryMarquee() {
 
 function GalleryCard({ image, priority }: { image: GalleryImage; priority?: boolean }) {
   return (
-    <div className="flex-shrink-0 group relative w-52 h-36 xs:w-60 xs:h-44 sm:w-72 sm:h-52 md:w-80 md:h-56 lg:w-96 lg:h-64 rounded-lg sm:rounded-xl overflow-hidden shadow-md sm:shadow-xl touch-manipulation transform-gpu">
+    <div className="flex-shrink-0 group relative w-52 h-36 xs:w-60 xs:h-44 sm:w-72 sm:h-52 md:w-80 md:h-56 lg:w-96 lg:h-64 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 touch-manipulation transform-gpu">
       {/* Image with optimized loading */}
       <Image
         src={image.image_url}
         alt={image.title || 'Gallery image'}
         fill
-        className="object-cover transition-transform duration-500 group-hover:scale-110 will-change-transform"
+        className="object-cover transition-transform duration-500 group-hover:scale-105 will-change-transform"
         sizes="(max-width: 480px) 208px, (max-width: 640px) 240px, (max-width: 768px) 288px, (max-width: 1024px) 320px, 384px"
         loading={priority ? "eager" : "lazy"}
         quality={85}
@@ -251,19 +247,19 @@ function GalleryCard({ image, priority }: { image: GalleryImage; priority?: bool
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       
       {/* Content - Hidden by default, shown on hover */}
-      <div className="absolute inset-0 p-2.5 sm:p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-        <h3 className="text-white font-semibold text-sm sm:text-lg line-clamp-1">
+      <div className="absolute inset-0 p-3 sm:p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+        <h3 className="text-white font-semibold text-sm sm:text-base line-clamp-1">
           {image.title}
         </h3>
         {image.album && (
-          <span className="text-amber-400 text-xs sm:text-sm mt-0.5 sm:mt-1">
+          <span className="text-amber-400 text-xs mt-0.5">
             {image.album}
           </span>
         )}
       </div>
 
       {/* Border Glow Effect */}
-      <div className="absolute inset-0 rounded-lg sm:rounded-xl border-2 border-transparent group-hover:border-amber-400/50 transition-colors duration-300 pointer-events-none" />
+      <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-amber-400/40 transition-colors duration-300 pointer-events-none" />
     </div>
   );
 }

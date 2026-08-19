@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React from 'react';
 import Link from 'next/link';
@@ -93,22 +93,15 @@ export default function TeacherPreview() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <header className="text-center mb-12 sm:mb-16">
-            {/* Section badge */}
-            <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Users className="w-4 h-4" />
-              Our Faculty
-            </div>
-            
+          <header className="text-center mb-10 sm:mb-14">
             <h2 
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 tracking-tight"
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 tracking-tight"
               itemProp="name"
-              style={{ letterSpacing: '-0.02em' }}
             >
               {title}
             </h2>
             <p 
-              className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+              className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed"
               itemProp="description"
             >
               {subtitle}
@@ -126,7 +119,7 @@ export default function TeacherPreview() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8 mb-12 sm:mb-14">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8 mb-10 sm:mb-12">
                 {teachers.map((teacher, index) => (
                   <ModernTeacherCard
                     key={teacher.id}
@@ -139,11 +132,10 @@ export default function TeacherPreview() {
               <div className="text-center">
                 <Link
                   href="/teachers"
-                  className="group inline-flex items-center bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 active:scale-[0.98] transition-all duration-300 font-semibold shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 touch-manipulation"
-                  style={{ letterSpacing: '0.01em' }}
+                  className="group inline-flex items-center bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-7 sm:px-9 py-3.5 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-200 touch-manipulation"
                 >
                   {language === 'bn' ? 'সকল শিক্ষক দেখুন' : 'View All Teachers'}
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
                 </Link>
               </div>
             </>

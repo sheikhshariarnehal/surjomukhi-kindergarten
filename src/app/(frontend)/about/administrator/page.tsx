@@ -1,278 +1,284 @@
-import React from 'react';
-import { Metadata } from 'next';
-import Link from 'next/link';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Administrator - Surjomukhi Kindergarten',
-  description: 'Meet our dedicated administrative team who ensure smooth operations and excellent service for our school community.',
-  keywords: ['administrator', 'administration', 'school management', 'support staff'],
-  openGraph: {
-    title: 'Administrator - Surjomukhi Kindergarten',
-    description: 'Meet our dedicated administrative team.',
-    type: 'website',
-  },
-};
+import React from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { 
+  Briefcase, 
+  Building2, 
+  BookOpen, 
+  Users, 
+  Clock, 
+  MapPin, 
+  Phone, 
+  Mail, 
+  CheckCircle2, 
+  ArrowRight 
+} from 'lucide-react';
+import { useTranslation } from '@/contexts/LanguageContext';
 
 export default function AdministratorPage() {
-  const adminTeam = [
-    {
-      name: 'Mrs. Nasreen Akter',
-      position: 'School Administrator',
-      department: 'General Administration',
-      experience: '10+ Years',
-      responsibilities: [
-        'Overall school operations management',
-        'Student enrollment and records',
-        'Staff coordination and scheduling',
-        'Parent communication and relations'
-      ],
-      contact: 'admin@surjomukhi.edu',
-      phone: '+880-1234-567890'
-    },
-    {
-      name: 'Mr. Kamal Hossain',
-      position: 'Academic Coordinator',
-      department: 'Academic Affairs',
-      experience: '8+ Years',
-      responsibilities: [
-        'Curriculum implementation oversight',
-        'Teacher support and development',
-        'Academic calendar management',
-        'Assessment and evaluation coordination'
-      ],
-      contact: 'academic@surjomukhi.edu',
-      phone: '+880-1234-567891'
-    },
-    {
-      name: 'Ms. Ruma Begum',
-      position: 'Student Affairs Officer',
-      department: 'Student Services',
-      experience: '6+ Years',
-      responsibilities: [
-        'Student welfare and support',
-        'Extracurricular activities coordination',
-        'Health and safety monitoring',
-        'Student counseling services'
-      ],
-      contact: 'student.affairs@surjomukhi.edu',
-      phone: '+880-1234-567892'
-    },
-    {
-      name: 'Mr. Abdul Rahman',
-      position: 'Finance Officer',
-      department: 'Finance & Accounts',
-      experience: '12+ Years',
-      responsibilities: [
-        'Financial planning and budgeting',
-        'Fee collection and management',
-        'Expense tracking and reporting',
-        'Financial compliance and auditing'
-      ],
-      contact: 'finance@surjomukhi.edu',
-      phone: '+880-1234-567893'
-    }
-  ];
+  const { language } = useTranslation();
+  const isBn = language === 'bn';
 
   const departments = [
     {
-      name: 'General Administration',
-      description: 'Oversees daily operations, enrollment, and general school management.',
-      icon: '🏢',
-      services: ['Student Registration', 'Record Management', 'General Inquiries', 'Facility Management']
+      name: isBn ? 'সাধারণ ও ভর্তি প্রশাসন' : 'General & Admissions Administration',
+      description: isBn
+        ? 'দৈনন্দিন প্রশাসনিক কার্যক্রম, নতুন ছাত্রছাত্রী ভর্তি প্রক্রিয়া, প্রাতিষ্ঠানিক নথি ও রেকর্ড ব্যবস্থাপনা পরিচালনা করে।'
+        : 'Oversees daily school operations, student enrollment, academic records, and general institutional coordination.',
+      icon: <Building2 className="w-6 h-6 text-blue-600" />,
+      services: [
+        isBn ? 'ছাত্রছাত্রী ভর্তি ও নিবন্ধন' : 'Student registration & admissions',
+        isBn ? 'প্রাতিষ্ঠানিক রেকর্ড ও প্রত্যয়নপত্র' : 'Official transcripts & certificates',
+        isBn ? 'সাধারণ তথ্য ও অভিভাবক পরামর্শ' : 'General parent consultations',
+        isBn ? 'ক্যাম্পাস অবকাঠামো ব্যবস্থাপনা' : 'Campus facility maintenance'
+      ]
     },
     {
-      name: 'Academic Affairs',
-      description: 'Manages curriculum, teaching standards, and academic programs.',
-      icon: '📚',
-      services: ['Curriculum Development', 'Teacher Training', 'Academic Planning', 'Quality Assurance']
+      name: isBn ? 'একাডেমিক সমন্বয় বিভাগ' : 'Academic Affairs & Curriculum',
+      description: isBn
+        ? 'পাঠ্যক্রম প্রণয়ন, ক্লাস রুটিন সমন্বয়, শিক্ষক সহায়তা এবং শিক্ষাদানের মান নিয়ন্ত্রণ নিশ্চিত করে।'
+        : 'Manages curriculum delivery, teaching schedules, faculty coordination, and academic quality assurance.',
+      icon: <BookOpen className="w-6 h-6 text-blue-600" />,
+      services: [
+        isBn ? 'জাতীয় পাঠ্যক্রম সমন্বয়' : 'Curriculum standard compliance',
+        isBn ? 'ক্লাস রুটিন ও শিক্ষক বণ্টন' : 'Class routine & teacher scheduling',
+        isBn ? 'পরীক্ষা ও মূল্যায়ন তদারকি' : 'Exam coordination & grading',
+        isBn ? 'শিক্ষক পেশাগত প্রশিক্ষণ' : 'Teacher development programs'
+      ]
     },
     {
-      name: 'Student Services',
-      description: 'Focuses on student welfare, activities, and support services.',
-      icon: '👥',
-      services: ['Student Counseling', 'Activity Coordination', 'Health Monitoring', 'Parent Meetings']
+      name: isBn ? 'শিক্ষার্থী কল্যাণ ও সহ-শিক্ষা' : 'Student Services & Welfare',
+      description: isBn
+        ? 'শিক্ষার্থীদের শারীরিক ও মানসিক কল্যাণ, সহ-পাঠ্যক্রমিক কার্যক্রম এবং ক্যাম্পাস নিরাপত্তা তদারকি করে।'
+        : 'Focuses on child safety, extracurricular events, student health support, and anti-harassment committee oversight.',
+      icon: <Users className="w-6 h-6 text-blue-600" />,
+      services: [
+        isBn ? 'যৌন হয়রানি বিরোধী ৫ সদস্যের কমিটি' : '5-Member safety & anti-harassment committee',
+        isBn ? 'বার্ষিক ক্রীড়া ও সাংস্কৃতিক উৎসব' : 'Annual sports & cultural coordination',
+        isBn ? 'প্রাথমিক চিকিৎসা ও ফার্স্ট-এইড' : 'On-site basic first-aid support',
+        isBn ? 'অভিভাবক-শিক্ষক সভা সমন্বয়' : 'Parent-teacher meeting facilitation'
+      ]
     },
     {
-      name: 'Finance & Accounts',
-      description: 'Handles financial operations, budgeting, and fee management.',
-      icon: '💰',
-      services: ['Fee Collection', 'Budget Planning', 'Financial Reports', 'Payment Processing']
+      name: isBn ? 'হিসাব ও আর্থিক ব্যবস্থাপনা' : 'Accounts & Finance',
+      description: isBn
+        ? 'মাসিক বেতন ও ফি গ্রহণ, প্রতিষ্ঠানের বাজেট পরিকল্পনা এবং হিসাব নিরীক্ষণ পরিচালনা করে।'
+        : 'Manages fee collection, tuition accounting, budget planning, and transparent fiscal administration.',
+      icon: <Briefcase className="w-6 h-6 text-blue-600" />,
+      services: [
+        isBn ? 'ভর্তি ও মাসিক ফি গ্রহণ' : 'Tuition & admission fee collection',
+        isBn ? 'মেধাবী ও অভাবী শিক্ষার্থীদের বৃত্তি' : 'Merit & need-based scholarship processing',
+        isBn ? 'বার্ষিক বাজেট ও আর্থিক বিবরণী' : 'Annual budget planning',
+        isBn ? 'হিসাবরক্ষণ ও স্বচ্ছতা নিশ্চিতকরণ' : 'Financial auditing & reporting'
+      ]
+    }
+  ];
+
+  const adminTeam = [
+    {
+      name: isBn ? 'শেখ ইমরান মাহমুদ' : 'Sheikh Imran Mahmud',
+      role: isBn ? 'প্রতিষ্ঠাতা ও স্বত্বাধিকারী / পরিচালক' : 'Founder & Proprietor / Director',
+      dept: isBn ? 'সাধারণ প্রশাসন' : 'General Administration',
+      contact: '01819198965'
+    },
+    {
+      name: isBn ? 'প্রধান শিক্ষক' : 'Head Teacher',
+      role: isBn ? 'সদস্য-সচিব ও একাডেমিক প্রধান' : 'Member-Secretary & Academic Head',
+      dept: isBn ? 'একাডেমিক বিষয়ক' : 'Academic Affairs',
+      contact: '01711528045'
+    },
+    {
+      name: isBn ? 'প্রশাসনিক কর্মকর্তা' : 'Administrative Officer',
+      role: isBn ? 'ভর্তি ও শিক্ষার্থী রেকর্ড ইন-চার্জ' : 'Admissions & Student Records In-Charge',
+      dept: isBn ? 'সাধারণ প্রশাসন' : 'General Administration',
+      contact: '01954113374'
+    },
+    {
+      name: isBn ? 'হিসাব কর্মকর্তা' : 'Accounts Officer',
+      role: isBn ? 'ফি ও হিসাবরক্ষণ ইন-চার্জ' : 'Finance & Fee Collection In-Charge',
+      dept: isBn ? 'হিসাব বিভাগ' : 'Accounts Department',
+      contact: 'info.surjamukhikindergarten@gmail.com'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-teal-600 to-cyan-600 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Our Administrative Team
+    <div className="min-h-screen bg-slate-50/60">
+      {/* 1. Header Section */}
+      <section className="bg-white border-b border-gray-100 py-12 sm:py-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+          >
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 mb-4">
+              {isBn ? 'প্রশাসনিক ব্যবস্থাপনা ও দপ্তর' : 'Administrative Operations'}
             </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-              Meet the dedicated professionals who ensure smooth operations and excellent service for our school community.
+            <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
+              {isBn
+                ? 'সুষ্ঠু পরিচালনা, অভিভাবক সেবা এবং শিক্ষার্থীদের নিরাপদ ও আনন্দময় শিক্ষা পরিবেশ নিশ্চিত করতে আমাদের সার্বক্ষণিক প্রশাসনিক কাঠামো।'
+                : 'Ensuring seamless day-to-day operations, parent assistance, transparent administration, and child-safe campus standards.'}
             </p>
-          </div>
-        </div>
-      </section>
 
-      {/* Introduction */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Excellence in Administration
-            </h2>
-            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Our administrative team works tirelessly behind the scenes to ensure that every aspect 
-              of school operations runs smoothly. From enrollment to daily management, from academic 
-              coordination to student services, our team is committed to providing exceptional support 
-              to students, parents, and teachers.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Administrative Team */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Meet Our Team
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our experienced administrative professionals are here to serve you.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {adminTeam.map((member, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
-                <div className="flex items-start mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-teal-400 to-cyan-400 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white font-bold text-lg">{member.name.charAt(0)}</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
-                    <p className="text-teal-600 font-medium mb-1">{member.position}</p>
-                    <p className="text-gray-500 text-sm">{member.department}</p>
-                  </div>
-                  <div className="text-right">
-                    <span className="bg-teal-100 text-teal-800 px-2 py-1 rounded-full text-xs">
-                      {member.experience}
-                    </span>
-                  </div>
+            {/* Metrics Row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-gray-200/80 border-t border-gray-100 pt-8 max-w-4xl mx-auto text-center">
+              <div className="p-3">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">4</div>
+                <div className="text-xs sm:text-sm text-gray-500 mt-1 font-medium">
+                  {isBn ? 'প্রশাসনিক বিভাগ' : 'Core Departments'}
                 </div>
-                
-                <div className="mb-4">
-                  <h4 className="font-semibold text-gray-800 mb-2">Key Responsibilities:</h4>
-                  <ul className="space-y-1">
-                    {member.responsibilities.map((responsibility, respIndex) => (
-                      <li key={respIndex} className="flex items-start text-sm text-gray-600">
-                        <span className="text-teal-500 mr-2 mt-1">•</span>
-                        {responsibility}
+              </div>
+              <div className="p-3">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">8AM – 2PM</div>
+                <div className="text-xs sm:text-sm text-gray-500 mt-1 font-medium">
+                  {isBn ? 'অফিস সময়সূচী' : 'Office Hours'}
+                </div>
+              </div>
+              <div className="p-3">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">7 Members</div>
+                <div className="text-xs sm:text-sm text-gray-500 mt-1 font-medium">
+                  {isBn ? 'পরিচালনা কমিটি' : 'Governing Body'}
+                </div>
+              </div>
+              <div className="p-3">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">Nawabganj</div>
+                <div className="text-xs sm:text-sm text-gray-500 mt-1 font-medium">
+                  {isBn ? 'ঢাকা-১৩২০' : 'Dhaka, Bangladesh'}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 2. Administrative Departments */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-3">
+            {isBn ? 'প্রশাসনিক বিভাগ ও সেবাসমূহ' : 'Administrative Departments'}
+          </h2>
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            {isBn
+              ? 'অভিভাবক, শিক্ষক ও শিক্ষার্থীদের প্রয়োজনীয় সেবা প্রদানে নিয়োজিত বিভাগসমূহ।'
+              : 'Dedicated units handling admissions, academic calendars, student support, and finance.'}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          {departments.map((dept, idx) => (
+            <motion.article
+              key={idx}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.35, delay: idx * 0.08 }}
+              className="bg-white rounded-2xl p-7 border border-gray-100 shadow-xs hover:border-gray-200 hover:shadow-md transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-5">
+                  {dept.icon}
+                </div>
+
+                <h3 className="text-xl font-bold text-gray-900 mb-2 leading-snug tracking-tight">
+                  {dept.name}
+                </h3>
+
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-6">
+                  {dept.description}
+                </p>
+
+                <div className="border-t border-gray-100 pt-4">
+                  <div className="text-xs font-bold uppercase tracking-wider text-gray-900 mb-3">
+                    {isBn ? 'প্রধান সেবাসমূহ:' : 'Key Functions:'}
+                  </div>
+                  <ul className="space-y-2">
+                    {dept.services.map((service, sIdx) => (
+                      <li key={sIdx} className="flex items-center text-xs sm:text-sm text-gray-700">
+                        <CheckCircle2 className="w-4 h-4 text-blue-600 mr-2 flex-shrink-0" />
+                        <span>{service}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                
-                <div className="border-t pt-4 space-y-2">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <span className="mr-2">📧</span>
-                    <a href={`mailto:${member.contact}`} className="hover:text-teal-600 transition-colors">
-                      {member.contact}
-                    </a>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <span className="mr-2">📞</span>
-                    <a href={`tel:${member.phone}`} className="hover:text-teal-600 transition-colors">
-                      {member.phone}
-                    </a>
-                  </div>
-                </div>
               </div>
-            ))}
-          </div>
+            </motion.article>
+          ))}
         </div>
       </section>
 
-      {/* Departments */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Administrative Departments
+      {/* 3. Administration Directory Table */}
+      <section className="bg-white border-t border-gray-100 py-16 sm:py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-3">
+              {isBn ? 'প্রশাসনিক কর্মকর্তা ও যোগাযোগ' : 'Administrative Directory'}
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our organized departmental structure ensures efficient service delivery.
+            <p className="text-base text-gray-600 max-w-xl mx-auto leading-relaxed">
+              {isBn
+                ? 'সরাসরি তথ্য, ভর্তি সহায়তা বা পরামর্শের জন্য আমাদের কর্মকর্তাদের সাথে যোগাযোগ করুন।'
+                : 'Direct contact channels for admissions, student records, and general institutional inquiries.'}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {departments.map((dept, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg">
-                <div className="flex items-center mb-4">
-                  <span className="text-3xl mr-4">{dept.icon}</span>
-                  <h3 className="text-xl font-bold text-gray-900">{dept.name}</h3>
-                </div>
-                <p className="text-gray-600 mb-4 leading-relaxed">{dept.description}</p>
+          <div className="bg-slate-50/80 rounded-2xl border border-gray-100 shadow-xs overflow-hidden divide-y divide-gray-200/60">
+            {adminTeam.map((member, idx) => (
+              <div key={idx} className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 hover:bg-white transition-colors">
                 <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Services:</h4>
-                  <div className="grid grid-cols-2 gap-1">
-                    {dept.services.map((service, serviceIndex) => (
-                      <div key={serviceIndex} className="flex items-center text-sm text-gray-600">
-                        <span className="text-teal-500 mr-2">✓</span>
-                        {service}
-                      </div>
-                    ))}
+                  <div className="font-bold text-gray-900 text-base">
+                    {member.name}
                   </div>
+                  <div className="text-xs text-slate-500 font-medium mt-0.5">
+                    {member.role} • {member.dept}
+                  </div>
+                </div>
+                <div className="text-xs sm:text-sm font-semibold text-blue-600">
+                  {member.contact}
                 </div>
               </div>
             ))}
           </div>
+
+          {/* Contact Office Summary Box */}
+          <div className="mt-10 p-6 rounded-2xl bg-slate-50 border border-gray-100 text-center flex flex-col sm:flex-row items-center justify-around gap-4 text-xs sm:text-sm text-gray-700">
+            <div className="flex items-center">
+              <Clock className="w-4 h-4 text-blue-600 mr-2" />
+              <span>{isBn ? 'রবি – বৃহস্পতি: সকাল ৮:০০ – দুপুর ২:০০' : 'Sun – Thu: 8:00 AM – 2:00 PM'}</span>
+            </div>
+            <div className="flex items-center">
+              <MapPin className="w-4 h-4 text-blue-600 mr-2" />
+              <span>{isBn ? 'সালাউদ্দিন কমপ্লেক্স, আওনা বাজার, নবাবগঞ্জ' : 'Salauddin Complex, Aona Bazar, Nawabganj'}</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Office Hours & Contact */}
-      <section className="py-16 bg-teal-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Office Hours & Contact
-            </h2>
-            <p className="text-xl mb-8 max-w-3xl mx-auto">
-              Our administrative office is open to serve you during the following hours.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="bg-white bg-opacity-10 p-6 rounded-lg">
-              <div className="text-3xl mb-4">🕐</div>
-              <h3 className="text-xl font-bold mb-2">Office Hours</h3>
-              <p className="text-teal-100">Monday - Friday: 8:00 AM - 4:00 PM</p>
-              <p className="text-teal-100">Saturday: 9:00 AM - 1:00 PM</p>
-            </div>
-            <div className="bg-white bg-opacity-10 p-6 rounded-lg">
-              <div className="text-3xl mb-4">📞</div>
-              <h3 className="text-xl font-bold mb-2">Phone</h3>
-              <p className="text-teal-100">Main Office: +880-1234-567890</p>
-              <p className="text-teal-100">Emergency: +880-1234-567899</p>
-            </div>
-            <div className="bg-white bg-opacity-10 p-6 rounded-lg">
-              <div className="text-3xl mb-4">📧</div>
-              <h3 className="text-xl font-bold mb-2">Email</h3>
-              <p className="text-teal-100">info@surjomukhi.edu</p>
-              <p className="text-teal-100">admin@surjomukhi.edu</p>
-            </div>
-          </div>
-
-          <div className="text-center mt-12">
-            <a
+      {/* 4. Bottom CTA */}
+      <section className="bg-slate-900 text-white py-16 sm:py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-3 tracking-tight">
+            {isBn ? 'যেকোনো অনুসন্ধানে আমরা পাশে আছি' : 'Need Assistance with Admissions or Services?'}
+          </h2>
+          <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-8 leading-relaxed">
+            {isBn
+              ? 'আমাদের প্রশাসন অভিভাবক ও শিক্ষার্থীদের সর্বোচ্চ আন্তরিক সেবা প্রদান করতে প্রতিশ্রুতিবদ্ধ।'
+              : 'Our administrative staff is ready to assist with admission forms, school visits, and questions.'}
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link
               href="/contact"
-              className="bg-white text-teal-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              className="inline-flex items-center px-7 py-3.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm rounded-xl shadow-xs hover:shadow-md transition-all touch-manipulation"
             >
-              Contact Administration
-            </a>
+              <span>{isBn ? 'যোগাযোগ করুন' : 'Contact Office'}</span>
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
+            <Link
+              href="/admission"
+              className="inline-flex items-center px-7 py-3.5 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-white font-semibold text-sm rounded-xl border border-slate-700 transition-all touch-manipulation"
+            >
+              <span>{isBn ? 'ভর্তি তথ্য দেখুন' : 'View Admission Guidelines'}</span>
+            </Link>
           </div>
         </div>
       </section>

@@ -10,11 +10,13 @@ import { Teacher } from '@/types/teacher';
 interface ModernTeacherCardProps {
   teacher: Teacher;
   index?: number;
+  showDetails?: boolean;
 }
 
 const ModernTeacherCard = React.memo(({ 
   teacher, 
-  index = 0
+  index = 0,
+  showDetails = false
 }: ModernTeacherCardProps) => {
   const [imageError, setImageError] = useState(false);
 
@@ -35,13 +37,13 @@ const ModernTeacherCard = React.memo(({
 
   // Optimized animation variants
   const cardVariants = {
-    hidden: { opacity: 0, y: 10 },
+    hidden: { opacity: 0, y: 12 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.25,
-        delay: Math.min(index * 0.03, 0.3),
+        duration: 0.3,
+        delay: Math.min(index * 0.04, 0.3)
       }
     }
   };
@@ -51,59 +53,78 @@ const ModernTeacherCard = React.memo(({
       variants={cardVariants}
       initial="hidden"
       animate="visible"
-      whileHover={{ y: -3, transition: { duration: 0.2 } }}
+      whileHover={{ y: -4, transition: { duration: 0.2 } }}
       className="group h-full"
     >
       <Link 
         href={`/teachers/${teacherSlug}`}
-        className="block h-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
+        className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-2xl"
         aria-label={`View ${teacher.name}'s profile - ${teacher.designation}`}
       >
         <article 
-          className="bg-white rounded-lg shadow-sm hover:shadow-lg border border-gray-100 overflow-hidden transition-all duration-200 group-hover:border-blue-300 h-full flex flex-col cursor-pointer"
+          className="bg-white rounded-2xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300 hover:border-gray-200 h-full flex flex-col cursor-pointer"
           itemScope
           itemType="https://schema.org/Person"
         >
-        {/* Image Section */}
-        <div className="relative aspect-[3/4] sm:aspect-square overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50">
-          {shouldShowImage ? (
-            <Image
-              src={validImageUrl}
-              alt={`${teacher.name} - ${teacher.designation}`}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              loading={index < 4 ? "eager" : "lazy"}
-              quality={85}
-              onError={() => setImageError(true)}
-              itemProp="image"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center" aria-hidden="true">
-              <User className="h-10 w-10 sm:h-12 sm:w-12 text-gray-300" />
-            </div>
-          )}
-        </div>
+          {/* Image Section - Elegant Portrait Aspect */}
+          <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
+            {shouldShowImage ? (
+              <Image
+                src={validImageUrl}
+                alt={`${teacher.name} - ${teacher.designation}`}
+                fill
+                className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                loading={index < 4 ? "eager" : "lazy"}
+                quality={85}
+                onError={() => setImageError(true)}
+                itemProp="image"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-slate-100" aria-hidden="true">
+                <User className="h-12 w-12 text-slate-300" />
+              </div>
+            )}
+          </div>
 
-        {/* Content Section - Only Name and Designation */}
-        <div className="p-3 sm:p-4 text-center">
-          <h3 
-            className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2"
-            itemProp="name"
-          >
-            {teacher.name}
-          </h3>
-          <p 
-            className="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-2"
-            itemProp="jobTitle"
-          >
-            {teacher.designation}
-          </p>
-          
-          {/* Hidden SEO metadata */}
-          <meta itemProp="worksFor" content="Surjomukhi Kindergarten" />
-        </div>
-      </article>
+          {/* Content Section - Clear, High-Contrast Typography */}
+          <div className="p-4 sm:p-5 text-center flex-1 flex flex-col justify-center">
+            <h3 
+              className="text-base sm:text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1 tracking-tight"
+              itemProp="name"
+            >
+              {teacher.name}
+            </h3>
+            <p 
+              className="text-xs sm:text-sm font-medium text-slate-500 mt-1 line-clamp-1"
+              itemProp="jobTitle"
+            >
+              {teacher.designation}
+            </p>
+
+            {/* Department / Subject Badges (Clean Tone-on-Tone Pills) */}
+            {((teacher.subjects && teacher.subjects.length > 0) || teacher.department) && (
+              <div className="flex flex-wrap items-center justify-center gap-1.5 mt-3">
+                {teacher.department && (
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-100/60">
+                    {teacher.department}
+                  </span>
+                )}
+                {teacher.subjects && teacher.subjects.slice(0, 2).map((subject, sIdx) => (
+                  <span 
+                    key={sIdx}
+                    className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700"
+                  >
+                    {subject}
+                  </span>
+                ))}
+              </div>
+            )}
+            
+            {/* Hidden SEO metadata */}
+            <meta itemProp="worksFor" content="Surjomukhi Kindergarten" />
+          </div>
+        </article>
       </Link>
     </motion.div>
   );

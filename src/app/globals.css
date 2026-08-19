@@ -17,6 +17,18 @@ html {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   touch-action: manipulation;
+  caret-color: #2563eb;
+}
+
+/* Custom selection styling */
+::selection {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+::-moz-selection {
+  background-color: #dbeafe;
+  color: #1e40af;
 }
 
 body {

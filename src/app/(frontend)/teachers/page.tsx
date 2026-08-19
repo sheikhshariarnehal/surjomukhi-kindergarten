@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Search, Filter, Users, GraduationCap, BookOpen, Loader2 } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, X, Users, BookOpen, Loader2 } from 'lucide-react';
 import ModernTeacherCard from '@/components/frontend/ModernTeacherCard';
 import { Teacher } from '@/types/teacher';
 
@@ -21,8 +21,7 @@ export default function TeachersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [filteredTeachers, setFilteredTeachers] = useState<Teacher[]>([]);
+  const [selectedDepartment, setSelectedDepartment] = useState('ALL');
 
   // Fetch teachers from API
   useEffect(() => {
@@ -32,15 +31,13 @@ export default function TeachersPage() {
         const response = await fetch('/api/teachers?limit=50');
 
         if (!response.ok) {
-          throw new Error('Failed to fetch teachers');
+          throw new Error('Failed to load teachers data');
         }
 
         const data: TeachersResponse = await response.json();
         setTeachers(data.teachers || []);
-        setFilteredTeachers(data.teachers || []);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-        console.error('Error fetching teachers:', err);
+        setError(err instanceof Error ? err.message : 'An unexpected error occurred');
       } finally {
         setLoading(false);
       }
@@ -49,206 +46,210 @@ export default function TeachersPage() {
     fetchTeachers();
   }, []);
 
-  // Filter teachers based on search and department
-  useEffect(() => {
-    let filtered = teachers;
+  // Compute unique department list
+  const departments = useMemo(() => {
+    const depts = new Set<string>();
+    teachers.forEach(t => {
+      if (t.department && t.department.trim()) {
+        depts.add(t.department.trim());
+      }
+    });
+    return Array.from(depts).sort();
+  }, [teachers]);
 
-    // Filter by search term
-    if (searchTerm) {
-      filtered = filtered.filter(teacher =>
+  // Filter teachers based on search term & department pill
+  const filteredTeachers = useMemo(() => {
+    return teachers.filter(teacher => {
+      const matchesSearch = !searchTerm.trim() || 
         teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         teacher.designation.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        teacher.subjects?.some(subject =>
-          subject.toLowerCase().includes(searchTerm.toLowerCase())
-        ) ||
-        teacher.department?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+        teacher.department?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        teacher.subjects?.some(s => s.toLowerCase().includes(searchTerm.toLowerCase()));
 
-    // Filter by department
-    if (selectedDepartment) {
-      filtered = filtered.filter(teacher =>
-        teacher.department === selectedDepartment
-      );
-    }
+      const matchesDept = selectedDepartment === 'ALL' || teacher.department === selectedDepartment;
 
-    setFilteredTeachers(filtered);
+      return matchesSearch && matchesDept;
+    });
   }, [teachers, searchTerm, selectedDepartment]);
-
-  // Get unique departments for filter
-  const departments = Array.from(new Set(
-    teachers
-      .map(teacher => teacher.department)
-      .filter(Boolean)
-  )).sort();
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.04
       }
     }
   };
 
-  const headerVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 }
-    }
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setSelectedDepartment('ALL');
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading our amazing teachers...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Users className="h-8 w-8 text-red-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Unable to Load Teachers</h2>
-          <p className="text-gray-600 mb-4">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <motion.section
-        variants={headerVariants}
-        initial="hidden"
-        animate="visible"
-        className="bg-gradient-to-br from-blue-600 via-blue-700 to-green-600 text-white py-20"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6"
-            >
-              <GraduationCap className="h-10 w-10" />
-            </motion.div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Our Dedicated Teachers
-            </h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto mb-8">
-              Meet the passionate educators who shape young minds and inspire lifelong learning at Surjomukhi Kindergarten
-            </p>
+    <div className="min-h-screen bg-slate-50/60">
+      {/* Distilled Header Section */}
+      <section className="bg-white border-b border-gray-100 py-12 sm:py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.h1 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3"
+          >
+            Our Dedicated Faculty
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.05 }}
+            className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed mb-8"
+          >
+            Meet the passionate educators and subject specialists guiding students and fostering character at Surjomukhi Kindergarten since 2004.
+          </motion.p>
 
-            {/* Stats */}
-            <div className="flex flex-wrap justify-center gap-8 text-center">
-              <div>
-                <div className="text-3xl font-bold">{teachers.length}</div>
-                <div className="text-blue-200">Expert Teachers</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold">{departments.length}</div>
-                <div className="text-blue-200">Departments</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold">
-                  {Array.from(new Set(teachers.flatMap(t => t.subjects || []))).length}
-                </div>
-                <div className="text-blue-200">Subjects Covered</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Search and Filter Section */}
-      <section className="py-8 bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            {/* Search */}
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+          {/* Unified Search Bar */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.1 }}
+            className="max-w-xl mx-auto"
+          >
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
               <input
                 type="text"
-                placeholder="Search teachers, subjects, or departments..."
+                placeholder="Search by teacher name, subject, or designation..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-11 pr-10 py-3 bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-gray-200/90 rounded-2xl text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-xs"
+                aria-label="Search faculty"
               />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-200/60 transition-colors"
+                  aria-label="Clear search query"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
             </div>
 
-            {/* Department Filter */}
-            <div className="relative">
-              <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <select
-                value={selectedDepartment}
-                onChange={(e) => setSelectedDepartment(e.target.value)}
-                className="pl-10 pr-8 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white min-w-[200px]"
-              >
-                <option value="">All Departments</option>
-                {departments.map(dept => (
-                  <option key={dept} value={dept}>{dept}</option>
-                ))}
-              </select>
-            </div>
+            {/* Department Filter Tabs (Only shown if multiple departments exist) */}
+            {departments.length > 0 && (
+              <div className="flex items-center justify-center gap-1.5 mt-4 flex-wrap">
+                <button
+                  onClick={() => setSelectedDepartment('ALL')}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                    selectedDepartment === 'ALL'
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                  }`}
+                >
+                  All Faculty ({teachers.length})
+                </button>
+                {departments.map((dept) => {
+                  const count = teachers.filter(t => t.department === dept).length;
+                  const isSelected = selectedDepartment === dept;
+                  return (
+                    <button
+                      key={dept}
+                      onClick={() => setSelectedDepartment(dept)}
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                        isSelected
+                          ? 'bg-blue-600 text-white shadow-xs'
+                          : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                      }`}
+                    >
+                      {dept} ({count})
+                    </button>
+                  );
+                })}
+              </div>
+            )}
 
-            {/* Results Count */}
-            <div className="text-gray-600">
-              <span className="font-medium">{filteredTeachers.length}</span> teacher{filteredTeachers.length !== 1 ? 's' : ''} found
+            {/* Active Count & Reset Indicator */}
+            <div className="mt-3 flex items-center justify-center gap-2 text-xs text-gray-500">
+              <span>
+                Showing <strong className="text-gray-900 font-semibold">{filteredTeachers.length}</strong> of {teachers.length} faculty members
+              </span>
+              {(searchTerm || selectedDepartment !== 'ALL') && (
+                <>
+                  <span>•</span>
+                  <button
+                    onClick={handleClearFilters}
+                    className="text-blue-600 hover:text-blue-700 font-medium underline underline-offset-2 cursor-pointer"
+                  >
+                    Reset filters
+                  </button>
+                </>
+              )}
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Teachers Grid */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {filteredTeachers.length === 0 ? (
-            <div className="text-center py-16">
-              <BookOpen className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No Teachers Found</h3>
-              <p className="text-gray-600">
-                {searchTerm || selectedDepartment
-                  ? "Try adjusting your search criteria or filters."
-                  : "No teachers are currently available."}
-              </p>
+      {/* Directory Grid */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        {loading ? (
+          <div className="py-20 text-center">
+            <Loader2 className="h-10 w-10 animate-spin text-blue-600 mx-auto mb-4" />
+            <p className="text-sm font-medium text-gray-600">Loading faculty directory...</p>
+          </div>
+        ) : error ? (
+          <div className="py-16 text-center max-w-md mx-auto">
+            <div className="w-14 h-14 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Users className="h-7 w-7" />
             </div>
-          ) : (
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
+            <h2 className="text-lg font-bold text-gray-900 mb-2">Unable to Load Directory</h2>
+            <p className="text-sm text-gray-600 mb-6">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-xs"
             >
+              Retry
+            </button>
+          </div>
+        ) : filteredTeachers.length === 0 ? (
+          <div className="py-20 text-center max-w-md mx-auto">
+            <BookOpen className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+            <h2 className="text-lg font-bold text-gray-900 mb-1">No Faculty Found</h2>
+            <p className="text-sm text-gray-500 mb-6 leading-relaxed">
+              {searchTerm || selectedDepartment !== 'ALL'
+                ? "No teachers matched your current search criteria."
+                : "No teacher profiles are currently available."}
+            </p>
+            {(searchTerm || selectedDepartment !== 'ALL') && (
+              <button
+                onClick={handleClearFilters}
+                className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition-all shadow-xs"
+              >
+                Clear Search
+              </button>
+            )}
+          </div>
+        ) : (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8"
+          >
+            <AnimatePresence mode="popLayout">
               {filteredTeachers.map((teacher, index) => (
                 <ModernTeacherCard
                   key={teacher.id}
                   teacher={teacher}
                   index={index}
+                  showDetails={true}
                 />
               ))}
-            </motion.div>
-          )}
-        </div>
-      </section>
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </main>
     </div>
   );
 }

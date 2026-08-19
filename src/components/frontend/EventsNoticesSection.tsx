@@ -51,88 +51,75 @@ export default function EventsNoticesSection({
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header with enhanced visual hierarchy */}
+        {/* Header with clean typography */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16"
+          transition={{ duration: 0.5 }}
+          className="text-center mb-10 sm:mb-14"
         >
-          {/* Section badge */}
-          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Stay Updated
-          </div>
-          
           <h2 
             id="events-notices-heading" 
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight"
-            style={{ letterSpacing: '-0.02em' }}
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 tracking-tight"
           >
             {t('eventsNotices.title')}
           </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
             {t('eventsNotices.subtitle')}
           </p>
         </motion.div>
 
-        {/* Content Grid with enhanced cards */}
-        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
+        {/* Content Grid */}
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 items-stretch">
           {/* Events */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="group"
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="h-full"
           >
-            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-xl active:shadow-lg transition-all duration-300 border border-gray-100/80 overflow-hidden h-full touch-manipulation">
-              <ErrorBoundary
-                fallback={
-                  <ErrorFallback 
-                    title={t('events.unavailable', 'Events Unavailable')} 
-                    type="events" 
-                  />
-                }
-              >
-                <EventsComponent 
-                  initialEvents={initialEvents}
-                  limit={3}
-                  showViewAll={true}
-                  className="h-full"
+            <ErrorBoundary
+              fallback={
+                <ErrorFallback 
+                  title={t('events.unavailable', 'Events Unavailable')} 
+                  type="events" 
                 />
-              </ErrorBoundary>
-            </div>
+              }
+            >
+              <EventsComponent 
+                initialEvents={initialEvents}
+                limit={3}
+                showViewAll={true}
+                className="h-full"
+              />
+            </ErrorBoundary>
           </motion.div>
 
           {/* Notices */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="group"
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="h-full"
           >
-            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-xl active:shadow-lg transition-all duration-300 border border-gray-100/80 overflow-hidden h-full touch-manipulation">
-              <ErrorBoundary
-                fallback={
-                  <ErrorFallback 
-                    title={t('notices.unavailable', 'Notices Unavailable')} 
-                    type="notices" 
-                  />
-                }
-              >
-                <NoticesComponent 
-                  initialNotices={initialNotices}
-                  limit={3}
-                  showViewAll={true}
-                  className="h-full"
+            <ErrorBoundary
+              fallback={
+                <ErrorFallback 
+                  title={t('notices.unavailable', 'Notices Unavailable')} 
+                  type="notices" 
                 />
-              </ErrorBoundary>
-            </div>
+              }
+            >
+              <NoticesComponent 
+                initialNotices={initialNotices}
+                limit={3}
+                showViewAll={true}
+                className="h-full"
+              />
+            </ErrorBoundary>
           </motion.div>
         </div>
       </div>

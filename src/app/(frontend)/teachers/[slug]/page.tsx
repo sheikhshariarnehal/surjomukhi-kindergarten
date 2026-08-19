@@ -223,7 +223,7 @@ const ContactInfo: React.FC<{ teacher: Teacher }> = ({ teacher }) => {
       {teacher.contact_email && (
         <a 
           href={`mailto:${teacher.contact_email}`}
-          className="flex items-center text-gray-600 hover:text-blue-600 transition-colors text-sm p-2 rounded-md hover:bg-blue-50 group"
+          className="flex items-center text-gray-700 hover:text-blue-600 transition-colors text-sm p-2 rounded-md hover:bg-slate-50 group"
           aria-label={`Email ${teacher.name}`}
         >
           <Mail className="h-3.5 w-3.5 mr-2.5 flex-shrink-0 text-gray-400 group-hover:text-blue-500" />
@@ -234,7 +234,7 @@ const ContactInfo: React.FC<{ teacher: Teacher }> = ({ teacher }) => {
       {teacher.contact_phone && (
         <a 
           href={`tel:${teacher.contact_phone}`}
-          className="flex items-center text-gray-600 hover:text-blue-600 transition-colors text-sm p-2 rounded-md hover:bg-blue-50 group"
+          className="flex items-center text-gray-700 hover:text-blue-600 transition-colors text-sm p-2 rounded-md hover:bg-slate-50 group"
           aria-label={`Call ${teacher.name}`}
         >
           <Phone className="h-3.5 w-3.5 mr-2.5 flex-shrink-0 text-gray-400 group-hover:text-blue-500" />
@@ -440,12 +440,12 @@ export default function TeacherDetailPage() {
                   <ContentSection
                     title="Education & Qualifications"
                     icon={<GraduationCap className="h-4 w-4" aria-hidden="true" />}
-                    iconColor="from-purple-500 to-purple-600"
+                    iconColor="from-blue-600 to-indigo-600"
                   >
                     <ul className="space-y-3.5" role="list">
                       {teacher.qualifications.slice(0, DISPLAY_LIMITS.qualifications).map((qualification, index) => (
                         <li key={index} className="flex items-start group pl-0.5">
-                          <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-purple-500 mt-2 mr-3.5 group-hover:scale-150 transition-transform"></div>
+                          <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-blue-600 mt-2 mr-3.5 group-hover:scale-150 transition-transform"></div>
                           <span className="text-gray-800 text-[15px] leading-relaxed -mt-0.5">
                             {qualification}
                           </span>
@@ -523,14 +523,14 @@ export default function TeacherDetailPage() {
                   <ContentSection
                     title="Teaching Philosophy"
                     icon={<BookOpen className="h-4 w-4" aria-hidden="true" />}
-                    iconColor="from-indigo-500 to-indigo-600"
+                    iconColor="from-blue-600 to-blue-700"
                   >
-                    <div className="relative bg-gradient-to-br from-blue-50/60 via-indigo-50/60 to-purple-50/60 border-l-[3px] border-indigo-500 px-5 py-4 rounded-r-lg">
-                      <div className="absolute top-1 left-2 text-5xl text-indigo-300 opacity-40 font-serif leading-none">&quot;</div>
+                    <div className="relative bg-blue-50/50 border-l-[3px] border-blue-600 px-5 py-4 rounded-r-lg">
+                      <div className="absolute top-1 left-2 text-5xl text-blue-200 opacity-60 font-serif leading-none">&quot;</div>
                       <blockquote className="text-gray-800 text-[15px] leading-relaxed italic relative z-10 pt-3 pr-4">
                         {teacher.teaching_philosophy}
                       </blockquote>
-                      <div className="absolute bottom-0 right-3 text-5xl text-indigo-300 opacity-40 font-serif leading-none">&quot;</div>
+                      <div className="absolute bottom-0 right-3 text-5xl text-blue-200 opacity-60 font-serif leading-none">&quot;</div>
                     </div>
                   </ContentSection>
                 )}

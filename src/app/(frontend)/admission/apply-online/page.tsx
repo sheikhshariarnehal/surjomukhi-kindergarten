@@ -153,32 +153,32 @@ export default function ApplyOnlinePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-12 md:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
+    <div className="min-h-screen bg-slate-50/60">
+      {/* 1. Header Section */}
+      <section className="bg-white border-b border-gray-100 py-12 sm:py-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 mb-4">
             {t('admission.applyOnline.hero.title')}
           </h1>
-          <p className="text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
             {t('admission.applyOnline.hero.subtitle')}
           </p>
         </div>
       </section>
 
-      {/* Application Form */}
-      <section className="py-12 md:py-16 bg-white">
+      {/* 2. Application Form */}
+      <section className="py-12 sm:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
-              {t('admission.applyOnline.formTitle')}
-            </h2>
-            <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
-              {t('admission.applyOnline.formSubtitle')}
-            </p>
-          </div>
+          <div className="bg-white rounded-3xl border border-gray-100 shadow-xs p-6 sm:p-10">
+            <div className="mb-8 pb-6 border-b border-gray-100">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-2">
+                {t('admission.applyOnline.formTitle')}
+              </h2>
+              <p className="text-xs sm:text-sm text-gray-600">
+                {t('admission.applyOnline.formSubtitle')}
+              </p>
+            </div>
 
-          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 lg:p-8">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 sm:space-y-8">
               {/* Student Information */}
               <div>
@@ -460,24 +460,24 @@ export default function ApplyOnlinePage() {
         </div>
       </section>
 
-      {/* Next Steps */}
-      <section className="py-12 md:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-6">
+      {/* 3. Next Steps */}
+      <section className="py-12 sm:py-16 bg-white border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-2">
               {t('admission.applyOnline.nextSteps.title')}
             </h2>
-            <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xs sm:text-sm text-gray-600 max-w-2xl mx-auto">
               {t('admission.applyOnline.nextSteps.subtitle')}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {t('admission.applyOnline.nextSteps.steps', []).map((step: Step, index: number) => (
-              <div key={index} className="text-center p-4 sm:p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <div className="text-4xl mb-4">{step.icon}</div>
-                <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2">{step.title}</h3>
-                <p className="text-gray-600 text-sm">{step.description}</p>
+              <div key={index} className="text-center p-6 bg-slate-50/70 rounded-2xl border border-gray-100 shadow-xs hover:border-gray-200 transition-all">
+                <div className="text-3xl mb-3">{step.icon}</div>
+                <h3 className="text-base font-bold text-gray-900 mb-1.5">{step.title}</h3>
+                <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">{step.description}</p>
               </div>
             ))}
           </div>

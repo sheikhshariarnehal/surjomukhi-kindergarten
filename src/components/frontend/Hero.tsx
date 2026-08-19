@@ -822,7 +822,7 @@ const Hero: React.FC = () => {
                   >
                     <Button
                       size="lg"
-                      className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50 hover:text-blue-700 px-6 xs:px-8 sm:px-8 py-3 xs:py-4 sm:py-4 text-sm xs:text-base sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-out focus:ring-4 focus:ring-white/30 touch-target"
+                      className="w-full sm:w-auto bg-white text-blue-700 hover:bg-blue-50 hover:text-blue-800 px-6 xs:px-8 sm:px-8 py-3.5 xs:py-4 sm:py-4 text-sm xs:text-base sm:text-base font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-out focus:ring-4 focus:ring-white/30 touch-target"
                       style={{
                         // Professional typography
                         letterSpacing: '0.01em',
@@ -844,7 +844,7 @@ const Hero: React.FC = () => {
                     <Button
                       variant="outline"
                       size="lg"
-                      className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-blue-600 px-6 xs:px-8 sm:px-8 py-3 xs:py-4 sm:py-4 text-sm xs:text-base sm:text-base font-semibold rounded-lg backdrop-blur-sm bg-white/10 hover:bg-white transition-all duration-300 ease-out focus:ring-4 focus:ring-white/30 touch-target"
+                      className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-blue-700 px-6 xs:px-8 sm:px-8 py-3.5 xs:py-4 sm:py-4 text-sm xs:text-base sm:text-base font-semibold rounded-xl backdrop-blur-sm bg-white/10 hover:bg-white transition-all duration-300 ease-out focus:ring-4 focus:ring-white/30 touch-target"
                       style={{
                         // Professional typography
                         letterSpacing: '0.01em',
