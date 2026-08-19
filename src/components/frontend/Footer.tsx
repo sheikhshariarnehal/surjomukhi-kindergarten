@@ -9,14 +9,9 @@ import {
   Phone,
   Mail,
   Clock,
-  ExternalLink,
-  GraduationCap,
-  ShieldCheck,
-  ChevronRight,
-  Sparkles
+  ArrowUpRight
 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import styles from './Footer.module.css';
 
 const BackToTop = dynamic(() => import('./BackToTop'), { loading: () => null, ssr: false });
 
@@ -52,11 +47,11 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
 
   const quickLinks = useMemo(() => [
     { titleEn: 'About Us', titleBn: 'আমাদের সম্পর্কে', href: '/about' },
-    { titleEn: 'Admissions Hub', titleBn: 'ভর্তি কার্যক্রম', href: '/admission' },
+    { titleEn: 'Admissions', titleBn: 'ভর্তি কার্যক্রম', href: '/admission' },
     { titleEn: 'Our Faculty', titleBn: 'শিক্ষকমণ্ডলী', href: '/teachers' },
     { titleEn: 'Photo Gallery', titleBn: 'ফটো গ্যালারি', href: '/gallery' },
     { titleEn: 'Campus News', titleBn: 'ক্যাম্পাস সংবাদ', href: '/news' },
-    { titleEn: 'Contact Us', titleBn: 'যোগাযোগ ও হেল্পডেস্ক', href: '/contact' },
+    { titleEn: 'Contact Us', titleBn: 'যোগাযোগ', href: '/contact' },
   ], []);
 
   const resourceLinks = useMemo(() => [
@@ -64,13 +59,13 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
     { titleEn: 'Academic Calendar', titleBn: 'একাডেমিক ক্যালেন্ডার', href: '/academic/calendar' },
     { titleEn: 'Syllabus & Routine', titleBn: 'সিলেবাস ও রুটিন', href: '/academic/syllabus' },
     { titleEn: 'Downloads & Forms', titleBn: 'ডাউনলোড ও ফর্ম', href: '/downloads' },
-    { titleEn: 'Student Code of Conduct', titleBn: 'শৃঙ্খলা ও আচরণবিধি', href: '/student/rules' },
-    { titleEn: 'Certificate Verification', titleBn: 'সার্টিফিকেট যাচাইকরণ', href: '/student/verify-certificate' },
+    { titleEn: 'Student Conduct', titleBn: 'শৃঙ্খলা ও আচরণবিধি', href: '/student/rules' },
+    { titleEn: 'Certificate Verification', titleBn: 'সার্টিফিকেট যাচাই', href: '/student/verify-certificate' },
   ], []);
 
   const socialLinks = useMemo(() => [
-    { name: 'Facebook', href: 'https://facebook.com/surjomukhikg', icon: <FacebookIcon />, ariaLabel: isBn ? 'ফেসবুকে অনুসরণ করুন' : 'Follow us on Facebook' },
-    { name: 'YouTube', href: 'https://youtube.com/surjomukhikg', icon: <YouTubeIcon />, ariaLabel: isBn ? 'ইউটিউবে সাবস্ক্রাইব করুন' : 'Subscribe to YouTube' },
+    { name: 'Facebook', href: 'https://facebook.com/surjomukhikg', icon: <FacebookIcon />, ariaLabel: isBn ? 'ফেসবুকে অনুসরণ করুন' : 'Follow on Facebook' },
+    { name: 'YouTube', href: 'https://youtube.com/surjomukhikg', icon: <YouTubeIcon />, ariaLabel: isBn ? 'ইউটিউবে দেখুন' : 'Follow on YouTube' },
     { name: 'Instagram', href: 'https://instagram.com/surjomukhikg', icon: <InstagramIconAlt />, ariaLabel: isBn ? 'ইনস্টাগ্রামে দেখুন' : 'Follow on Instagram' },
   ], [isBn]);
 
@@ -82,168 +77,155 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
 
   return (
     <>
-      <footer className={`${styles.footer} bg-slate-950 text-slate-200 border-t border-slate-800/80 relative z-20 ${className}`} role="contentinfo">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-16 pb-12">
-          {/* Main 4-Column Grid Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-slate-800/90">
-            {/* Column 1: School Brand & Mission (4 cols on lg) */}
-            <div className="lg:col-span-4 flex flex-col justify-between">
-              <div>
-                <Link href="/" className="inline-flex items-center gap-3 group mb-4">
-                  <div className="w-11 h-11 rounded-xl bg-white p-1 shadow-md border border-slate-700/60 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                    <Image
-                      src="/logo.webp"
-                      alt="Surjomukhi Kindergarten Logo"
-                      width={40}
-                      height={40}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-extrabold text-white tracking-tight group-hover:text-blue-400 transition-colors">
-                      {isBn ? 'সূর্যমুখী কিন্ডারগার্টেন' : 'Surjomukhi Kindergarten'}
-                    </h2>
-                    <p className="text-xs text-blue-400 font-medium tracking-wide">
-                      {isBn ? '২০০৪ সাল থেকে প্রাথমিক শিক্ষায় উৎকর্ষতা' : 'Excellence in Primary Education Since 2004'}
-                    </p>
-                  </div>
-                </Link>
-
-                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
-                  {isBn
-                    ? 'নবাবগঞ্জ, ঢাকায় প্লে গ্রুপ হতে ৫ম শ্রেণি পর্যন্ত মানসম্মত বাংলা মাধ্যম শিক্ষা, নৈতিক মূল্যবোধ ও শিশুবান্ধব আনন্দময় পরিবেশ নিশ্চিতকরণে আমরা প্রতিশ্রুতিবদ্ধ।'
-                    : 'Premier Bangla medium primary educational institution from Nursery to Grade 5, nurturing bright minds with care, discipline, and creativity in Nawabganj, Dhaka.'}
-                </p>
-
-                {/* Institutional Identification Badges */}
-                <div className="flex flex-wrap gap-2 text-[11px] font-medium text-slate-300">
-                  <span className="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800">
-                    {isBn ? 'ইআইআইএন: ০৬৩১০১৬০৫০৮' : 'EIIN: 06310160508'}
-                  </span>
-                  <span className="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800">
-                    {isBn ? 'প্রতিষ্ঠান কোড: ৪২৪৫২৮' : 'Code: 424528'}
-                  </span>
-                  <span className="px-2.5 py-1 rounded-md bg-blue-950/60 text-blue-300 border border-blue-900/60">
-                    {isBn ? 'স্থাপিত: ২০০৪' : 'Estd: 2004'}
-                  </span>
+      <footer className={`bg-slate-950 text-slate-300 border-t border-slate-850 relative z-20 ${className}`} role="contentinfo">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10">
+          {/* Main 4-Column Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-12 border-b border-slate-800/70">
+            
+            {/* 1. School Identity & Accreditation (4 columns on lg) */}
+            <div className="lg:col-span-4 space-y-4">
+              <Link href="/" className="inline-flex items-center gap-3 group">
+                <div className="w-10 h-10 rounded-xl bg-white p-1 border border-slate-700/50 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                  <Image
+                    src="/logo.webp"
+                    alt="Surjomukhi Kindergarten Logo"
+                    width={36}
+                    height={36}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
+                <div>
+                  <h2 className="text-base font-bold text-white tracking-tight group-hover:text-blue-400 transition-colors">
+                    {isBn ? 'সূর্যমুখী কিন্ডারগার্টেন' : 'Surjomukhi Kindergarten'}
+                  </h2>
+                  <p className="text-[11px] text-slate-400 font-medium">
+                    {isBn ? '২০০৪ সাল থেকে প্রাথমিক শিক্ষায় উৎকর্ষতা' : 'Excellence in Primary Education Since 2004'}
+                  </p>
+                </div>
+              </Link>
+
+              <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
+                {isBn
+                  ? 'প্লে গ্রুপ হতে ৫ম শ্রেণি পর্যন্ত মানসম্মত বাংলা মাধ্যম শিক্ষা, নৈতিক মূল্যবোধ ও আনন্দময় পরিবেশে ভবিষ্যৎ প্রজন্ম গঠনের বিশ্বস্ত প্রতিষ্ঠান।'
+                  : 'Premier Bangla medium primary educational institution from Nursery to Grade 5, nurturing young minds with care, discipline, and creativity in Nawabganj, Dhaka.'}
+              </p>
+
+              {/* Minimalist Institutional Meta String */}
+              <div className="text-[11px] text-slate-500 font-medium tracking-wide flex flex-wrap items-center gap-x-2 gap-y-1 pt-1">
+                <span>{isBn ? 'ইআইআইএন: ০৬৩১০১৬০৫০৮' : 'EIIN: 06310160508'}</span>
+                <span className="text-slate-700">•</span>
+                <span>{isBn ? 'কোড: ৪২৪৫২৮' : 'Code: 424528'}</span>
+                <span className="text-slate-700">•</span>
+                <span>{isBn ? 'স্থাপিত: ২০০৪' : 'Estd: 2004'}</span>
               </div>
             </div>
 
-            {/* Column 2: Quick Links (2.5 cols on lg) */}
+            {/* 2. Quick Links (2.5 columns on lg) */}
             <div className="lg:col-span-2 sm:pl-2">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-5 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+              <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-4">
                 {isBn ? 'দ্রুত লিংক' : 'Quick Links'}
               </h3>
-              <ul className="space-y-3 text-xs sm:text-sm">
+              <ul className="space-y-2.5 text-xs text-slate-400">
                 {quickLinks.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-slate-400 hover:text-blue-400 transition-colors flex items-center group gap-1.5"
+                      className="hover:text-white transition-colors duration-150 block py-0.5"
                     >
-                      <ChevronRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-blue-400 group-hover:translate-x-0.5 transition-all" />
-                      <span>{isBn ? link.titleBn : link.titleEn}</span>
+                      {isBn ? link.titleBn : link.titleEn}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Column 3: Student & Parent Resources (2.5 cols on lg) */}
+            {/* 3. Academic Resources (2.5 columns on lg) */}
             <div className="lg:col-span-3">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-5 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                {isBn ? 'শিক্ষার্থী ও অভিভাবক সম্পদ' : 'Academic Resources'}
+              <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-4">
+                {isBn ? 'শিক্ষার্থী সম্পদ' : 'Student Resources'}
               </h3>
-              <ul className="space-y-3 text-xs sm:text-sm">
+              <ul className="space-y-2.5 text-xs text-slate-400">
                 {resourceLinks.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-slate-400 hover:text-emerald-400 transition-colors flex items-center group gap-1.5"
+                      className="hover:text-white transition-colors duration-150 block py-0.5"
                     >
-                      <ChevronRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all" />
-                      <span>{isBn ? link.titleBn : link.titleEn}</span>
+                      {isBn ? link.titleBn : link.titleEn}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Column 4: Contact & Direct Hotline (3 cols on lg) */}
-            <div className="lg:col-span-3">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-5 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                {isBn ? 'যোগাযোগ ও তথ্যসেবা' : 'Campus & Hotline'}
+            {/* 4. Campus Contact & Office Hours (3 columns on lg) */}
+            <div className="lg:col-span-3 space-y-3 text-xs text-slate-400">
+              <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-4">
+                {isBn ? 'যোগাযোগ ও তথ্য' : 'Campus Information'}
               </h3>
-              <div className="space-y-3.5 text-xs sm:text-sm text-slate-400">
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
-                  <span className="leading-snug">
-                    {isBn
-                      ? 'সালাউদ্দিন কমপ্লেক্স, আওনা বাজার, নবাবগঞ্জ, ঢাকা-১৩২০'
-                      : 'Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320'}
-                  </span>
-                </div>
 
-                <div className="flex items-center gap-3">
-                  <Phone className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                  <a
-                    href="tel:+8801954113374"
-                    className="hover:text-emerald-300 font-semibold transition-colors"
-                  >
-                    {isBn ? '+৮৮০ ১৯৫৪-১১৩৩৭৪' : '+880 1954-113374'}
-                  </a>
-                </div>
+              <div className="flex items-start gap-2.5">
+                <MapPin className="w-3.5 h-3.5 text-slate-400 mt-0.5 flex-shrink-0" />
+                <span className="leading-relaxed">
+                  {isBn
+                    ? 'সালাউদ্দিন কমপ্লেক্স, আওনা বাজার, নবাবগঞ্জ, ঢাকা-১৩২০'
+                    : 'Salauddin Complex, Aona Bazar, Nawabganj, Dhaka-1320'}
+                </span>
+              </div>
 
-                <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                  <a
-                    href="mailto:info.surjamukhikindergarten@gmail.com"
-                    className="hover:text-amber-300 truncate transition-colors text-xs"
-                  >
-                    info.surjamukhikindergarten@gmail.com
-                  </a>
-                </div>
+              <div className="flex items-center gap-2.5">
+                <Phone className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                <a
+                  href="tel:+8801954113374"
+                  className="hover:text-white transition-colors font-medium"
+                >
+                  {isBn ? '+৮৮০ ১৯৫৪-১১৩৩৭৪' : '+880 1954-113374'}
+                </a>
+              </div>
 
-                <div className="flex items-start gap-3">
-                  <Clock className="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-xs leading-snug">
-                    {isBn
-                      ? 'শনিবার – বৃহস্পতিবার: সকাল ৮:০০ – বিকাল ৪:০০ (শুক্রবার বন্ধ)'
-                      : 'Saturday – Thursday: 8:00 AM – 4:00 PM (Friday Closed)'}
-                  </span>
-                </div>
+              <div className="flex items-center gap-2.5">
+                <Mail className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                <a
+                  href="mailto:info.surjamukhikindergarten@gmail.com"
+                  className="hover:text-white transition-colors truncate"
+                >
+                  info.surjamukhikindergarten@gmail.com
+                </a>
+              </div>
 
-                {/* Direct Online Admission CTA Button */}
-                <div className="pt-2">
-                  <Link
-                    href="/admission/apply-online"
-                    className="inline-flex items-center justify-center w-full gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs py-2.5 px-4 rounded-xl transition-all shadow-xs"
-                  >
-                    <GraduationCap className="w-4 h-4" />
-                    <span>{isBn ? 'অনলাইনে ভর্তি আবেদন' : 'Apply for Admission'}</span>
-                  </Link>
-                </div>
+              <div className="flex items-start gap-2.5 pt-0.5">
+                <Clock className="w-3.5 h-3.5 text-slate-400 mt-0.5 flex-shrink-0" />
+                <span className="leading-relaxed text-[11px] text-slate-400">
+                  {isBn
+                    ? 'শনিবার – বৃহস্পতিবার: সকাল ৮:০০ – বিকাল ৪:০০'
+                    : 'Saturday – Thursday: 8:00 AM – 4:00 PM'}
+                </span>
+              </div>
+
+              {/* Distilled, quiet admission pathway */}
+              <div className="pt-2">
+                <Link
+                  href="/admission/apply-online"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors group"
+                >
+                  <span>{isBn ? 'অনলাইনে ভর্তি আবেদন করুন' : 'Apply Online for Admission'}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </Link>
               </div>
             </div>
           </div>
 
-          {/* Sub-Footer: Copyright, Legal Links, Social Connect */}
-          <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-            {/* Copyright Note */}
-            <div className="text-center md:text-left">
-              <p>
-                {isBn
-                  ? '© ২০২৬ সূর্যমুখী কিন্ডারগার্টেন • সর্বস্বত্ব সংরক্ষিত'
-                  : '© 2026 Surjomukhi Kindergarten • All rights reserved'}
-              </p>
-            </div>
+          {/* Sub-Footer: Clean, balanced single line */}
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            {/* Copyright */}
+            <p className="text-slate-400 text-center sm:text-left">
+              {isBn
+                ? '© ২০২৬ সূর্যমুখী কিন্ডারগার্টেন • সর্বস্বত্ব সংরক্ষিত'
+                : '© 2026 Surjomukhi Kindergarten • All rights reserved'}
+            </p>
 
-            {/* Legal / Policy Links */}
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+            {/* Legal Links */}
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-slate-400 text-[11px]">
               {legalLinks.map((item) => (
                 <Link
                   key={item.href}
@@ -255,25 +237,20 @@ const Footer: React.FC<{ className?: string; showBackToTop?: boolean }> = ({
               ))}
             </div>
 
-            {/* Social Media Links */}
-            <div className="flex items-center gap-3">
-              <span className="text-[11px] text-slate-500 hidden sm:inline">
-                {isBn ? 'সামাজিক মাধ্যম:' : 'Connect:'}
-              </span>
-              <div className="flex items-center gap-2">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.name}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 hover:border-slate-700 transition-all"
-                    aria-label={social.ariaLabel}
-                  >
-                    {social.icon}
-                  </a>
-                ))}
-              </div>
+            {/* Social Links */}
+            <div className="flex items-center gap-3 text-slate-400">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1.5 rounded-md hover:text-white hover:bg-slate-800/80 transition-colors"
+                  aria-label={social.ariaLabel}
+                >
+                  {social.icon}
+                </a>
+              ))}
             </div>
           </div>
         </div>
